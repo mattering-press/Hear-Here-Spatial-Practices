@@ -6,4 +6,4 @@ Juncture will render this repository at [https://juncture-digital.org/mattering-
 
 .ve-media https://vimeo.com/921712375
 
-.ve-media https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/Boulder_Readings_Coventrycathedral.mp3
+.ve-media https://mattering-press.github.io/Hear-Here-Spatial-Practices/media/Boulder_Readings_Coventrycathedral.mp3
