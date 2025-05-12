@@ -6,6 +6,6 @@
 
 Juncture will render this repository at [https://juncture-digital.org/mattering-press/Hear-Here-Spatial-Practices](https://juncture-digital.org/mattering-press/Hear-Here-Spatial-Practices).
 
-.ve-media https://raw.githubusercontent.com/mattering-press/Hear-Here-Spatial-Practices/main/media/Boulder_Readings_Coventrycathedral.mp3 right
+.ve-media https://raw.githubusercontent.com/mattering-press/Hear-Here-Spatial-Practices/main/media/Boulder_Readings_Coventrycathedral.mp3
 
 [Boulder readings in Coventry Cathedral](https://raw.githubusercontent.com/mattering-press/Hear-Here-Spatial-Practices/main/media/Boulder_Readings_Coventrycathedral.mp3)
