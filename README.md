@@ -2,7 +2,7 @@
 
 .ve-media right https://vimeo.com/921712375
 
-.ve-media left https://archive.org/embed/Experimental_Publishing_Compendium_walkthrough
+.ve-media left https://iiif.archivelab.org/iiif/Experimental_Publishing_Compendium_walkthrough/manifest.json
 
 *Hear Here: Spatial Practices* undertakes a postcolonial mapping of the brutalist Coventry Cathedral as an internationally recognised post-war modernist infrastructure.
 
