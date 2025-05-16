@@ -1,8 +1,8 @@
 .ve-style ./custom.css
 
-[↩ table of contents](../)
+[↩ table of contents](/)
 
-.ve-header 'Draft of the introduction chapter' background=LightCoral
+.ve-header 'Draft of the introduction chapter' background=#891612
     - [home](/)
 
 .ve-footer
