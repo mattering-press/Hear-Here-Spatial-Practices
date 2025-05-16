@@ -2,7 +2,8 @@
 
 [↩ table of contents](../)
 
-.ve-header 'Spotting Colours'
+.ve-header 'Spotting Colours' background=#891612
+    - [table of contents](/)
 
 .ve-footer
     - Published by [![Mattering Press](https://www.matteringpress.org/wp-content/themes/matteringpress/img/mattering-press.png)](https://www.matteringpress.org/)
