@@ -1,3 +1,8 @@
+.ve-style ./custom.css
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
+
 # Draft of the introduction chapter
 
 Space is sedimented, closed, open, multiple, layered, iterative, plural and mobile. How does one constitute an **alternative index** as a spatial practice of what a civic cathedral has been and could become. This book is a spatial practice in re-orientating Coventry Cathedral towards a global planetary connectedness in a multiculturally superdiverse city. Material archives become spinning tops for innovating ongoing collaborative future spatial practices; reflecting on what else could be imagined in the space of the cathedral. Live material archives, of paper, rock, soil, acorn, sound and image, are activated as catalysing resources, for re-visiting pasts often not fully registered. Possibilities for experimentation and for thinking outside of the box are ignited. Co-journeying forms the spine of creative collective propositions, sharing what has been, whilst building practices of what could be. I have spiralled down the staircase to the archives sitting under the nave of Coventry Cathedral, coming up for the air space offered by receptive collaborators who expand the space of possibilities through their generous curiosity.
