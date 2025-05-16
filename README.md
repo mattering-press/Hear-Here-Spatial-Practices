@@ -1,3 +1,8 @@
+.ve-style ./essays/custom.css
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
+
 # Hear Here: Spatial Practices
 
 *Hear Here: Spatial Practices* undertakes a postcolonial mapping of the brutalist Coventry Cathedral as an internationally recognised post-war modernist infrastructure.
