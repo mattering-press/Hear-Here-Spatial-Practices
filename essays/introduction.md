@@ -1,7 +1,5 @@
 .ve-style ./custom.css
 
-[↩ table of contents](/)
-
 .ve-header 'Draft of the introduction chapter' background=#891612
     - [table of contents](/)
 
