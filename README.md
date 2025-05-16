@@ -6,8 +6,8 @@ Juncture will render this repository at [https://juncture-digital.org/mattering-
 
 # table of contents
 
-- [Introduction](./mattering-press/Hear-Here-Spatial-Practices/essays/introduction.md)
-- [Spotting Colours](./mattering-press/Hear-Here-Spatial-Practices/essays/spotting_colours.md)
+- [Introduction](./essays/introduction.md)
+- [Spotting Colours](./essays/spotting_colours.md)
 
 # test stuff
 
