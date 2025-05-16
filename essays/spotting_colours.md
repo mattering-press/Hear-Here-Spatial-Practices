@@ -1,5 +1,7 @@
 .ve-style ./custom.css
 
+[↚ table of contents](../)
+
 # Spotting Colours
 
 The forensic work of spotting a black visual presence in the making of the cathedral presents a frustrating search as well as a potentially moving happening. I have searched through thousands of online photographs from the Laing archive, zooming and freezing screenshots, looking for presence. The small number of images I have found are visually etched in me. The figures in the small number of photographs have become familiar stranger figures, their postures, the clothes they wear and the scenes they appear in stay with me. Searching for them or new acquaintances, whilst cross referencing archives becomes a minefield of digs. Just to give an example, from looking through the Laing photographic archives of the cathedral online (hosted by English Heritage), I found an image of a black RAF officer fixing the seventy-eight feet open-work bronze spire (fleche) on the roof of the new Coventry Cathedral on 26 April 1962. 
