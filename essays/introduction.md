@@ -2,7 +2,8 @@
 
 [↩ table of contents](../)
 
-.ve-header 'Draft of the introduction chapter'
+.ve-header 'Draft of the introduction chapter' background=LightCoral
+    - [home](/)
 
 .ve-footer
     - Published by [![Mattering Press](https://www.matteringpress.org/wp-content/themes/matteringpress/img/mattering-press.png)](https://www.matteringpress.org/)
