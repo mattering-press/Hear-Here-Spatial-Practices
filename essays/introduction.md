@@ -1,6 +1,6 @@
 .ve-style ./custom.css
 
-[↚ table of contents](../)
+[↩ table of contents](../)
 
 # Draft of the introduction chapter
 
