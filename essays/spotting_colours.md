@@ -1,7 +1,5 @@
 .ve-style ./custom.css
 
-[↩ table of contents](../)
-
 .ve-header 'Spotting Colours' background=#891612
     - [table of contents](/)
 
