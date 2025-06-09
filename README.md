@@ -10,13 +10,6 @@
 
 This book is publishing using the [Juncture](https://www.juncture-digital.org/) visual essaying platform developed and maintained by [JSTOR Labs](https://labs.jstor.org/). Juncture renders this repository at [https://juncture-digital.org/mattering-press/Hear-Here-Spatial-Practices](https://juncture-digital.org/mattering-press/Hear-Here-Spatial-Practices).
 
-# table of contents
-
-- [Introduction](./essays/introduction.md)
-- [Spotting Colours](./essays/spotting_colours.md)
-- [Audio Interviews](./essays/audio_interviews.md)
-- [Index](./essays/index.md)
-
 # table of contents {.cards}
 
 ## Introduction {href=./essays/introduction.md}
