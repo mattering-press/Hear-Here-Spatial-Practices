@@ -7,7 +7,7 @@
     - Published by [![Mattering Press](https://www.matteringpress.org/wp-content/themes/matteringpress/img/mattering-press.png)](https://www.matteringpress.org/)
     - [![CC BY](https://licensebuttons.net/l/by/4.0/88x31.png)](https://creativecommons.org/licenses/by/4.0/)
 
-.ve-media /media/monica.jpeg right
+.ve-media monica.jpeg right
 
 The writer Monica Brown, whose father worked on building Coventry Cathedral, states in her visit to the cathedral for the Hear Here podcast: “I am here because dad was here”. Monica brings a journey of journeys to our dialogue, vividly relaying the strength and struggles of her family and the Windrush Generation, whilst moving back and forth between Jamaica and Leamington. Whilst opening the half empty pages of an embossed book in the cathedral archives, with the names of some of the builders who worked on the cathedral, the task of filling in the gaps of the empty weighted pages, gilded with gold leaf, appears as an open-ended process, bearing the weight of the past in the present. She closes with a call for an installation to recognise black and brown people, whose presence is absent and nowhere to be seen.
 
@@ -41,7 +41,7 @@ So, my life and work has, has encapsulated education, media, advocacy, writing, 
 
 **MB:** Absolutely. Two things, one: dad came here in 1955 when he was 25, as a fully blown, highly skilled man. And a man looking for opportunities to add value to himself. So, by the age of 19 he had built a house with his cousin. He had been taught carpentry, he had made furniture. I was looking at a tribute that his late sister wrote to him when he died in 1991, and she talked about him building her dolls houses. There is furniture in his family home that he built, tables and chairs that he built. And I remember, when he turned 21 in Jamaica he started to wear long trousers, because men couldn't afford to wear long trousers, it was more expensive. But he wore his first pair of long trousers when he was 21. Because at 21, he was engaged with a group of builders in Jamaica who were building bridges [laughs]. Who were building bridges, who were building roads. So this is a man who was involved, and so he could afford to buy long trousers. And long trousers in Jamaica at the time was an indication of some wealth, if you had a bicycle and long trousers [laughs] oh, you, you're on your way! So when he came here in 1955, he was clear about, he was fully formed. And if you look at a picture of dad, here, there's a picture of him at 25. 
 
-PW: He’s got this hat on…
+**PW:** He’s got this hat on…
 
 **MB:** The hat and the presentation, the jacket and the shoes, the seams, the seams on the trousers and the shoes. Just ready to work. And we have photographs in our family album in Jamaica of Dad standing on the scaffolding of this building with Coventry Cathedral in the background, because he helped to construct this Cathedral, and Coventry University. So…
 
