@@ -11,4 +11,4 @@
 
 ## Monica Brown {href=./monica_brown.md}
 
-![](/media/monica.jpeg)
+![](/media/monica_brown/monica.jpg)
