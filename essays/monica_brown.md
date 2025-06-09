@@ -1,6 +1,6 @@
 .ve-style ./custom.css
 
-.ve-header 'Monica Brown' background=#891612
+.ve-header 'Audio Conversations: Monica Brown' background=#891612
     - [table of contents](/)
 
 .ve-footer

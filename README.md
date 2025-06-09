@@ -20,7 +20,11 @@ This book is published using the [Juncture](https://www.juncture-digital.org/) v
 
 ![](https://iiif.juncture-digital.org/thumbnail/wc:Augustine_Abbey.jpg)
 
-## Audio Interviews {href=./essays/audio_interviews.md}
+## Events {href=./essays/events.md}
+
+![](https://iiif.juncture-digital.org/thumbnail/wc:Canterbury_-_lavatory_tower03b.jpg)
+
+## Audio Conversations {href=./essays/audio_conversations.md}
 
 ![](/media/monica_brown/20250322_140210.jpg)
 
