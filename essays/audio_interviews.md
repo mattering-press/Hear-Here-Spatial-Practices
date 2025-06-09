@@ -9,6 +9,6 @@
 
 # {.cards}
 
-## Monica Brown {href=./essays/monica_brown.md}
+## Monica Brown {href=./monica_brown.md}
 
-![](monica.jpeg)
+![](/media/monica.jpeg)
