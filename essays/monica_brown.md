@@ -9,8 +9,6 @@
 
 The writer Monica Brown, whose father worked on building Coventry Cathedral, states in her visit to the cathedral for the Hear Here podcast: “I am here because dad was here”. Monica brings a journey of journeys to our dialogue, vividly relaying the strength and struggles of her family and the Windrush Generation, whilst moving back and forth between Jamaica and Leamington. Whilst opening the half empty pages of an embossed book in the cathedral archives, with the names of some of the builders who worked on the cathedral, the task of filling in the gaps of the empty weighted pages, gilded with gold leaf, appears as an open-ended process, bearing the weight of the past in the present. She closes with a call for an installation to recognise black and brown people, whose presence is absent and nowhere to be seen.
 
-.ve-media https://github.com/mattering-press/Hear-Here-Spatial-Practices/blob/main/media/monica_brown/monica.jpg?raw=true
-
 **Biography:**
 
 Monica D. Brown is a Communications Coach, Media Engagement Trainer, Freelance journalist, and writer who was born in Birmingham, UK. She currently leads the Warwickshire County Record Office project, ‘Telling our own stories’. In 2007, the BBC selected Monica among six others across the UK, to explore their family history. She has written Journey back to Zanzibar, a loosely autobiographical anthology, translated into Swahili, with the title Safari Kuelekea Tena Unguja (2016). Monica is currently working on a collection of Windrush inspired short stories, Going to England. Her Jamaican parents, Iciline and Gersham are Windrush generation citizens who returned to Jamaica. Recently her mother faced the burden of doubt, in terms of immigration, when she wanted to visit her grandson’s graduation in the UK.
