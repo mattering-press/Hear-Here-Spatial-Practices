@@ -14,3 +14,23 @@ This book is publishing using the [Juncture](https://www.juncture-digital.org/) 
 
 - [Introduction](./essays/introduction.md)
 - [Spotting Colours](./essays/spotting_colours.md)
+- [Audio Interviews](./essays/audio_interviews.md)
+- [Index](./essays/index.md)
+
+# table of contents {.cards}
+
+## Introduction {href=./essays/introduction.md}
+
+![](https://iiif.juncture-digital.org/thumbnail/wc:Canterbury_-_lavatory_tower03b.jpg)
+
+## Spotting Colours {href=./essays/spotting_colours.md}
+
+![](https://iiif.juncture-digital.org/thumbnail/wc:Augustine_Abbey.jpg)
+
+## Audio Interviews {href=./essays/audio_interviews.md}
+
+![](https://iiif.juncture-digital.org/thumbnail/wc:High_Street%2C_Canterbury%2C_Kent.jpg)
+
+## Index {href=./essays/index.md}
+
+![](https://iiif.juncture-digital.org/thumbnail/wc:Canterbury_cathedral_20160901.jpg)
