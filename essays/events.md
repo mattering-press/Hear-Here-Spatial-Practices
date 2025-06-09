@@ -11,7 +11,7 @@
 
 A participative event that took place on Saturday 14 September 2024 from 14:00 to 15:30 BST at Coventry Cathedral.
 
-.ve-iframe https://archive.org/embed/HearHereAcorn1
+.ve-iframe https://archive.org/embed/HearHereAcorn1 left height="480"
 
 "In June 1968, John Lennon and Yoko Ono launched ‘Acorns for Peace’ on the grounds of Coventry Cathedral.
 
