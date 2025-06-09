@@ -22,7 +22,7 @@ This book is publishing using the [Juncture](https://www.juncture-digital.org/) 
 
 ## Audio Interviews {href=./essays/audio_interviews.md}
 
-![](https://iiif.juncture-digital.org/thumbnail/wc:High_Street%2C_Canterbury%2C_Kent.jpg)
+![](/media/monica_brown/20250322_140210.jpg)
 
 ## Index {href=./essays/index.md}
 
