@@ -9,7 +9,7 @@
 
 .ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/bharti_parmar_6.jpeg left
 
-Bharti Parmar arrived in Coventry in 1986 as a Fine Art student at Lanchester Polytechnic, eventually graduating inside Coventry Cathedral. Thirty-five years later, she walks in different parts of the cathedral for the Hear Here podcast. She dwells on both her artistic practice and the architectural and artistic features of the cathedral, before closing the conversation in the needleworkers group, which sits on the lower ground floor under the nave.
+Bharti Parmar arrived in Coventry in 1986 as a Fine Art student at Lanchester Polytechnic, eventually graduating inside Coventry Cathedral. Thirty-five years later, she walks in different parts of the cathedral for the *Hear Here* podcast. She dwells on both her artistic practice and the architectural and artistic features of the cathedral, before closing the conversation in the needleworkers group, which sits on the lower ground floor under the nave.
 
 Her conversation shifts between textile production, political change and the Sutherland tapestry; botany, colonialism and the Live and Dye Garden; the plumbline, cities, pennies in the floor as liminal points and the canopy as a threshold; as well as the needlework room with kneelers, women’s groups, stitches; bell ringing and the mathematical system; and embodied research as a fellowship. 
 
