@@ -1,6 +1,6 @@
 .ve-style ./custom.css
 
-.ve-header 'Audio Conversations' background=#891612
+.ve-header '*Hear Here Podcast*' background=#891612
     - [table of contents](/)
 
 .ve-footer
@@ -12,3 +12,11 @@
 ## Monica Brown {href=./monica_brown.md}
 
 ![](/media/monica_brown/monica.jpg)
+
+## Bharti Parmar {href=./bharti_parmar.md}
+
+![](/media/bharti_parmar/WhatsApp Image 2025-05-12 at 17.52.43.jpeg)
+
+## Freyja Perkins and Matthew Horspool {href=./freyja_perkins.md}
+
+![](/media/freyja_perkins/WhatsApp Image 2025-05-12 at 17.50.55.jpeg)

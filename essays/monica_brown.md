@@ -1,6 +1,6 @@
 .ve-style ./custom.css
 
-.ve-header 'Audio Conversations: Monica Brown' background=#891612
+.ve-header '*Hear Here Podcast*: Monica Brown' background=#891612
     - [table of contents](/)
 
 .ve-footer
@@ -21,7 +21,7 @@ Public Family Talk: [https://youtu.be/OWS5oxWLOik](https://youtu.be/OWS5oxWLOik)
 
 Monica Brown Consultancy: [https://monicabrown.co.uk/](https://monicabrown.co.uk/)
 
-## Conversation
+## Podcast
 
 <audio controls>
   <source src="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2301_Monica%20Brown_-16LUFs_FINALCUT_01.mp3" type="audio/mpeg">

@@ -20,13 +20,17 @@ This book is published using the [Juncture](https://www.juncture-digital.org/) v
 
 ![](https://iiif.juncture-digital.org/thumbnail/wc:Augustine_Abbey.jpg)
 
+## *Hear Here Podcast* {href=./essays/podcasts.md}
+
+![](/media/monica_brown/20250322_140210.jpg)
+
 ## Events {href=./essays/events.md}
 
 ![](https://iiif.juncture-digital.org/thumbnail/wc:Canterbury_-_lavatory_tower03b.jpg)
 
-## Audio Conversations {href=./essays/audio_conversations.md}
+## Conversations {href=./essays/conversations.md}
 
-![](/media/monica_brown/20250322_140210.jpg)
+![](https://iiif.juncture-digital.org/thumbnail/wc:Canterbury_cathedral_20160901.jpg)
 
 ## Index {href=./essays/index.md}
 
