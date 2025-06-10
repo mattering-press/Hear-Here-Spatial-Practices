@@ -11,12 +11,12 @@
 
 ## Monica Brown {href=./monica_brown.md}
 
-![](/media/monica_brown/monica_brown_12.jpg)
+![](/media/monica_brown_12.jpg)
 
 ## Bharti Parmar {href=./bharti_parmar.md}
 
-![](/media/bharti_parmar/bharti_parmar_2.jpeg)
+![](/media/bharti_parmar_2.jpeg)
 
 ## Freyja Perkins and Matthew Horspool {href=./freyja_perkins.md}
 
-![](/media/freyja_perkins/freyja_perkins_2.jpeg)
+![](/media/freyja_perkins_2.jpeg)
