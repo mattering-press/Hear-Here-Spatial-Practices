@@ -22,7 +22,7 @@ This book is published using the [Juncture](https://www.juncture-digital.org/) v
 
 ## Podcasts {href=./essays/podcasts.md}
 
-![](/media/monica_brown/20250322_140210.jpg)
+![](/media/monica_brown/monica_brown_5.jpg)
 
 ## Events {href=./essays/events.md}
 

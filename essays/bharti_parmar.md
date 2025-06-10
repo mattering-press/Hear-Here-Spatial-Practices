@@ -7,15 +7,15 @@
     - Published by [![Mattering Press](https://www.matteringpress.org/wp-content/themes/matteringpress/img/mattering-press.png)](https://www.matteringpress.org/)
     - [![CC BY](https://licensebuttons.net/l/by/4.0/88x31.png)](https://creativecommons.org/licenses/by/4.0/)
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/bharti_parmar/WhatsApp%20Image%202025-05-12%20at%2017.53.21.jpeg left
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/bharti_parmar/bharti_parmar_6.jpeg left
 
 Bharti Parmar arrived in Coventry in 1986 as a Fine Art student at Lanchester Polytechnic, eventually graduating inside Coventry Cathedral. Thirty-five years later, she walks in different parts of the cathedral for the Hear Here podcast. She dwells on both her artistic practice and the architectural and artistic features of the cathedral, before closing the conversation in the needleworkers group, which sits on the lower ground floor under the nave.
 
 Her conversation shifts between textile production, political change and the Sutherland tapestry; botany, colonialism and the Live and Dye Garden; the plumbline, cities, pennies in the floor as liminal points and the canopy as a threshold; as well as the needlework room with kneelers, women’s groups, stitches; bell ringing and the mathematical system; and embodied research as a fellowship. 
 
-**Biography:**
+## Biography
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/bharti_parmar/WhatsApp%20Image%202025-05-12%20at%2017.52.15.jpeg right
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/bharti_parmar/bharti_parmar_1.jpeg right
 
 Bharti is an artist and academic with a focus on vernacular crafts and systems. She is an Honorary Research Fellow in the Department of Art History, Curating and Visual Studies at the University of Birmingham.  Her current studio-based research project Paper/Cotton/Plant, is about the intersections between materiality, geography and botany with a special focus on The Herball, or Generall historie of plantes 1597 by botanist John Gerard (1545-1612).
 
