@@ -1,6 +1,6 @@
 .ve-style ./custom.css
 
-.ve-header '*Hear Here Podcast*' background=#891612
+.ve-header 'Hear Here Podcast' background=#891612
     - [table of contents](/)
 
 .ve-footer

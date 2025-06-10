@@ -23,6 +23,11 @@ Monica Brown Consultancy: [https://monicabrown.co.uk/](https://monicabrown.co.uk
 
 ## Podcast
 
+With: Nirmal Puwar, Monica Brown
+Date of recording: 22 March 2025
+Location: Coventry Cathedral
+Recorded and edited by: Duncan Whitley
+
 <audio controls>
   <source src="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2301_Monica%20Brown_-16LUFs_FINALCUT_01.mp3" type="audio/mpeg">
     <!-- fallback -->

@@ -9,7 +9,7 @@
 
 ## Rocking It: insider/outsider material archives
 
-Rocking It was a talk by Professor Stuart Burley that took place as part of Outsider(s) Zine Festival on Saturday 2 March 2024.
+A talk by Professor Stuart Burley that took place as part of Outsider(s) Zine Festival on Saturday 2 March 2024.
 
 .ve-media right https://vimeo.com/921712375
 
