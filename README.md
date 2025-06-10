@@ -20,7 +20,7 @@ This book is published using the [Juncture](https://www.juncture-digital.org/) v
 
 ![](https://iiif.juncture-digital.org/thumbnail/wc:Augustine_Abbey.jpg)
 
-## *Hear Here Podcast* {href=./essays/podcasts.md}
+## Podcasts {href=./essays/podcasts.md}
 
 ![](/media/monica_brown/20250322_140210.jpg)
 

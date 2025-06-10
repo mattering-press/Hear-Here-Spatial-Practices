@@ -1,13 +1,13 @@
 .ve-style ./custom.css
 
-.ve-header '*Hear Here Podcast*: Bharti Parmar' background=#891612
+.ve-header 'Hear Here Podcast: Bharti Parmar' background=#891612
     - [table of contents](/)
 
 .ve-footer
     - Published by [![Mattering Press](https://www.matteringpress.org/wp-content/themes/matteringpress/img/mattering-press.png)](https://www.matteringpress.org/)
     - [![CC BY](https://licensebuttons.net/l/by/4.0/88x31.png)](https://creativecommons.org/licenses/by/4.0/)
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/bharti_parmar/WhatsApp Image 2025-05-12 at 17.53.21.jpeg left
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/bharti_parmar/WhatsApp%20Image%202025-05-12%20at%2017.53.21.jpeg left
 
 Bharti Parmar arrived in Coventry in 1986 as a Fine Art student at Lanchester Polytechnic, eventually graduating inside Coventry Cathedral. Thirty-five years later, she walks in different parts of the cathedral for the Hear Here podcast. She dwells on both her artistic practice and the architectural and artistic features of the cathedral, before closing the conversation in the needleworkers group, which sits on the lower ground floor under the nave.
 
@@ -15,7 +15,7 @@ Her conversation shifts between textile production, political change and the Sut
 
 **Biography:**
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/bharti_parmar/WhatsApp Image 2025-05-12 at 17.52.15.jpeg right
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/bharti_parmar/WhatsApp%20Image%202025-05-12%20at%2017.52.15.jpeg right
 
 Bharti is an artist and academic with a focus on vernacular crafts and systems. She is an Honorary Research Fellow in the Department of Art History, Curating and Visual Studies at the University of Birmingham.  Her current studio-based research project Paper/Cotton/Plant, is about the intersections between materiality, geography and botany with a special focus on The Herball, or Generall historie of plantes 1597 by botanist John Gerard (1545-1612).
 
@@ -33,7 +33,7 @@ Location: Coventry Cathedral
 Recorded and edited by: Duncan Whitley
 
 <audio controls>
-  <source src="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD#02_Bharti Parmar_-16LUFs_FINALCUT.mp3" type="audio/mpeg">
+  <source src="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2302_Bharti%20Parmar_-16LUFs_FINALCUT.mp3" type="audio/mpeg">
     <!-- fallback -->
-    Your browser doesn't support HTML5 audio. Here is a <a href="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD#02_Bharti Parmar_-16LUFs_FINALCUT.mp3">link to download the audio</a> instead.
+    Your browser doesn't support HTML5 audio. Here is a <a href="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2302_Bharti%20Parmar_-16LUFs_FINALCUT.mp3">link to download the audio</a> instead.
 </audio>
