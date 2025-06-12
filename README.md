@@ -14,7 +14,7 @@ This book is published using the [Juncture](https://www.juncture-digital.org/) v
 
 ## Introduction {href=./essays/introduction.md}
 
-![](https://iiif.juncture-digital.org/thumbnail/wc:Cathedral_of_St_Michael_(Coventry_Cathedral),_Priory_Street,_Coventry_(NHLE_Code_1342941)_(April_2025)_(2).jpg)
+![](https://iiif.juncture-digital.org/thumbnail/wc:Coventry_Cathedral_2018.jpg)
 
 ## Spotting Colours {href=./essays/spotting_colours.md}
 
