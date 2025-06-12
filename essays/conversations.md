@@ -1,7 +1,7 @@
 .ve-style ./custom.css
 
 .ve-header 'Conversations' background=#891612
-    - [table of contents](/)
+    - [Table of Contents](/)
 
 .ve-footer
     - Published by [![Mattering Press](https://www.matteringpress.org/wp-content/themes/matteringpress/img/mattering-press.png)](https://www.matteringpress.org/)

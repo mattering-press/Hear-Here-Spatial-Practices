@@ -38,7 +38,16 @@ body {
 }
 
 #juncture .card {
-    text-align: center;
+    background: #fff;
+    border-radius: 0px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+#juncture .card-title {
+    font-size: 1.3rem;
+    padding: 1.3rem 0.6rem 1.3rem;
 }
 
 audio { 
