@@ -14,11 +14,11 @@ This book is published using the [Juncture](https://www.juncture-digital.org/) v
 
 ## Introduction {href=./essays/introduction.md}
 
-![](https://iiif.juncture-digital.org/thumbnail/wc:Canterbury_-_lavatory_tower03b.jpg)
+![](https://iiif.juncture-digital.org/thumbnail/wc:Cathedral_of_St_Michael_(Coventry_Cathedral),_Priory_Street,_Coventry_(NHLE_Code_1342941)_(April_2025)_(2).jpg)
 
 ## Spotting Colours {href=./essays/spotting_colours.md}
 
-![](https://iiif.juncture-digital.org/thumbnail/wc:Augustine_Abbey.jpg)
+![](https://iiif.juncture-digital.org/thumbnail/wc:Coventry_Cathedral_Interior,_West_Midlands,_UK_-_Diliff.jpg)
 
 ## Podcasts {href=./essays/podcasts.md}
 
@@ -26,12 +26,12 @@ This book is published using the [Juncture](https://www.juncture-digital.org/) v
 
 ## Events {href=./essays/events.md}
 
-![](https://iiif.juncture-digital.org/thumbnail/wc:Canterbury_-_lavatory_tower03b.jpg)
+![](https://iiif.juncture-digital.org/thumbnail/wc:Coventry_Cathedral,_February_2023_17.jpg)
 
 ## Conversations {href=./essays/conversations.md}
 
-![](https://iiif.juncture-digital.org/thumbnail/wc:Canterbury_cathedral_20160901.jpg)
+![](https://iiif.juncture-digital.org/thumbnail/wc:Cathedral_of_St_Michael_(Coventry_Cathedral),_Priory_Street,_Coventry_(NHLE_Code_1342941)_(April_2025)_(Interior)_(3).jpg)
 
 ## Index {href=./essays/index.md}
 
-![](https://iiif.juncture-digital.org/thumbnail/wc:Canterbury_cathedral_20160901.jpg)
+![](https://iiif.juncture-digital.org/thumbnail/wc:Cathedral_of_St_Michael_(Coventry_Cathedral),_Priory_Street,_Coventry_(NHLE_Code_1342941)_(April_2025)_(4).jpg)
