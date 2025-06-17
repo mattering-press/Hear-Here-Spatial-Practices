@@ -53,3 +53,21 @@ body {
 audio { 
     width: 100%; 
 }
+
+.scroll-container {
+    height: 400px;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    background: #f5f5f5;
+    padding: 1rem;
+  }
+
+  .columns {
+    column-width: 300px;
+    column-gap: 2rem;
+    height: 100%;
+    white-space: normal;
+    display: inline-block;
+  }

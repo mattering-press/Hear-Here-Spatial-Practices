@@ -34,6 +34,9 @@ Monica Brown Consultancy: [https://monicabrown.co.uk/](https://monicabrown.co.uk
     Your browser doesn't support HTML5 audio. Here is a <a href="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2301_Monica%20Brown_-16LUFs_FINALCUT_01.mp3">link to download the audio</a> instead.
 </audio>
 
+<div class="scroll-container">
+  <div class="columns">
+
 **Nirmal Puwar:** So hello Monica Brown.(...) Earlier on we were discussing how, you know, your whole education, and how it sort of forms your thinking so take us through what you've studied and what you work on now.(...) 
 
 **Monica Brown:** So, in the beginning, in the beginning I was born in the UK in Birmingham but my first memory of life is Jamaica. My father came here in 1955 and immediately smelt the stench of racism, and realized that this hostile environment would not be one in which his children could thrive. And so, although I spent the first two and a half years of my life in Birmingham, my first memory of life is Kingston, Jamaica, where we lived for about a year and a half. But, my mother hadn't signed up to being married to my father to return to Jamaica without doing her nursing training, so at about four and a half I returned to the UK. So by the time I was five I'd clocked several thousand air miles. [laughs] Yes, and then we lived in Leamington between 1964 and 1972. And he insisted that he was going to use his skills and experience gained in the UK in nation-building, and so we returned to Jamaica by ship. So, I took a three-week journey, we took a three-week journey, my mother and my brothers and I took a three-week journey from the UK to Jamaica, via Vigo, Coruña, Tenerife, the Canary Islands, across the wicked Atlantic. And then to La Guara, Venezuela then to Trinidad and the last 1,000 miles to Jamaica. And it is in approaching Jamaica by ship, slowly, because before you approach the land a tugboat takes you. And you see the land emerging in the morning, and it makes you gasp and it made me understand with my European eyes why it is that the Caribbean was the reason that Europeans shed blood over that region. 
@@ -61,3 +64,6 @@ So, my life and work has, has encapsulated education, media, advocacy, writing, 
 **MB:** We have photographs in our family album that I have seen, I can picture dad in that, in that dark blue cardigan, it may have had holes in [laughs]. I can, I can see Coventry Cathedral in the background. So we (...) he was bringing so much, and in addition to that and this is something that makes me marvel… So here's a man with four children, a wife and four children, determined to add value to himself. So he goes to work, he takes his flask, he takes his sandwiches wrapped in the Mother Pride bread, it was blue and white I can still see the striped blue and white Mother Pride, and the sandwiches were bacon or egg, and he would always add the picker pepper sauce to the sandwiches to give them some heat and flavor. but dad always
 
 THIS IS JUST A SAMPLE - approx. the first 10 minutes of the Monica Brown podcast (#01), so you can get a sense. 
+
+  </div>
+</div>
