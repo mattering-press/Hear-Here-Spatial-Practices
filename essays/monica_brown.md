@@ -55,8 +55,6 @@ So, my life and work has, has encapsulated education, media, advocacy, writing, 
 
 <b>PW:</b> He’s got this hat on…
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/monica_brown_2.jpg left
-
 <b>MB:</b> The hat and the presentation, the jacket and the shoes, the seams, the seams on the trousers and the shoes. Just ready to work. And we have photographs in our family album in Jamaica of Dad standing on the scaffolding of this building with Coventry Cathedral in the background, because he helped to construct this Cathedral, and Coventry University. So…
 
 <b>NP:</b> Can you say that again?
