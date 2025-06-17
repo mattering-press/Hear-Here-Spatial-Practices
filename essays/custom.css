@@ -71,3 +71,9 @@ audio {
     white-space: normal;
     display: inline-block;
   }
+
+  .columns b::before {
+    content: "";
+    display: block;
+    margin-top: 1em; /* adjust for desired spacing */
+  }
