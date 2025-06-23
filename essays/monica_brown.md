@@ -30,16 +30,14 @@ Monica Brown Consultancy: [https://monicabrown.co.uk/](https://monicabrown.co.uk
 - Location: Coventry Cathedral
 - Recorded and edited by: Duncan Whitley
 
-<audio id="audioPlayer" controls>
-  <source src="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2301_Monica%20Brown_-16LUFs_FINALCUT_01.mp3" type="audio/mp3">
-    <!-- fallback -->
-    Your browser doesn't support HTML5 audio. Here is a <a href="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2301_Monica%20Brown_-16LUFs_FINALCUT_01.mp3">link to download the audio</a> instead.
-</audio>
-
-  <div style="margin-top: 10px;">
-    <button id="back30">⏪ Back 30s</button>
-    <button id="forward30">⏩ Forward 30s</button>
+  <div class="audio-player">
+    <button id="back30">⏪ 30s</button>
+    <button id="playPause">▶️</button>
+    <button id="forward30">30s ⏩</button>
+    <input type="range" id="progress" value="0" min="0" step="1">
   </div>
+
+  <audio id="audio" src="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2301_Monica%20Brown_-16LUFs_FINALCUT_01.mp3"></audio>
 
 <div class="scroll-container">
   <div class="columns">

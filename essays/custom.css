@@ -77,3 +77,31 @@ audio {
     display: block;
     margin-top: 1em; /* adjust for desired spacing */
   }
+
+  .audio-player {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f0f0f0;
+    padding: 10px;
+    border-radius: 8px;
+    width: 400px;
+  }
+
+  .controls button {
+    padding: 6px 12px;
+    font-size: 14px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .controls button:hover {
+    background-color: #0056b3;
+  }
+
+  input[type="range"] {
+    flex-grow: 1;
+  }
