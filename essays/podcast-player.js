@@ -34,7 +34,13 @@
   forwardBtn.setAttribute('aria-label', 'Skip Forwards');
   forwardBtn.textContent = '⏭️';
 
-  controls.append(backBtn, playBtn, forwardBtn);
+  // New speed button
+  const speedBtn = document.createElement('button');
+  speedBtn.id = 'speed';
+  speedBtn.setAttribute('aria-label', 'Playback Speed');
+  speedBtn.textContent = '1x';
+
+  controls.append(backBtn, playBtn, forwardBtn, speedBtn);
   container.appendChild(controls);
 
   // Progress container
@@ -74,7 +80,7 @@
     background: #1e1e1e;
     border-radius: 12px;
     padding: 20px 30px;
-    width: 350px;
+    width: 80%;
     box-shadow: 0 8px 20px rgba(0,0,0,0.7);
     display: flex;
     flex-direction: column;
@@ -85,7 +91,7 @@
   .controls {
     display: flex;
     justify-content: center;
-    gap: 30px;
+    gap: 20px;
   }
   button {
     background: #2a2a2a;
@@ -96,6 +102,7 @@
     border-radius: 50%;
     cursor: pointer;
     transition: background 0.3s ease;
+    user-select: none;
   }
   button:hover {
     background: #3d3d3d;
@@ -129,12 +136,16 @@
   `;
   document.head.appendChild(style);
 
-  // Function to format time mm:ss
+  // Format time mm:ss
   function formatTime(time) {
     const minutes = Math.floor(time / 60) || 0;
     const seconds = Math.floor(time % 60) || 0;
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   }
+
+  // Speed values cycle
+  const speeds = [1, 1.25, 1.5, 1.75, 2];
+  let speedIndex = 0;
 
   // Events and logic
   audio.addEventListener('loadedmetadata', () => {
@@ -157,6 +168,12 @@
 
   forwardBtn.addEventListener('click', () => {
     audio.currentTime = Math.min(audio.duration, audio.currentTime + 30);
+  });
+
+  speedBtn.addEventListener('click', () => {
+    speedIndex = (speedIndex + 1) % speeds.length;
+    audio.playbackRate = speeds[speedIndex];
+    speedBtn.textContent = speeds[speedIndex] + 'x';
   });
 
   audio.addEventListener('timeupdate', () => {
