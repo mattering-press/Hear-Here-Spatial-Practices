@@ -32,7 +32,7 @@ Instagram: [@bharti.parmar.studio](https://www.instagram.com/bharti.parmar.studi
 - Location: Coventry Cathedral
 - Recorded and edited by: Duncan Whitley
 
-<audio controls>
+<audio id="podcast-player">
   <source src="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2302_Bharti%20Parmar_-16LUFs_FINALCUT.mp3" type="audio/mpeg">
     <!-- fallback -->
     Your browser doesn't support HTML5 audio. Here is a <a href="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2302_Bharti%20Parmar_-16LUFs_FINALCUT.mp3">link to download the audio</a> instead.
