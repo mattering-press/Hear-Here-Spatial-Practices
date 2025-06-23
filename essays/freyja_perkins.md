@@ -1,4 +1,5 @@
 .ve-style ./custom.css
+.ve-script ./podcast-player.js
 
 .ve-header 'Hear Here Podcast: Freyja Perkins and Matthew Horspool' background=#891612
     - [Table of Contents](/)
@@ -17,7 +18,7 @@
 - Recorded and edited by: Duncan Whitley
 
 <audio id="podcast-player">
-  <source src="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2303_Freyja%20Perkins_Matthew%20Horspool_-16LUFs_FINALCUT_V2.mp3" type="audio/mpeg">
+  <source src="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2303_Freyja%20Perkins_Matthew%20Horspool_-16LUFs_FINALCUT_V2.mp3" type="audio/mp3">
     <!-- fallback -->
     Your browser doesn't support HTML5 audio. Here is a <a href="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2303_Freyja%20Perkins_Matthew%20Horspool_-16LUFs_FINALCUT_V2.mp3">link to download the audio</a> instead.
 </audio>
