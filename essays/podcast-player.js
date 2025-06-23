@@ -8,9 +8,9 @@
     document.head.appendChild(faLink);
   }
 
-  const audio = document.getElementById('audio');
+  const audio = document.getElementById('podcast-player');
   if (!audio) {
-    console.error('Audio element with id="audio" not found!');
+    console.error('Audio element with id="podcast-player" not found!');
     return;
   }
 
