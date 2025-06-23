@@ -1,6 +1,6 @@
 .ve-style ./custom.css
 
-<script type="module" src="./essays/podcast-player.js"></script>
+.ve-script ./podcast-player.js
 
 .ve-header 'Hear Here Podcast: Monica Brown' background=#891612
     - [Table of Contents](/)
@@ -30,14 +30,24 @@ Monica Brown Consultancy: [https://monicabrown.co.uk/](https://monicabrown.co.uk
 - Location: Coventry Cathedral
 - Recorded and edited by: Duncan Whitley
 
+<div class="audio-player">
+  <audio id="audio" src="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2301_Monica%20Brown_-16LUFs_FINALCUT_01.mp3"></audio>
 
-<podcast-player>
-  <audio id="audioPlayer" controls>
-    <source src="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2301_Monica%20Brown_-16LUFs_FINALCUT_01.mp3" type="audio/mp3">
-      <!-- fallback -->
-      Your browser doesn't support HTML5 audio. Here is a <a href="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2301_Monica%20Brown_-16LUFs_FINALCUT_01.mp3">link to download the audio</a> instead.
-  </audio>
-</podcast-player>
+  <div class="controls">
+    <button id="back" aria-label="Skip Backwards">⏮️</button>
+    <button id="play" aria-label="Play/Pause">▶️</button>
+    <button id="forward" aria-label="Skip Forwards">⏭️</button>
+  </div>
+
+  <div class="progress-container" id="progress-container" aria-label="Audio progress bar" role="slider" tabindex="0">
+    <div class="progress" id="progress"></div>
+  </div>
+
+  <div class="time">
+    <span id="current-time">0:00</span>
+    <span id="duration">0:00</span>
+  </div>
+</div>
 
 <div class="scroll-container">
   <div class="columns">
