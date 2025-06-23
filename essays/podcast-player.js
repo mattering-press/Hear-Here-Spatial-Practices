@@ -1,49 +1,127 @@
 (() => {
+  // Inject Font Awesome CSS
+  if (!document.getElementById('fa-css')) {
+    const faLink = document.createElement('link');
+    faLink.id = 'fa-css';
+    faLink.rel = 'stylesheet';
+    faLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
+    document.head.appendChild(faLink);
+  }
+
   const audio = document.getElementById('audio');
   if (!audio) {
     console.error('Audio element with id="audio" not found!');
     return;
   }
 
-  // Create container div
+  // Add styles
+  const style = document.createElement('style');
+  style.textContent = `
+    .audio-player {
+      background: #1e1e1e;
+      border-radius: 12px;
+      padding: 20px 30px;
+      width: 80%;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.7);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      color: white;
+      margin: 20px auto;
+    }
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+    }
+    button {
+      background: #2a2a2a;
+      border: none;
+      color: white;
+      font-size: 28px;
+      padding: 10px 16px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    button:hover {
+      background: #3d3d3d;
+    }
+    button:focus {
+      outline: none;
+      box-shadow: 0 0 8px #3c91e6;
+    }
+    .speed-btn {
+      font-size: 18px;
+      width: auto;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+    .progress-container {
+      width: 100%;
+      height: 8px;
+      background: #333;
+      border-radius: 4px;
+      cursor: pointer;
+      position: relative;
+    }
+    .progress {
+      height: 100%;
+      background: #3c91e6;
+      width: 0%;
+      border-radius: 4px;
+      transition: width 0.1s linear;
+    }
+    .time {
+      font-size: 12px;
+      color: #bbb;
+      display: flex;
+      justify-content: space-between;
+      font-variant-numeric: tabular-nums;
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Build player container
   const container = document.createElement('div');
   container.className = 'audio-player';
-
-  // Insert container before the audio element
   audio.parentNode.insertBefore(container, audio);
-  // Move audio inside container
   container.appendChild(audio);
 
-  // Create controls div
+  // Controls container
   const controls = document.createElement('div');
   controls.className = 'controls';
 
-  // Buttons
-  const backBtn = document.createElement('button');
-  backBtn.id = 'back';
-  backBtn.setAttribute('aria-label', 'Skip Backwards');
-  backBtn.textContent = '⏮️';
+  function createFAButton(id, ariaLabel, faClass, titleText = '') {
+    const btn = document.createElement('button');
+    btn.id = id;
+    btn.setAttribute('aria-label', ariaLabel);
+    if (titleText) btn.title = titleText;
+    const icon = document.createElement('i');
+    icon.className = faClass;
+    btn.appendChild(icon);
+    return btn;
+  }
 
-  const playBtn = document.createElement('button');
-  playBtn.id = 'play';
-  playBtn.setAttribute('aria-label', 'Play/Pause');
-  playBtn.textContent = '▶️';
+  const backBtn = createFAButton('back', 'Skip Backwards', 'fas fa-backward', 'Skip Backwards');
+  const playBtn = createFAButton('play', 'Play', 'fas fa-play', 'Play/Pause');
+  const forwardBtn = createFAButton('forward', 'Skip Forwards', 'fas fa-forward', 'Skip Forwards');
 
-  const forwardBtn = document.createElement('button');
-  forwardBtn.id = 'forward';
-  forwardBtn.setAttribute('aria-label', 'Skip Forwards');
-  forwardBtn.textContent = '⏭️';
-
-  // New speed button
   const speedBtn = document.createElement('button');
   speedBtn.id = 'speed';
+  speedBtn.className = 'speed-btn';
   speedBtn.setAttribute('aria-label', 'Playback Speed');
   speedBtn.textContent = '1x';
 
   controls.append(backBtn, playBtn, forwardBtn, speedBtn);
   container.appendChild(controls);
 
-  // Progress container
+  // Progress bar
   const progressContainer = document.createElement('div');
   progressContainer.id = 'progress-container';
   progressContainer.className = 'progress-container';
@@ -73,81 +151,28 @@
   time.append(currentTimeEl, durationEl);
   container.appendChild(time);
 
-  // Add styles dynamically
-  const style = document.createElement('style');
-  style.textContent = `
-  .audio-player {
-    background: #1e1e1e;
-    border-radius: 12px;
-    padding: 20px 30px;
-    width: 80%;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.7);
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    color: white;
-    margin: 20px auto;
-  }
-  .controls {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-  }
-  button {
-    background: #2a2a2a;
-    border: none;
-    color: white;
-    font-size: 24px;
-    padding: 10px 16px;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    user-select: none;
-  }
-  button:hover {
-    background: #3d3d3d;
-  }
-  button:focus {
-    outline: none;
-    box-shadow: 0 0 8px #3c91e6;
-  }
-  .progress-container {
-    width: 100%;
-    height: 8px;
-    background: #333;
-    border-radius: 4px;
-    cursor: pointer;
-    position: relative;
-  }
-  .progress {
-    height: 100%;
-    background: #3c91e6;
-    width: 0%;
-    border-radius: 4px;
-    transition: width 0.1s linear;
-  }
-  .time {
-    font-size: 12px;
-    color: #bbb;
-    display: flex;
-    justify-content: space-between;
-    font-variant-numeric: tabular-nums;
-  }
-  `;
-  document.head.appendChild(style);
-
-  // Format time mm:ss
   function formatTime(time) {
     const minutes = Math.floor(time / 60) || 0;
     const seconds = Math.floor(time % 60) || 0;
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   }
 
-  // Speed values cycle
   const speeds = [1, 1.25, 1.5, 1.75, 2];
   let speedIndex = 0;
 
-  // Events and logic
+  function setPlayIcon(isPlaying) {
+    const icon = playBtn.querySelector('i');
+    if (isPlaying) {
+      icon.className = 'fas fa-pause';
+      playBtn.setAttribute('aria-label', 'Pause');
+      playBtn.title = 'Pause';
+    } else {
+      icon.className = 'fas fa-play';
+      playBtn.setAttribute('aria-label', 'Play');
+      playBtn.title = 'Play';
+    }
+  }
+
   audio.addEventListener('loadedmetadata', () => {
     durationEl.textContent = formatTime(audio.duration);
   });
@@ -155,10 +180,10 @@
   playBtn.addEventListener('click', () => {
     if (audio.paused) {
       audio.play();
-      playBtn.textContent = '⏸️';
+      setPlayIcon(true);
     } else {
       audio.pause();
-      playBtn.textContent = '▶️';
+      setPlayIcon(false);
     }
   });
 
@@ -196,4 +221,6 @@
       audio.currentTime = Math.max(0, audio.currentTime - 5);
     }
   });
+
+  setPlayIcon(false);
 })();
