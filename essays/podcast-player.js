@@ -70,10 +70,6 @@
   // Add styles dynamically
   const style = document.createElement('style');
   style.textContent = `
-  body {
-    background: #121212;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
   .audio-player {
     background: #1e1e1e;
     border-radius: 12px;
@@ -156,11 +152,11 @@
   });
 
   backBtn.addEventListener('click', () => {
-    audio.currentTime = Math.max(0, audio.currentTime - 10);
+    audio.currentTime = Math.max(0, audio.currentTime - 30);
   });
 
   forwardBtn.addEventListener('click', () => {
-    audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
+    audio.currentTime = Math.min(audio.duration, audio.currentTime + 30);
   });
 
   audio.addEventListener('timeupdate', () => {
