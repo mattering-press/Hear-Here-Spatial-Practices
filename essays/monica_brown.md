@@ -1,6 +1,6 @@
 .ve-style ./custom.css
 
-<script type="module" src="podcast-player.js"></script>
+<script type="module" src="./essays/podcast-player.js"></script>
 
 .ve-header 'Hear Here Podcast: Monica Brown' background=#891612
     - [Table of Contents](/)
