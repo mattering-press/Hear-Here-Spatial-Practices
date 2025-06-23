@@ -1,3 +1,13 @@
+/*
+# @name: podcast-player.js
+# @creation_date: 2025-06-23
+# @license: The MIT License <https://opensource.org/licenses/MIT>
+# @author: Simon Bowie <simon.bowie.19@gmail.com>
+# @purpose: JavaScript for a modern audio player without additional user functions to the default HTML5 audio player
+# @acknowledgements:
+# https://css-tricks.com/lets-create-a-custom-audio-player/
+*/
+
 (() => {
   // Inject Font Awesome CSS
   if (!document.getElementById('fa-css')) {
