@@ -165,29 +165,37 @@ class PodcastPlayer extends LitElement {
     `;
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-  
-    // Try to find the <audio> from the light DOM (slotted content)
+  constructor() {
+    super();
+
+    // HTMLAudioElement
     this.audio = this.querySelector("audio");
-  
-    if (!this.audio) {
-      console.warn("No <audio> element found inside <podcast-player>.");
-      return;
-    }
-  
-    this.audio.controls = false;
-  
+    this.audio.controls = false; // remove controls if it has 'em
+
+    this.speeds = [1, 1.25, 1.5, 1.75, 2];
+    this.currentSpeedIdx = 0;
+    this.currentTime = 0;
+    this.duration = 0;
+
     this.audio.addEventListener("timeupdate", this.handleTimeUpdate.bind(this));
-    this.audio.addEventListener("loadedmetadata", this.handleLoadedMetadata.bind(this));
+    this.audio.addEventListener(
+      "loadedmetadata",
+      this.handleLoadedMetadata.bind(this)
+    );
+
     this.audio.addEventListener("play", () => {
       this.classList.add("is-playing");
     });
+
     this.audio.addEventListener("pause", () => {
       this.classList.remove("is-playing");
     });
-  
-    window.addEventListener("DOMContentLoaded", this.timeJump.bind(this), false);
+
+    window.addEventListener(
+      "DOMContentLoaded",
+      this.timeJump.bind(this),
+      false
+    );
     window.addEventListener("hashchange", this.timeJump.bind(this), false);
   }
 
