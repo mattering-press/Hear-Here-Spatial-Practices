@@ -1,7 +1,7 @@
 .ve-style ./custom.css
 
 .ve-header 'Experimental index' background=#891612
-    - [Table of Contents](/)
+    - [Welcome Desk](/)
 
 .ve-footer
     - Published by [![Mattering Press](https://www.matteringpress.org/wp-content/themes/matteringpress/img/mattering-press.png)](https://www.matteringpress.org/)

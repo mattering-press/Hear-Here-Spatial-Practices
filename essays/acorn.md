@@ -1,7 +1,7 @@
 .ve-style ./custom.css
 
 .ve-header 'Acorn' background=#891612
-    - [Table of Contents](/)
+    - [Welcome Desk](/)
     - [Events](/essays/events.md)
 
 .ve-footer

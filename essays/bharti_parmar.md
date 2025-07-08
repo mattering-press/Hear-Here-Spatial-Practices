@@ -2,7 +2,8 @@
 .ve-script ./podcast-player.js
 
 .ve-header 'Hear Here Podcast: Bharti Parmar' background=#891612
-    - [Table of Contents](/)
+    - [Welcome Desk](/)
+    - [Podcasts](/essays/podcasts.md)
 
 .ve-footer
     - Published by [![Mattering Press](https://www.matteringpress.org/wp-content/themes/matteringpress/img/mattering-press.png)](https://www.matteringpress.org/)
