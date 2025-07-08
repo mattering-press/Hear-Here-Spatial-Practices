@@ -2,6 +2,7 @@
 
 .ve-header 'Acorn' background=#891612
     - [Table of Contents](/)
+    - [Events](/essays/events.md)
 
 .ve-footer
     - Published by [![Mattering Press](https://www.matteringpress.org/wp-content/themes/matteringpress/img/mattering-press.png)](https://www.matteringpress.org/)
