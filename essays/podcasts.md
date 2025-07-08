@@ -9,14 +9,34 @@
 
 # {.cards}
 
-## Monica Brown {href=./monica_brown.md}
+## #01: Monica Brown {href=./monica_brown.md}
 
 ![](/media/monica_brown_12.jpg)
 
-## Bharti Parmar {href=./bharti_parmar.md}
+## #02: Bharti Parmar {href=./bharti_parmar.md}
 
 ![](/media/bharti_parmar_2.jpeg)
 
-## Freyja Perkins and Matthew Horspool {href=./freyja_perkins.md}
+## #03: Freyja Perkins and Matthew Horspool {href=./freyja_perkins.md}
+
+![](/media/freyja_perkins_2.jpeg)
+
+## #04: Nitano Muller {href=./freyja_perkins.md}
+
+![](/media/freyja_perkins_2.jpeg)
+
+## #05: Aya Nassar {href=./freyja_perkins.md}
+
+![](/media/freyja_perkins_2.jpeg)
+
+## #06: Catherina Hahn {href=./freyja_perkins.md}
+
+![](/media/freyja_perkins_2.jpeg)
+
+## #07: Heba Sabboubeh, Mahsa Alami & Ahmadreza Hakiminejad {href=./freyja_perkins.md}
+
+![](/media/freyja_perkins_2.jpeg)
+
+## #08: Holly Cooper {href=./freyja_perkins.md}
 
 ![](/media/freyja_perkins_2.jpeg)

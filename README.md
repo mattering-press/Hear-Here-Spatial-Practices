@@ -16,7 +16,7 @@ This book is currently under development using the [Juncture](https://www.junctu
 
 ![](https://iiif.juncture-digital.org/thumbnail/wc:Coventry_Cathedral_2018.jpg)
 
-## Spotting Colours {href=./essays/spotting_colours.md}
+## Contributors {href=./essays/contributors.md}
 
 ![](https://iiif.juncture-digital.org/thumbnail/wc:Coventry_Cathedral_Interior,_West_Midlands,_UK_-_Diliff.jpg)
 
@@ -24,14 +24,14 @@ This book is currently under development using the [Juncture](https://www.junctu
 
 ![](/media/monica_brown_5.jpg)
 
-## Events {href=./essays/events.md}
-
-![](https://iiif.juncture-digital.org/thumbnail/wc:Coventry_Cathedral,_February_2023_17.jpg)
-
 ## Conversations {href=./essays/conversations.md}
 
 ![](https://iiif.juncture-digital.org/thumbnail/wc:Cathedral_of_St_Michael_(Coventry_Cathedral),_Priory_Street,_Coventry_(NHLE_Code_1342941)_(April_2025)_(Interior)_(3).jpg)
 
-## Index {href=./essays/index.md}
+## Events {href=./essays/events.md}
+
+![](https://iiif.juncture-digital.org/thumbnail/wc:Coventry_Cathedral,_February_2023_17.jpg)
+
+## Experimental index {href=./essays/index.md}
 
 ![](https://iiif.juncture-digital.org/thumbnail/wc:Cathedral_of_St_Michael_(Coventry_Cathedral),_Priory_Street,_Coventry_(NHLE_Code_1342941)_(April_2025)_(4).jpg)
