@@ -235,7 +235,8 @@
   setPlayIcon(false);
 })();
 
-function seekAudio(seconds) {
+function seekAudio(event, seconds) {
+  event.preventDefault(); // Prevent link from navigating
   const audio = document.getElementById('podcast-player');
    audio.currentTime = seconds;
   audio.play(); // Remove this line if you only want to seek, not play
