@@ -236,7 +236,7 @@
 })();
 
 function seekAudio(seconds) {
-  const audio = document.getElementById('myAudio');
+  const audio = document.getElementById('podcast-player');
    audio.currentTime = seconds;
   audio.play(); // Remove this line if you only want to seek, not play
 }
