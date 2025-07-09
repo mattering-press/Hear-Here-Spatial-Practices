@@ -9,11 +9,12 @@
     - Published by [![Mattering Press](https://www.matteringpress.org/wp-content/themes/matteringpress/img/mattering-press.png)](https://www.matteringpress.org/)
     - [![CC BY](https://licensebuttons.net/l/by/4.0/88x31.png)](https://creativecommons.org/licenses/by/4.0/)
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/bharti_parmar_6.jpeg left
+## Basic info
 
-Bharti Parmar arrived in Coventry in 1986 as a Fine Art student at Lanchester Polytechnic, eventually graduating inside Coventry Cathedral. Thirty-five years later, she walks in different parts of the cathedral for the *Hear Here* podcast. She dwells on both her artistic practice and the architectural and artistic features of the cathedral, before closing the conversation in the needleworkers group, which sits on the lower ground floor under the nave.
-
-Her conversation shifts between textile production, political change and the Sutherland tapestry; botany, colonialism and the Live and Dye Garden; the plumbline, cities, pennies in the floor as liminal points and the canopy as a threshold; as well as the needlework room with kneelers, women’s groups, stitches; bell ringing and the mathematical system; and embodied research as a fellowship. 
+- With: Nirmal Puwar, Bharti Parmar
+- Date of recording: 25 March 2025
+- Location: Coventry Cathedral
+- Recorded and edited by: Duncan Whitley
 
 ## Biography
 
@@ -27,12 +28,15 @@ Links: [https://www.birmingham.ac.uk/staff/profiles/historyofart/parmar-bharti](
 
 Instagram: [@bharti.parmar.studio](https://www.instagram.com/bharti.parmar.studio/?hl=en)
 
-## Podcast
+## Introduction
 
-- With: Nirmal Puwar, Bharti Parmar
-- Date of recording: 25 March 2025
-- Location: Coventry Cathedral
-- Recorded and edited by: Duncan Whitley
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/bharti_parmar_6.jpeg left
+
+Bharti Parmar arrived in Coventry in 1986 as a Fine Art student at Lanchester Polytechnic, eventually graduating inside Coventry Cathedral. Thirty-five years later, she walks in different parts of the cathedral for the *Hear Here* podcast. She dwells on both her artistic practice and the architectural and artistic features of the cathedral, before closing the conversation in the needleworkers group, which sits on the lower ground floor under the nave.
+
+Her conversation shifts between textile production, political change and the Sutherland tapestry; botany, colonialism and the Live and Dye Garden; the plumbline, cities, pennies in the floor as liminal points and the canopy as a threshold; as well as the needlework room with kneelers, women’s groups, stitches; bell ringing and the mathematical system; and embodied research as a fellowship. 
+
+## Podcast
 
 <audio id="podcast-player">
   <source src="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2302_Bharti%20Parmar_-16LUFs_FINALCUT.mp3" type="audio/mp3">

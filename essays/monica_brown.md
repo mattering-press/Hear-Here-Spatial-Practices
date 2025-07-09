@@ -9,9 +9,12 @@
     - Published by [![Mattering Press](https://www.matteringpress.org/wp-content/themes/matteringpress/img/mattering-press.png)](https://www.matteringpress.org/)
     - [![CC BY](https://licensebuttons.net/l/by/4.0/88x31.png)](https://creativecommons.org/licenses/by/4.0/)
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/monica_brown_11.jpg left
+## Basic info
 
-The writer Monica Brown, whose father worked on building Coventry Cathedral, states in her visit to the cathedral for the *Hear Here* podcast: “I am here because dad was here”. Monica brings a journey of journeys to our dialogue, vividly relaying the strength and struggles of her family and the Windrush Generation, whilst moving back and forth between Jamaica and Leamington. Whilst opening the half empty pages of an embossed book in the cathedral archives, with the names of some of the builders who worked on the cathedral, the task of filling in the gaps of the empty weighted pages, gilded with gold leaf, appears as an open-ended process, bearing the weight of the past in the present. She closes with a call for an installation to recognise black and brown people, whose presence is absent and nowhere to be seen.
+- With: Nirmal Puwar, Monica Brown
+- Date of recording: 22 March 2025
+- Location: Coventry Cathedral
+- Recorded and edited by: Duncan Whitley
 
 ## Biography
 
@@ -23,18 +26,21 @@ Public Family Talk: [https://youtu.be/OWS5oxWLOik](https://youtu.be/OWS5oxWLOik)
 
 Monica Brown Consultancy: [https://monicabrown.co.uk/](https://monicabrown.co.uk/)
 
-## Podcast
+## Introduction
 
-- With: Nirmal Puwar, Monica Brown
-- Date of recording: 22 March 2025
-- Location: Coventry Cathedral
-- Recorded and edited by: Duncan Whitley
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/monica_brown_11.jpg left
+
+The writer Monica Brown, whose father worked on building Coventry Cathedral, states in her visit to the cathedral for the *Hear Here* podcast: “I am here because dad was here”. Monica brings a journey of journeys to our dialogue, vividly relaying the strength and struggles of her family and the Windrush Generation, whilst moving back and forth between Jamaica and Leamington. Whilst opening the half empty pages of an embossed book in the cathedral archives, with the names of some of the builders who worked on the cathedral, the task of filling in the gaps of the empty weighted pages, gilded with gold leaf, appears as an open-ended process, bearing the weight of the past in the present. She closes with a call for an installation to recognise black and brown people, whose presence is absent and nowhere to be seen.
+
+## Podcast
 
 <audio id="podcast-player">
   <source src="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2301_Monica%20Brown_-16LUFs_FINALCUT_01.mp3" type="audio/mp3">
     <!-- fallback -->
     Your browser doesn't support HTML5 audio. Here is a <a href="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2301_Monica%20Brown_-16LUFs_FINALCUT_01.mp3">link to download the audio</a> instead.
 </audio>
+
+## Transcription
 
 <div class="scroll-container">
   <div class="columns">
