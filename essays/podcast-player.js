@@ -234,3 +234,9 @@
 
   setPlayIcon(false);
 })();
+
+function seekAudio(seconds) {
+  const audio = document.getElementById('myAudio');
+   audio.currentTime = seconds;
+  audio.play(); // Remove this line if you only want to seek, not play
+}
