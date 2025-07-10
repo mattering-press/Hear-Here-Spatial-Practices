@@ -13,4 +13,4 @@
 
 ![](/media/monica_brown_12.jpg)
 
-<iframe src="https://archive.org/embed/pdfsandebooks" width="560" height="384" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
+<iframe src="https://archive.org/embed/pdfsandebooks/mode/2up" width="560" height="384" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
