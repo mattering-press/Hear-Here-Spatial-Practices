@@ -135,7 +135,7 @@ ve-footer li img {
   display: inline-block;
 }
 
-ve-header {
+ve-navbar {
   display: block;
   background: linear-gradient(to right, #891612, #aa1c1c);
   color: #fff;
@@ -146,7 +146,7 @@ ve-header {
   border-bottom: 4px solid #6e1010;
 }
 
-ve-header::after {
+ve-navbar::after {
   content: "";
   position: absolute;
   top: 0;
@@ -159,20 +159,20 @@ ve-header::after {
   z-index: 0;
 }
 
-ve-header > * {
+ve-navbar > * {
   position: relative;
   z-index: 1;
 }
 
-ve-header h1,
-ve-header .label {
+ve-navbar h1,
+ve-navbar .label {
   font-family: var(--font-primary);
   font-weight: 700;
   font-size: 2.5rem;
   margin: 0;
 }
 
-ve-header .subtitle {
+ve-navbar .subtitle {
   font-family: var(--font-primary);
   font-weight: 400;
   font-size: 1.25rem;
@@ -182,14 +182,14 @@ ve-header .subtitle {
 
 /* Responsive styles */
 @media (max-width: 768px) {
-  ve-header {
+  ve-navbar {
     padding: 2rem 1rem;
   }
-  ve-header h1,
-  ve-header .label {
+  ve-navbar h1,
+  ve-navbar .label {
     font-size: 1.75rem;
   }
-  ve-header .subtitle {
+  ve-navbar .subtitle {
     font-size: 1rem;
   }
 }
