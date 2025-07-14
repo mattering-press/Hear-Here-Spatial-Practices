@@ -1,6 +1,6 @@
 .ve-style ./custom.css
 
-.ve-header 'Podcasts' background=#891612
+.ve-header 'Podcasts'
     - [Welcome Desk](/)
     
 .ve-footer

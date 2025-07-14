@@ -1,7 +1,7 @@
 .ve-style ./custom.css
 .ve-script ./podcast-player.js
 
-.ve-header 'Rocking It: Insider/Outsider Archives' background=#891612
+.ve-header 'Rocking It: Insider/Outsider Archives'
     - [Welcome Desk](/)
     - [Events](/essays/events.md)
     

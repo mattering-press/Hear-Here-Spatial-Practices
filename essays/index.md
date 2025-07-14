@@ -1,6 +1,6 @@
 .ve-style ./custom.css
 
-.ve-header 'Experimental index' background=#891612
+.ve-header 'Experimental index'
     - [Welcome Desk](/)
 
 .ve-footer

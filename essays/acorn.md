@@ -1,6 +1,6 @@
 .ve-style ./custom.css
 
-.ve-header 'Acorn' background=#891612
+.ve-header 'Acorn'
     - [Welcome Desk](/)
     - [Events](/essays/events.md)
 

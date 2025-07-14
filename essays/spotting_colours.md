@@ -1,6 +1,6 @@
 .ve-style ./custom.css
 
-.ve-header 'Spotting Colours' background=#891612
+.ve-header 'Spotting Colours'
     - [Welcome Desk](/)
     - [Experimental index](/essays/index.md)
 

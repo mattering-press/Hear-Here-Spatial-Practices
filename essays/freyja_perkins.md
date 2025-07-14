@@ -1,7 +1,7 @@
 .ve-style ./custom.css
 .ve-script ./podcast-player.js
 
-.ve-header 'Hear Here Podcast: Freyja Perkins and Matthew Horspool' background=#891612
+.ve-header 'Hear Here Podcast: Freyja Perkins and Matthew Horspool'
     - [Welcome Desk](/)
     - [Podcasts](/essays/podcasts.md)
 

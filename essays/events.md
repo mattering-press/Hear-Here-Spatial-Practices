@@ -1,6 +1,6 @@
 .ve-style ./custom.css
 
-.ve-header 'Events' background=#891612
+.ve-header 'Events'
     - [Welcome Desk](/)
 
 .ve-footer
