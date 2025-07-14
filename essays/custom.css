@@ -7,73 +7,143 @@
 # @acknowledgements:
 */
 
-@font-face {
-    font-family: 'Poppins';
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-    src: url(https://fonts.gstatic.com/s/poppins/v23/pxiEyp8kv8JHgFVrJJfecnFHGPc.woff2) format('woff2');
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-@font-face {
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/poppins/v23/pxiByp8kv8JHgFVrLCz7Z1xlFd2JQEk.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+:root {
+  --font-primary: 'Poppins', sans-serif;
+  --color-bg: #f9f9f9;
+  --color-card: #ffffff;
+  --color-text: #222;
+  --color-accent: #891612;
+  --radius: 12px;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --transition: all 0.3s ease;
 }
 
 body {
-    font-family: 'Poppins';
+  font-family: var(--font-primary);
+  margin: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
 }
 
-body {
-    margin: 0 0; 
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 #juncture {
-    max-width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
 }
 
 #juncture .card {
-    background: #fff;
-    border-radius: 0px;
-    display: flex;
-    flex-direction: column;
-    text-align: left;
+  background: var(--color-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-#juncture .card-title {
-    font-size: 1.3rem;
-    padding: 1.3rem 0.6rem 1.3rem;
+#juncture .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
-audio { 
-    width: 100%; 
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  padding: 1rem 1.2rem 0.5rem;
+  color: var(--color-text);
+}
+
+.card-image {
+  width: 100%;
+  height: 200px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  border-top: 1px solid #eee;
+}
+
+.section1 h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 2rem 0 1rem;
+  border-left: 6px solid var(--color-accent);
+  padding-left: 1rem;
+}
+
+audio {
+  width: 100%;
+  margin: 1rem 0;
 }
 
 .scroll-container {
-    height: 400px;
-    width: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
-    white-space: nowrap;
-    background: #f5f5f5;
-    padding: 1rem;
-  }
+  height: auto;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 1rem 0;
+  background: #f1f1f1;
+  border-radius: var(--radius);
+}
 
-  .columns {
-    column-width: 300px;
-    column-gap: 2rem;
-    height: 100%;
-    white-space: normal;
-    display: inline-block;
-  }
+.columns {
+  column-width: 320px;
+  column-gap: 2rem;
+  display: inline-block;
+  white-space: normal;
+}
 
-  .columns b::before {
-    content: "";
-    display: block;
-    margin-top: 1em; /* adjust for desired spacing */
+.columns b::before {
+  content: "";
+  display: block;
+  margin-top: 1em;
+}
+
+/* Footer styling for visual clarity */
+ve-footer {
+  display: flex;
+  justify-content: center;
+  background: #f0f0f0;
+  padding: 1.5rem;
+  margin-top: 3rem;
+  border-top: 1px solid #ddd;
+}
+
+ve-footer ul {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  gap: 2rem;
+  align-items: center;
+}
+
+ve-footer li img {
+  height: 32px;
+  display: inline-block;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .card-title {
+    font-size: 1.1rem;
   }
+  .section1 h1 {
+    font-size: 1.6rem;
+  }
+  .card-image {
+    height: 160px;
+  }
+}
