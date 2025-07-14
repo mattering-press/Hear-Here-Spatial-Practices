@@ -1,7 +1,7 @@
 .ve-style ./custom.css
 .ve-script ./podcast-player.js
 
-.ve-header 'Hear Here Podcast: Bharti Parmar'
+.ve-header 'Hear Here Podcast: Bharti Parmar' background=none
     - [Welcome Desk](/)
     - [Podcasts](/essays/podcasts.md)
 

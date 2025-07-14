@@ -1,6 +1,6 @@
 .ve-style ./custom.css
 
-.ve-header 'Conversations'
+.ve-header 'Conversations' background=none
     - [Welcome Desk](/)
 
 .ve-footer

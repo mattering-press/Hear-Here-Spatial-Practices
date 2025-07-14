@@ -1,6 +1,6 @@
 .ve-style ./custom.css
 
-.ve-header 'Contributors'
+.ve-header 'Contributors' background=none
     - [Welcome Desk](/)
 
 .ve-footer

@@ -1,6 +1,6 @@
 .ve-style ./custom.css
 
-.ve-header 'Draft of the introduction chapter'
+.ve-header 'Draft of the introduction chapter' background=none
     - [Welcome Desk](/)
 
 .ve-footer
