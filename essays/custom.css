@@ -135,7 +135,7 @@ ve-footer li img {
   display: inline-block;
 }
 
-ve-navbar {
+ve-header {
   display: block;
   background: linear-gradient(to right, #891612, #aa1c1c);
   color: #fff;
@@ -146,7 +146,7 @@ ve-navbar {
   border-bottom: 4px solid #6e1010;
 }
 
-ve-navbar::after {
+ve-header::after {
   content: "";
   position: absolute;
   top: 0;
@@ -159,20 +159,20 @@ ve-navbar::after {
   z-index: 0;
 }
 
-ve-navbar > * {
+ve-header > * {
   position: relative;
   z-index: 1;
 }
 
-ve-navbar h1,
-ve-navbar .label {
+ve-header h1,
+ve-header .label {
   font-family: var(--font-primary);
   font-weight: 700;
   font-size: 2.5rem;
   margin: 0;
 }
 
-ve-navbar .subtitle {
+ve-header .subtitle {
   font-family: var(--font-primary);
   font-weight: 400;
   font-size: 1.25rem;
@@ -182,15 +182,69 @@ ve-navbar .subtitle {
 
 /* Responsive styles */
 @media (max-width: 768px) {
-  ve-navbar {
+  ve-header {
     padding: 2rem 1rem;
   }
-  ve-navbar h1,
-  ve-navbar .label {
+  ve-header h1,
+  ve-header .label {
     font-size: 1.75rem;
   }
-  ve-navbar .subtitle {
+  ve-header .subtitle {
     font-size: 1rem;
+  }
+}
+
+/* ========== MODERN NAVBAR STYLING ========== */
+
+ve-navbar {
+  display: block;
+  background-color: #891612;
+  font-family: var(--font-primary);
+  font-weight: 500;
+  font-size: 1rem;
+  color: #ffffff;
+  border-bottom: 2px solid #6e1010;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  position: sticky;
+  top: 0;
+}
+
+ve-navbar nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+}
+
+ve-navbar a {
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+ve-navbar a:hover,
+ve-navbar a:focus {
+  background-color: #a41a1a;
+  color: #fff;
+}
+
+ve-navbar a.active {
+  background-color: #fff;
+  color: #891612;
+  font-weight: 600;
+  box-shadow: inset 0 -2px 0 #6e1010;
+}
+
+/* Mobile optimization */
+@media (max-width: 768px) {
+  ve-navbar nav {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
   }
 }
 
