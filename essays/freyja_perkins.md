@@ -13,8 +13,9 @@
 
 ## Basic info
 
-- With: Nirmal Puwar, Freyja Perkins, Matthew Horspool
-- Date of recording: 31 March 2025
+- Recording date: 31 March 2025
+- Interviewees: Freyja Perkins, Matthew Horspool
+- Podcast duration: 36min 30sec
 - Location: Coventry Cathedral
 - Recorded and edited by: Duncan Whitley
 

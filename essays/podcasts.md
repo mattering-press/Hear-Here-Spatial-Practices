@@ -21,22 +21,22 @@
 
 ![](/media/freyja_perkins_2.jpeg)
 
-## #04: Nitano Muller {href=./freyja_perkins.md}
+## #04: Nitano Muller {href=./nitano_muller.md}
 
-![](/media/freyja_perkins_2.jpeg)
+![](/media/NM_(3-4)_001.jpg)
 
-## #05: Aya Nassar {href=./freyja_perkins.md}
+## #05: Aya Nassar {href=./aya_nassar.md}
 
-![](/media/freyja_perkins_2.jpeg)
+![](/media/AN_(4-3)_001.jpg)
 
-## #06: Catherina Hahn {href=./freyja_perkins.md}
+## #06: Catherina Hahn {href=./catherine_hahn.md}
 
-![](/media/freyja_perkins_2.jpeg)
+![](/media/CH_(3-4)_001.jpg)
 
-## #07: Heba Sabboubeh, Mahsa Alami & Ahmadreza Hakiminejad {href=./freyja_perkins.md}
+## #07: Mahsa Alami Fariman, Ahmadreza Hakiminejad, Heba N. Sabboubeh {href=./fariman.md}
 
-![](/media/freyja_perkins_2.jpeg)
+![](/media/MRH_(4-3)_001.jpg)
 
-## #08: Holly Cooper {href=./freyja_perkins.md}
+## #08: Holly Cooper {href=./holly_cooper.md}
 
-![](/media/freyja_perkins_2.jpeg)
+![](/media/HC_(4-3)_001.jpg)

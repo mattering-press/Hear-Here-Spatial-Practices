@@ -11,18 +11,19 @@
 
 ## Basic info
 
-- With: Nirmal Puwar, Bharti Parmar
-- Date of recording: 25 March 2025
+- Recording date: 25 March 2025
+- Interviewee: Bharti Parmar
+- Podcast duration: 25min 59sec
 - Location: Coventry Cathedral
 - Recorded and edited by: Duncan Whitley
 
 ## Biography
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/bharti_parmar_1.jpeg right
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/bharti_parmar_2.jpeg right
 
-Bharti is an artist and academic with a focus on vernacular crafts and systems. She is an Honorary Research Fellow in the Department of Art History, Curating and Visual Studies at the University of Birmingham.  Her current studio-based research project Paper/Cotton/Plant, is about the intersections between materiality, geography and botany with a special focus on The Herball, or Generall historie of plantes 1597 by botanist John Gerard (1545-1612).
+Bharti is an artist and academic with a focus on vernacular crafts and systems. She is an Honorary Research Fellow in the Department of Art History, Curating and Visual Studies at the University of Birmingham.  Her current studio-based research project Paper/Cotton/Plant, is about the intersections between materiality, geography and botany with a special focus on *The Herball, or Generall historie of plantes* 1597 by botanist John Gerard (1545-1612).
 
-She studied Fine Art Printmaking at the Royal College of Art (1992), her doctorate titled A Grammar of Sentiment, Thinking about sentimental jewellery towards making new art about love and loss, was on the poetics of Victorian material culture, particularly jewellery, mourning cloth, trade and affect. Her artwork is represented in numerous institutional collections such as the Pitt Rivers Museum, The Crafts Council Collection, The Whitworth Gallery Manchester and the Government Art Collection. She has undertaken several artists residency programmes including AIR at Light Work Media Center Syracuse and at the Irish Museum of Modern Art. 
+She studied Fine Art Printmaking at the Royal College of Art (1992), her doctorate titled *A Grammar of Sentiment, Thinking about sentimental jewellery towards making new art about love and loss*, was on the poetics of Victorian material culture, particularly jewellery, mourning cloth, trade and affect. Her artwork is represented in numerous institutional collections such as the Pitt Rivers Museum, The Crafts Council Collection, The Whitworth Gallery Manchester and the Government Art Collection. She has undertaken several artists residency programmes including AIR at Light Work Media Center Syracuse and at the Irish Museum of Modern Art. 
 
 Links: [https://www.birmingham.ac.uk/staff/profiles/historyofart/parmar-bharti]([https://www.birmingham.ac.uk/staff/profiles/historyofart/parmar-bharti)
 

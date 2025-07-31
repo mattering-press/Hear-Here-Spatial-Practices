@@ -11,8 +11,9 @@
 
 ## Basic info
 
-- With: Nirmal Puwar, Monica Brown
-- Date of recording: 22 March 2025
+- Recording date: 22 March 2025
+- Interviewee: Monica Brown
+- Podcast duration: 37min 57sec
 - Location: Coventry Cathedral
 - Recorded and edited by: Duncan Whitley
 
