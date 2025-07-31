@@ -11,7 +11,7 @@
 
 A talk by Professor Stuart Burley that took place as part of Outsider(s) Zine Festival on Saturday 2 March 2024.
 
-.ve-media right https://vimeo.com/1096511388
+<center><iframe src="https://archive.org/embed/HearHereRockingIt" width="560" height="384" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe></center>
 
 A geologic, sociological and poetic collaboration of solidarity with the 100 million years old boulder from Bethlehem sitting in the modernist Coventry Cathedral.
 
