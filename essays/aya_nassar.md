@@ -9,9 +9,9 @@
     - Published by [![Mattering Press](https://www.matteringpress.org/wp-content/themes/matteringpress/img/mattering-press.png)](https://www.matteringpress.org/)
     - [![CC BY](https://licensebuttons.net/l/by/4.0/88x31.png)](https://creativecommons.org/licenses/by/4.0/)
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/AN_(4-3)_001.jpg width=60%
-
 ## Basic info
+
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/AN_(4-3)_001.jpg right
 
 - Recording date: 5 April 2025
 - Interviewees: Aya Nassar
