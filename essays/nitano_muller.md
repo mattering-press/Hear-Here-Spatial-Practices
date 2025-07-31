@@ -9,9 +9,9 @@
     - Published by [![Mattering Press](https://www.matteringpress.org/wp-content/themes/matteringpress/img/mattering-press.png)](https://www.matteringpress.org/)
     - [![CC BY](https://licensebuttons.net/l/by/4.0/88x31.png)](https://creativecommons.org/licenses/by/4.0/)
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/NM_(3-4)_001.jpg
-
 ## Basic info
+
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/NM_(3-4)_001.jpg right
 
 - Recording date: 31 March 2025
 - Interviewees: Nitano Muller
@@ -22,7 +22,7 @@
 ## Podcast
 
 <audio id="podcast-player">
-  <source src="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD#04_Nitano Muller_-16LUFs_FINALCUT.mp3" type="audio/mp3">
+  <source src="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2304_Nitano%20Muller_-16LUFs_FINALCUT.mp3" type="audio/mp3">
     <!-- fallback -->
-    Your browser doesn't support HTML5 audio. Here is a <a href="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD#04_Nitano Muller_-16LUFs_FINALCUT.mp3">link to download the audio</a> instead.
+    Your browser doesn't support HTML5 audio. Here is a <a href="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2304_Nitano%20Muller_-16LUFs_FINALCUT.mp3">link to download the audio</a> instead.
 </audio>
