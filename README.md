@@ -6,7 +6,7 @@
     - Published by [![Mattering Press](https://www.matteringpress.org/wp-content/themes/matteringpress/img/mattering-press.png)](https://www.matteringpress.org/)
     - [![CC BY](https://licensebuttons.net/l/by/4.0/88x31.png)](https://creativecommons.org/licenses/by/4.0/)
 
-*Hear Here: Spatial Practices* is a book by Nirmal Puwar and published by Mattering Press that undertakes a postcolonial mapping of the brutalist Coventry Cathedral as an internationally recognised post-war modernist infrastructure.
+Material archives operate as spinning tops for innovating collaborative future spatial practices; incubating what else could be imagined in the space of Coventry Cathedral, an internationally recognised post-war brutalist modernist infrastructure. *Hear Here: Spatial Practices* is published by Mattering Press as a book of site-specific global planetarity possibilities, convened by Nirmal Puwar.
 
 This book is currently under development using the [Juncture](https://www.juncture-digital.org/) visual essaying platform developed and maintained by [JSTOR Labs](https://labs.jstor.org/). Juncture renders this repository at [https://juncture-digital.org/mattering-press/Hear-Here-Spatial-Practices](https://juncture-digital.org/mattering-press/Hear-Here-Spatial-Practices).
 
