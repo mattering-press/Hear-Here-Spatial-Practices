@@ -29,7 +29,7 @@
 
 ![](/media/AN_(4-3)_001.jpg)
 
-## #06: Catherina Hahn {href=./catherine_hahn.md}
+## #06: Catherine Hahn {href=./catherine_hahn.md}
 
 ![](/media/CH_(3-4)_001.jpg)
 
