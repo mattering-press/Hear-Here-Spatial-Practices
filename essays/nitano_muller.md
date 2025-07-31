@@ -9,9 +9,8 @@
     - Published by [![Mattering Press](https://www.matteringpress.org/wp-content/themes/matteringpress/img/mattering-press.png)](https://www.matteringpress.org/)
     - [![CC BY](https://licensebuttons.net/l/by/4.0/88x31.png)](https://creativecommons.org/licenses/by/4.0/)
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/NM_(3-4)_001.jpg right
-
 ## Basic info
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/NM_(3-4)_001.jpg right
 
 - Recording date: 31 March 2025
 - Interviewees: Nitano Muller
