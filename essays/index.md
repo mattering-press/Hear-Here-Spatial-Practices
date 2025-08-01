@@ -11,7 +11,7 @@
 
 Hear more about the work of Mahsa Alami Fariman, Ahmadreza Hakiminejad, and Heba N. Sabboubeh in [their episode of the *Hear Here* podcast](/essays/fariman.md).
 
-<center><iframe src="https://archive.org/details/trauma-body-and-home/mode/2up?view=theater" width="85%" height="550px" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe></center>
+<center><iframe src="https://archive.org/details/trauma-body-and-home/mode/2up?view=theater" width="100%" height="550px" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe></center>
 
 # {.cards}
 
