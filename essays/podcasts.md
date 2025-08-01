@@ -41,7 +41,7 @@ Isabel Stengers (2005), 'Introductory Notes on an Ecology of Practices', *Cultur
 
 ## #03: Freyja Perkins and Matthew Horspool {href=./freyja_perkins.md}
 
-![](/media/freyja_perkins_2.jpeg)
+![Matthew Horspool, Freyja Perkins & sound producer Duncan Whitley in the Coventry Cathedral archives](/media/MH_FP_(4-3)_001.jpg)
 
 ## #04: Nitano Muller {href=./nitano_muller.md}
 
