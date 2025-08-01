@@ -22,7 +22,7 @@ This book is currently under development using the [Juncture](https://www.junctu
 
 ## Podcasts {href=./essays/podcasts.md}
 
-![](/media/monica_brown_5.jpg)
+![Mahsa Alami Fariman, Ahmadreza Hakiminejad and Heba Sabboubeh recording in the Chapel of Industry with sound producer Duncan Whitley.](/media/MRH_(4-3)_001.jpg)
 
 ## Conversations {href=./essays/conversations.md}
 
