@@ -11,24 +11,6 @@
 
 Spaces and archives are opened up, connected and enlivened through a variety of routes. Approached from the sidelines, in wayward directions, in-between the big frames and hanger narratives, a call-and-response of imaginations starts shifting our groundings. Conversations spiral towards an experimental index of the place, unfurling global planetary stories. Material archives are activated in the arts of contact zones, with generosity and care.
 
-## References
-
-Les Back (2007) *The Art of Listening*, Oxford: Berg Publishers. 
-
-Stuart Hall (2001) ‘Constituting an archive’. *Third Text*, 15(54), 89–92.
-
-Saidiya Hartman (2018) ‘On working with archives’, *The Creative Independent*, 18 April. Available at: https://thecreativeindependent.com/people/saidiya-hartman-on-working-with-archives/
-
-Alessandro Portelli (2018) “Living Voices: The Oral History Interview as Dialogue and Experience”. *The Oral History Review*, 45(2), 239–248.
-
-Mary Louise Pratt (1991) ‘Arts of the Contact Zone’, *Profession*, 33–40. 
-
-Maria Puig de la Bellacasa (2017) *Matters of Care: Speculative Ethics in More than Human Worlds*, University of Minnesota Press.
-
-Nirmal Puwar N and Sanjay Sharma (2012) ‘Curating Sociology’. *The Sociological Review*, 60 (1_suppl), 40-63.
-
-Isabel Stengers (2005), 'Introductory Notes on an Ecology of Practices', *Cultural Studies Review*, 1 (11), March, pp. 183-196.
-
 # {.cards}
 
 ## #01: Monica Brown {href=./monica_brown.md}
@@ -62,3 +44,21 @@ Isabel Stengers (2005), 'Introductory Notes on an Ecology of Practices', *Cultur
 ## #08: Holly Cooper {href=./holly_cooper.md}
 
 ![Holly Cooper with Nirmal Puwar in the Coventry Cathedral archives](/media/HC_(4-3)_001.jpg)
+
+# References
+
+Les Back (2007) *The Art of Listening*, Oxford: Berg Publishers. 
+
+Stuart Hall (2001) ‘Constituting an archive’. *Third Text*, 15(54), 89–92.
+
+Saidiya Hartman (2018) ‘On working with archives’, *The Creative Independent*, 18 April. Available at: https://thecreativeindependent.com/people/saidiya-hartman-on-working-with-archives/
+
+Alessandro Portelli (2018) “Living Voices: The Oral History Interview as Dialogue and Experience”. *The Oral History Review*, 45(2), 239–248.
+
+Mary Louise Pratt (1991) ‘Arts of the Contact Zone’, *Profession*, 33–40. 
+
+Maria Puig de la Bellacasa (2017) *Matters of Care: Speculative Ethics in More than Human Worlds*, University of Minnesota Press.
+
+Nirmal Puwar N and Sanjay Sharma (2012) ‘Curating Sociology’. *The Sociological Review*, 60 (1_suppl), 40-63.
+
+Isabel Stengers (2005), 'Introductory Notes on an Ecology of Practices', *Cultural Studies Review*, 1 (11), March, pp. 183-196.
