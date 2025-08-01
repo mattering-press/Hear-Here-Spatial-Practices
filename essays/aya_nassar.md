@@ -33,7 +33,7 @@ Dr Aya Nassar is an Assistant Professor at [Durham University](https://www.durha
 
 Aya Nassar is an interdisciplinary scholar situated between politics, urban and political geography, and middle east studies. She writes about questions of memory, archiving, (geo)poetics of space, infrastructure and affective and material aspects of cities. Her doctoral research included investigating the archives of national Egyptian architects who were designing plans for post-colonial/post-independence Cairo. Her post-doctoral research focused on the aesthetics and poetics used to represent and depict Arab cities after 2011, neighbourhood storytelling and memory in Coventry, as well as space and memory work in Egypt. She is guided by postcolonial frameworks and inspired by decolonial and feminist approaches in teaching and research: <https://disembodiedterritories.com/Aya-Nassar>
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/AN_(4-3)_004.jpg left caption="Aya Nasser reading in the archives" alt="Aya Nasser reading in the archives
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/AN_(4-3)_004.jpg left caption="Aya Nasser reading in the archives" alt="Aya Nasser reading in the archives"
 
 ## Podcast
 
