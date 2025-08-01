@@ -27,7 +27,7 @@ Aya mentions how as an outsider to Coventry, she found several points of connect
 
 ## Biography
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/AN_(3-4)_003.jpg right caption="Aya Nasser with sound producer Duncan Whitley outside Coventry Cathedral" alt="Aya Nasser with sound producer Duncan Whitley outside Coventry Cathedral"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/AN_(3-4)_003.jpg right width=75% caption="Aya Nasser with sound producer Duncan Whitley outside Coventry Cathedral" alt="Aya Nasser with sound producer Duncan Whitley outside Coventry Cathedral"
 
 Dr Aya Nassar is an Assistant Professor at [Durham University](https://www.durham.ac.uk/staff/aya-m-nassar/), as well as a British Academy Fellow, researching the topic ‘When the city stands still’ (2023-2025). She is part of the editorial team of [Arab Urbanism](https://www.araburbanism.com/), a bi-lingual open access platform that publishes on urban questions in the Arab World. Previously, she has co-convened the [Warwick Political Geography group](https://warwick.ac.uk/fac/soc/pais/currentstudents/postgraduatephd/funding/resources/politicalgeography/). She has co-authored the book _Spon End: A Local Guide_ (2019) and many academic articles, including: ‘To be called forth by a speck of dust’ (2024) and ‘Geopoetics: Storytelling against mastery’ (2021), published in the academic journal _Dialogues in Human Geography_.
 
@@ -45,7 +45,7 @@ Aya Nassar is an interdisciplinary scholar situated between politics, urban and 
 
 **Addendum:**
 
-<audio id="podcast-player">
+<audio>
   <source src="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2305_Aya%20Nassar - Addendum_01.mp3" type="audio/mp3">
     <!-- fallback -->
     Your browser doesn't support HTML5 audio. Here is a <a href="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2305_Aya%20Nassar - Addendum_01.mp3">link to download the audio</a> instead.
