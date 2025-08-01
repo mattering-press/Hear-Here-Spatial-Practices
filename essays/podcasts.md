@@ -53,7 +53,7 @@ Isabel Stengers (2005), 'Introductory Notes on an Ecology of Practices', *Cultur
 
 ## #06: Catherine Hahn {href=./catherine_hahn.md}
 
-![](/media/CH_(3-4)_001.jpg)
+![Catherine in the nave of Coventry Cathedral](/media/CH_(3-4)_001.jpg)
 
 ## #07: Mahsa Alami Fariman, Ahmadreza Hakiminejad, Heba N. Sabboubeh {href=./fariman.md}
 
