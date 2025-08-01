@@ -27,7 +27,7 @@ The podcast begins at the Welcome desk, where Freyja first came across the mater
 
 ## Biographies
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/MH_FP_(4-3)_001.jpg right caption="Matthew Horspool, Freyja Perkins & sound producer Duncan Whitley in the Coventry Cathedral archives" alt="Matthew Horspool, Freyja Perkins & sound producer Duncan Whitley in the Coventry Cathedral archives"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/MH_FP_(4-3)_001.jpg right caption="Matthew Horspool, Freyja Perkins and sound producer Duncan Whitley in the Coventry Cathedral archives" alt="Matthew Horspool, Freyja Perkins and sound producer Duncan Whitley in the Coventry Cathedral archives"
 
 **Matthew Horspool** is a musician who sings tenor in the choir at Coventry Cathedral. Matthew runs the Braillists Foundation and is committed to making the world accessible to blind and partially sighted people through the many projects and podcasts he has been involved in. As a braille and assistive technology consultant, he trains visually impaired people and the colleagues who support them in the use of assistive technologies such as screen readers, braille displays, braille notetakers and braille embossers. His screen reader experience encompasses a wide variety of Windows and iOS-based applications using JAWS, NVDA or VoiceOver. Matthew writes on Sight Loss Friendly Churches for Torch magazines and creates fact sheets on various aspects of sight loss to complement face-to-face training.
 
