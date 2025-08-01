@@ -15,7 +15,7 @@
 
 ## Introduction
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/MRH_(4-3)_002.jpg right caption="Mahsa Alami Fariman & Heba Sabboubeh in the cathedral archives" alt="Mahsa Alami Fariman & Heba Sabboubeh in the cathedral archives"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/MRH_(4-3)_002.jpg right caption="Mahsa Alami Fariman and Heba Sabboubeh in the cathedral archives" alt="Mahsa Alami Fariman and Heba Sabboubeh in the cathedral archives"
 
 The reminder of bombardment and war loom in the reflections of the ruins through the west screen in the nave, as well as in the contemplative space of the ruins themselves. As Gaza was being repeatedly bombed, with continuous displacements and losses, demonstrations would regularly rally on the steps of the cathedral, in the threshold space between the ruins and the new architecture. I spent many days sitting at a desk in the archives under the nave of Coventry cathedral, starring at several shelves of uncatalogued materials consisting of books, newsletters, booklets, slides and audio cassettes.
 
