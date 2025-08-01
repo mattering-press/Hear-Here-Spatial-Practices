@@ -15,7 +15,7 @@
 
 ## Introduction
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/NM_(3-4)_001.jpg right caption="Nitano Muller and Nirmal Puwar in the ruins of Coventry Cathedral" alt="Nitano Muller and Nirmal Puwar in the ruins of Coventry Cathedral"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/NM_(3-4)_001.jpg right width=75% caption="Nitano Muller and Nirmal Puwar in the ruins of Coventry Cathedral" alt="Nitano Muller and Nirmal Puwar in the ruins of Coventry Cathedral"
 
 Canon Nitano Muller discusses his landing in June 2024, in Coventry Cathedral, as Canon of Worship and Welcome. In the _Hear Here_ podcast he speaks from both the archives room and the pulpit in the nave. Archives now sit under his ambit, he imagines how archives can become the pulse of courageous global stories told and heard in the space of the cathedral. He views the archives and the layered interpretations of the cathedral, as part of the process of welcoming guests and visitors from all walks of life.
 

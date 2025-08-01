@@ -49,7 +49,7 @@ Isabel Stengers (2005), 'Introductory Notes on an Ecology of Practices', *Cultur
 
 ## #05: Aya Nassar {href=./aya_nassar.md}
 
-![](/media/AN_(4-3)_001.jpg)
+![Aya Nasser & Nirmal Puwar in the archives](/media/AN_(4-3)_001.jpg)
 
 ## #06: Catherine Hahn {href=./catherine_hahn.md}
 
