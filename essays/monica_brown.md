@@ -13,7 +13,7 @@
 - Interviewee: Monica Brown
 - Podcast duration: 37min 57sec
 
-## Introduction
+# Introduction
 
 <iframe src="https://archive.org/embed/HearHereMonicaBrown2" width="560" height="384" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen class="ve-component right"></iframe>
 
@@ -23,7 +23,7 @@ The writer Monica Brown, whose father worked on building Coventry Cathedral, sta
 
 We consider a handful of images taken by the building contractors Laing, showing black workers on the cathedral construction site. Whilst opening the half empty pages of an embossed book in the cathedral archives, with the names of some of the workers who helped build the cathedral, the task of filling in the gaps of the empty weighted pages, gilded with gold leaf, appears blatantly before us as an open-ended process, bearing the weight of the past in the present. Monica closes the podcast with a call for an installation to recognise black and brown people, whose presence is absent and nowhere to be seen. A video featuring Monica Brown in the cathedral accompanies this discussion.
 
-## Biography
+# Biography
 
 .ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/MB_(3-4)_001.jpeg left width=75%
 
@@ -37,7 +37,7 @@ In November 2013, Monica was selected for a Callaloo Writing Fellowship at Golds
 
 Public Family Talk: <https://youtu.be/OWS5oxWLOik>
 
-## Podcast
+# Podcast
 
 <audio id="podcast-player">
   <source src="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2301_Monica%20Brown_-16LUFs_FINALCUT_01.mp3" type="audio/mp3">
@@ -45,7 +45,7 @@ Public Family Talk: <https://youtu.be/OWS5oxWLOik>
     Your browser doesn't support HTML5 audio. Here is a <a href="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2301_Monica%20Brown_-16LUFs_FINALCUT_01.mp3">link to download the audio</a> instead.
 </audio>
 
-## Transcript
+# Transcript
 
 <div class="scroll-container">
   <div class="columns">

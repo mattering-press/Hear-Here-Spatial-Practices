@@ -13,7 +13,7 @@
 - Interviewee: Bharti Parmar
 - Podcast duration: 25min 59sec
 
-## Introduction
+# Introduction
 
 Bharti Parmar arrived in Coventry in 1986 as a Fine Art student at Lanchester Polytechnic, graduating inside Coventry Cathedral. Thirty-five years later, she walks through different parts of the cathedral for the _Hear Here_ podcast. Bharti discusses both her artistic practice, as well as the architectural and artistic features of the cathedral, before closing the conversation in the needleworkers’ room, which sits on the lower ground floor under the nave, next to the archives room. Her attention to the elements and patterns of site-specific materials is interconnected with her own practice, as well as with broader histories of colonialism and radicalism in the city of Coventry.
 
@@ -23,7 +23,7 @@ Bharti’s closing words on fellowship foreground how the collaborations across 
 
 A film with Bharti in the cathedral further supports the podcast discussion.
 
-## Biography
+# Biography
 
 .ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/BP_(4_3)_001.jpg left caption="Bharti Parmer and Nirmal Puwar together outside the Needleworker’s Room" alt="Bharti Parmer and Nirmal Puwar together outside the Needleworker’s Room"
 
@@ -35,7 +35,7 @@ Links: <https://www.birmingham.ac.uk/staff/profiles/historyofart/parmar-bharti>
 
 Instagram [@bharti.parmar.studio](https://www.instagram.com/bharti.parmar.studio/)
 
-## Podcast
+# Podcast
 
 <audio id="podcast-player">
   <source src="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2302_Bharti%20Parmar_-16LUFs_FINALCUT.mp3" type="audio/mp3">
@@ -43,7 +43,7 @@ Instagram [@bharti.parmar.studio](https://www.instagram.com/bharti.parmar.studio
     Your browser doesn't support HTML5 audio. Here is a <a href="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2302_Bharti%20Parmar_-16LUFs_FINALCUT.mp3">link to download the audio</a> instead.
 </audio>
 
-## References
+# References
 
 Brah, A. (1996) _Cartographies of diaspora: contesting identities_. London: Routledge.
 
