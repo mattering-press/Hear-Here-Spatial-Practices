@@ -19,9 +19,9 @@
 
 Canon Nitano Muller discusses his landing in June 2024, in Coventry Cathedral, as Canon of Worship and Welcome. In the _Hear Here_ podcast he speaks from both the archives room and the pulpit in the nave. Archives now sit under his ambit, he imagines how archives can become the pulse of courageous global stories told and heard in the space of the cathedral. He views the archives and the layered interpretations of the cathedral, as part of the process of welcoming guests and visitors from all walks of life.
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/NM_(4-3)_002.jpg left caption="Nitano Muller browsing photographs documenting Bishop Tutu’s visit to Coventry Cathedral in 1989" alt="Nitano Muller browsing photographs documenting Bishop Tutu’s visit to Coventry Cathedral in 1989"
-
 He was previously a part-time Chaplain to Archbishop Desmond Tutu, to whom he ministered before he passed away in 2021. This relationship has curated his thinking and theology around justice and reconciliation. Today he navigates a paradigm shift with racialised dynamics at an existential level as a black Canon, both within the cathedral, and amongst a global majority mixed congregation. He carries his embodied experience of apartheid South Africa, as well as black liberation, feminist and queer theology, towards reconciliation and justice.
+
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/NM_(4-3)_002.jpg left caption="Nitano Muller browsing photographs documenting Bishop Tutu’s visit to Coventry Cathedral in 1989" alt="Nitano Muller browsing photographs documenting Bishop Tutu’s visit to Coventry Cathedral in 1989"
 
 Disrupting the somatic norm in church leadership within the UK, he reclaims the legacy of empire and British history, through the work of justice from Coventry Cathedral and the Cross of Nails mission. In the archives, Nitano looks back at hopeful images from the past for conducting multiculturalism, anti-racism and experiments in the earlier years of the new cathedral. He proposes that creatives practices need to reclaim untold stories and reclaim our imaginations, from the roof, the welcome desk, the pulpit, as well as the steps outside the cathedral.
 
@@ -33,7 +33,7 @@ He served his curacies in two vastly different contexts, in Mitchells Plain on t
 
 Nitano's first encounter with Coventry Cathedral was its welcome sign posted at the West Screen entrance, which he says made him feel at home because he identified with many of the traits described in it.
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/NM_(3-4)_003.jpg right caption="The cover of ‘Network’ journal from 1979, showing the Welcome Desk at Coventry Cathedral" alt="The cover of ‘Network’ journal from 1979, showing the Welcome Desk at Coventry Cathedral"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/NM_(3-4)_003.jpg right width=75% caption="The cover of ‘Network’ journal from 1979, showing the Welcome Desk at Coventry Cathedral" alt="The cover of ‘Network’ journal from 1979, showing the Welcome Desk at Coventry Cathedral"
 
 [Coventry Cathedrals Welcome message](https://www.coventry.anglican.org/news/a-cathedral-welcome.php)
 
