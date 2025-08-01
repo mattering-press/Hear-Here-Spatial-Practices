@@ -57,8 +57,8 @@ Isabel Stengers (2005), 'Introductory Notes on an Ecology of Practices', *Cultur
 
 ## #07: Mahsa Alami Fariman, Ahmadreza Hakiminejad, Heba N. Sabboubeh {href=./fariman.md}
 
-![](/media/MRH_(4-3)_001.jpg)
+![Mahsa Alami Fariman, Ahmadreza Hakiminejad and Heba Sabboubeh recording in the Chapel of Industry with sound producer Duncan Whitley.](/media/MRH_(4-3)_001.jpg)
 
 ## #08: Holly Cooper {href=./holly_cooper.md}
 
-![](/media/HC_(4-3)_001.jpg)
+![Holly Cooper with Nirmal Puwar in the Coventry Cathedral archives](/media/HC_(4-3)_001.jpg)
