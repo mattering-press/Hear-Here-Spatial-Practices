@@ -24,7 +24,7 @@
       background: #1e1e1e;
       border-radius: 12px;
       padding: 20px 30px;
-      width: 380px;
+      width: 80%;
       box-shadow: 0 8px 20px rgba(0,0,0,0.7);
       display: flex;
       flex-direction: column;
