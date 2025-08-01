@@ -9,9 +9,9 @@
     - Published by [![Mattering Press](https://www.matteringpress.org/wp-content/themes/matteringpress/img/mattering-press.png)](https://www.matteringpress.org/)
     - [![CC BY](https://licensebuttons.net/l/by/4.0/88x31.png)](https://creativecommons.org/licenses/by/4.0/)
 
-- Recording date: 3 June 2025
-- Interviewees: Holly Cooper
-- Podcast duration: 44min 00sec
+- **Recording date:** 3 June 2025
+- **Interviewees:** Holly Cooper
+- **Podcast duration:** 44min 00sec
 
 # Introduction
 
