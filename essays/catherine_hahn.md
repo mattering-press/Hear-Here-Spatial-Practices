@@ -15,7 +15,7 @@
 
 ## Introduction
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/CH_(4-3)_002.jpg left width=75% caption="Catherine Hahn and Nirmal Puwar discuss Catherine Hahn’s diagrammatic notes" alt="Catherine Hahn and Nirmal Puwar discuss Catherine Hahn’s diagrammatic notes"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/CH_(4-3)_002.jpg left caption="Catherine Hahn and Nirmal Puwar discuss Catherine Hahn’s diagrammatic notes" alt="Catherine Hahn and Nirmal Puwar discuss Catherine Hahn’s diagrammatic notes"
 
 Catherine Hahn brings her specialism in art, museums and space towards decolonising the weight of the space of the cathedral. She explores how space links to community, through different interventions and speculative ways of imagining what else could be instituted, especially with art. Masculinities and the art of the future are revisited and re-figured here. The speed of re-birth, experimentation, modernism and manufacture in the postwar energy of designing the cathedral and the planning of the city is situated. Catherine discusses how fragility can present the notion of ‘breathing cathedrals’ as moments for reconfiguring change. Catherine underlines how big spaces have big voices, which can take risks.
 
@@ -27,7 +27,7 @@ See the artist map drawn by Catherine Hahn accompanying this podcast.
 
 ## Biography
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/CH_(3-4)_001.jpg right caption="Catherine in the nave of Coventry Cathedral" alt="Catherine in the nave of Coventry Cathedral"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/CH_(3-4)_001.jpg right width=75% caption="Catherine in the nave of Coventry Cathedral" alt="Catherine in the nave of Coventry Cathedral"
 
 Dr. Catherine Hahn is an artist and social researcher who is a member of the Migrant Futures Institute at Goldsmiths University. She uses creative research to identify obstacles to equality and to claim more equitable, life-affirming practices. She has lectured extensively, including in Art History at the University of Kent and Visual Cultures at Goldsmiths. She was recently the Administrator of Studio 3 Gallery at Kent and a researcher with the Global Gender and Cultures of Equality project (GlobalGRACE) at Goldsmiths. A key aspect of her methodology is drawing and mapping.  She is currently researching the diverse, working-class queer history of South London and is co-producing an exhibition with the LGBTQ+ Community Centre, Southwark (2025). The exhibition dovetails with research on local migration and leather. Catherine’s creative approach to history retrieval will challenge and change perceptions of South London heritage, including the local impact of migrants and colonialism. The innovative approach will resource future research collaborations with local archives, community centres and individuals.
 
