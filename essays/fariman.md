@@ -13,7 +13,7 @@
 - Interviewees: Mahsa Alami Fariman, Ahmadreza Hakiminejad, Heba N. Sabboubeh
 - Podcast duration: 58min 02sec
 
-## Introduction
+# Introduction
 
 .ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/MRH_(4-3)_002.jpg right caption="Mahsa Alami Fariman and Heba Sabboubeh in the cathedral archives" alt="Mahsa Alami Fariman and Heba Sabboubeh in the cathedral archives"
 
@@ -31,7 +31,7 @@ Middle Eastern inter-generational trauma across time and space layers their resp
 
 Hope manifests in multiple configurations, in this site-specific conversation, the cathedral is envisioned as a radical space for political imagination; a utopian house of possibility and becoming; “a compass of mourning” as stated by Judith Butler, one that calls up the unachievable, requiring dreamers, poets and organisers. Architecture as a different and diverse space sits as a potential space for unlearning of orthodoxies in the special place of the cathedral.
 
-## Biographies
+# Biographies
 
 .ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/MRH_(4-3)_001.jpg right caption="Mahsa Alami Fariman, Ahmadreza Hakiminejad and Heba Sabboubeh recording in the Chapel of Industry with sound producer Duncan Whitley" alt="Mahsa Alami Fariman, Ahmadreza Hakiminejad and Heba Sabboubeh recording in the Chapel of Industry with sound producer Duncan Whitley"
 
@@ -41,7 +41,7 @@ Hope manifests in multiple configurations, in this site-specific conversation, t
 
 **Dr Heba Nimer Sabboubeh** is a Palestinian architect, visual artist, and academic based at Aston University, UK. Her passion for art began in early childhood, eventually guiding her toward architecture; a field where she merges technical skill with artistic expression. Her artwork, known for bold lines and vibrant colours, conveys emotional depth, introspection, and quiet resistance. She has exhibited widely, including with the Palestinian Ministry of Culture, and held her first solo show in 2014 at Dar Zahran Heritage Building in Ramallah. Heba’s art explores themes of humanitarian struggle and social adversity, offering a poignant visual commentary on life, particularly within the Arab world. Alongside her artistic practice, she has contributed significantly to architectural projects in Palestine, working with organisations such as the International Committee of the Red Cross, Catholic Relief Services, and the Ministry of Education. As a senior architect at Palestine Technical University, she led the design of key facilities, including the university’s sports complex. Her academic journey brought her to the UK, where she completed a MA and PhD in architecture. Prior to joining Aston, she taught architecture and the built environment at Bolton University and at Coventry University. Alongside her academic commitments, painting remains central to Heba’s life; a medium through which she continues to express resilience, resistance, and truth.
 
-## Podcast
+# Podcast
 
 <audio id="podcast-player">
   <source src="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2307_Heba_Mahsa_Reza_-16LUFs_FINALCUT_01.mp3" type="audio/mp3">
@@ -49,13 +49,13 @@ Hope manifests in multiple configurations, in this site-specific conversation, t
     Your browser doesn't support HTML5 audio. Here is a <a href="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2307_Heba_Mahsa_Reza_-16LUFs_FINALCUT_01.mp3">link to download the audio</a> instead.
 </audio>
 
-## Experimental index
+# Experimental index
 
 *Trauma, Body and Home: An Affective Response to the 'House of Hope'* was created by Mahsa Alami Fariman (University College London), Ahmadreza Hakiminejad (Leeds Beckett University), and Heba N. Sabboubeh (Aston University) as an outcome of their research on the British Academy Innovation Fellowship project Multicultural Experiments in the Civic Life of a Cathedral, led by Professor Nirmal Puwar (Goldsmiths, University of London), and supported by the British Academy Innovation Fellowship Scheme and Coventry Cathedral. 
 
 <center><iframe src="https://archive.org/details/trauma-body-and-home/mode/2up?view=theater" width="100%" height="550px" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe></center>
 
-## References
+# References
 
 Judith Butler (2023) “The Compass of Mourning.” _London Review of Books_ 45(20): <https://www.lrb.co.uk/the-paper/v45/n20/judith-butler/the-compass-of-mourning>.
 

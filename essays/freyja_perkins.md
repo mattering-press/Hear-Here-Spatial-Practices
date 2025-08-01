@@ -13,7 +13,7 @@
 - Interviewees: Freyja Perkins, Matthew Horspool
 - Podcast duration: 36min 30sec
 
-## Introduction
+# Introduction
 
 .ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/MH_FP_(4-3)_003.jpg right caption="Detail of braille model of Coventry Cathedral nave" alt="Detail of braille model of Coventry Cathedral nave"
 
@@ -25,7 +25,7 @@ As we sought to re-centre the visual aids, we made contact with Matthew Horspool
 
 The podcast begins at the Welcome desk, where Freyja first came across the materials, before we move to the model on wheels, tucked away on the sidelines of the nave. Thereafter the conversation takes place in the archives, where a selection of the correspondence is shared, alongside a discussion of how the project can be supported now and in the future.
 
-## Biographies
+# Biographies
 
 .ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/MH_FP_(4-3)_001.jpg right caption="Matthew Horspool, Freyja Perkins and sound producer Duncan Whitley in the Coventry Cathedral archives" alt="Matthew Horspool, Freyja Perkins and sound producer Duncan Whitley in the Coventry Cathedral archives"
 
@@ -35,7 +35,7 @@ You can also hear Matthew here: <https://www.ukaaf.org/news-events/a-passion-for
 
 **Freyja Perkins** works at the Welcome Desk at Coventry Cathedral, proactively introducing visitors to the venue and hosting an array of events. Freyja is a freelance multi-disciplined illustrator, with a specialism in political portraiture. Freyja works with a variety of image creation methods including ink, watercolours, photography, digital collage and animation. Freyja also convenes creative events and artistic group activities, such as zine making workshops, as well as accessibility communication graphics. They were an artist and curator for the Digifest exhibition at Vivid Projects in Birmingham, where they created a series of collages revolving around sexism in the digital age.
 
-## Podcast
+# Podcast
 
 <audio id="podcast-player">
   <source src="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2303_Freyja%20Perkins_Matthew%20Horspool_-16LUFs_FINALCUT_V2.mp3" type="audio/mp3">
@@ -43,7 +43,7 @@ You can also hear Matthew here: <https://www.ukaaf.org/news-events/a-passion-for
     Your browser doesn't support HTML5 audio. Here is a <a href="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2303_Freyja%20Perkins_Matthew%20Horspool_-16LUFs_FINALCUT_V2.mp3">link to download the audio</a> instead.
 </audio>
 
-## References
+# References
 
 Reeve, J. (1991) ‘Keeping in touch with cathedrals’, _British Journal of Visual Impairment_, _9_(3), 91-93. <https://doi.org/10.1177/026461969100900307>
 

@@ -13,7 +13,7 @@
 - Interviewees: Catherine Hahn
 - Podcast duration: 59min 22sec
 
-## Introduction
+# Introduction
 
 .ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/CH_(4-3)_002.jpg left caption="Catherine Hahn and Nirmal Puwar discuss Catherine Hahn’s diagrammatic notes" alt="Catherine Hahn and Nirmal Puwar discuss Catherine Hahn’s diagrammatic notes"
 
@@ -25,7 +25,7 @@ The constant discomfort of reconciliation, reparation and representation present
 
 See the artist map drawn by Catherine Hahn accompanying this podcast.
 
-## Biography
+# Biography
 
 .ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/CH_(3-4)_001.jpg right width=75% caption="Catherine in the nave of Coventry Cathedral" alt="Catherine in the nave of Coventry Cathedral"
 
@@ -35,7 +35,7 @@ Her publications include:
 
 ‘British History at Tate Britain post-Brexit: Rich, white men and space invaders’ (2025) _European Journal of Cultural Studies_; 'How to Do Social Research with Drawing’ (2024: 99-110) In _How to Do Social Research With..._; ‘Reclaiming History in the British Museum Entranceway: Imperialism, Patronage and Female, Queer and Black Legacies’ _Rethinking History: The Journal of Theory and Practice_, Taylor & Francis. She is currently co-authoring a book with Nirmal Puwar and Siobhan McGuirk, _Outsider Insiders: gender agendas and race in museums in the UK and South Africa_ (MUP).
 
-## Podcast
+# Podcast
 
 <audio id="podcast-player">
   <source src="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2306_Catherina%20Hahn_-16LUFs_FINALCUT_01.mp3" type="audio/mp3">
@@ -43,7 +43,7 @@ Her publications include:
     Your browser doesn't support HTML5 audio. Here is a <a href="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2306_Catherina%20Hahn_-16LUFs_FINALCUT_01.mp3">link to download the audio</a> instead.
 </audio>
 
-## References
+# References
 
 **Eva Frankfurther** 1930-1959
 

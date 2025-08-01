@@ -13,7 +13,7 @@
 - Interviewees: Holly Cooper
 - Podcast duration: 44min 00sec
 
-## Introduction
+# Introduction
 
 .ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/HC_(4-3)_001.jpg right caption="Holly Cooper with Nirmal Puwar in the Coventry Cathedral archives" alt="Holly Cooper with Nirmal Puwar in the Coventry Cathedral archives"
 
@@ -25,13 +25,13 @@ Holly shares the complexity of gaining legitimacy as an authorial voice when bla
 
 At Coventry Cathedral, Canon Peter Berry is identified by Holly, from the sixties onwards, as an outspoken figure on anti-racism, who was also founder of the Community Relations Council. Locating him as a figure of privilege who was constantly working behind the scenes for justice, she hopes to return to him as a running thread in the manifestations of anti-racist initiatives, including for instance, the Coventry-Kingston Society. Holly flags up specific individuals and organisations with respect to social and political mobilisations, including Paul Stephenson who mentions Berry in his memoir. Lloyd Grant, another figure from Coventry, became the Secretary of the West Indian National Association. Holly also brings into the light feminist organisations, such as the Osaba Women’s Centre which opened in the 1980’s, with Viva Cummins as the first Development Officer.
 
-## Biography
+# Biography
 
 Holly Cooper (they/them) is a DPhil History student at the University of Oxford, who, under the supervision of Dr. Meleisa Ono-George and Dr. Chantelle Jessica Lewis, is working on a community grounded thesis of the Black Caribbean community in Coventry. Prior to this, Cooper had completed their History BA (Hons) at the University of Lincoln (2020), and the Black British History MA at Goldsmiths, University of London (2022).
 
 Over the last five years, they have undertaken several different research roles, surrounding archival recovery, reparatory justice, educational reform, community education, and the legacies of the British Empire. More recently, Cooper has become a Director of a newly establish community interest company (CIC), the _Black Historians Network UK_; the objective of which is to support  Black, Caribbean, and/or African historians and communities in Britain by nurturing a network to support and encourage further entry into the study of Black history, while advocating for the legitimacy of the field in Britain. The network is an outcome of an ISRF-funded project, on which Cooper was a Co-Investigator. Cooper is an active trade unionist, as the University of Oxford UCU Equality Officer (2023 – 2025) and the ‘Young Workers’ seat holder on the TUC LGBT+ Committee (2023 – 2025). They are also invested in grassroots community building, as the facilitator of Queer Kinship Coventry, a community organisation for Black and Global Majority LGBTQ+ people in the city, as well as being an organiser with another Coventry organisation, the Arawak Community Trust (<https://www.arawakcommunitytrust.com/>).
 
-## Podcast
+# Podcast
 
 <audio id="podcast-player">
   <source src="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2308_Holly%20Cooper_-16LUFs_FINALCUT_01.mp3" type="audio/mp3">
@@ -39,7 +39,7 @@ Over the last five years, they have undertaken several different research roles,
     Your browser doesn't support HTML5 audio. Here is a <a href="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2308_Holly%20Cooper_-16LUFs_FINALCUT_01.mp3">link to download the audio</a> instead.
 </audio>
 
-## References
+# References
 
 Lewis, Sarah E (2024) _The Unseen Truth_: when race changed sight in America, Harvard University Press. <https://www.hup.harvard.edu/file/feeds/PDF/9780674238343_sample.pdf>
 

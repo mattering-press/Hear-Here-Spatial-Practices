@@ -13,7 +13,7 @@
 - Interviewees: Nitano Muller
 - Podcast duration: 45min 00sec
 
-## Introduction
+# Introduction
 
 .ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/NM_(3-4)_001.jpg right width=75% caption="Nitano Muller and Nirmal Puwar in the ruins of Coventry Cathedral" alt="Nitano Muller and Nirmal Puwar in the ruins of Coventry Cathedral"
 
@@ -25,7 +25,7 @@ He was previously a part-time Chaplain to Archbishop Desmond Tutu, to whom he mi
 
 Disrupting the somatic norm in church leadership within the UK, he reclaims the legacy of empire and British history, through the work of justice from Coventry Cathedral and the Cross of Nails mission. In the archives, Nitano looks back at hopeful images from the past for conducting multiculturalism, anti-racism and experiments in the earlier years of the new cathedral. He proposes that creatives practices need to reclaim untold stories and reclaim our imaginations, from the roof, the welcome desk, the pulpit, as well as the steps outside the cathedral.
 
-## Biography
+# Biography
 
 Nitano comes from the small fishing-community of Ocean View, located at the southern-most tip of the Cape Peninsula in South Africa. He completed a degree in Education and worked as a language and history teacher. While working as a teacher, Nitano was discerned for ordination to the priesthood in the Diocese of False Bay within the Anglican Church of Southern Africa and entered residential theological training at the College of the Transfiguration, Makhanda (formerly Grahamstown).
 
@@ -49,7 +49,7 @@ _We welcome pilgrims, tourists, seekers, doubters and you._
 
 First published on: 11th March 2024
 
-## Podcast
+# Podcast
 
 <audio id="podcast-player">
   <source src="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2304_Nitano%20Muller_-16LUFs_FINALCUT.mp3" type="audio/mp3">
