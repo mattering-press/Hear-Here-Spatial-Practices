@@ -37,7 +37,7 @@ Aya Nassar is an interdisciplinary scholar situated between politics, urban and 
 
 ## Podcast
 
-<audio id="podcast-player">
+<audio class="podcast-player">
   <source src="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2305_Aya%20Nassar_-16LUFs_FINALCUT.mp3" type="audio/mp3">
     <!-- fallback -->
     Your browser doesn't support HTML5 audio. Here is a <a href="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2305_Aya%20Nassar_-16LUFs_FINALCUT.mp3">link to download the audio</a> instead.
@@ -45,7 +45,7 @@ Aya Nassar is an interdisciplinary scholar situated between politics, urban and 
 
 **Addendum:**
 
-<audio controls>
+<audio class="podcast-player">
   <source src="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2305_Aya%20Nassar - Addendum_01.mp3" type="audio/mp3">
     <!-- fallback -->
     Your browser doesn't support HTML5 audio. Here is a <a href="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2305_Aya%20Nassar - Addendum_01.mp3">link to download the audio</a> instead.
