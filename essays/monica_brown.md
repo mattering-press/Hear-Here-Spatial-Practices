@@ -39,7 +39,7 @@ Public Family Talk: <https://youtu.be/OWS5oxWLOik>
 
 # Podcast
 
-<audio id="podcast-player">
+<audio class="podcast-player">
   <source src="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2301_Monica%20Brown_-16LUFs_FINALCUT_01.mp3" type="audio/mp3">
     <!-- fallback -->
     Your browser doesn't support HTML5 audio. Here is a <a href="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2301_Monica%20Brown_-16LUFs_FINALCUT_01.mp3">link to download the audio</a> instead.

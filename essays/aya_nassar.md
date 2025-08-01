@@ -13,7 +13,7 @@
 - Interviewees: Aya Nassar
 - Podcast duration: 38min 28sec [+ duration of addendum: 1min 51sec]
 
-## Introduction
+# Introduction
 
 .ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/AN_(4-3)_001.jpg right caption="Aya Nasser and Nirmal Puwar in the archives" alt="Aya Nasser and Nirmal Puwar in the archives"
 
@@ -25,7 +25,7 @@ Moving between the different materials between Coventry and Cairo, Aya brings he
 
 Aya mentions how as an outsider to Coventry, she found several points of connection in the city, not always without frictions. When, for example, the far right was rioting in various locations across the UK, she walked to the cathedral, where a message of multicultural solidarity (relayed by Canon Mary Gregory) provided an holding space. Aya’s discussion of radical artistic politics, in a colonial context, takes us to the camouflage artist John Hutton, and the British military headquarters in Cairo.
 
-## Biography
+# Biography
 
 .ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/AN_(3-4)_003.jpg right width=75% caption="Aya Nasser with sound producer Duncan Whitley outside Coventry Cathedral" alt="Aya Nasser with sound producer Duncan Whitley outside Coventry Cathedral"
 
@@ -35,7 +35,7 @@ Aya Nassar is an interdisciplinary scholar situated between politics, urban and 
 
 .ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/AN_(4-3)_004.jpg left caption="Aya Nasser reading in the archives" alt="Aya Nasser reading in the archives"
 
-## Podcast
+# Podcast
 
 <audio class="podcast-player">
   <source src="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2305_Aya%20Nassar_-16LUFs_FINALCUT.mp3" type="audio/mp3">
@@ -51,7 +51,7 @@ Aya Nassar is an interdisciplinary scholar situated between politics, urban and 
     Your browser doesn't support HTML5 audio. Here is a <a href="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2305_Aya%20Nassar - Addendum_01.mp3">link to download the audio</a> instead.
 </audio>
 
-## References
+# References
 
 Brentnall, Margaret (1987) _John Hutton: Artist and Glass Engraver_, Philadelphia Art Alliance Press.
 
