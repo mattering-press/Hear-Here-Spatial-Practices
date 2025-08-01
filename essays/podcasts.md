@@ -45,7 +45,7 @@ Isabel Stengers (2005), 'Introductory Notes on an Ecology of Practices', *Cultur
 
 ## #04: Nitano Muller {href=./nitano_muller.md}
 
-![](/media/NM_(3-4)_001.jpg)
+![Nitano Muller & Nirmal Puwar in the ruins of Coventry Cathedral](/media/NM_(3-4)_001.jpg)
 
 ## #05: Aya Nassar {href=./aya_nassar.md}
 
