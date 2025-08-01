@@ -41,7 +41,7 @@ The writer Monica Brown, whose father worked on building Coventry Cathedral, sta
     Your browser doesn't support HTML5 audio. Here is a <a href="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/POD%2301_Monica%20Brown_-16LUFs_FINALCUT_01.mp3">link to download the audio</a> instead.
 </audio>
 
-## Transcription
+## Transcript
 
 <div class="scroll-container">
   <div class="columns">
