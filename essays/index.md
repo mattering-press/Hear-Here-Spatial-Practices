@@ -7,7 +7,11 @@
     - Published by [![Mattering Press](https://www.matteringpress.org/wp-content/themes/matteringpress/img/mattering-press.png)](https://www.matteringpress.org/)
     - [![CC BY](https://licensebuttons.net/l/by/4.0/88x31.png)](https://creativecommons.org/licenses/by/4.0/)
 
-<center><iframe src="https://archive.org/details/birdbookillustra00reedrich/mode/2up?view=theater" width="85%" height="550px" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe></center>
+*Trauma, Body and Home: An Affective Response to the 'House of Hope'* was created by Mahsa Alami Fariman (University College London), Ahmadreza Hakiminejad (Leeds Beckett University), and Heba N. Sabboubeh (Aston University) as an outcome of their research on the British Academy Innovation Fellowship project Multicultural Experiments in the Civic Life of a Cathedral, led by Professor Nirmal Puwar (Goldsmiths, University of London), and supported by the British Academy Innovation Fellowship Scheme and Coventry Cathedral. 
+
+Hear more about the work of Mahsa Alami Fariman, Ahmadreza Hakiminejad, and Heba N. Sabboubeh in [their episode of the *Hear Here* podcast](/essays/fariman.md).
+
+<center><iframe src="https://archive.org/details/trauma-body-and-home/mode/2up?view=theater" width="85%" height="550px" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe></center>
 
 # {.cards}
 
