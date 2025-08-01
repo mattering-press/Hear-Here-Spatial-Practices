@@ -33,11 +33,11 @@ Isabel Stengers (2005), 'Introductory Notes on an Ecology of Practices', *Cultur
 
 ## #01: Monica Brown {href=./monica_brown.md}
 
-![](/media/monica_brown_12.jpg)
+![](/media/MB_(3-4)_001.jpeg)
 
 ## #02: Bharti Parmar {href=./bharti_parmar.md}
 
-![](/media/bharti_parmar_2.jpeg)
+![Bharti Parmer and Nirmal Puwar together outside the Needleworker’s Room](/media/BP_(4_3)_001.jpg)
 
 ## #03: Freyja Perkins and Matthew Horspool {href=./freyja_perkins.md}
 
