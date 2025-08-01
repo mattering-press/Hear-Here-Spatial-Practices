@@ -15,7 +15,7 @@
 
 ## Biography
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/MB_(3-4)_001.jpeg left
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/MB_(3-4)_001.jpeg left width=75%
 
 Monica D. Brown is a Project Manager at Warwickshire Record Office, Media Specialist, Journalist, Corporate Trainer and writer who was born in Birmingham, UK. The daughter of Windrush generation parents, Iciline and Gersham Brown, she grew up in Warwickshire, UK, Clarendon and Kingston, Jamaica. She is a graduate of: U.W.I., Mona, where she studied Mass Communication, French and Literature, Warwickshire College, University of Warwick and U.C.E./Birmingham City University, (M.A. Distinction).
 
@@ -33,8 +33,7 @@ Public Family Talk: <https://youtu.be/OWS5oxWLOik>
 
 The writer Monica Brown, whose father worked on building Coventry Cathedral, states in her visit to the cathedral for the _Hear Here_ podcast: “I am here because dad was here”. Monica brings an inter-connected set of journeys to our dialogue, vividly relaying the strength and struggles of her family, in the context of the Windrush Generation, whilst moving back and forth between Jamaica and Leamington. Monica undertakes the art of transnational diasporic storytelling, one that is also locally situated. Recently her mother faced the burden of doubt, in terms of immigration, when she was refused entry to the UK for her grandson’s graduation. Monica and her siblings fought a campaign against this decision. Monica takes us to the heart of how to take matters on when people are made to feel they don’t matter. She carries her embodied signature voice and specialism in media production and histories right into the cathedral.
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/jlp01_08_061829.jpg left caption=Info on permissible rights for use of this image from Historic England Archive
-https://historicengland.org.uk/images-books/archive/policies/using-images/
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/jlp01_08_061829.jpg left caption=Info on permissible rights for use of this image from Historic England Archive https://historicengland.org.uk/images-books/archive/policies/using-images/
 
 We consider a handful of images taken by the building contractors Laing, showing black workers on the cathedral construction site. Whilst opening the half empty pages of an embossed book in the cathedral archives, with the names of some of the workers who helped build the cathedral, the task of filling in the gaps of the empty weighted pages, gilded with gold leaf, appears blatantly before us as an open-ended process, bearing the weight of the past in the present. Monica closes the podcast with a call for an installation to recognise black and brown people, whose presence is absent and nowhere to be seen. A video featuring Monica Brown in the cathedral accompanies this discussion.
 
