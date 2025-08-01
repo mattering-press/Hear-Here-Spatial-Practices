@@ -15,7 +15,7 @@
 
 ## Biography
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/BP_(4_3)_001.jpg left caption=Bharti Parmer and Nirmal Puwar together outside the Needleworker’s Room alt=Bharti Parmer and Nirmal Puwar together outside the Needleworker’s Room
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/BP_(4_3)_001.jpg left caption="Bharti Parmer and Nirmal Puwar together outside the Needleworker’s Room" alt="Bharti Parmer and Nirmal Puwar together outside the Needleworker’s Room"
 
 Bharti is an artist and academic with a focus on vernacular crafts and systems. She is an Honorary Research Fellow in the Department of Art History, Curating and Visual Studies at the University of Birmingham. Her current studio-based research project, _Paper/Cotton/Plant_, focuses on the intersections between materiality, geography, and botany with a special focus on _The Herball, or, Generall historie of plantes_ _1597_ by botanist John Gerard (1545-1612).
 
