@@ -9,29 +9,34 @@
     - Published by [![Mattering Press](https://www.matteringpress.org/wp-content/themes/matteringpress/img/mattering-press.png)](https://www.matteringpress.org/)
     - [![CC BY](https://licensebuttons.net/l/by/4.0/88x31.png)](https://creativecommons.org/licenses/by/4.0/)
 
-## Basic info
-
 - Recording date: 22 March 2025
 - Interviewee: Monica Brown
 - Podcast duration: 37min 57sec
-- Location: Coventry Cathedral
-- Recorded and edited by: Duncan Whitley
 
 ## Biography
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/monica_brown_12.jpg left
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/MB_(3-4)_001.jpeg left
 
-Monica D. Brown is a Communications Coach, Media Engagement Trainer, Freelance journalist, and writer who was born in Birmingham, UK. She currently leads the Warwickshire County Record Office project, ‘Telling our own stories’. In 2007, the BBC selected Monica among six others across the UK, to explore their family history. She has written *Journey back to Zanzibar*, a loosely autobiographical anthology, translated into Swahili, with the title *Safari Kuelekea Tena Unguja* (2016). Monica is currently working on a collection of Windrush inspired short stories, *Going to England*. Her Jamaican parents, Iciline and Gersham, are Windrush generation citizens who returned to Jamaica. Recently her mother faced the burden of doubt, in terms of immigration, when she wanted to visit her grandson’s graduation in the UK.
+Monica D. Brown is a Project Manager at Warwickshire Record Office, Media Specialist, Journalist, Corporate Trainer and writer who was born in Birmingham, UK. The daughter of Windrush generation parents, Iciline and Gersham Brown, she grew up in Warwickshire, UK, Clarendon and Kingston, Jamaica. She is a graduate of: U.W.I., Mona, where she studied Mass Communication, French and Literature, Warwickshire College, University of Warwick and U.C.E./Birmingham City University, (M.A. Distinction).
 
-Public Family Talk: [https://youtu.be/OWS5oxWLOik](https://youtu.be/OWS5oxWLOik)
+In 1984 she received a French government scholarship to study Television Production in Paris. Upon her return to Jamaica she was the first Television Producer/ Director of one of Jamaica’s longest running television programmes, *Hill an’ Gully Ride*, which is [still on air](https://www.amazon.co.uk/Still-Yvette-author-Livingston-White/dp/9766406758/ref=sr_1_1?s=books&ie=UTF8&qid=1534100577&sr=1-1&keywords=Still+on+air). Following a full-time career in national Radio broadcasting she taught Media production at university and in 2002 received a Distinguished Faculty Award from Northern Caribbean University.
 
-Monica Brown Consultancy: [https://monicabrown.co.uk/](https://monicabrown.co.uk/)
+In 2007, the BBC selected Monica among six others across the UK, to explore their family history. The DNA test results inspired family journeys to Tanzania and Zanzibar in 2009 and 2016 in search of Tanzanian roots. Monica’s book, [*Journey back to Zanzibar*](https://www.amazon.co.uk/Journey-back-Zanzibar-Poems-discovery/dp/1494373564), a loosely autobiographical anthology, traces Monica’s journey, in part, back to Zanzibar. The anthology was translated into [Swahili](https://www.amazon.co.uk/Safari-Kuelekea-Unguja-Monica-Denise/dp/1542747902), *Safari Kuelekea Tena Unguja*, in 2016 by THE LANGUAGE SHOP, N.Y. Monica is currently working on a collection of post Windrush short stories, *Going to England*.
+
+In November 2013, Monica was selected for a Callaloo Writing Fellowship at Goldsmiths, University of London. She is also a speaker and offers Communications Coaching and Media Engagement Training <https://monicabrown.co.uk/>
+
+Public Family Talk: <https://youtu.be/OWS5oxWLOik>
 
 ## Introduction
 
 <iframe src="https://archive.org/embed/HearHereMonicaBrown2" width="560" height="384" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen class="ve-component right"></iframe>
 
-The writer Monica Brown, whose father worked on building Coventry Cathedral, states in her visit to the cathedral for the *Hear Here* podcast: “I am here because dad was here”. Monica brings a journey of journeys to our dialogue, vividly relaying the strength and struggles of her family and the Windrush Generation, whilst moving back and forth between Jamaica and Leamington. Whilst opening the half empty pages of an embossed book in the cathedral archives, with the names of some of the builders who worked on the cathedral, the task of filling in the gaps of the empty weighted pages, gilded with gold leaf, appears as an open-ended process, bearing the weight of the past in the present. She closes with a call for an installation to recognise black and brown people, whose presence is absent and nowhere to be seen.
+The writer Monica Brown, whose father worked on building Coventry Cathedral, states in her visit to the cathedral for the _Hear Here_ podcast: “I am here because dad was here”. Monica brings an inter-connected set of journeys to our dialogue, vividly relaying the strength and struggles of her family, in the context of the Windrush Generation, whilst moving back and forth between Jamaica and Leamington. Monica undertakes the art of transnational diasporic storytelling, one that is also locally situated. Recently her mother faced the burden of doubt, in terms of immigration, when she was refused entry to the UK for her grandson’s graduation. Monica and her siblings fought a campaign against this decision. Monica takes us to the heart of how to take matters on when people are made to feel they don’t matter. She carries her embodied signature voice and specialism in media production and histories right into the cathedral.
+
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/jlp01_08_061829.jpg left caption=Info on permissible rights for use of this image from Historic England Archive
+https://historicengland.org.uk/images-books/archive/policies/using-images/
+
+We consider a handful of images taken by the building contractors Laing, showing black workers on the cathedral construction site. Whilst opening the half empty pages of an embossed book in the cathedral archives, with the names of some of the workers who helped build the cathedral, the task of filling in the gaps of the empty weighted pages, gilded with gold leaf, appears blatantly before us as an open-ended process, bearing the weight of the past in the present. Monica closes the podcast with a call for an installation to recognise black and brown people, whose presence is absent and nowhere to be seen. A video featuring Monica Brown in the cathedral accompanies this discussion.
 
 ## Podcast
 
