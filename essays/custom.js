@@ -3,7 +3,7 @@
 # @creation_date: 2025-06-23
 # @license: The MIT License <https://opensource.org/licenses/MIT>
 # @author: Simon Bowie <simon.bowie.19@gmail.com>
-# @purpose: custom JavaScript for various functions
+# @purpose: custom JavaScript for various functions to enhance the Juncture publication
 # @acknowledgements:
 # https://css-tricks.com/lets-create-a-custom-audio-player/
 */
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// FIND TIMECODES IN HTML AND ADD LINKS
+// FIND AUDIO TIMECODES IN HTML AND ADD LINKS TO JUMP TO THAT POINT IN THE AUDIO
 document.addEventListener('DOMContentLoaded', () => {
   wrapTimecodesWithLinks();
 });
@@ -64,7 +64,7 @@ function wrapTimecodesWithLinks() {
   });
 }
 
-// SEEK AUDIO BASED ON A HYPERLINK
+// JUMP TO THE POINT SPECIFIED IN THE AUDIO 
 function seekAudio(event, seconds, index = 0) {
   event.preventDefault();
   const audios = document.querySelectorAll('audio.podcast-player');
@@ -274,6 +274,7 @@ function seekAudio(event, seconds, index = 0) {
 
 })();
 
+// RETRIEVE TIMECODES FROM THE PAGE AND INSERT CUE MARKERS IN THE AUDIO PLAYER AT THOSE TIMECODES
 function scanAndAddCueMarkers() {
   const playerContainer = document.querySelector('.audio-player');
   if (!playerContainer) return;
