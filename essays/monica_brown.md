@@ -79,7 +79,7 @@ So, when he came here in 1955, he was very clear- he was fully formed. If you lo
 
 **NIRMAL PUWAR:** Can you say that again! _\[smiles\]_
 
-<a href="#" onclick="seekAudio(event, 613)">**\[00:10:13\]**</a>
+**\[00:10:13\]**
 
 **MONICA BROWN:** We have photographs in our family album that I have seen. I can picture dad in that dark blue cardigan. It may have had holes in it _\[laughs\]._ I can see Coventry Cathedral in the background.
 
@@ -105,7 +105,7 @@ When he came here to the UK, he gave leadership to the Caribbean community in Le
 
 **NIRMAL PUWAR:** In what way?
 
-<a href="#" onclick="seekAudio(event, 955)">**\[00:15:55\]**</a>
+**\[00:15:55\]**
 
 **MONICA BRWON:** We're different in that we are very clear about ourselves. We have courage; we are not afraid to challenge. We are also interested in our African origin. As a result of returning to the UK, I've had the opportunity to explore my African heritage in a way that I would not have had, had I stayed in Jamaica.
 
@@ -151,13 +151,13 @@ So, my mum was present, but we recognise her sacrifice. To be very honest, it is
 
 **NIRMAL PUWAR:** You said she has an installation of an exhibition which includes a quilt from your mum and her story?
 
-<a href="#" onclick="seekAudio(event, 1498)">**\[00:24:58\]**</a>
+**\[00:24:58\]**
 
 **MONICA BROWN**: Yes, there is an exhibition at the Leamington Spa Art Gallery and Museum called _Unravelling History_. It combines the work of many textile artists from across the county. Annabelle Rainbow made contact with several Windrush Generation individuals, including Benjamin Zephaniah. The intriguing thing about them is that it's not just a painting and a quilt, but each installation is surrounded by the story of the person in their own words. So, this is an opportunity for the person to tell their own story.
 
 **NIRMAL PUWAR:** What do you remember from your mom's story?
 
-<a href="#" onclick="seekAudio(event, 1555)">**\[00:25:55\]**</a>
+**\[00:25:55\]**
 
 **MONICA BROWN:** I just went there before coming here today. I've been there several times, but each time I look at her, I see many things in her eyes that other people wouldn't see. Many people would see her composure and that she's in charge. I see sadness, I see rage. One of the things that Annabelle picked up is that there is no mercy. Remember, my mother lived and worked in this country for 15 years. She came here like the other half a million people who came here from the Caribbean on British passports. They thought they were British, but they learnt later that they were not. I learnt that later when we had to fight for our mother to come here. She was refused a visa to come here twice.
 
@@ -181,7 +181,7 @@ We were taken in as refugees for a week because our house was torn apart. When y
 
 **NIRMAL PUWAR:** Thank you for coming. How do you think we could take this forward in the Cathedral to bring out his stories, his presence and your father's skills? What could the Cathedral become in order to acknowledge these stories that are nowhere inside the traditional narrative of the Cathedral?
 
-<a href="#" onclick="seekAudio(event, 2015)">**\[00:33:35\]**</a>
+**\[00:33:35\]**
 
 **MONICA BROWN:** There are many spaces in the Cathedral itself, and there could be an area about them, with something like: we came by invitation— you could use that. Then, there could be pictures of them at work, with the details of what they did and where.
 
