@@ -8,7 +8,7 @@
 # https://css-tricks.com/lets-create-a-custom-audio-player/
 */
 
-// wrap transcript sections in a div with a specific class
+// WRAP TRANSCRIPT SECTIONS OF THE PAGE IN A DIV WITH A SPECIFIC CLASS
 document.addEventListener('DOMContentLoaded', () => {
   const h1s = document.querySelectorAll('h1');
   let transcriptHeader = null;
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// find timecodes and add links
+// FIND TIMECODES IN HTML AND ADD LINKS
 document.addEventListener('DOMContentLoaded', () => {
   wrapTimecodesWithLinks();
 });
@@ -64,7 +64,18 @@ function wrapTimecodesWithLinks() {
   });
 }
 
-// modern audio player
+// SEEK AUDIO BASED ON A HYPERLINK
+function seekAudio(event, seconds, index = 0) {
+  event.preventDefault();
+  const audios = document.querySelectorAll('audio.podcast-player');
+  const audio = audios[index];
+  if (audio) {
+    audio.currentTime = seconds;
+    audio.play();
+  }
+}
+
+// MODERN AUDIO PLAYER OPTIMISED FOR PODCASTS
 (() => {
   // Inject Font Awesome (once)
   if (!document.getElementById('fa-css')) {
@@ -259,14 +270,3 @@ function wrapTimecodesWithLinks() {
     setPlayIcon(false);
   });
 })();
-
-// custom function for seeking audio based on a hyperlink
-function seekAudio(event, seconds, index = 0) {
-  event.preventDefault();
-  const audios = document.querySelectorAll('audio.podcast-player');
-  const audio = audios[index];
-  if (audio) {
-    audio.currentTime = seconds;
-    audio.play();
-  }
-}
