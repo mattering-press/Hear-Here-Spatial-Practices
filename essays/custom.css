@@ -89,6 +89,14 @@ audio {
   margin: 1rem 0;
 }
 
+.cue-marker {
+  transition: background-color 0.2s;
+}
+.cue-marker:hover {
+  background-color: #ff0;
+  width: 5px;
+}
+
 .transcript {
   background: #f5f5f5;
   padding: 1rem;

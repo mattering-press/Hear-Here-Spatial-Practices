@@ -269,4 +269,59 @@ function seekAudio(event, seconds, index = 0) {
     // Initialize play icon
     setPlayIcon(false);
   });
+  
+  scanAndAddCueMarkers();
+
 })();
+
+function scanAndAddCueMarkers() {
+  const playerContainer = document.querySelector('.audio-player');
+  if (!playerContainer) return;
+
+  const audio = playerContainer.querySelector('audio');
+  const progressContainer = playerContainer.querySelector('.progress-container');
+  if (!audio || !progressContainer) return;
+
+  const cueTags = Array.from(document.querySelectorAll('strong')).filter(strong =>
+    /^\[(\d{2}):(\d{2}):(\d{2})\]$/.test(strong.textContent.trim())
+  );
+
+  function addMarkers() {
+    const duration = audio.duration;
+    if (!duration || isNaN(duration)) return;
+
+    cueTags.forEach(strong => {
+      const match = strong.textContent.trim().match(/\[(\d{2}):(\d{2}):(\d{2})\]/);
+      if (!match) return;
+
+      const [_, hh, mm, ss] = match.map(Number);
+      const seconds = hh * 3600 + mm * 60 + ss;
+      const pct = (seconds / duration) * 100;
+
+      const marker = document.createElement('div');
+      marker.className = 'cue-marker';
+      marker.title = strong.textContent;
+      marker.style.position = 'absolute';
+      marker.style.top = 0;
+      marker.style.bottom = 0;
+      marker.style.width = '3px';
+      marker.style.background = 'yellow';
+      marker.style.left = `${pct}%`;
+      marker.style.cursor = 'pointer';
+      marker.style.zIndex = 10;
+
+      marker.addEventListener('click', () => {
+        audio.currentTime = seconds;
+        audio.play();
+      });
+
+      progressContainer.appendChild(marker);
+    });
+  }
+
+  if (!isNaN(audio.duration) && audio.duration > 0) {
+    addMarkers();
+  } else {
+    audio.addEventListener('loadedmetadata', addMarkers, { once: true });
+  }
+}
