@@ -202,3 +202,13 @@
     setPlayIcon(false);
   });
 })();
+
+function seekAudio(event, seconds, index = 0) {
+  event.preventDefault();
+  const audios = document.querySelectorAll('audio.podcast-player');
+  const audio = audios[index];
+  if (audio) {
+    audio.currentTime = seconds;
+    audio.play();
+  }
+}
