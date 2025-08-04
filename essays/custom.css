@@ -94,7 +94,6 @@ audio {
 }
 .cue-marker:hover {
   background-color: #ff0;
-  width: 5px;
 }
 
 .transcript {

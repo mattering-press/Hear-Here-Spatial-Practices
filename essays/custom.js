@@ -304,6 +304,7 @@ function scanAndAddCueMarkers() {
       marker.style.position = 'absolute';
       marker.style.top = 0;
       marker.style.bottom = 0;
+      marker.style.width = '5px';
       marker.style.background = 'rgba(255, 255, 0, 0.7)';
       marker.style.left = `${pct}%`;
       marker.style.pointerEvents = 'none'; 
