@@ -3,11 +3,12 @@
 # @creation_date: 2025-06-23
 # @license: The MIT License <https://opensource.org/licenses/MIT>
 # @author: Simon Bowie <simon.bowie.19@gmail.com>
-# @purpose: custom JavaScript
+# @purpose: custom JavaScript for various functions
 # @acknowledgements:
 # https://css-tricks.com/lets-create-a-custom-audio-player/
 */
 
+// wrap transcript sections in a div with a specific class
 document.addEventListener('DOMContentLoaded', () => {
   const h1s = document.querySelectorAll('h1');
   let transcriptHeader = null;
@@ -33,6 +34,37 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+// find timecodes and add links
+document.addEventListener('DOMContentLoaded', () => {
+  wrapTimecodesWithLinks();
+});
+
+function wrapTimecodesWithLinks() {
+  const timecodeRegex = /\[(\d{2}):(\d{2}):(\d{2})\]/;
+
+  // Select all <strong> elements
+  const strongs = document.querySelectorAll('strong');
+
+  strongs.forEach(strong => {
+    const match = strong.textContent.match(timecodeRegex);
+
+    if (match) {
+      const [fullMatch, hh, mm, ss] = match;
+      const totalSeconds = parseInt(hh) * 3600 + parseInt(mm) * 60 + parseInt(ss);
+
+      // Create the <a> element
+      const a = document.createElement('a');
+      a.href = '#';
+      a.setAttribute('onclick', `seekAudio(event, ${totalSeconds})`);
+      a.textContent = fullMatch; // Show [00:10:13] as visible text
+
+      // Replace the timecode inside the <strong> with the <a>
+      strong.innerHTML = strong.innerHTML.replace(fullMatch, a.outerHTML);
+    }
+  });
+}
+
+// modern audio player
 (() => {
   // Inject Font Awesome (once)
   if (!document.getElementById('fa-css')) {
@@ -228,6 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 })();
 
+// custom function for seeking audio based on a hyperlink
 function seekAudio(event, seconds, index = 0) {
   event.preventDefault();
   const audios = document.querySelectorAll('audio.podcast-player');
