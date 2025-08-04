@@ -90,28 +90,11 @@ audio {
 }
 
 .cue-marker {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: yellow;
-  cursor: pointer;
-  z-index: 10;
-  pointer-events: auto;
+  transition: background-color 0.2s;
 }
-
-.progress-container {
-  position: relative;
-}
-
-.progress-container::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  pointer-events: none; /* allow clicks to pass through all background layers */
+.cue-marker:hover {
+  background-color: #ff0;
+  width: 5px;
 }
 
 .transcript {

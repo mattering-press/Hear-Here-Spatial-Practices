@@ -304,11 +304,11 @@ function scanAndAddCueMarkers() {
       marker.style.position = 'absolute';
       marker.style.top = 0;
       marker.style.bottom = 0;
-      marker.style.width = '3px';
-      marker.style.background = 'yellow';
+      marker.style.width = '2px';
+      marker.style.background = 'rgba(255, 255, 0, 0.7)';
       marker.style.left = `${pct}%`;
-      marker.style.cursor = 'pointer';
-      marker.style.zIndex = 10;
+      marker.style.pointerEvents = 'none'; 
+      marker.style.zIndex = 1;                    
 
       marker.addEventListener('click', () => {
         audio.currentTime = seconds;
