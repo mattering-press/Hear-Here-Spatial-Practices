@@ -1,5 +1,6 @@
 .ve-style ./custom.css
 .ve-script ./podcast-player.js
+.ve-script ./transcript.js
 
 .ve-header 'Hear Here Podcast: Monica Brown' background=none
     - [Welcome Desk](/)
@@ -46,8 +47,6 @@ Public Family Talk: <https://youtu.be/OWS5oxWLOik>
 </audio>
 
 # Transcript
-
-<div class="transcript">
 
 **NIRMAL PUWAR:** Hello Monica Brown. Earlier on, we were discussing your whole education and how it forms your thinking. So, take us through what you've studied and what you’re working on now.
 
@@ -206,5 +205,3 @@ You’ll see empty pages, but eventually you get to the names of the people who 
 **MONICA BROWN:** We need to fill the pages. Let us fill the pages.
 
 **NIRMAL PUWAR:** Thank you, Monica, for being on this journey with us.
-
-</div>
