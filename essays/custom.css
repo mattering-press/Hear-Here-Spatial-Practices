@@ -89,6 +89,11 @@ audio {
   margin: 1rem 0;
 }
 
+.transcript {
+  background: #f5f5f5;
+  padding: 1rem;
+}
+
 .scroll-container {
   height: 400px;
   width: 100%;

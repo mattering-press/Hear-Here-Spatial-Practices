@@ -47,6 +47,8 @@ Public Family Talk: <https://youtu.be/OWS5oxWLOik>
 
 # Transcript
 
+<div class="transcript">
+
 **NIRMAL PUWAR:** Hello Monica Brown. Earlier on, we were discussing your whole education and how it forms your thinking. So, take us through what you've studied and what you’re working on now.
 
 **MONICA BROWN**: I was born in the UK in Birmingham, but my first memory of life is Jamaica. My father came here in 1955 and immediately smelt the stench of racism and realised that this hostile environment would not be one in which his children could thrive. So, although I spent the first two and a half years of my life in Birmingham, my first memory of life is Kingston, Jamaica, where we lived for about a year and a half.
@@ -204,3 +206,5 @@ You’ll see empty pages, but eventually you get to the names of the people who 
 **MONICA BROWN:** We need to fill the pages. Let us fill the pages.
 
 **NIRMAL PUWAR:** Thank you, Monica, for being on this journey with us.
+
+</div>
