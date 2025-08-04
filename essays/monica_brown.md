@@ -1,6 +1,5 @@
 .ve-style ./custom.css
-.ve-script ./podcast-player.js
-.ve-script ./transcript.js
+.ve-script ./custom.js
 
 .ve-header 'Hear Here Podcast: Monica Brown' background=none
     - [Welcome Desk](/)

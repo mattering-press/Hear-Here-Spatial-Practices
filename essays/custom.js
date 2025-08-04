@@ -1,12 +1,37 @@
 /*
-# @name: podcast-player.js
+# @name: custom.js
 # @creation_date: 2025-06-23
 # @license: The MIT License <https://opensource.org/licenses/MIT>
 # @author: Simon Bowie <simon.bowie.19@gmail.com>
-# @purpose: JavaScript for a modern audio player without additional user functions to the default HTML5 audio player
+# @purpose: custom JavaScript
 # @acknowledgements:
 # https://css-tricks.com/lets-create-a-custom-audio-player/
 */
+
+document.addEventListener('DOMContentLoaded', () => {
+  const h1s = document.querySelectorAll('h1');
+  let transcriptHeader = null;
+
+  for (let i = 0; i < h1s.length; i++) {
+    if (h1s[i].textContent.trim() === 'Transcript') {
+      transcriptHeader = h1s[i];
+      const nextH1 = h1s[i + 1] || null;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'transcript';
+
+      let node = transcriptHeader.nextSibling;
+      while (node && node !== nextH1) {
+        const nextNode = node.nextSibling;
+        wrapper.appendChild(node);
+        node = nextNode;
+      }
+
+      transcriptHeader.parentNode.insertBefore(wrapper, transcriptHeader.nextSibling);
+      break;
+    }
+  }
+});
 
 (() => {
   // Inject Font Awesome (once)
