@@ -1,5 +1,5 @@
 .ve-style ./custom.css
-.ve-script ./podcast-player.js
+.ve-script ./custom.js
 
 .ve-header 'Hear Here Podcast: Mahsa Alami Fariman, Ahmadreza Hakiminejad, Heba N. Sabboubeh' background=none
     - [Welcome Desk](/)
