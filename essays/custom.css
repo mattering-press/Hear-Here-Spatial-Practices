@@ -46,7 +46,7 @@ a:hover {
 }
 
 #juncture .card {
-  background: var(--color-card);
+  background: none;
   border-radius: var(--radius);
   border: none;
   box-shadow: none;
@@ -54,12 +54,12 @@ a:hover {
   flex-direction: column;
   overflow: hidden;
   margin-bottom: 2rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
 #juncture .card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px var(--color-accent);
 }
 
 #juncture a {
@@ -74,14 +74,7 @@ a:hover {
 
 #juncture .card-title {
   font-weight: 400;
-  padding: 1rem 1.2rem 0.5rem;
-}
-
-.card-title {
-  font-size: 1.25rem;
-  font-weight: 400;
-  padding: 1rem 1.2rem 0.5rem;
-  color: var(--color-text);
+  padding: 1rem 0rem 0.5rem;
 }
 
 .card-image {
@@ -148,7 +141,6 @@ ve-footer {
   background: var(--color-card);
   padding: 1.5rem;
   margin-top: 3rem;
-  border-top: 1px solid #ddd;
 }
 
 ve-footer ul {
@@ -177,6 +169,11 @@ ve-header {
   padding: 3rem 1rem;
   position: relative;
   /*border-bottom: 4px solid #bababa;*/
+}
+
+ve-header:hover {
+  filter: invert(100%);
+  transition: filter 0.3s;
 }
 
 ve-header::after {
