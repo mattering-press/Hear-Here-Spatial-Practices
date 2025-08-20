@@ -90,7 +90,6 @@ a:hover {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  border-top: 1px solid #eee;
 }
 
 .section1 h1 {
@@ -146,7 +145,7 @@ audio {
 ve-footer {
   display: flex;
   justify-content: center;
-  background: #f6a945;
+  background: var(--color-card);
   padding: 1.5rem;
   margin-top: 3rem;
   border-top: 1px solid #ddd;
@@ -166,9 +165,9 @@ ve-footer li img {
   display: inline-block;
 }
 
-ve-footer .main {
+.main {
   margin: 0px auto auto;
-  background-color: #f6a945;
+  background-color: none;
 }
 
 ve-header {
@@ -215,7 +214,7 @@ ve-header .subtitle {
 }
 
 .title, .subtitle {
-  color: #222;
+  color: #222 !important;
 }
 
 /* Responsive styles */
