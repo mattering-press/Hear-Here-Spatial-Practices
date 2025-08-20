@@ -15,7 +15,7 @@
   --color-card: linear-gradient(to right, white, #bababa);
   --color-text: #222;
   --color-accent: #f6a945;
-  --radius: 0px;
+  --radius: 15px;
   --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   --transition: all 0.3s ease;
 }
@@ -74,7 +74,7 @@ a:hover {
 
 #juncture .card-title {
   font-weight: 400;
-  padding: 1rem 0rem 0.5rem;
+  padding: 1rem 1.2rem 0.5rem;
 }
 
 .card-image {

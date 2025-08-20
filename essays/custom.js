@@ -90,16 +90,16 @@ function seekAudio(event, seconds, index = 0) {
   style.textContent = `
     .audio-player {
       background: #1e1e1e;
-      border-radius: 12px;
+      border-radius: 15px;
       padding: 20px 30px;
       width: 80%;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.7);
+      box-shadow: none;
       display: flex;
       flex-direction: column;
       gap: 20px;
       color: white;
       margin: 20px auto;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Roboto', sans-serif;
     }
     .controls {
       display: flex;
@@ -144,7 +144,7 @@ function seekAudio(event, seconds, index = 0) {
     }
     .progress {
       height: 100%;
-      background: #3c91e6;
+      background: #f6a945;
       width: 0%;
       border-radius: 4px;
       transition: width 0.1s linear;
@@ -306,7 +306,7 @@ function scanAndAddCueMarkers() {
       marker.style.top = 0;
       marker.style.bottom = 0;
       marker.style.width = '5px';
-      marker.style.background = 'rgba(255, 255, 0, 0.7)';
+      marker.style.background = '#f6a945';
       marker.style.left = `${pct}%`;
       marker.style.pointerEvents = 'none'; 
       marker.style.zIndex = 1;                    
