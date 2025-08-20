@@ -20,6 +20,10 @@
   --transition: all 0.3s ease;
 }
 
+::selection {
+  background: var(--color-accent);
+}
+
 body {
   font-family: var(--font-primary);
   font-weight: 200;
