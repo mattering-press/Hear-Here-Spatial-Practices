@@ -12,9 +12,9 @@
 :root {
   --font-primary: 'Poppins', sans-serif;
   --color-bg: #f9f9f9;
-  --color-card: #ffffff;
+  --color-card: #f6a945;
   --color-text: #222;
-  --color-accent: #891612;
+  --color-accent: #f6a945;
   --radius: 12px;
   --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   --transition: all 0.3s ease;
@@ -46,7 +46,8 @@ a:hover {
 
 #juncture .card {
   background: var(--color-card);
-  border-radius: var(--radius);
+  border-radius: 0px;
+  border: none;
   box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
@@ -58,6 +59,10 @@ a:hover {
 #juncture .card:hover {
   transform: translateY(-4px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+#juncture a {
+  color: #002afd;
 }
 
 .card-title {
@@ -93,11 +98,11 @@ audio {
   transition: background-color 0.2s;
 }
 .cue-marker:hover {
-  background-color: #ff0;
+  background-color: #f6a945;
 }
 
 .transcript {
-  background: #f5f5f5;
+  background: #bababa;
   padding: 1rem;
 }
 
@@ -129,7 +134,7 @@ audio {
 ve-footer {
   display: flex;
   justify-content: center;
-  background: #eee;
+  background: #f6a945;
   padding: 1.5rem;
   margin-top: 3rem;
   border-top: 1px solid #ddd;
@@ -149,14 +154,18 @@ ve-footer li img {
   display: inline-block;
 }
 
+ve-footer .main {
+  margin: 0px auto auto;
+  background-color: #f6a945;
+}
+
 ve-header {
   display: block;
-  background: linear-gradient(to right, #891612, #aa1c1c);
-  color: #fff;
+  background: linear-gradient(to right, white, #bababa);
+  color: black;
   padding: 3rem 1rem;
-  text-align: center;
   position: relative;
-  border-bottom: 4px solid #6e1010;
+  /*border-bottom: 4px solid #bababa;*/
 }
 
 ve-header::after {
