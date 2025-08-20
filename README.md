@@ -1,6 +1,6 @@
 .ve-style ./essays/custom.css
 
-.ve-header 'Hear Here: Spatial Practices' subtitle='Nirmal Puwar'
+.ve-header 'Hear Here: Spatial Practices' subtitle='Nirmal Puwar' background=none
 
 .ve-footer
     - Published by [![Mattering Press](https://www.matteringpress.org/wp-content/themes/matteringpress/img/mattering-press.png)](https://www.matteringpress.org/)
