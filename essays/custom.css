@@ -76,6 +76,11 @@ a:hover {
   text-decoration: underline;
 }
 
+#juncture a:hover {
+  color: #222;
+  text-decoration: underline;
+}
+
 #juncture .card-title {
   font-weight: 400;
   padding: 1rem 1.2rem 0.5rem;
