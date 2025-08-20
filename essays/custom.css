@@ -79,8 +79,8 @@ a:hover {
 #juncture .card-title {
   font-weight: 400;
   padding: 1rem 1.2rem 0.5rem;
-  text-decoration: overline;
   text-transform: lowercase;
+  border-top: 1.7px solid var(--color-accent);
 }
 
 #juncture h1, #juncture h2, #juncture h3, #juncture h4, #juncture h5, #juncture h6 {
