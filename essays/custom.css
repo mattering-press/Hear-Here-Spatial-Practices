@@ -12,10 +12,10 @@
 :root {
   --font-primary: 'Roboto', sans-serif;
   --color-bg: #f9f9f9;
-  --color-card: #f9f9f9;
+  --color-card: linear-gradient(to right, white, #bababa);
   --color-text: #222;
   --color-accent: #f6a945;
-  --radius: 12px;
+  --radius: 0px;
   --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   --transition: all 0.3s ease;
 }
@@ -47,9 +47,9 @@ a:hover {
 
 #juncture .card {
   background: var(--color-card);
-  border-radius: 0px;
+  border-radius: var(--radius);
   border: none;
-  /*box-shadow: var(--shadow);*/
+  box-shadow: none;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -63,12 +63,16 @@ a:hover {
 }
 
 #juncture a {
-  color: #002afd;
+  text-decoration: underline;
+}
+
+#juncture a:visited {
+  text-decoration: underline;
 }
 
 .card-title {
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: 400;
   padding: 1rem 1.2rem 0.5rem;
   color: var(--color-text);
 }
@@ -84,7 +88,7 @@ a:hover {
 
 .section1 h1 {
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: 500;
   margin: 2rem 0 1rem;
   border-left: 6px solid var(--color-accent);
   padding-left: 1rem;
