@@ -153,7 +153,7 @@ audio {
 ve-footer {
   display: flex;
   justify-content: center;
-  background: var(--color-card);
+  background: #eee;
   padding: 1.5rem;
   margin-top: 3rem;
 }
@@ -179,7 +179,7 @@ ve-footer li img {
 
 ve-header {
   display: block;
-  background: linear-gradient(to right, white, #bababa);
+  background: linear-gradient(to left, white, #bababa);
   color: #222;
   padding: 3rem 1rem;
   position: relative;
