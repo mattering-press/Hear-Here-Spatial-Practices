@@ -58,12 +58,13 @@ a:hover {
   flex-direction: column;
   overflow: hidden;
   margin-bottom: 2rem;
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  /*transition: transform 0.4s ease, box-shadow 0.4s ease;*/
+  transition: transform 0.4s ease;
 }
 
 #juncture .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 20px var(--color-accent);
+  /*box-shadow: 0 6px 20px var(--color-accent);*/
 }
 
 #juncture a {
