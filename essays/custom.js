@@ -125,7 +125,7 @@ function seekAudio(event, seconds, index = 0) {
     }
     button:focus {
       outline: none;
-      box-shadow: 0 0 8px #3c91e6;
+      box-shadow: 0 0 8px #f6a945;
     }
     .speed-btn {
       font-size: 18px;
