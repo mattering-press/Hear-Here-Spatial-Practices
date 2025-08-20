@@ -186,11 +186,11 @@ ve-header {
   padding: 3rem 1rem;
   position: relative;
   /*border-bottom: 4px solid #bababa;*/
+  transition: filter 0.3s;
 }
 
 ve-header:hover {
   filter: invert(100%);
-  transition: filter 0.3s;
 }
 
 ve-header::after {
