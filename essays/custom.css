@@ -225,8 +225,14 @@ ve-header .subtitle {
   color: #222;
 }
 
-.title, .subtitle {
-  color: #222 !important;
+.menu {
+  background-color: #bababa;
+  color: #222;
+  font-weight: 400;
+}
+
+.menu li {
+  text-transform: lowercase;
 }
 
 /* Responsive styles */
