@@ -21,7 +21,11 @@
   --transition: all 0.3s ease;
 }
 
-::selection, a::selection {
+::selection {
+  background: var(--colour-accent);
+}
+
+#juncture a::selection {
   background: var(--colour-accent);
 }
 
