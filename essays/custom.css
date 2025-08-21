@@ -192,6 +192,10 @@ ve-footer li img {
   background-color: none;
 }
 
+main>ul:first-of-type {
+  padding-top: 24px;
+}
+
 ve-header {
   display: block;
   /*background: linear-gradient(to right, #222, #bababa);*/
