@@ -83,16 +83,19 @@ a:hover {
 #juncture a {
   color: var(--colour-text);;
   text-decoration: underline;
+  cursor: crosshair;
 }
 
 #juncture a:visited {
   color: var(--colour-text);
   text-decoration: underline;
+  cursor: crosshair;
 }
 
 #juncture a:hover {
   color: var(--colour-text);
   text-decoration: overline;
+  cursor: crosshair;
 }
 
 #juncture .card-title {
