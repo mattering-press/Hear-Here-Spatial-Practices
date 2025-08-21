@@ -25,6 +25,10 @@
   background: var(--colour-accent);
 }
 
+a::selection {
+  background: var(--colour-accent);
+}
+
 body {
   font-family: var(--font-primary);
   font-weight: 200;
@@ -164,7 +168,7 @@ audio {
 ve-footer {
   display: flex;
   justify-content: center;
-  background: var(--colour-gray);
+  background: #eee;
   padding: 1.5rem;
   margin-top: 3rem;
 }
