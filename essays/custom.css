@@ -78,6 +78,10 @@ body {
   padding-top: 24px;
 }
 
+#juncture b, #juncture strong {
+  font-weight: 400;
+}
+
 #juncture h1, #juncture h2, #juncture h3, #juncture h4, #juncture h5, #juncture h6 {
   text-transform: lowercase;
   font-weight: 900;
