@@ -181,7 +181,8 @@ ve-footer li img {
 
 ve-header {
   display: block;
-  background: linear-gradient(to right, #222, #bababa);
+  /*background: linear-gradient(to right, #222, #bababa);*/
+  background-image: url(/media/spiral_gradient_wide.png);
   color: #222;
   padding: 3rem 1rem;
   position: relative;
