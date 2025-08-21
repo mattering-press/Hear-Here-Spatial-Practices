@@ -216,19 +216,6 @@ ve-header:hover {
   filter: invert(100%);
 }
 
-ve-header::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: url('https://www.transparenttextures.com/patterns/black-linen.png');
-  opacity: 0.1;
-  pointer-events: none;
-  z-index: 0;
-}
-
 ve-header > * {
   position: relative;
   z-index: 1;
@@ -248,6 +235,13 @@ ve-header .subtitle {
   font-size: 1.25rem;
   margin-top: 0.5rem;
   color: #222;
+}
+
+.title-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-left: 0;
 }
 
 .menu {
