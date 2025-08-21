@@ -7,7 +7,7 @@
 # @acknowledgements:
 */
 
-/* BODY */
+/* VARIABLES */
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
@@ -23,6 +23,8 @@
   --transition: all 0.3s ease;
 }
 
+/* BODY */
+
 body {
   font-family: var(--font-primary);
   font-weight: 200;
@@ -34,6 +36,10 @@ body {
 
 ::selection {
   background: var(--colour-accent);
+}
+
+::marker {
+  color: var(--colour-accent);
 }
 
 /* HYPERLINKS */
