@@ -49,6 +49,14 @@ a:hover {
   padding: 2rem 1rem;*/
 }
 
+#juncture .cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-auto-rows: 1fr;
+  row-gap: 2rem;
+  column-gap: 2rem;
+}
+
 #juncture .card {
   background: none;
   border-radius: var(--radius);
@@ -182,6 +190,8 @@ ve-footer li img {
 ve-header {
   display: block;
   /*background: linear-gradient(to right, #222, #bababa);*/
+  background-position: 30% 70%;
+  background-size: 100% auto;
   background-image: url(https://raw.githubusercontent.com/mattering-press/Hear-Here-Spatial-Practices/refs/heads/main/media/spiral_gradient_wide.png);
   color: #222;
   padding: 3rem 1rem;
