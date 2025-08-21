@@ -20,7 +20,7 @@
   --transition: all 0.3s ease;
 }
 
-::selection {
+::selection, ::selection a {
   background: var(--color-accent);
 }
 
