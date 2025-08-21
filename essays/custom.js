@@ -42,11 +42,11 @@ document.addEventListener('DOMContentLoaded', () => {
 function wrapTimecodesWithLinks() {
   const timecodeRegex = /\[(\d{2}):(\d{2}):(\d{2})\]/;
 
-  // Select all <strong> elements
-  const strongs = document.querySelectorAll('strong');
+  // Select all <p> elements
+  const strongs = document.querySelectorAll('p');
 
-  strongs.forEach(strong => {
-    const match = strong.textContent.match(timecodeRegex);
+  strongs.forEach(p => {
+    const match = p.textContent.match(timecodeRegex);
 
     if (match) {
       const [fullMatch, hh, mm, ss] = match;
@@ -58,8 +58,8 @@ function wrapTimecodesWithLinks() {
       a.setAttribute('onclick', `seekAudio(event, ${totalSeconds})`);
       a.textContent = fullMatch; // Show [00:10:13] as visible text
 
-      // Replace the timecode inside the <strong> with the <a>
-      strong.innerHTML = strong.innerHTML.replace(fullMatch, a.outerHTML);
+      // Replace the timecode inside the <p> with the <a>
+      p.innerHTML = p.innerHTML.replace(fullMatch, a.outerHTML);
     }
   });
 }
@@ -283,16 +283,16 @@ function scanAndAddCueMarkers() {
   const progressContainer = playerContainer.querySelector('.progress-container');
   if (!audio || !progressContainer) return;
 
-  const cueTags = Array.from(document.querySelectorAll('strong')).filter(strong =>
-    /^\[(\d{2}):(\d{2}):(\d{2})\]$/.test(strong.textContent.trim())
+  const cueTags = Array.from(document.querySelectorAll('p')).filter(p =>
+    /^\[(\d{2}):(\d{2}):(\d{2})\]$/.test(p.textContent.trim())
   );
 
   function addMarkers() {
     const duration = audio.duration;
     if (!duration || isNaN(duration)) return;
 
-    cueTags.forEach(strong => {
-      const match = strong.textContent.trim().match(/\[(\d{2}):(\d{2}):(\d{2})\]/);
+    cueTags.forEach(p => {
+      const match = p.textContent.trim().match(/\[(\d{2}):(\d{2}):(\d{2})\]/);
       if (!match) return;
 
       const [_, hh, mm, ss] = match.map(Number);
@@ -301,7 +301,7 @@ function scanAndAddCueMarkers() {
 
       const marker = document.createElement('div');
       marker.className = 'cue-marker';
-      marker.title = strong.textContent;
+      marker.title = p.textContent;
       marker.style.position = 'absolute';
       marker.style.top = 0;
       marker.style.bottom = 0;
