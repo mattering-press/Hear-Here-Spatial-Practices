@@ -11,30 +11,31 @@
 
 :root {
   --font-primary: 'Roboto', sans-serif;
-  --color-bg: #f9f9f9;
-  --color-card: linear-gradient(to right, white, #bababa);
-  --color-text: #222;
-  --color-accent: #f6a945;
+  --colour-bg: #f9f9f9;
+  --colour-gray: #bababa;
+  --colour-card: linear-gradient(to right, var(--colour-bg), var(--colour-gray));
+  --colour-text: #222;
+  --colour-accent: #f6a945;
   --radius: 15px;
   --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   --transition: all 0.3s ease;
 }
 
-::selection, ::selection a {
-  background: var(--color-accent);
+::selection {
+  background: var(--colour-accent);
 }
 
 body {
   font-family: var(--font-primary);
   font-weight: 200;
   margin: 0;
-  background-color: var(--color-bg);
-  color: var(--color-text);
+  background-color: var(--colour-bg);
+  color: var(--colour-text);
   line-height: 1.6;
 }
 
 a {
-  color: var(--color-accent);
+  color: var(--colour-accent);
   text-decoration: none;
   transition: var(--transition);
 }
@@ -72,21 +73,21 @@ a:hover {
 
 #juncture .card:hover {
   transform: translateY(-5px);
-  /*box-shadow: 0 6px 20px var(--color-accent);*/
+  /*box-shadow: 0 6px 20px var(--colour-accent);*/
 }
 
 #juncture a {
-  color: #222;
+  color: var(--colour-text);;
   text-decoration: underline;
 }
 
 #juncture a:visited {
-  color: #222;
+  color: var(--colour-text);
   text-decoration: underline;
 }
 
 #juncture a:hover {
-  color: #222;
+  color: var(--colour-text);
   text-decoration: overline;
 }
 
@@ -94,7 +95,7 @@ a:hover {
   font-weight: 800;
   padding: 1rem 1.2rem 0.5rem;
   text-transform: lowercase;
-  border-top: 1.7px solid var(--color-accent);
+  border-top: 1.7px solid var(--colour-accent);
 }
 
 #juncture h1, #juncture h2, #juncture h3, #juncture h4, #juncture h5, #juncture h6 {
@@ -114,7 +115,7 @@ a:hover {
   font-size: 2rem;
   font-weight: 500;
   margin: 2rem 0 1rem;
-  border-left: 6px solid var(--color-accent);
+  border-left: 6px solid var(--colour-accent);
   padding-left: 1rem;
 }
 
@@ -127,7 +128,7 @@ audio {
   transition: background-color 0.2s;
 }
 .cue-marker:hover {
-  background-color: #f6a945;
+  background-color: var(--colour-accent);
 }
 
 .transcript {
@@ -163,7 +164,7 @@ audio {
 ve-footer {
   display: flex;
   justify-content: center;
-  background: #eee;
+  background: var(--colour-gray);
   padding: 1.5rem;
   margin-top: 3rem;
 }
@@ -193,7 +194,7 @@ ve-header {
   background-position: 30% 70%;
   background-size: 100% auto;
   background-image: url(https://raw.githubusercontent.com/mattering-press/Hear-Here-Spatial-Practices/refs/heads/main/media/spiral_gradient_wide.png);
-  color: #222;
+  color: var(--colour-text);
   padding: 3rem 1rem;
   position: relative;
   /*border-bottom: 4px solid #bababa;*/
@@ -239,8 +240,8 @@ ve-header .subtitle {
 }
 
 .menu {
-  background-color: #bababa;
-  color: #222;
+  background-color: var(--colour-gray);
+  color: var(--colour-text);
   font-weight: 400;
 }
 
