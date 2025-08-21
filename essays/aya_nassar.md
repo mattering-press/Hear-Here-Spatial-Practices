@@ -75,7 +75,7 @@ So, this is why I was drawn to dust. I think dust is an interesting material to 
 
 _\[organ playing in the background\]_ We've just walked through the nave to the Chapel of Industry, where there are these tall pillars of concrete leading up to this vast roof. Aya, having read your work and thought about how this space is constructed, I often wonder what Aya thinks of when she considers the concrete here or elsewhere.
 
-**\[00:05:35\]** 
+\[00:05:35\]
 
 **AYA NASSAR:** So, concrete is really interesting in relation to dust. It almost serves as the opposite of dust because concrete in the way that is used in modern architecture—and even cement broadly, in the way it’s used in modern city planning, the way it goes into everywhere, like how we create spaces, plans, architectures—what it promises is an element of endurance, unlike dust.
 
@@ -95,7 +95,7 @@ As we look on the city today, it's a different moment. We can see new towers tha
 
 **AYA NASSAR:** That's a long conversation, and there are many parts to that. So, let’s think first about the Cairo, Coventry and Newcastle connection. These are three cities that are briefly stuck within that emotion of desire and disappointment, pride and disappointment.
 
-**\[00:10:12\]** 
+\[00:10:12\]
 
 There's an interesting thing that goes back to the Second World War that happened in Cairo. I was working on an archive of an architect, an urban planner. He published a paper—sort of a magazine article—after the Second World War, which reflected his disappointment that Cairo wasn't destroyed in the war.
 
@@ -123,7 +123,7 @@ Ring roads do different and interesting things in how you experience the city, e
 
 And that is not a past story. Until the present day, there are desires to create these highways that cut through the fabric of the city. There are always questions about what gets destroyed in the wake of that. In the case of Cairo, it is trees and cemeteries. I very well understand also that in the case of Coventry, there were also trees, neighbourhoods and older buildings. But as you say, the first thing that I saw when I came to Coventry from the airport by coach was the ring road. I think a couple of the first things you see are the Coventry Library and then the old little houses stuck between the ring road and the library.
 
-**\[00:16:32\]** 
+\[00:16:32\]
 
 **NIRMAL PUWAR:** In thinking about the global circulation, the flows and looking out, as well as looking into the Cathedral from this Chapel of Industry, what do you think a Cathedral could become for future making?
 
@@ -135,7 +135,7 @@ So having this space that welcomed that process—that staged films, documentari
 
 **NIRMAL PUWAR:** Yes, thinking about the destruction, as you say, at a genocide scale in Gaza, and we've been trying and building solidarity so that we open ourselves to a reconciliation that's beyond here, but also connected to here…
 
-**\[00:19:22\]** 
+\[00:19:22\]
 
 Now we’re in the archive. We’re surrounded by books, maps, and photos. Aya, you often think with and alongside artists. If there is no limitation, what would you like to intervene with, in this space or in the nave or in the many chapels?
 
@@ -151,7 +151,7 @@ And we know, of course, that archives are problematic. What people decide to kee
 
 **NIRMAL PUWAR:** Yes, you have a very expanding notion of archives. As you said, you work with different elements, and that includes buildings, infrastructures, bodies, as well as paper reconstituted. So, for you, what can an archive become?
 
-**\[00:24:05\]** 
+\[00:24:05\] 
 
 **AYA NASSAR:** I've been recently rethinking my fascination with the archive itself, to think about an archive not as an accumulation of traces—no matter how incomplete they are—but as an index, in the sense that it offers an index of relations, but also an indexical of all the relationships that brought this archive into being.
 
@@ -165,7 +165,7 @@ What is fundamental here is the discomfort that we find in the archive. There's 
 
 **NIRMAL PUWAR:** Being an advocate, constituting and maybe following the traces of the index is fascinating because this podcast was going to be called Index. When I've shared the word index at events, people often get very technical and start arguing over which index, whereas I actually think of it in the sense of my influences from ethnomethodology, whereby there's an indexicality to life.
 
-**\[00:27:26\]** 
+\[00:27:26\]
 
 And while we've been here—as you said—your eyes are everywhere, and we almost didn’t begin the podcast on time because we were just looking through what's on the shelf. I pulled down this book on John Hutton for you, and the reason I did was because although there's a lot of published work on the glass, the artist, the architect—in fact, most of the material focuses on that part of the Cathedral’s life—what often goes unexamined is how these artists, many of them, were also in Egypt.
 
@@ -181,7 +181,7 @@ And as we've opened this book, you're looking at page 46. What's come to your at
 
 So many soldiers came to Egypt and were stationed there. Also, it was a time in which there was a lot of persecution in Europe, so a lot of artists left Europe and came to places where they could practice things with a lot less censorship, and one of the central sites was Cairo at that time. So, there was a strong surrealist movement in Egypt. It was a place of exile where people could congregate, perhaps experiment freely outside of censorship. So, it was a cosmopolitan hub and not just a victim of colonisation. This is where many intellectuals and artists gathered.
 
-**\[00:31:44\]** 
+\[00:31:44\]
 
 So, I started flipping through the pages because, as we started talking about dust, I mentioned that there's no British soldier who came to Egypt during the war who didn't complain about the dust. This was something I found repeatedly across all the archival notes. Indeed, yeah, Hutton didn't disappoint. At some point, he made a comment about the dust storm and the dust, and what I thought was interesting was how he described airborne dust as a concealing carpet.
 

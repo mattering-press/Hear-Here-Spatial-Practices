@@ -87,7 +87,7 @@ And of course, I have photos of each of the materials that I've then catalogued 
 
 **NIRMAL PUWAR:** It's like an archive of archives, and you're doing at least two things: one is looking for the gaps, and that's enough of a job, but then you have the additional burden of continuously having some kind of voice here saying: is it legitimate? is it legitimate? And then you use the techniques from history that, you know, are kind of authorial methods for legitimation. So, you're doing both at the same time, all the time. It's quite a burden, I imagine.
 
-**\[00:14:49\]** 
+\[00:14:49\] 
 
 **HOLLY COOPER:** Yes, I didn't quite realise going into my PhD how complicated, perhaps unnecessarily so, this kind of work would be. I feel like this is something very unique to black historians doing black history that perhaps white historians, for example, doing black history don't have to contend with. I know several white historians that when I tell them about my methods, are kind of confused as to why I feel like I have to take all these extra steps. And there's this kind of naivety there, around the contentions of being black and doing black history, because until relatively recently, it was considered that black people do not have the value neutrality necessary to do their own history because they're part of it. That’s the sort of colonial legacies of doing history that we see even today; it's this idea that you need to be away from the subject area to be able to really write an official history on something. That’s something that I didn't quite realise coming into the PhD, but something that I now am very much familiar with, and it's unfortunately the reality.
 
@@ -95,7 +95,7 @@ And of course, I have photos of each of the materials that I've then catalogued 
 
 **HOLLY COOPER:** So, I think people are sometimes surprised when I present parts of my work at conferences that have gone under the radar in our understanding of black Britain. I wrote a whole chapter about town twinning, and I'm talking about its colonial legacies and how it's very much ingrained with this sort of post-colonial desire to still have influence over the Global South.
 
-**\[00:16:57\]** 
+\[00:16:57\]
 
 I think when people see me as a young black person doing this work, they're automatically—I don't mean to say everybody; I just mean sometimes especially when I meet more senior historians in my field—they sort of approach me and my work with this—sometimes it's just genuine curiosity and they are willing to hear what I have to say—but sometimes I feel like they approach me like I've offended them somehow. There's this real idea that there should be no more new history, that everything really should now be covered.
 
@@ -107,7 +107,7 @@ It kind of straddles this idea of being a historic city, but also this kind of n
 
 **NIRMAL PUWAR:** Are there any particular figures—I know, you don't have an elite notion of history, so it's community-based—but are there any figures that you especially like to share with us from your research?
 
-**\[00:21:00\]** 
+\[00:21:00\]
 
 **HOLLY COOPER:** Yes, so looking at a well-known end of the spectrum for black Caribbean figures or African Caribbean figures, we have Paul Stevenson. Paul Stevenson is mostly known for his involvement in the 1963 Bristol Bus Boycott and the success around that. Of course, he was in the US for a while, and he was a strong, principled advocate for civil rights and for black political agency and for people to have their own spaces and to have this heightened political awareness. He was in Coventry from 1967 to 1972, and he was the first Community Relations Officer at Coventry's Community Relations Council (CRC), which was the second of its kind in England.
 
@@ -123,7 +123,7 @@ From what my research would suggest, he wasn't an exception to the rule. There w
 
 I've worked with Viva relatively recently, and she is still such an inspiring person. Just being a principled and outspoken young black woman during this period alongside a community largely led by black men, I can imagine, would have been difficult to say the least. But she really took the Centre under her wing, and I'm sort of in awe of the history that I found from speaking to her, but also from how she was reported in the newspapers.
 
-**\[00:28:26\]** 
+\[00:28:26\]
 
 Lastly, to talk a little bit about a thread that I found throughout my research, which was kind of surprising for me, actually, would be the work of Canon Peter Berry. Peter Berry was a white middle-class man who was a minister. He was a religious man, but it was reported as early as the 1960s, all the way through to the 90s, which is my research scope, that he was consistently outspoken against racism and especially against anti-black racism. I was curious to see how he was encouraged to voice these opinions, as I feel he wouldn't have been afforded the same platforms in many other spaces. I think he was privileged in his position to have these platforms. He did not misuse them at any point. He was speaking about unemployment and poverty as a key factor behind racism and racist attacks in Coventry and the scarcity of work, housing and physical spaces as a real antagoniser between the “white native” community and this newer, larger black community.
 
@@ -141,7 +141,7 @@ You’re so methodologically creative. You do the historians' work of dotting ev
 
 I often think about my companion thinkers. If I were to think of Holly, I would think of you working through these multiple archives and how you work against the grain of the negative assembly. And if you were to do something in the cathedral, even just in a kind of fantasy land, what would you like to do?
 
-**\[00:34:43\]** 
+\[00:34:43\]
 
 **HOLLY COOPER:** So, in the summer of 1985 in Coventry, there was a festival called Exodus 85 and it was constructed in four parts, so it was through arts and culture, performance, the creative word, but also through history, political alignments.
 

@@ -81,7 +81,7 @@ So, we invited Heba as a Palestinian, academic, and artist to respond to the _Ho
 
 **NIRMAL PUWAR:** Thank you for sharing that, and it's really important that we have these reflections on this slide collection connected to this vision of a _House of Hope_, and hope is, as you say, on the other side of despair. And the coin is really falling right now in the contemporary moment, away from hope, so much so. Reza, you've also had the slides digitised. Do you want to come in at this point?
 
-**\[00:09:15\]** 
+\[00:09:15\] 
 
 **REZA HAKIMINEJAD:** Yes, thank you, Nirmal. When we looked at the slide tray and we went through the scripts that were there, we also found a lot of correspondence between Coventry cathedral, interestingly, and the _House of Hope_ initiative and peoples in Palestine, in Shefa-Amr, in what is called in the paper, in Israel but it was part of the state of Israel since 1948.
 
@@ -127,7 +127,7 @@ Then Mahsa and Reza started working on the introduction part of our book, and I 
 
 Is there something you'd like to share from these incredible paintings or the recurring themes in the paintings?
 
-**\[00:23:03\]**
+\[00:23:03\]
 
 **HEBA SABBOUBEH:** Thank you, Nirmal. If you are aware of my paintings, I've been asked this question a lot, like why there are always women with a yearning look. I don't know, maybe it is reflecting how I feel at a certain moment.
 
@@ -175,7 +175,7 @@ I think those paintings and those words are very powerful, and they are very emo
 
 And I'm looking at one of these pages, Heba, that says "Women in Black". And we mustn't forget, not only have you, as Reza pointed out, done the paintings, but you've also written the words. Is there something you'd like to share about the process of working on "Women in Black"?
 
-**\[00:33:54\]**
+\[00:33:54\]
 
 **HEBA SABBOUBEH:** So, this painting, as are many others, is documenting a certain moment, a certain memory that I passed through. In this painting, you can see the lady with a sad look in her eyes. Why is that? Because of all that this lady encountered. It is very difficult to describe a painting, because usually paintings describe themselves. But as you can see here in the background, there is that little girl, which represents my thoughts when I was a child, what I think about life.
 
@@ -217,7 +217,7 @@ But the painting itself becomes a tool for political imagination, of imagining h
 
 So, in a while, we will go upstairs… We'll walk up the stairs to the Chapel of Industry, which was designed for the cathedral to have a link with the city, always looking out, looking in, and working across the city. There, we will reflect together on what else one could dream of in the cathedral, again, alongside a recognition of the political histories and the political displacement.
 
-**\[00:47:22\]** 
+\[00:47:22\]
 
 Right, we've moved, as we can hear from the echo from the archives, up to the Chapel of Industry. Now we're all standing amongst each other at the central point.
 
@@ -237,7 +237,7 @@ Writing this, I feel like I'm living the trauma again. I'm sorry, Palestine. I'm
 
 **NIRMAL PUWAR:** Thank you for writing those words and reading them and sharing them with us here today. This leads me to think of so much, as well as the fact that we're in this Chapel of Industry, and perhaps there are some reflections either of you want to share on what the cathedral could become in these current times.
 
-**\[00:52:34\]** 
+\[00:52:34\]
 
 And how would you like to intervene, perhaps in the building, the archives, or the ruins? And as architects, is there anything in particular that comes to your mind or you'd like to dream up for the cathedral?
 

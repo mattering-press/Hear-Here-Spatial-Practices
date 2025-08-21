@@ -63,7 +63,7 @@ _\[construction noise in the background\]_
 
 You have a special interest in, as you say, work made from the hand, and textiles as well. You mentioned that your father worked in textiles in the north of England when he migrated, and recently, you've embarked on thinking about textiles and colonial histories.
 
-**\[00:04:16\]** 
+\[00:04:16\]
 
 **BHARTI PARMAR:** My father came to this country in 1962 and started working as a textile industrial mill worker in Bradford and then in Leeds. And so, I've always grown up in urban environments. In 2021, I was approached by the British Textile Biennial. That’s a festival which runs every two years in Lancashire's post-industrial mill towns, with the hub being Blackburn.
 
@@ -81,7 +81,7 @@ What’s really interesting to me as an artist is the cycle of reuse, recycling,
 
 **NIRMAL PUWAR:** Bharti, you mentioned how certain aspects of the Cathedral, such as the fabric and the art, have been so influential and inspirational for you. Right now, we're standing in front of the _Plumb Line_.
 
-**\[00:09:25\]** 
+\[00:09:25\]
 
 **BHARTI PARMAR**: The _Plumb Line_ is one of my favourite pieces of work here. So, the plumb line is a mechanical device to determine whether a building is straight. As a printmaker, I've always been interested in geometry, shapes and patterns. Within this _Plumb Line_, we're looking at a series of metal shapes and pieces. I don't know how many there are—probably 200 or 300—all in different shapes of metal, different colours, patinated bronzes, browns, silvers, all made to look like a cityscape on a plinth.
 
@@ -89,7 +89,7 @@ I used to come in here regularly to look at the patterns and use those as inspir
 
 **NIRMAL PUWAR**: Bharti, you've always been drawn to these pennies on the floor, and we can see at least three where we are standing.
 
-**\[00:10:59\]** 
+\[00:10:59\]
 
 **BHARTI PARMAR**: I've been drawn to the pennies on the floor because I'm really interested in detail, and often, things that people miss are what I make work about. I'm particularly interested in the work of the hand, as I've mentioned before, but also in the quietness, slowness, and poetics of repair.
 
@@ -125,7 +125,7 @@ Here, we're standing on copper and brass text embedded in the floor. Coventry ha
 
 You have been working so closely with botany—the history, the labels, especially in your recent work—and linking it with colonialism.
 
-**\[00:18:34\]** 
+\[00:18:34\]
 
 **BHARTI PARMAR:** I'm really excited to learn that the Cathedral has this initiative, and the _Live and Dye Garden_ is an inspiring title.
 
@@ -135,7 +135,7 @@ My thesis is quite simple. I'm looking at all plants with an Indian nomenclature
 
 **NIRMAL PUWAR:** So, we're here in the Needleworkers' room now. It’s under the nave, next to the archives room. Right in front of us is a table that still has pins, threads, fabric, and scissors on it. We also have a photograph of women sitting around the table, stitching away, having cups of tea, and they seem to be repairing kneelers.
 
-**\[00:20:41\]** 
+\[00:20:41\]
 
 **BHARTI PARMAR:** This picture has come off the notice board. It's dated June 10, 1995. What we're looking at is a photograph of women from the sixties and seventies, probably ten of them around a table, sewing, mending, having a cup of tea, having fellowship and doing work.
 

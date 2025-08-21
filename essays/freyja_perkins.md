@@ -57,7 +57,7 @@ Going through the pages, I did see some relief illustrations of the Cathedral na
 
 It was written around the late 80s, and it was way ahead of its time. It was fully functional and written particularly for any partially sighted or blind visitors, so they could fully access and realise the potential of the space around them.
 
-**\[00:03:11\]**
+\[00:03:11\]
 
 **NIRMAL PUWAR:** So, through our searches in the archives downstairs, as well as online, we found that the models were part of a project titled _Cathedrals through Touch and Hearing_, which was initiated in 1988 by Professor John Hall, who was a radical theologian based at Birmingham University. John Hall had actually completely lost his sight by 1983, so he was completely blind when he was working on this project.
 
@@ -83,7 +83,7 @@ We've got a digital copy of both of those tapes, and it’s really extraordinary
 
 **NIRMAL PUWAR:** Shall we walk over to the model?
 
-**\[00:09:48\]**
+\[00:09:48\]
 
 **MATTHEW HORSPOOL:** Yeah, let's do that.
 
@@ -101,7 +101,7 @@ I know I'm not describing this very well, but the audio would be much better tha
 
 We walked downstairs under the nave, and we're in the archives. Here is a folder, which we found in the catalogue. Not everything's catalogued here. When we searched the name of Hall, we located a folder for this project, and we've been going through this correspondence. It has yet to be made available to Matthew, so it needs to be scanned. Freyja and I have been going through it. You’d like to share some of the correspondence, Freyja?
 
-**\[00:13:47\]**
+\[00:13:47\]
 
 **FREYJA PERKINS**: The first piece is dated the 7<sup>th</sup> of February 1985. It's from the Very Reverend Colin Semper. It says, “Dear Colin, many thanks for yours of 7th January. A number of cathedrals have offered themselves as guinea pigs for our cathedral project, but Coventry Cathedral is the one which is most convenient to us. It's very kind of you to make this offer, and we accept. Coventry is not only handy to Birmingham but is interesting to blind people in various ways and has the advantage of supporting people like yourself and your colleagues and assistants.” That was one of the first correspondences that John had.
 
@@ -111,7 +111,7 @@ We walked downstairs under the nave, and we're in the archives. Here is a folder
 
 **NIRMAL PUWAR:** It's from Professor Hall.
 
-**\[00:15:27\]**
+\[00:15:27\]
 
 **FREYJA PERKINS:** Yes, this is from Professor Hall himself. It says, “Dear Provost, I've had an interesting letter from the Dean of Salisbury, Sydney Evans, which, although most cordial and sympathetic, does not approve of the idea. He's inclined to think that it would be sufficient if cathedral guides were appraised of the situation and were prepared to give special human warmth and information to blind visitors. He does not think the expense of the details of the project would be worthwhile.”
 
@@ -135,7 +135,7 @@ I would really like to find funding. It probably won't go ahead unless we find f
 
 We were talking about making the correspondence accessible to the blind earlier. This correspondence was largely between sighted people, except for John Hall, who was blind. Back then, he probably had someone read the correspondence to him, but I’m sure he would have typed his replies on a typewriter and sent them back. So, it’s not really surprising that the original documents aren’t accessible today. But the question is, how do we make it accessible in an engaging way?
 
-**\[00:21:30\]**
+\[00:21:30\]
 
 We’ve been thinking about doing some kind of dramatic performance—bringing the correspondence to life. For example, having one person read as Professor Hall, another as Provost Petty, and performing some of the letters aloud. We could also bring in people who actually remember when the project was first launched.
 
@@ -151,7 +151,7 @@ The original project was led by a blind person, Professor Hall, and two Provosts
 
 **NIRMAL PUWAR:** Yes, that's absolutely critical. Now, sound is so significant in your life in many ways. You sing in the choir, and you're a musician. You've led a lot of podcasts yourself. Would you like to talk about how there are these different scales of sound in your life, Matthew?
 
-**\[00:25:14\]** 
+\[00:25:14\]
 
 **MATTHEW HORSPOOL:** I mean, sound takes the place of vision. I suppose a lot of senses do—sound, touch, smell, taste—all sort of compensate. That's not to say that I've got supersonic hearing or anything like that, because I definitely haven't. But I'm certainly in tune more with those senses.
 
@@ -171,7 +171,7 @@ It is not just about inviting a blind person in to feel the model—that might b
 
 **NIRMAL PUWAR:** Thank you, Matthew. You mentioned embeddedness and the welcome that we provide, and we started our podcast at the welcome desk. So, Freyja wants to share something that Dr Hall's project left for the staff at the reception, and what's the title of this booklet?
 
-**\[00:30:55\]**
+\[00:30:55\]
 
 **FREYJA PERKINS:** So, the title of this small yellow booklet is _The Reception of Your Visually Impaired Visitor and the Use of the Touch and Hearing Centre_.
 
@@ -185,7 +185,7 @@ I think all three of us agreed that it's not just this physicality that we want 
 
 **MATTHEW HORSPOOL:** As I said, it's a snapshot of attitudes at the time. That’s still a snapshot of an attitude today, that somebody at the welcome desk would be sighted. I think there are reasons behind that. I don't think that's an entirely unfounded attitude, but yes, it’s important to make sure that all of the resources are available in some sort of accessible format.
 
-**\[00:34:14\]** 
+\[00:34:14\]
 
 **NIRMAL PUWAR:** You both had plans for the kind of text that people could receive at the welcome desk, possibly reproducing some handouts. I don't know if you wanted to talk about that, Matthew? And you had a really interesting idea of possibly, on the day we launch this model and the whole project, playing some of the sound in the cassette through the PA system?
 

@@ -63,7 +63,7 @@ So, my first question for you, Catherine, is given that you engage with art, spa
 
 _\[distant voice echoing in the background\]_
 
-**\[00:04:17\]** 
+\[00:04:17\]
 
 **CATHERINE HAHN**: Lovely. Obviously, you know the history, but for me it was kind of new seeing it and then reading about it. So, maybe if I just begin by giving an idea of what I think was happening and then maybe what these restrictions are.
 
@@ -87,7 +87,7 @@ And one of the things that I was thinking about is this big shift in the way we 
 
 One of the things that I found extraordinary about Notre Dame in the 13th century was the colour work from its early days. The Middle Ages cathedral was in colour, both in the interior and the exterior. When we think of it now—if you've been to Notre Dame—it's quite sort of grim and Gothic in feel, because that colour's gone and quite weighted in terms of the stone. But it's also about how places do transmogrify and change across time. I think that one of the things about this Cathedral is that in order for it to be this living space, it needs to actually be open not to being only Basil Spence's design, but to being a space that speaks and lives with the city, that engages with the new ideas, with what's missing from the past and finds ways of being experimental.
 
-**\[00:11:37\]** 
+\[00:11:37\]
 
 I was going to show you this picture of one of my favourite architects, Demas Nwoko, whom I don't know if you know, but the Tate Modern is going to have an exhibition of his work and the work of other African modernists, either later this year or next year. He’s a sculptor primarily, and then began making these religious sites. The Dominican chapel is his most famous work in Ibadan.
 
@@ -103,7 +103,7 @@ So, if you could imagine other artists in the space, who would these be for you,
 
 **CATHERINE HAHN**: Yes, and I think what you've just said is really interesting as well. The building was recent in terms of cathedrals, and even with that notion of its fragility, it can lead to new possibilities and more makings. Rather than seeing it as a closed-down architectural or artistic monument, a kind of untouchable or sacred space, we can look at it as a breathing Cathedral. Not just to have artworks coming in for very short exhibitions, but to think about how you actually build new spaces into the design and new ways of treating things that are gradually falling apart slowly, you know, possibilities rather than moments of collapse.
 
-**\[00:15:33\]** 
+\[00:15:33\]
 
 I brought two artists, and I brought them because they're modernists. If the Cathedral would just take a little bit longer to make and a bit of time to think through its futures, these people, you can imagine, can give us different kinds of opportunities within the space, and one of them is Eva Frankfurther _\[page flipping\]_. She's an artist who's around very much at the same time, so 1930 to 1959. She had an incredibly brief life, 29 years. She tragically killed herself.
 
@@ -131,7 +131,7 @@ We know that Graham Sutherland’s tapestry was woven by women in France; I know
 
 **NIRMAL PUWAR:** No.
 
-**\[00:20:49\]** 
+\[00:20:49\]
 
 **CATHERINE HAHN**: So, he is from Guyana and became really important in the Caribbean art movement in Britain. We may know him more in art school teaching, because he was very interested in Amerindian experiences in Guyana and the idea of time and how time moves in art. Much of the work that has been shown recently speaks to those kinds of artworks.
 
@@ -155,7 +155,7 @@ These images don’t do justice to his work at all. When you see Williams’ wor
 
 **NIRMAL PUWAR:** Yes, you mentioned the restrictions in the Cathedral's design and the significance of these other artworks, as well as what they can bring to the space. That's why I was thinking this could be an incredible conversation, a global conversation of colour, music, poverty, and political mobilisation. So, for you, these are some of the opportunities you see that are offered from inside the Cathedral, perhaps.
 
-**\[00:26:02\]** 
+\[00:26:02\]
 
 And I know you've mentioned the possibilities offered by the chairs as well, and a sort of hands-on engagement. Could you share what you're thinking there?
 
@@ -175,7 +175,7 @@ These ones seem kind of almost pedestrian, but then they're not. There's a nice 
 
 **NIRMAL PUWAR:** It does. The Cathedral team reconfigures the space of the chairs. It could be a circle, a row, or it could be that you're staring out at the city. So, yes, I'm sure we could have a long conversation about the chairs, and we could even get into some experiments, couldn't we? But there are other configurations you've been considering in terms of engagements and the possibilities. Do you want to share some of those with us?
 
-**\[00:29:40\]** 
+\[00:29:40\]
 
 **CATHERINE HAHN**: I mean, one of the things that I felt right from the beginning, and I was looking at some of the old news reels—the boulder from Bethlehem. And it was really just a quick observation that there was this advertising of the fact that it was hands-on, so that people came and they laid their hands on the font. There was something quite striking to me about the idea of the big monolith building, and then the notion that you have a personal connection, a connection that also brings people closer to God, in terms of a religious space. But also, the idea of a space of interaction, of physical interaction, which I thought was really powerful in its origins.
 
@@ -207,7 +207,7 @@ I think it was last year we did an event here, part of the Pod's _Outside(R) Zin
 
 So, the stone becomes this planetary time, but also a geopolitical touchstone today. That is one possibility. I know you have other thoughts on the whole reconciliation mission, peace and reconciliation that have come out of the history and the story of the Cathedral.
 
-**\[00:38:55\]** 
+\[00:38:55\]
 
 **CATHERINE HAHN**: Yes, I think, in terms of what's happening in Gaza now, it could never be more prescient _\[voice echoing in the background\]._ I was really pleased to see that there was a statement made by the Cathedral about what's happening in Gaza and mentioning Trump as well, which shows you how live and how important it is to touch on these issues. Both your work and others work that I'm going to mention— I'm working towards the Herbert now— has done in terms of reconciliation is acknowledging that reconciliation— which is one of the Cathedral's aims, and very much in South Africa, obviously, with the Truth and Reconciliation Commission— that it doesn't come without real discomfort, pain and real acknowledgement. It is not a one-off event. It is this constant, as you say, retouching and going back to these experiences, over and over again and living with discomfort.
 
@@ -219,7 +219,7 @@ It was the first big black art group exhibition, saying that people here are not
 
 **NIRMAL PUWAR:** What’s this?
 
-**\[00:41:35\]** 
+\[00:41:35\]
 
 **CATHERINE HAHN**: This is Claudette Johnson's work of a woman—[nude figure arms overhead, with an earring](https://www.nocolourbar.org/claudetter-johnson). These were pointing out some of the problems with modernism. It kind of reminded me of the masculinist, Western discourse, Picasso in particular and his imagery of women in objectification. So, she was making this work, which is very much speaking to the embodied presence of a woman, a black woman, and those absences in art spaces.
 

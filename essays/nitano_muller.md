@@ -93,7 +93,7 @@ That's why I say I've been stretched because I come from South Africa—the rain
 
 **NIRMAL PUWAR:** So, you said you grew up with race being so marked and so present. Coventry is a very mixed city. How have you found race, in terms of being the first visibly black Canon in the Cathedral? What is it like to be the first, for you?
 
-**\[00:09:29\]** 
+\[00:09:29\]
 
 **NITANO MULLER:** I see myself as a part of a much bigger picture and much bigger work that has been happening both at the Cathedral and also in the city, and perhaps in the world. I think there has been and continues to be a major paradigm shift around race dynamics.
 
@@ -105,7 +105,7 @@ So, I know that my presence in the Cathedral as, you say, the first visibly blac
 
 **NIRMAL PUWAR:** This moving experience you had as a young person seeing a person of colour, a black priest, could you still feel it? I think when you were describing it, I could see it in your eyes. Could you share that a little bit with us?
 
-**\[00:11:54\]** 
+\[00:11:54\]
 
 **NITANO MULLER:** So, back in Cape Town, communities were designated as “white only” and “black only” areas and so on. My family, both paternal and maternal, comes from Simon’s town, which was designated as an all-white area. It is a gorgeous coastal part of the Cape, at the southernmost tip, in fact. My family was forcibly removed to a township called Ocean View, which was just hills of sand.
 
@@ -133,7 +133,7 @@ But I know that people like me have contributions to make on a global scale. I d
 
 **NIRMAL PUWAR:** You mentioned black liberation theology being central to your learning and your practice. How do you see yourself combining it with the Cross of Nails mission, for instance?
 
-**\[00:19:44\]** 
+\[00:19:44\]
 
 **NITANO MULLER:** Again, I owe a lot of that to the archbishop because he planted those seeds. My own formation was influenced by black theologians, some of whom have become prominent bishops in the Anglican church. In fact, one of them, the Bishop of St. Shekhabe, was the first black woman to preach at the Lambeth Conference, a once-every-decade gathering of bishops and primates from around the world.
 
@@ -155,7 +155,7 @@ So, it's one thing to have courageous conversations. That's all going well, but 
 
 **NIRMAL PUWAR:** I wondered if we could return back to your geography and history. Coventry has radical traditions as well as right-wing traditions. As you know, the 1970s Two-tone was formed not out of the blue, but because there was so much racism on the streets. In this project, I've been kind of delving into the multicultural experiments that were happening in the Cathedral, and they did use the word experiments a lot in the 1960s and 1970s.
 
-**\[00:25:48\]** 
+\[00:25:48\]
 
 I'm sure I've told you before that Martin Luther King had a special service in the nave, which was packed with a thousand people in 1968. Here are just some pages of this magazine that used to be published by the Cathedral, called Coventry Cathedral Network. This one is from the 1970s _\[flipping through pages\]_ and you’ll see, Nitano, there’s a piece by Reverend Peter Berry, who was the community relations lead at the Cathedral. The title is “Race relations and Christian responsibility”.
 
@@ -171,7 +171,7 @@ The fact that we had a black woman standing at the welcome desk welcoming visito
 
 **NIRMAL PUWAR:** And looking at these photos from the Laing archive, I was so surprised to see so many people of colour who were part of the building team. But they're not in our imaginations. And this photo looks like a young man who's part of the Air Force and is putting on the roof there. So, I suppose that's the work we also need to engage in, thinking about the geography and history of this place.
 
-**\[00:29:37\]** 
+\[00:29:37\]
 
 **NITANO MULLER:** Absolutely. Reclaiming, as I say, the untold stories of this place and the fact that diversity is within the very fabric of this building, from the roof as we just saw, to the welcome desk, to the foundations and the pulpit.
 
@@ -189,7 +189,7 @@ And so, I think where we find ourselves now, those stories need to be made even 
 
 It gives us the resources through which we can tell those stories because, at the moment—of course, as is the case with all archives—we have shelves and shelves of information. However, it is the interpretation of that information that truly matters and how those stories are told and retold. This particular space is really special; this is the heart of the Cathedral. Should we lose this, we might as well just close our doors.
 
-**\[00:33:27\]**
+\[00:33:27\]
 
 I'm hoping that this archive will become the heartbeat and pulse for those courageous conversations to happen, because it’s not as if we're creating this out of nowhere. This is work that has already been done; foundations have already been laid. We need to ask, how do we progress? How do we develop it? How do we champion it even more? I'm hoping that this archive will also become the tool we use to make visible the people who sit within the pews of our worshipping congregations.
 
@@ -215,7 +215,7 @@ But I also have the aspect of welcome, which looks at how we integrate people in
 
 **NIRMAL PUWAR:** You bring a very particular vision to the place, in terms of what you want to achieve, and you presented that to your interview panel. Could you share some of that with us? Do you still remember it?
 
-**\[00:41:40\]** 
+\[00:41:40\]
 
 **NITANO MULLER:** I do _\[laughs\]._ When you take on a new job, you always start starry-eyed, and with all sorts of big ideas. I still hold on to those ideas quite passionately. One of the ideas that I had was to develop a pilgrimage that I would invite the city, the diocese, and the visitors to undertake.
 
