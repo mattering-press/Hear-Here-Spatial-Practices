@@ -26,12 +26,12 @@ This book is currently under development using the [Juncture](https://www.junctu
 
 ## Conversations {href=./essays/conversations.md}
 
-![](media/Chair_CU.jpg)
+![](/media/Chair_CU.jpg)
 
 ## Events {href=./essays/events.md}
 
-![](https://iiif.juncture-digital.org/thumbnail/wc:Coventry_Cathedral,_February_2023_17.jpg)
+![](/media/IMG_8898 chair stack.jpg)
 
 ## Experimental index {href=./essays/index.md}
 
-![](/media/IMG_8898 chair stack.jpg)
+![](/media/Plumbline detail 01.jpg)

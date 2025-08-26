@@ -23,6 +23,8 @@ The writer Monica Brown, whose father worked on building Coventry Cathedral, sta
 
 We consider a handful of images taken by the building contractors Laing, showing black workers on the cathedral construction site. Whilst opening the half empty pages of an embossed book in the cathedral archives, with the names of some of the workers who helped build the cathedral, the task of filling in the gaps of the empty weighted pages, gilded with gold leaf, appears blatantly before us as an open-ended process, bearing the weight of the past in the present. Monica closes the podcast with a call for an installation to recognise black and brown people, whose presence is absent and nowhere to be seen. A video featuring Monica Brown in the cathedral accompanies this discussion.
 
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/POD01_Contractors Book 03-detail.jpg left caption="A detail from one of the pages from John Laing’s ‘Constructor’s Book’"
+
 # Biography
 
 .ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/MB_(3-4)_001.jpeg left width=75%
@@ -194,6 +196,8 @@ There was a campaign that the British government mounted, and when you study som
 However, there was no such campaign mounted in the UK that said three words—that’s all it needs— three words— We Need Them _\[laughs\]._ If there had been a campaign like that in this country at the time, we wouldn’t be where we are now, in terms of race relations. And we're not here now, because of racism. ­
 
 **NIRMAL PUWAR:** In thinking about this absence, I found this contractor’s book in the Cathedral that the builders' Laing produced _\[opening the book\]._ We can feel the writing that's engraved in it. It’s leather. You can open it, Monica.
+
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/POD01_Contractors Book 02-BETTER.jpg left caption="John Laing’s ‘Constructor’s Book’"
 
 You’ll see empty pages, but eventually you get to the names of the people who helped build it, but there are no roles assigned to them. We don't know what they do; there are no dates. It’s just a list. It's half complete, and I feel that's very much the situation we're in, trying to bring that presence that has been made absent. It was very present, as you said, your father was here…
 
