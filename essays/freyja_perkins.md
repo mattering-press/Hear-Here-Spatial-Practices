@@ -15,7 +15,7 @@
 
 # Introduction
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/MH_FP_(4-3)_003.jpg right caption="Detail of braille model of Coventry Cathedral nave" alt="Detail of braille model of Coventry Cathedral nave"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/POD03_archival_box.jpg right caption="An archival box containing materials pertaining to the Cathedrals Through Touch and Hearing Project" alt="An archival box containing materials pertaining to the Cathedrals Through Touch and Hearing Project"
 
 This podcast conversation started with an unexpected find by Freyja Perkins at the Welcome Desk of Coventry Cathedral, in a locked cupboard. A guidebook for blind guests to the cathedral, along with audio guides and mobile tactile models of the architecture, sat alongside a guidebook for staff to assist visitors. Once Freyja shared these materials with me, we were led to the box in the archives on ‘Cathedrals Through Touch and Hearing’, which was an initiative led by Professor John Hull from Birmingham University, who lost his sight during the course of his young life. In the archives we found the positive correspondence between Coventry Cathedral with Hull and his team, who pioneered the provision of tactile models and plans to assist blind visitors in places of worship. Freyja and I also found a model on wheels, sitting to the side of the nave.
 
@@ -27,7 +27,7 @@ The podcast begins at the Welcome desk, where Freyja first came across the mater
 
 # Biographies
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/MH_FP_(4-3)_001.jpg right caption="Matthew Horspool, Freyja Perkins and sound producer Duncan Whitley in the Coventry Cathedral archives" alt="Matthew Horspool, Freyja Perkins and sound producer Duncan Whitley in the Coventry Cathedral archives"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/POD03_braiile_book.jpg right caption="The hardback braille guidebook from Coventry Cathedral’s Welcome Desk" alt="The hardback braille guidebook from Coventry Cathedral’s Welcome Desk"
 
 **Matthew Horspool** is a musician who sings tenor in the choir at Coventry Cathedral. Matthew runs the Braillists Foundation and is committed to making the world accessible to blind and partially sighted people through the many projects and podcasts he has been involved in. As a braille and assistive technology consultant, he trains visually impaired people and the colleagues who support them in the use of assistive technologies such as screen readers, braille displays, braille notetakers and braille embossers. His screen reader experience encompasses a wide variety of Windows and iOS-based applications using JAWS, NVDA or VoiceOver. Matthew writes on Sight Loss Friendly Churches for Torch magazines and creates fact sheets on various aspects of sight loss to complement face-to-face training.
 
@@ -51,6 +51,8 @@ _\[music\]_
 
 The story of our encounter begins when I came up from the archives one day to the welcome desk, and Freyja, you started sharing what you've been finding in a cupboard up here in the welcome desk.
 
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/POD03_braille_guidebook_cover.jpg right caption="The cover of a hardback braille guidebook used in the 1980’s at Coventry Cathedral" alt="The cover of a hardback braille guidebook used in the 1980’s at Coventry Cathedral"
+
 **FREYJA PERKINS**: Probably one of the biggest finds in this treasure trove was this gorgeous mahogany red book, which, as soon as I plucked it out of the dusty cupboard, I noticed had black tape on the side with braille reliefs coming out of it. I knew it must be something quite special. Upon opening it, I realised the entire thing was a braille book. At the time, I had no idea what the actual contents of the book were.
 
 Going through the pages, I did see some relief illustrations of the Cathedral nave and several other depictions around the Cathedral itself, including artworks like the _Crown of Thorns_, which is exposed right at the back in the Chapel of Gethsemane. It wasn't until I reached the back of the book that I found a full visual guide, all written in English— a transcript of a guide to Coventry Cathedral _\[flipping through the pages\]_. I realised that this was something quite special.
@@ -61,6 +63,8 @@ It was written around the late 80s, and it was way ahead of its time. It was ful
 
 **NIRMAL PUWAR:** So, through our searches in the archives downstairs, as well as online, we found that the models were part of a project titled _Cathedrals through Touch and Hearing_, which was initiated in 1988 by Professor John Hall, who was a radical theologian based at Birmingham University. John Hall had actually completely lost his sight by 1983, so he was completely blind when he was working on this project.
 
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/POD03_wooden_model.jpg caption="A wooden model on display in Coventry Cathedral, from the Cathedrals Through Touch and Hearing project (1988)" alt="A wooden model on display in Coventry Cathedral, from the Cathedrals Through Touch and Hearing project (1988)"
+
 Now, Freyja, as we thought of how to relaunch the models and make them available for the public, we contacted Coventry Resource Centre for the blind, and they alerted us to Matthew. From then on, our conversation expanded in many ways as Matthew became a part of bringing these models out again for the Cathedral. Matthew, how have you found what Freyja has dug out of the cupboard for us?
 
 **MATTHEW HORSPOOL:** I mean, I was absolutely gobsmacked _\[laughs\]_ when I first came across it. I must admit that when I was first contacted, it was very out of the blue. It was a person I'd never heard of before telling me about these models that some kind soul had made for the blind people of Coventry in the late 80s and early 90s. I thought, oh yes, we hear about this all the time; it probably won't amount to very much. It might just be some sighted person's attempt at bringing the Cathedral to life, and it probably won't be very good.
@@ -68,6 +72,8 @@ Now, Freyja, as we thought of how to relaunch the models and make them available
 So, I went in with that expectation and was just absolutely blown away by the guidebook and how professionally that was produced. I mean, when you think of a braille book, you think of pieces of paper bound with a metal or a plastic binder. But this is a proper hardback book that just happened to have braille pages in it, and it was transcribed by the National Library for the Blind up in Stockport, which was very well-known at that time. There is blindness history, as much as there is a history of cathedrals embedded in those pages. They don't make braille books like that anymore, so I was really impressed with that.
 
 We also found these 2D relief maps of the Cathedral, which were done in absolutely fascinating ways. You don't see these anymore these days. It's a sheet of plastic acrylic that has been essentially thermoformed—the same way you would make plastic packaging—with a wooden backing. It has really nice braille labels on it, and very pronounced lines to show where things are. It's got a key and highly tactile elements. To be honest, even professionals making tactile diagrams nowadays would struggle to make something as good as this. To find something like this, tucked away in the welcome desk, was absolutely extraordinary.
+
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/POD03_2d_relief_model.jpg caption="A 2-D relief map of Coventry Cathedral" alt="A 2-D relief map of Coventry Cathedral"
 
 **NIRMAL PUWAR:** So, these are mobile models. Freyja, we have two of these?
 
@@ -172,6 +178,8 @@ It is not just about inviting a blind person in to feel the model—that might b
 **NIRMAL PUWAR:** Thank you, Matthew. You mentioned embeddedness and the welcome that we provide, and we started our podcast at the welcome desk. So, Freyja wants to share something that Dr Hall's project left for the staff at the reception, and what's the title of this booklet?
 
 \[00:30:55\]
+
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/POD03_yellow_book.jpg left caption="'The Reception of Your Visually Impaired Visitor and the Use of the Touch and Hearing Centre' pamphlet (c. 1988)" alt="'The Reception of Your Visually Impaired Visitor and the Use of the Touch and Hearing Centre' pamphlet (c. 1988)"
 
 **FREYJA PERKINS:** So, the title of this small yellow booklet is _The Reception of Your Visually Impaired Visitor and the Use of the Touch and Hearing Centre_.
 
