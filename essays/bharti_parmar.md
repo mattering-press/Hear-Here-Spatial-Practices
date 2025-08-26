@@ -23,6 +23,8 @@ Bharti’s closing words on fellowship foreground how the collaborations across 
 
 A film with Bharti in the cathedral further supports the podcast discussion.
 
+.ve-media https://vimeo.com/mindriot/review/1107181541/eb7c66e238
+
 # Biography
 
 .ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/BP_(4_3)_001.jpg left caption="Bharti Parmer and Nirmal Puwar together outside the Needleworker’s Room" alt="Bharti Parmer and Nirmal Puwar together outside the Needleworker’s Room"
