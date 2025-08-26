@@ -14,19 +14,19 @@ This book is currently under development using the [Juncture](https://www.junctu
 
 ## Introduction {href=./essays/introduction.md}
 
-![](https://iiif.juncture-digital.org/thumbnail/wc:Coventry_Cathedral_2018.jpg)
+![](/media/POD5_ChapOfIndustry_Alt detail.jpg)
 
 ## Contributors {href=./essays/contributors.md}
 
-![](https://iiif.juncture-digital.org/thumbnail/wc:Coventry_Cathedral_Interior,_West_Midlands,_UK_-_Diliff.jpg)
+![](/media/IMG_8963 chairs detail.jpg)
 
 ## Podcasts {href=./essays/podcasts.md}
 
-![Mahsa Alami Fariman, Ahmadreza Hakiminejad and Heba Sabboubeh recording in the Chapel of Industry with sound producer Duncan Whitley.](/media/MRH_(4-3)_001.jpg)
+![](/media/IMG_8909 Nave letterbox view.jpg)
 
 ## Conversations {href=./essays/conversations.md}
 
-![](https://iiif.juncture-digital.org/thumbnail/wc:Cathedral_of_St_Michael_(Coventry_Cathedral),_Priory_Street,_Coventry_(NHLE_Code_1342941)_(April_2025)_(Interior)_(3).jpg)
+![](media/Chair_CU.jpg)
 
 ## Events {href=./essays/events.md}
 
@@ -34,4 +34,4 @@ This book is currently under development using the [Juncture](https://www.junctu
 
 ## Experimental index {href=./essays/index.md}
 
-![](https://iiif.juncture-digital.org/thumbnail/wc:Cathedral_of_St_Michael_(Coventry_Cathedral),_Priory_Street,_Coventry_(NHLE_Code_1342941)_(April_2025)_(4).jpg)
+![](/media/IMG_8898 chair stack.jpg)
