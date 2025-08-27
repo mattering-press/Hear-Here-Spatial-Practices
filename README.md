@@ -30,7 +30,7 @@ This book is currently under development using the [Juncture](https://www.junctu
 
 ## Events {href=./essays/events.md}
 
-![](/media/generic/IMG_8898 chair stack.jpg)
+![](/media/generic/Pod02_Penny_01.jpg)
 
 ## Experimental index {href=./essays/index.md}
 
