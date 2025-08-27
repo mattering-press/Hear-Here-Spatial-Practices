@@ -125,7 +125,7 @@ I've worked with Viva relatively recently, and she is still such an inspiring pe
 
 \[00:28:26\]
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD08_IMG_4200.jpeg caption="Peter Berry and others in front of the cathedral" alt="Peter Berry and others in front of the cathedral"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD08_IMG_4200.jpeg right caption="Peter Berry and others in front of the cathedral" alt="Peter Berry and others in front of the cathedral"
 
 Lastly, to talk a little bit about a thread that I found throughout my research, which was kind of surprising for me, actually, would be the work of Canon Peter Berry. Peter Berry was a white middle-class man who was a minister. He was a religious man, but it was reported as early as the 1960s, all the way through to the 90s, which is my research scope, that he was consistently outspoken against racism and especially against anti-black racism. I was curious to see how he was encouraged to voice these opinions, as I feel he wouldn't have been afforded the same platforms in many other spaces. I think he was privileged in his position to have these platforms. He did not misuse them at any point. He was speaking about unemployment and poverty as a key factor behind racism and racist attacks in Coventry and the scarcity of work, housing and physical spaces as a real antagoniser between the “white native” community and this newer, larger black community.
 
