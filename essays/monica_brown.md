@@ -196,7 +196,7 @@ However, there was no such campaign mounted in the UK that said three words—th
 
 **NIRMAL PUWAR:** In thinking about this absence, I found this contractor’s book in the Cathedral that the builders' Laing produced _\[opening the book\]._ We can feel the writing that's engraved in it. It’s leather. You can open it, Monica.
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD01_Contractors_Book_02-BETTER.jpg caption="John Laing’s ‘Constructor’s Book’" alt="John Laing’s ‘Constructor’s Book’"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD01_Contractors_Book_02-BETTER.jpg width=75% caption="John Laing’s ‘Constructor’s Book’" alt="John Laing’s ‘Constructor’s Book’"
 
 You’ll see empty pages, but eventually you get to the names of the people who helped build it, but there are no roles assigned to them. We don't know what they do; there are no dates. It’s just a list. It's half complete, and I feel that's very much the situation we're in, trying to bring that presence that has been made absent. It was very present, as you said, your father was here…
 
