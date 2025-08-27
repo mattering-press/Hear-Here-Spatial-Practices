@@ -163,9 +163,9 @@ And I know you've mentioned the possibilities offered by the chairs as well, and
 
 It’s a space in which you have a duty to the people who are coming into the space; it’s a community-oriented and civic space. You have all these other roles that it plays. We've talked before, and you told me wonderful things about local children as well. So, we really think that it has an opportunity beyond its walls.
 
-I think that the chairs —I love the chairs— they're just such nice physical objects, but also have possibilities. Unlike in an old local church where you’re stuck in a pew with the family hassock or whatever it is, and everything feels quite fixed in a row, these chairs offer the possibility of mobility. They reflect something of what the Cathedral stands for. There’s also an earlier origin that they connect to.
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD06_Chair.jpg right caption="One of the chairs designed for use in the nave of Coventry Cathedral" alt="One of the chairs designed for use in the nave of Coventry Cathedral"
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD06_Chair.jpg left caption="One of the chairs designed for use in the nave of Coventry Cathedral" alt="One of the chairs designed for use in the nave of Coventry Cathedral"
+I think that the chairs —I love the chairs— they're just such nice physical objects, but also have possibilities. Unlike in an old local church where you’re stuck in a pew with the family hassock or whatever it is, and everything feels quite fixed in a row, these chairs offer the possibility of mobility. They reflect something of what the Cathedral stands for. There’s also an earlier origin that they connect to.
 
 I know nothing about the chairs apart from the fact that they're lovely, but I read up about them and discovered that they have sort of spread the R.D. Russell Coventry chairs across the country. They're actually just referred to as Coventry chairs, and lots of places have them. They're very nicely designed. Demas Nwoko, an architect, who does lovely chairs, which these reminded me of very strongly. Nwoko's ones have got bent legs, like they're going to walk off. There's a sense of real physicality in them.
 
@@ -203,9 +203,9 @@ I was reading what you were saying about the Friends of Coventry Cathedral. I th
 
 **NIRMAL PUWAR:** This is an ongoing conversation—an ongoing process of mobilisation. All the different administrative facets of the Cathedral are involved in various ways, including the Friends of the Cathedral, who give generously. They are continually thinking about the Cathedral’s relationship to the city. The events and engagement teams are doing this as well.
 
-Now, I'd wondered if we could just go back to the stone, the font, what became the font, the rock from outside of Bethlehem that became the font. You mentioned the personal connection and the fact that people could touch it, the tactility of it, because when it was carved out of the stone, people actually asked to have pieces of it. People wrote from all over the place, asking for pieces of that stone, and I have met some people who have those pieces, who value those pieces of rock.
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD06_Boulder.jpg left caption="The baptismal font in Coventry Cathedral" alt="The baptismal font in Coventry Cathedral"
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD06_Boulder.jpg right caption="The baptismal font in Coventry Cathedral" alt="The baptismal font in Coventry Cathedral"
+Now, I'd wondered if we could just go back to the stone, the font, what became the font, the rock from outside of Bethlehem that became the font. You mentioned the personal connection and the fact that people could touch it, the tactility of it, because when it was carved out of the stone, people actually asked to have pieces of it. People wrote from all over the place, asking for pieces of that stone, and I have met some people who have those pieces, who value those pieces of rock.
 
 I think it was last year we did an event here, part of the Pod's _Outside(R) Zine festival_, and we had an event alongside the stone; we called it _Rocking It_, in a double sense, you know, with a bit of humour. People came together, and we had students, we read words from Palestine alongside a geologist who could provide the so-called facts, but at the same time was very aware of the geopolitics of the situation. Stuart, who was the geologist, actually had students, some of his PhD students, who have gone on to live in, go back to Palestine and Gaza, and he was trying to help one student, Mohammed, to leave the region during the war.
 

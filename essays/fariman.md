@@ -15,8 +15,6 @@
 
 # Introduction
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/MRH_(4-3)_002.jpg right caption="Mahsa Alami Fariman and Heba Sabboubeh in the cathedral archives" alt="Mahsa Alami Fariman and Heba Sabboubeh in the cathedral archives"
-
 The reminder of bombardment and war loom in the reflections of the ruins through the west screen in the nave, as well as in the contemplative space of the ruins themselves. As Gaza was being repeatedly bombed, with continuous displacements and losses, demonstrations would regularly rally on the steps of the cathedral, in the threshold space between the ruins and the new architecture. I spent many days sitting at a desk in the archives under the nave of Coventry cathedral, starring at several shelves of uncatalogued materials consisting of books, newsletters, booklets, slides and audio cassettes.
 
 .ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/MRH_(4-3)_003.jpg left caption="Examining a slide from an unmarked carousel found in the archives" alt="Examining a slide from an unmarked carousel found in the archives"
@@ -25,7 +23,7 @@ A yellow Kodak square, with the label Al Shafar stuck on the side caught my visi
 
 I invited two architects to engage with the slides, Mahsa Alami Fariman and Ahmadreza Hakiminejad, both of whom had curated an incredibly moving event in Coventry cathedral, with music, whistling, talks and singing, on ['_Woman_, _Life_, _Freedom_: The _Sounds_ of A Revolution'](https://darkmatter-hub.pubpub.org/pub/olzw3dms/release/4), on 20 May 2023. Grappling with what archives carry, as well as body as archive, they instantly connected the carousel of slides and the accompanying text, with the paintings of their architect artist friend Heba Sabboubeh from Palestine, who lives in Coventry. Approaching hope and despair together, Heba, Reza and Mahsa produced an art-book \[hosted on this website\], in response to the notion of _House of Hope_. This podcast is a discussion of their process of engagement.
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/MRH_(3-4)_005.jpg right caption="Nirmal Puwar and Ahmadreza Hakiminejad returning from the archives below the nave of Coventry Cathedral" alt="Nirmal Puwar and Ahmadreza Hakiminejad returning from the archives below the nave of Coventry Cathedral"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD07_Notes_slideshow.jpg right caption="Notes accompanying the slide carousel discussed in the podcast" alt="Notes accompanying the slide carousel discussed in the podcast"
 
 Middle Eastern inter-generational trauma across time and space layers their responses to the box of slides, providing an alternative archive and alternative index to the archive. The podcast conversation picks up on how the House of Hope is one of _Despair_, laden with years of spatial and embodied inter-generational trauma in Palestine. Listening to the body as an archive, Heba connects the slides to vivid memories of plants, home, childhood, architecture, and the sound of military boots and stones. Heba discusses the buildings in her paintings, the figures of children and elder women who wait for returnees, whilst living in uncertainty. Grandmothers, children, paradise and destruction come together to re-situate dreams amongst the violence. The podcast discussion moves from the archives to the glass circular structure of the Chapel of Industry, where Heba reads a letter she wrote to her son from living under immediate curfew whilst pregnant.
 
@@ -33,7 +31,7 @@ Hope manifests in multiple configurations, in this site-specific conversation, t
 
 # Biographies
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/MRH_(4-3)_001.jpg right caption="Mahsa Alami Fariman, Ahmadreza Hakiminejad and Heba Sabboubeh recording in the Chapel of Industry with sound producer Duncan Whitley" alt="Mahsa Alami Fariman, Ahmadreza Hakiminejad and Heba Sabboubeh recording in the Chapel of Industry with sound producer Duncan Whitley"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/MRH_(4-3)_002.jpg right caption="Mahsa Alami Fariman and Heba Sabboubeh in the cathedral archives" alt="Mahsa Alami Fariman and Heba Sabboubeh in the cathedral archives"
 
 **Dr Mahsa Alami Fariman** is an urban researcher and educator with a background in architecture and urban studies. She is currently Lecturer in Just Urbanism, Societal Diversity and Citizenship at The Bartlett Development Planning Unit, UCL. Prior to this, she taught urban geography at Coventry University and lectured in the Department of Media, Communications and Cultural Studies at Goldsmiths, University of London. Trained as an architect, Mahsa previously worked in architectural practices in Iran. She holds a PhD in Urban Sociology from Goldsmiths, an MA in Architecture (Cultural Identity and Globalisation) from the University of Westminster, and a BA in Architecture from Islamic Azad University in Iran. Her research focuses on the politics of space, open city, feminist urbanism, and the production of everyday urban life in the Middle East. Drawing on her lived experience and academic engagement with the region, she is committed to expanding urban discourse through ideas and perspectives grounded beyond Western contexts.
 
@@ -95,13 +93,23 @@ This is interesting. When you go through the slides that were presented at Coven
 
 So, Christianity was at the heart of it, but he was trying to bring Muslims, Christians, the Rus, another branch of Islam that was a population of Shefa-‘Amr, and also Jewish people.
 
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD07_ArabHouse_v2.jpg left caption="A close-up of a slide referred to in the podcast, depicting an 'Arab apartment house in Haifa'" alt="A close-up of a slide referred to in the podcast, depicting an 'Arab apartment house in Haifa'"
+
 I'm sure that is his thinking behind these slides. There are very short descriptions against each slide. For example, if I want to mention a couple of them, you see, for instance, slide number 9, which has the title, “Arab Apartment House in Haifa.” And then the short description says, "Arab's living in Israel have very special problems. They feel themselves to be second-class citizens."
 
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD07_girls_face_v2.jpg right caption="A close-up of a slide referred to in the podcast, depicting a 'girl’s face'" alt="A close-up of a slide referred to in the podcast, depicting a 'girl’s face'"
+
 The next slide says, "Girls' face," which, when you look into it through the slide tray, which we digitised, we could actually see some girl portraits. Some really powerful portraits. And then the description says, "They are harassed. Their lands have been taken and confiscated, and their children suffer educational deprivation." And the next one, slide number 11, says, "War Vehicles." The description says, "Israel is a land of conflict, not peace."
+
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD07_slide11_war_vehicles.jpg caption="A close-up of a slide referred to in the podcast, described as 'war vehicles'" alt="A close-up of a slide referred to in the podcast, described as 'war vehicles'"
+
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD07_nazareth_cityscape.jpg right caption="A close-up of a slide referred to in the podcast showing a Nazareth cityscape" alt="A close-up of a slide referred to in the podcast showing a Nazareth cityscape"
 
 I just want to quickly go through another two slides, because it gives you a cityscape of Nazareth, and it says, "Yet here in Israel, two thousand years ago, the Prince of Peace was born. Here, God brought peace to man." So, you can see how religiously charged this statement is. It's a kind of theological argument that this was the Holy Land, and the Prince of Peace was born here, probably referring to Jesus.
 
 The next one, titled "Arab Begging," depicts an Arab man begging on the street. But the description is quite paradoxical. It says, "Are there any signs of hope today in this divided nation? Are there any models of reconciliation?" And then the answer is, "Yes, there are."
+
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD07_Arab begging_v2.jpg caption="A close-up of a slide referred to in the podcast, depicting an 'Arab begging'" alt="A close-up of a slide referred to in the podcast, depicting an 'Arab begging'"
 
 In his _House of Hope_ newsletter, which was published in Israel—and in Autumn 1997—he writes—and he asks himself an interesting question—it says, "When I watch the news on television, I cannot take in all the world's problems at once. I can only deal with a little part of it. So, if I call for peace, am I a naive man?" So, he asked himself, "Am I a naive man with a fading hope?" And he answers, "No, I am not."
 
