@@ -103,9 +103,9 @@ The next slide says, "Girls' face," which, when you look into it through the sli
 
 .ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD07_slide11_war_vehicles.jpg caption="A close-up of a slide referred to in the podcast, described as 'war vehicles'" alt="A close-up of a slide referred to in the podcast, described as 'war vehicles'"
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD07_nazareth_cityscape.jpg right caption="A close-up of a slide referred to in the podcast showing a Nazareth cityscape" alt="A close-up of a slide referred to in the podcast showing a Nazareth cityscape"
-
 I just want to quickly go through another two slides, because it gives you a cityscape of Nazareth, and it says, "Yet here in Israel, two thousand years ago, the Prince of Peace was born. Here, God brought peace to man." So, you can see how religiously charged this statement is. It's a kind of theological argument that this was the Holy Land, and the Prince of Peace was born here, probably referring to Jesus.
+
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD07_nazareth_cityscape.jpg caption="A close-up of a slide referred to in the podcast showing a Nazareth cityscape" alt="A close-up of a slide referred to in the podcast showing a Nazareth cityscape"
 
 The next one, titled "Arab Begging," depicts an Arab man begging on the street. But the description is quite paradoxical. It says, "Are there any signs of hope today in this divided nation? Are there any models of reconciliation?" And then the answer is, "Yes, there are."
 
