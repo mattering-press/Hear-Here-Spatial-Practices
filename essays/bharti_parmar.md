@@ -25,7 +25,7 @@ Bharti’s closing words on fellowship foreground how the collaborations across 
 
 A film with Bharti in the cathedral further supports the podcast discussion.
 
-<iframe src="https://archive.org/embed/HearHereBhartiParmar3" width="560" height="384" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen class="ve-component"></iframe>
+<center><iframe src="https://archive.org/embed/HearHereBhartiParmar3" width="560" height="384" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen class="ve-component"></iframe></center>
 
 # Biography
 
