@@ -109,7 +109,7 @@ I just want to quickly go through another two slides, because it gives you a cit
 
 The next one, titled "Arab Begging," depicts an Arab man begging on the street. But the description is quite paradoxical. It says, "Are there any signs of hope today in this divided nation? Are there any models of reconciliation?" And then the answer is, "Yes, there are."
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD07_Arab begging_v2.jpg caption="A close-up of a slide referred to in the podcast, depicting an 'Arab begging'" alt="A close-up of a slide referred to in the podcast, depicting an 'Arab begging'"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD07_Arab_begging_v2.jpg caption="A close-up of a slide referred to in the podcast, depicting an 'Arab begging'" alt="A close-up of a slide referred to in the podcast, depicting an 'Arab begging'"
 
 In his _House of Hope_ newsletter, which was published in Israel—and in Autumn 1997—he writes—and he asks himself an interesting question—it says, "When I watch the news on television, I cannot take in all the world's problems at once. I can only deal with a little part of it. So, if I call for peace, am I a naive man?" So, he asked himself, "Am I a naive man with a fading hope?" And he answers, "No, I am not."
 
