@@ -17,4 +17,4 @@ Hear more about the work of Mahsa Alami Fariman, Ahmadreza Hakiminejad, and Heba
 
 ## #01: Spotting Colours {href=./spotting_colours.md}
 
-![](/media/monica_brown_12.jpg)
+![](/media/podcasts/monica_brown_12.jpg)

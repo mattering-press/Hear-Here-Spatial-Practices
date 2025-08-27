@@ -17,7 +17,7 @@
 
 Canon Nitano Muller discusses his landing in June 2024, in Coventry Cathedral, as Canon of Worship and Welcome. In the _Hear Here_ podcast he speaks from both the archives room and the pulpit in the nave. Archives now sit under his ambit, he imagines how archives can become the pulse of courageous global stories told and heard in the space of the cathedral. He views the archives and the layered interpretations of the cathedral, as part of the process of welcoming guests and visitors from all walks of life.
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/POD04_Tutu_photo_laughter.jpg right caption="A photograph by T. M. McIlroy showing Desmond Tutu in the ruins of the old Coventry Cathedral" alt="A photograph by T. M. McIlroy showing Desmond Tutu in the ruins of the old Coventry Cathedral"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD04_Tutu_photo_laughter.jpg right caption="A photograph by T. M. McIlroy showing Desmond Tutu in the ruins of the old Coventry Cathedral" alt="A photograph by T. M. McIlroy showing Desmond Tutu in the ruins of the old Coventry Cathedral"
 
 He was previously a part-time Chaplain to Archbishop Desmond Tutu, to whom he ministered before he passed away in 2021. This relationship has curated his thinking and theology around justice and reconciliation. Today he navigates a paradigm shift with racialised dynamics at an existential level as a black Canon, both within the cathedral, and amongst a global majority mixed congregation. He carries his embodied experience of apartheid South Africa, as well as black liberation, feminist and queer theology, towards reconciliation and justice.
 
@@ -31,7 +31,7 @@ He served his curacies in two vastly different contexts, in Mitchells Plain on t
 
 Nitano's first encounter with Coventry Cathedral was its welcome sign posted at the West Screen entrance, which he says made him feel at home because he identified with many of the traits described in it.
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/NM_(4-3)_002.jpg left caption="Nitano Muller browsing photographs documenting Bishop Tutu’s visit to Coventry Cathedral in 1989" alt="Nitano Muller browsing photographs documenting Bishop Tutu’s visit to Coventry Cathedral in 1989"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/NM_(4-3)_002.jpg left caption="Nitano Muller browsing photographs documenting Bishop Tutu’s visit to Coventry Cathedral in 1989" alt="Nitano Muller browsing photographs documenting Bishop Tutu’s visit to Coventry Cathedral in 1989"
 
 [Coventry Cathedrals Welcome message](https://www.coventry.anglican.org/news/a-cathedral-welcome.php)
 
@@ -59,7 +59,7 @@ First published on: 11th March 2024
 
 **NIRMAL PUWAR:** Welcome to the podcast _Hear Here_. Today we're sitting in the archives with Canon Nitano Muller, who very recently joined Coventry Cathedral from South Africa. We first met right in this archive when you were exploring whether you wanted to come and work here and serve the community. Carla Crawley was actually walking you through and passed you on to me for a few minutes, and just that day, I happened to be looking at booklets and photographs related to South Africa.
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/POD04_Tutu_photo1.jpg right caption="Printed photographs by T. M. McIlroy documenting Desmond Tutu’s visit to Coventry Cathedral in 1989" alt="Printed photographs by T. M. McIlroy documenting Desmond Tutu’s visit to Coventry Cathedral in 1989"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD04_Tutu_photo1.jpg right caption="Printed photographs by T. M. McIlroy documenting Desmond Tutu’s visit to Coventry Cathedral in 1989" alt="Printed photographs by T. M. McIlroy documenting Desmond Tutu’s visit to Coventry Cathedral in 1989"
 
 We have a very big photograph in front of us here of Desmond Tutu’s visit to the Cathedral in the 1980s, and there he was with his pink-purple gown. He was holding on to his cap because it was very windy in the ruins. So, tell us about your journey in terms of arriving at the Cathedral.
 
@@ -157,13 +157,13 @@ So, it's one thing to have courageous conversations. That's all going well, but 
 
 \[00:25:48\]
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/POD04_MLK.jpg left caption="An artefact from Martin Luther King’s special service at Coventry Cathedral in 1968" alt="An artefact from Martin Luther King’s special service at Coventry Cathedral in 1968"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD04_MLK.jpg left caption="An artefact from Martin Luther King’s special service at Coventry Cathedral in 1968" alt="An artefact from Martin Luther King’s special service at Coventry Cathedral in 1968"
 
 I'm sure I've told you before that Martin Luther King had a special service in the nave, which was packed with a thousand people in 1968. Here are just some pages of this magazine that used to be published by the Cathedral, called Coventry Cathedral Network. This one is from the 1970s _\[flipping through pages\]_ and you’ll see, Nitano, there’s a piece by Reverend Peter Berry, who was the community relations lead at the Cathedral. The title is “Race relations and Christian responsibility”.
 
 There was a lot of work happening. This is a very simple image from 1979 from the _Network_ magazine. I was quite surprised to see – I don't know why I'm surprised – a young black woman at the welcome desk. She and her colleague, a white woman with blonde hair, are named Melody Pratt and Ingrid Berger. They’re shown talking to visitors at the information desk in the Cathedral nave. As you mentioned, it’s truly about who is present in the space, what kinds of bodies are there, and how that shapes the way the Cathedral has been made, and how it could be made. I wonder what you think of that image.
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/POD04_Network_cover.jpg caption="The cover of the October 1979 edition of Network journal" alt="The cover of the October 1979 edition of Network journal"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD04_Network_cover.jpg caption="The cover of the October 1979 edition of Network journal" alt="The cover of the October 1979 edition of Network journal"
 
 **NITANO MULLER:** I think it's a beautiful image; it's a telling image. There’s a saying that a picture is worth a thousand words. She’s not the only person of colour, is she? I think there's a young woman just at the back there, actually.
 

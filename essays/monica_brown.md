@@ -15,11 +15,11 @@
 
 # Introduction
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/jlp01_08_061829.jpg right caption="Info on permissible rights for use of this image from Historic England Archive https://historicengland.org.uk/images-books/archive/policies/using-images/"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/jlp01_08_061829.jpg right caption="Info on permissible rights for use of this image from Historic England Archive https://historicengland.org.uk/images-books/archive/policies/using-images/"
 
 The writer Monica Brown, whose father worked on building Coventry Cathedral, states in her visit to the cathedral for the _Hear Here_ podcast: “I am here because dad was here”. Monica brings an inter-connected set of journeys to our dialogue, vividly relaying the strength and struggles of her family, in the context of the Windrush Generation, whilst moving back and forth between Jamaica and Leamington. Monica undertakes the art of transnational diasporic storytelling, one that is also locally situated. Recently her mother faced the burden of doubt, in terms of immigration, when she was refused entry to the UK for her grandson’s graduation. Monica and her siblings fought a campaign against this decision. Monica takes us to the heart of how to take matters on when people are made to feel they don’t matter. She carries her embodied signature voice and specialism in media production and histories right into the cathedral.
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/POD01_Contractors_Book_03-detail.jpg left caption="A detail from one of the pages from John Laing’s ‘Constructor’s Book’" alt="A detail from one of the pages from John Laing’s ‘Constructor’s Book’"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD01_Contractors_Book_03-detail.jpg left caption="A detail from one of the pages from John Laing’s ‘Constructor’s Book’" alt="A detail from one of the pages from John Laing’s ‘Constructor’s Book’"
 
 We consider a handful of images taken by the building contractors Laing, showing black workers on the cathedral construction site. Whilst opening the half empty pages of an embossed book in the cathedral archives, with the names of some of the workers who helped build the cathedral, the task of filling in the gaps of the empty weighted pages, gilded with gold leaf, appears blatantly before us as an open-ended process, bearing the weight of the past in the present. Monica closes the podcast with a call for an installation to recognise black and brown people, whose presence is absent and nowhere to be seen. A video featuring Monica Brown in the cathedral accompanies this discussion.
 
@@ -196,7 +196,7 @@ However, there was no such campaign mounted in the UK that said three words—th
 
 **NIRMAL PUWAR:** In thinking about this absence, I found this contractor’s book in the Cathedral that the builders' Laing produced _\[opening the book\]._ We can feel the writing that's engraved in it. It’s leather. You can open it, Monica.
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/POD01_Contractors_Book_02-BETTER.jpg caption="John Laing’s ‘Constructor’s Book’" alt="John Laing’s ‘Constructor’s Book’"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD01_Contractors_Book_02-BETTER.jpg caption="John Laing’s ‘Constructor’s Book’" alt="John Laing’s ‘Constructor’s Book’"
 
 You’ll see empty pages, but eventually you get to the names of the people who helped build it, but there are no roles assigned to them. We don't know what they do; there are no dates. It’s just a list. It's half complete, and I feel that's very much the situation we're in, trying to bring that presence that has been made absent. It was very present, as you said, your father was here…
 

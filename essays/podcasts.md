@@ -15,35 +15,35 @@ Spaces and archives are opened up, connected and enlivened through a variety of 
 
 ## #01: Monica Brown {href=./monica_brown.md}
 
-![](/media/MB_(3-4)_001.jpeg)
+![](/media/podcasts/MB_(3-4)_001.jpeg)
 
 ## #02: Bharti Parmar {href=./bharti_parmar.md}
 
-![Bharti Parmer and Nirmal Puwar together outside the Needleworker’s Room](/media/BP_(4_3)_001.jpg)
+![Bharti Parmer and Nirmal Puwar together outside the Needleworker’s Room](/media/podcasts/BP_(4_3)_001.jpg)
 
 ## #03: Freyja Perkins and Matthew Horspool {href=./freyja_perkins.md}
 
-![Matthew Horspool, Freyja Perkins & sound producer Duncan Whitley in the Coventry Cathedral archives](/media/MH_FP_(4-3)_001.jpg)
+![Matthew Horspool, Freyja Perkins & sound producer Duncan Whitley in the Coventry Cathedral archives](/media/podcasts/MH_FP_(4-3)_001.jpg)
 
 ## #04: Nitano Muller {href=./nitano_muller.md}
 
-![Nitano Muller & Nirmal Puwar in the ruins of Coventry Cathedral](/media/NM_(3-4)_001.jpg)
+![Nitano Muller & Nirmal Puwar in the ruins of Coventry Cathedral](/media/podcasts/NM_(3-4)_001.jpg)
 
 ## #05: Aya Nassar {href=./aya_nassar.md}
 
-![Aya Nasser & Nirmal Puwar in the archives](/media/AN_(4-3)_001.jpg)
+![Aya Nasser & Nirmal Puwar in the archives](/media/podcasts/AN_(4-3)_001.jpg)
 
 ## #06: Catherine Hahn {href=./catherine_hahn.md}
 
-![Catherine in the nave of Coventry Cathedral](/media/CH_(3-4)_001.jpg)
+![Catherine in the nave of Coventry Cathedral](/media/podcasts/CH_(3-4)_001.jpg)
 
 ## #07: Mahsa Alami Fariman, Ahmadreza Hakiminejad, Heba N. Sabboubeh {href=./fariman.md}
 
-![Mahsa Alami Fariman, Ahmadreza Hakiminejad and Heba Sabboubeh recording in the Chapel of Industry with sound producer Duncan Whitley.](/media/MRH_(4-3)_001.jpg)
+![Mahsa Alami Fariman, Ahmadreza Hakiminejad and Heba Sabboubeh recording in the Chapel of Industry with sound producer Duncan Whitley.](/media/podcasts/MRH_(4-3)_001.jpg)
 
 ## #08: Holly Cooper {href=./holly_cooper.md}
 
-![Holly Cooper with Nirmal Puwar in the Coventry Cathedral archives](/media/HC_(4-3)_001.jpg)
+![Holly Cooper with Nirmal Puwar in the Coventry Cathedral archives](/media/podcasts/HC_(4-3)_001.jpg)
 
 # References
 

@@ -17,7 +17,7 @@
 
 Bharti Parmar arrived in Coventry in 1986 as a Fine Art student at Lanchester Polytechnic, graduating inside Coventry Cathedral. Thirty-five years later, she walks through different parts of the cathedral for the _Hear Here_ podcast. Bharti discusses both her artistic practice, as well as the architectural and artistic features of the cathedral, before closing the conversation in the needleworkers’ room, which sits on the lower ground floor under the nave, next to the archives room. Her attention to the elements and patterns of site-specific materials is interconnected with her own practice, as well as with broader histories of colonialism and radicalism in the city of Coventry.
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/Pod02_Plumbline_2.jpg right caption="‘The Plumb Line and the City’ (1971) by Clarke Fitzgerald" alt="‘The Plumb Line and the City’ (1971) by Clarke Fitzgerald"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/Pod02_Plumbline_2.jpg right caption="‘The Plumb Line and the City’ (1971) by Clarke Fitzgerald" alt="‘The Plumb Line and the City’ (1971) by Clarke Fitzgerald"
 
 Bharti’s conversation moves between textile production, political change and the Sutherland tapestry; botany, colonialism, and the Live and Dye Garden; the Plumb Line, cities, pennies in the floor as liminal points and the canopy as a threshold; as well as the needleworkers’ room with kneelers, women’s groups, stitches; bell ringing and the mathematical system; as well as embodied research as a fellowship.
 
@@ -87,7 +87,7 @@ What’s really interesting to me as an artist is the cycle of reuse, recycling,
 
 **BHARTI PARMAR**: The _Plumb Line_ is one of my favourite pieces of work here. So, the plumb line is a mechanical device to determine whether a building is straight. As a printmaker, I've always been interested in geometry, shapes and patterns. Within this _Plumb Line_, we're looking at a series of metal shapes and pieces. I don't know how many there are—probably 200 or 300—all in different shapes of metal, different colours, patinated bronzes, browns, silvers, all made to look like a cityscape on a plinth.
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/Pod02_Plumbline_01.jpg caption="‘The Plumb Line and the City’ (1971) by Clarke Fitzgerald" alt="‘The Plumb Line and the City’ (1971) by Clarke Fitzgerald"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/Pod02_Plumbline_01.jpg caption="‘The Plumb Line and the City’ (1971) by Clarke Fitzgerald" alt="‘The Plumb Line and the City’ (1971) by Clarke Fitzgerald"
 
 I used to come in here regularly to look at the patterns and use those as inspiration in things I was doing in the studio. I was making paper, ceramic casts, prints, etchings, monoprints and some of the simple shapes like curves, arcs, spires, and diamonds. I was literally inspired by the spires.
 
@@ -97,7 +97,7 @@ I used to come in here regularly to look at the patterns and use those as inspir
 
 **BHARTI PARMAR**: I've been drawn to the pennies on the floor because I'm really interested in detail, and often, things that people miss are what I make work about. I'm particularly interested in the work of the hand, as I've mentioned before, but also in the quietness, slowness, and poetics of repair.
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/Pod02_Penny_01.jpg right caption="A penny embedded in the floor of Coventry Cathedral" alt="A penny embedded in the floor of Coventry Cathedral"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/Pod02_Penny_01.jpg right caption="A penny embedded in the floor of Coventry Cathedral" alt="A penny embedded in the floor of Coventry Cathedral"
 
 These pennies are inserted into the floor here, almost like fossils _\[moving closer to the floor\]_. So here, we're looking at— I think it's a two-pence piece— we're looking at a picture of Queen Elizabeth, we can still see her head.
 

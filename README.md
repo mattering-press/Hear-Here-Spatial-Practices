@@ -14,24 +14,24 @@ This book is currently under development using the [Juncture](https://www.junctu
 
 ## Introduction {href=./essays/introduction.md}
 
-![](/media/POD5_ChapOfIndustry_Alt detail.jpg)
+![](/media/generic/POD5_ChapOfIndustry_Alt detail.jpg)
 
 ## Contributors {href=./essays/contributors.md}
 
-![](/media/IMG_8963 chairs detail.jpg)
+![](/media/generic/IMG_8963 chairs detail.jpg)
 
 ## Podcasts {href=./essays/podcasts.md}
 
-![](/media/IMG_8909 Nave letterbox view.jpg)
+![](/media/generic/IMG_8909 Nave letterbox view.jpg)
 
 ## Conversations {href=./essays/conversations.md}
 
-![](/media/Chair_CU.jpg)
+![](/media/generic/Chair_CU.jpg)
 
 ## Events {href=./essays/events.md}
 
-![](/media/IMG_8898 chair stack.jpg)
+![](/media/generic/IMG_8898 chair stack.jpg)
 
 ## Experimental index {href=./essays/index.md}
 
-![](/media/Plumbline detail 01.jpg)
+![](/media/generic/Plumbline detail 01.jpg)

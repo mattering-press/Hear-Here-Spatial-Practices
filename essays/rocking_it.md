@@ -20,7 +20,7 @@ A geologic, sociological and poetic collaboration of solidarity with the 100 mil
 The boulder travelled from Bethlehem to Coventry Cathedral in December 1960. It was moved along land and sea, through a collaborative "saga of goodwill", between Muslim, Jewish and Christian participants. The letterer/sculptor Ralph Beyer, an outsider/insider Jewish refugee from Germany, carved a scallop shell to make it a font."
 
 <audio id="podcast-player">
-  <source src="https://raw.githubusercontent.com/mattering-press/Hear-Here-Spatial-Practices/main/media/Boulder_Readings_Coventrycathedral.mp3" type="audio/mpeg">
+  <source src="https://raw.githubusercontent.com/mattering-press/Hear-Here-Spatial-Practices/main/media/audio/Boulder_Readings_Coventrycathedral.mp3" type="audio/mpeg">
     <!-- fallback -->
-    Your browser doesn't support HTML5 audio. Here is a <a href="https://raw.githubusercontent.com/mattering-press/Hear-Here-Spatial-Practices/main/media/Boulder_Readings_Coventrycathedral.mp3">link to download the audio</a> instead.
+    Your browser doesn't support HTML5 audio. Here is a <a href="https://raw.githubusercontent.com/mattering-press/Hear-Here-Spatial-Practices/main/media/audio/Boulder_Readings_Coventrycathedral.mp3">link to download the audio</a> instead.
 </audio>

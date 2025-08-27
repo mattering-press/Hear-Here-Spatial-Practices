@@ -11,16 +11,16 @@
 
 ## #01: Rocking It: Insider/Outsider Archives {href=./rocking_it.md}
 
-![](/media/monica_brown_12.jpg)
+![](/media/podcasts/monica_brown_12.jpg)
 
 ## #02: Acorn {href=./acorn.md}
 
-![](/media/monica_brown_12.jpg)
+![](/media/podcasts/monica_brown_12.jpg)
 
 ## #03: Global Ecologies: Food Sovereignty Across Latitudes {href=./acord.md}
 
-![](/media/monica_brown_12.jpg)
+![](/media/podcasts/monica_brown_12.jpg)
 
 ## #04: Walk {href=./acord.md}
 
-![](/media/monica_brown_12.jpg)
+![](/media/podcasts/monica_brown_12.jpg)
