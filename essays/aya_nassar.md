@@ -71,9 +71,9 @@ So, this is why I was drawn to dust. I think dust is an interesting material to 
 
 _\[organ playing in the background\]_ We've just walked through the nave to the Chapel of Industry, where there are these tall pillars of concrete leading up to this vast roof. Aya, having read your work and thought about how this space is constructed, I often wonder what Aya thinks of when she considers the concrete here or elsewhere.
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD05_ChapelOfIndustry(16-9).jpg right caption="A view looking upwards to show architectural details of the interior of the Chapel of Industry" alt="A view looking upwards to show architectural details of the interior of the Chapel of Industry"
-
 \[00:05:35\]
+
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD05_ChapelOfIndustry(16-9).jpg caption="A view looking upwards to show architectural details of the interior of the Chapel of Industry" alt="A view looking upwards to show architectural details of the interior of the Chapel of Industry"
 
 **AYA NASSAR:** So, concrete is really interesting in relation to dust. It almost serves as the opposite of dust because concrete in the way that is used in modern architecture—and even cement broadly, in the way it’s used in modern city planning, the way it goes into everywhere, like how we create spaces, plans, architectures—what it promises is an element of endurance, unlike dust.
 
@@ -211,7 +211,7 @@ So, yeah, and I assume Coventry is like Cairo in this respect, of course—clear
 
 **NIRMAL PUWAR:** We've walked along the rather curvy corridor from the archives to the Navy Room, and in prominence here is this very big wooden panel with gold lettering of place names and dates. What do you notice here, Aya?
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD05_Navy_Room_panel.jpg caption="Detail of a wooden panel displayed in the basement of Coventry Cathedral" alt="Detail of a wooden panel displayed in the basement of Coventry Cathedral"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD05_Navy_Room_panel.jpg right caption="Detail of a wooden panel displayed in the basement of Coventry Cathedral" alt="Detail of a wooden panel displayed in the basement of Coventry Cathedral"
 
 **AYA NASSAR:** I mean, walking in, you see several dates, and Egypt is very prominent on the top of the second list. The year next to it is 1801, and that would be the year when the British occupation of Egypt started. So here, it just appears as one year among many—there’s 1704 before it, 1805 after it, 1840 next to Syria—but 1801 is a pivotal moment in Egyptian history. That occupation lasted until 1954.
 

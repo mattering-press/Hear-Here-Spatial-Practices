@@ -25,9 +25,9 @@ The constant discomfort of reconciliation, reparation and representation present
 
 See the artist map drawn by Catherine Hahn accompanying this podcast.
 
-# Biography
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD06_CH_Podcast_Plan_page-0001.jpg caption="Artist map drawn by Catherine Hahn" alt="Artist map drawn by Catherine Hahn"
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/CH_(3-4)_001.jpg right width=75% caption="Catherine in the nave of Coventry Cathedral" alt="Catherine in the nave of Coventry Cathedral"
+# Biography
 
 Dr. Catherine Hahn is an artist and social researcher who is a member of the Migrant Futures Institute at Goldsmiths University. She uses creative research to identify obstacles to equality and to claim more equitable, life-affirming practices. She has lectured extensively, including in Art History at the University of Kent and Visual Cultures at Goldsmiths. She was recently the Administrator of Studio 3 Gallery at Kent and a researcher with the Global Gender and Cultures of Equality project (GlobalGRACE) at Goldsmiths. A key aspect of her methodology is drawing and mapping.  She is currently researching the diverse, working-class queer history of South London and is co-producing an exhibition with the LGBTQ+ Community Centre, Southwark (2025). The exhibition dovetails with research on local migration and leather. Catherine’s creative approach to history retrieval will challenge and change perceptions of South London heritage, including the local impact of migrants and colonialism. The innovative approach will resource future research collaborations with local archives, community centres and individuals.
 
@@ -165,6 +165,8 @@ It’s a space in which you have a duty to the people who are coming into the sp
 
 I think that the chairs —I love the chairs— they're just such nice physical objects, but also have possibilities. Unlike in an old local church where you’re stuck in a pew with the family hassock or whatever it is, and everything feels quite fixed in a row, these chairs offer the possibility of mobility. They reflect something of what the Cathedral stands for. There’s also an earlier origin that they connect to.
 
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD06_Chair.jpg left caption="One of the chairs designed for use in the nave of Coventry Cathedral" alt="One of the chairs designed for use in the nave of Coventry Cathedral"
+
 I know nothing about the chairs apart from the fact that they're lovely, but I read up about them and discovered that they have sort of spread the R.D. Russell Coventry chairs across the country. They're actually just referred to as Coventry chairs, and lots of places have them. They're very nicely designed. Demas Nwoko, an architect, who does lovely chairs, which these reminded me of very strongly. Nwoko's ones have got bent legs, like they're going to walk off. There's a sense of real physicality in them.
 
 These ones seem kind of almost pedestrian, but then they're not. There's a nice sense of the wood, and they also have this ergonomic design, very like Nwoko's. They're wide. Most people would find them comfortable. They don't have arms; you're not trapped in them. You can put them in circles. We've just moved them up here today, nice and happily, to have a chat with them. I've seen craft groups; I've seen schoolchildren. You might be facing the front for service, but you could also be doing many other things with them.
@@ -202,6 +204,8 @@ I was reading what you were saying about the Friends of Coventry Cathedral. I th
 **NIRMAL PUWAR:** This is an ongoing conversation—an ongoing process of mobilisation. All the different administrative facets of the Cathedral are involved in various ways, including the Friends of the Cathedral, who give generously. They are continually thinking about the Cathedral’s relationship to the city. The events and engagement teams are doing this as well.
 
 Now, I'd wondered if we could just go back to the stone, the font, what became the font, the rock from outside of Bethlehem that became the font. You mentioned the personal connection and the fact that people could touch it, the tactility of it, because when it was carved out of the stone, people actually asked to have pieces of it. People wrote from all over the place, asking for pieces of that stone, and I have met some people who have those pieces, who value those pieces of rock.
+
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD06_Boulder.jpg right caption="The baptismal font in Coventry Cathedral" alt="The baptismal font in Coventry Cathedral"
 
 I think it was last year we did an event here, part of the Pod's _Outside(R) Zine festival_, and we had an event alongside the stone; we called it _Rocking It_, in a double sense, you know, with a bit of humour. People came together, and we had students, we read words from Palestine alongside a geologist who could provide the so-called facts, but at the same time was very aware of the geopolitics of the situation. Stuart, who was the geologist, actually had students, some of his PhD students, who have gone on to live in, go back to Palestine and Gaza, and he was trying to help one student, Mohammed, to leave the region during the war.
 
@@ -243,7 +247,7 @@ What was really extraordinary about her work—I know you know her work—but sh
 
 **CATHERINE HAHN**: Yes, and there’s this idea of rubbing out, of erasure. She sometimes takes her work down too, even when it’s already installed on the wall. So, there’s this really interesting play with imagery.
 
-What I really loved about her—and what I thought was so significant—was when the front door glass of the Cathedral was vandalised. She was invited, as one of the artists, to install a temporary piece in that space. Because it was during Covid-19, her work became a kind of dialogue with her children, about not being able to see them. She included images of childhood objects: a toy—some kind of teddy bear, I think—a few bracelets, and a skateboard.
+What I really loved about her—and what I thought was so significant—was when the front door glass of the Cathedral was vandalised. She was invited, as one of the artists, to install a temporary piece in that space. Because it was during Covid-19, her work became a kind of dialogue with her children, about not being able to see them. [She included images of childhood objects](https://www.coventrycathedral.org.uk/broken-angel-barbara-walker-2): a toy—some kind of teddy bear, I think—a few bracelets, and a skateboard.
 
 I thought that the skateboard was so poignant because it's so mundane; it's a day-to-day object for children. It was what people couldn't do during Covid-19; you can't travel, you can't see your children, your children can't go out and play. It also has this wheel, which reminds me of the cars in Coventry. The fact that she chose such a mundane, everyday, immediately recognisable symbol of childhood and freedom—and the fact that it was on the front of the Cathedral— is incredibly touching, and it really connects the inside and the outside world.
 
