@@ -143,6 +143,8 @@ My thesis is quite simple. I'm looking at all plants with an Indian nomenclature
 
 \[00:20:41\]
 
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD02_IMG_4197.jpeg caption="Needleworker women sitting around a table" alt="Needleworker women sitting around a table"
+
 **BHARTI PARMAR:** This picture has come off the notice board. It's dated June 10, 1995. What we're looking at is a photograph of women from the sixties and seventies, probably ten of them around a table, sewing, mending, having a cup of tea, having fellowship and doing work.
 
 It's interesting because needlework has always been referred to as work. The term work is to keep your work facing you as you're sewing. I've always been interested in sewing and samplers as a document of women's lives, especially Victorian samplers.
