@@ -51,7 +51,7 @@ _\[music\]_
 
 The story of our encounter begins when I came up from the archives one day to the welcome desk, and Freyja, you started sharing what you've been finding in a cupboard up here in the welcome desk.
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD03_braille_guidebook_cover.jpg right caption="The cover of a hardback braille guidebook used in the 1980’s at Coventry Cathedral" alt="The cover of a hardback braille guidebook used in the 1980’s at Coventry Cathedral"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD03_braille_guidebook_cover.jpg width=75% right caption="The cover of a hardback braille guidebook used in the 1980’s at Coventry Cathedral" alt="The cover of a hardback braille guidebook used in the 1980’s at Coventry Cathedral"
 
 **FREYJA PERKINS**: Probably one of the biggest finds in this treasure trove was this gorgeous mahogany red book, which, as soon as I plucked it out of the dusty cupboard, I noticed had black tape on the side with braille reliefs coming out of it. I knew it must be something quite special. Upon opening it, I realised the entire thing was a braille book. At the time, I had no idea what the actual contents of the book were.
 
