@@ -209,9 +209,9 @@ So, yeah, and I assume Coventry is like Cairo in this respect, of course—clear
 
 **Addendum**
 
-**NIRMAL PUWAR:** We've walked along the rather curvy corridor from the archives to the Navy Room, and in prominence here is this very big wooden panel with gold lettering of place names and dates. What do you notice here, Aya?
-
 .ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD05_Navy_Room_panel.jpg right caption="Detail of a wooden panel displayed in the basement of Coventry Cathedral" alt="Detail of a wooden panel displayed in the basement of Coventry Cathedral"
+
+**NIRMAL PUWAR:** We've walked along the rather curvy corridor from the archives to the Navy Room, and in prominence here is this very big wooden panel with gold lettering of place names and dates. What do you notice here, Aya?
 
 **AYA NASSAR:** I mean, walking in, you see several dates, and Egypt is very prominent on the top of the second list. The year next to it is 1801, and that would be the year when the British occupation of Egypt started. So here, it just appears as one year among many—there’s 1704 before it, 1805 after it, 1840 next to Syria—but 1801 is a pivotal moment in Egyptian history. That occupation lasted until 1954.
 

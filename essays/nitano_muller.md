@@ -157,13 +157,13 @@ So, it's one thing to have courageous conversations. That's all going well, but 
 
 \[00:25:48\]
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD04_MLK.jpg left caption="An artefact from Martin Luther King’s special service at Coventry Cathedral in 1968" alt="An artefact from Martin Luther King’s special service at Coventry Cathedral in 1968"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD04_MLK.jpg left width=75% caption="An artefact from Martin Luther King’s special service at Coventry Cathedral in 1968" alt="An artefact from Martin Luther King’s special service at Coventry Cathedral in 1968"
 
 I'm sure I've told you before that Martin Luther King had a special service in the nave, which was packed with a thousand people in 1968. Here are just some pages of this magazine that used to be published by the Cathedral, called Coventry Cathedral Network. This one is from the 1970s _\[flipping through pages\]_ and you’ll see, Nitano, there’s a piece by Reverend Peter Berry, who was the community relations lead at the Cathedral. The title is “Race relations and Christian responsibility”.
 
 There was a lot of work happening. This is a very simple image from 1979 from the _Network_ magazine. I was quite surprised to see – I don't know why I'm surprised – a young black woman at the welcome desk. She and her colleague, a white woman with blonde hair, are named Melody Pratt and Ingrid Berger. They’re shown talking to visitors at the information desk in the Cathedral nave. As you mentioned, it’s truly about who is present in the space, what kinds of bodies are there, and how that shapes the way the Cathedral has been made, and how it could be made. I wonder what you think of that image.
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD04_Network_cover.jpg caption="The cover of the October 1979 edition of Network journal" alt="The cover of the October 1979 edition of Network journal"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD04_Network_cover.jpg width=75% caption="The cover of the October 1979 edition of Network journal" alt="The cover of the October 1979 edition of Network journal"
 
 **NITANO MULLER:** I think it's a beautiful image; it's a telling image. There’s a saying that a picture is worth a thousand words. She’s not the only person of colour, is she? I think there's a young woman just at the back there, actually.
 
