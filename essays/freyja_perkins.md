@@ -23,7 +23,7 @@ As we sought to re-centre the visual aids, we made contact with Matthew Horspool
 
 The podcast begins at the Welcome desk, where Freyja first came across the materials, before we move to the model on wheels, tucked away on the sidelines of the nave. Thereafter the conversation takes place in the archives, where a selection of the correspondence is shared, alongside a discussion of how the project can be supported now and in the future.
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/MH_FP_(4-3)_002.jpg caption="Detail of images and models in the archives" alt="Detail of images and models in the archives"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/MH_FP_(4-3)_002.jpg width=75% caption="Detail of images and models in the archives" alt="Detail of images and models in the archives"
 
 # Biographies
 
@@ -63,7 +63,7 @@ It was written around the late 80s, and it was way ahead of its time. It was ful
 
 **NIRMAL PUWAR:** So, through our searches in the archives downstairs, as well as online, we found that the models were part of a project titled _Cathedrals through Touch and Hearing_, which was initiated in 1988 by Professor John Hall, who was a radical theologian based at Birmingham University. John Hall had actually completely lost his sight by 1983, so he was completely blind when he was working on this project.
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD03_wooden_model.jpg caption="A wooden model on display in Coventry Cathedral, from the Cathedrals Through Touch and Hearing project (1988)" alt="A wooden model on display in Coventry Cathedral, from the Cathedrals Through Touch and Hearing project (1988)"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD03_wooden_model.jpg width=75% caption="A wooden model on display in Coventry Cathedral, from the Cathedrals Through Touch and Hearing project (1988)" alt="A wooden model on display in Coventry Cathedral, from the Cathedrals Through Touch and Hearing project (1988)"
 
 Now, Freyja, as we thought of how to relaunch the models and make them available for the public, we contacted Coventry Resource Centre for the blind, and they alerted us to Matthew. From then on, our conversation expanded in many ways as Matthew became a part of bringing these models out again for the Cathedral. Matthew, how have you found what Freyja has dug out of the cupboard for us?
 
@@ -73,7 +73,7 @@ So, I went in with that expectation and was just absolutely blown away by the gu
 
 We also found these 2D relief maps of the Cathedral, which were done in absolutely fascinating ways. You don't see these anymore these days. It's a sheet of plastic acrylic that has been essentially thermoformed—the same way you would make plastic packaging—with a wooden backing. It has really nice braille labels on it, and very pronounced lines to show where things are. It's got a key and highly tactile elements. To be honest, even professionals making tactile diagrams nowadays would struggle to make something as good as this. To find something like this, tucked away in the welcome desk, was absolutely extraordinary.
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD03_2d_relief_model.jpg caption="A 2-D relief map of Coventry Cathedral" alt="A 2-D relief map of Coventry Cathedral"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD03_2d_relief_model.jpg width=75% caption="A 2-D relief map of Coventry Cathedral" alt="A 2-D relief map of Coventry Cathedral"
 
 **NIRMAL PUWAR:** So, these are mobile models. Freyja, we have two of these?
 

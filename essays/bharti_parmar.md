@@ -143,7 +143,7 @@ My thesis is quite simple. I'm looking at all plants with an Indian nomenclature
 
 \[00:20:41\]
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD02_IMG_4197.jpeg caption="Needleworker women sitting around a table" alt="Needleworker women sitting around a table"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD02_IMG_4197.jpeg width=75% caption="Needleworker women sitting around a table" alt="Needleworker women sitting around a table"
 
 **BHARTI PARMAR:** This picture has come off the notice board. It's dated June 10, 1995. What we're looking at is a photograph of women from the sixties and seventies, probably ten of them around a table, sewing, mending, having a cup of tea, having fellowship and doing work.
 
