@@ -11,7 +11,7 @@
 
 - **Recording date:** 6 May 2025
 - **Interviewees:** Catherine Hahn
-- **Podcast duration:** 59min 22sec
+- **Podcast duration:** 51min 06sec
 
 # Introduction
 
@@ -29,7 +29,7 @@ See the artist map drawn by Catherine Hahn accompanying this podcast.
 
 # Biography
 
-Dr. Catherine Hahn is an artist and social researcher who is a member of the Migrant Futures Institute at Goldsmiths University. She uses creative research to identify obstacles to equality and to claim more equitable, life-affirming practices. She has lectured extensively, including in Art History at the University of Kent and Visual Cultures at Goldsmiths. She was recently the Administrator of Studio 3 Gallery at Kent and a researcher with the Global Gender and Cultures of Equality project (GlobalGRACE) at Goldsmiths. A key aspect of her methodology is drawing and mapping.  She is currently researching the diverse, working-class queer history of South London and is co-producing an exhibition with the LGBTQ+ Community Centre, Southwark (2025). The exhibition dovetails with research on local migration and leather. Catherine’s creative approach to history retrieval will challenge and change perceptions of South London heritage, including the local impact of migrants and colonialism. The innovative approach will resource future research collaborations with local archives, community centres and individuals.
+Dr. Catherine Hahn is an artist and social researcher who is a member of the Migrant Futures Institute at Goldsmiths University. She uses creative research to identify obstacles to equality and to claim more equitable, life-affirming practices. She has lectured extensively, including in Art History at the University of Kent and Visual Cultures at Goldsmiths. She was recently the Administrator of Studio 3 Gallery at Kent and a researcher with the Global Gender and Cultures of Equality project (GlobalGRACE) at Goldsmiths. A key aspect of her methodology is drawing and mapping. She is currently researching the diverse, working-class queer history of South London and is co-producing an exhibition with input from members of Meet Me at the Albany and the LGBTQ+ Community Centre, Southwark (2025). The exhibition dovetails with research on local migration and leather. Catherine’s creative approach to history retrieval will challenge and change perceptions of South London heritage, including the local impact of migrants and colonialism. The innovative approach will resource future research collaborations with local archives, community centres and individuals.
 
 Her publications include:
 
@@ -38,9 +38,9 @@ Her publications include:
 # Podcast
 
 <audio class="podcast-player">
-  <source src="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/audio/POD%2306_Catherina%20Hahn_-16LUFs_FINALCUT_01.mp3" type="audio/mp3">
+  <source src="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/audio/POD%2306_Catherina%20Hahn_-16LUFs_FINALCUT_Revision_FINAL.mp3" type="audio/mp3">
     <!-- fallback -->
-    Your browser doesn't support HTML5 audio. Here is a <a href="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/audio/POD%2306_Catherina%20Hahn_-16LUFs_FINALCUT_01.mp3">link to download the audio</a> instead.
+    Your browser doesn't support HTML5 audio. Here is a <a href="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/audio/media/audio/POD%2306_Catherina%20Hahn_-16LUFs_FINALCUT_Revision_FINAL.mp3">link to download the audio</a> instead.
 </audio>
 
 # Transcript
