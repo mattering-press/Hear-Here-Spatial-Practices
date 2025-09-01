@@ -33,10 +33,6 @@ Spaces and archives are opened up, connected and enlivened through a variety of 
 
 ![Aya Nasser & Nirmal Puwar in the archives](/media/podcasts/AN_(4-3)_001.jpg)
 
-## #06: Catherine Hahn {href=./catherine_hahn.md}
-
-![Catherine in the nave of Coventry Cathedral](/media/podcasts/CH_(3-4)_001.jpg)
-
 ## #07: Mahsa Alami Fariman, Ahmadreza Hakiminejad, Heba N. Sabboubeh {href=./fariman.md}
 
 ![Mahsa Alami Fariman, Ahmadreza Hakiminejad and Heba Sabboubeh recording in the Chapel of Industry with sound producer Duncan Whitley.](/media/podcasts/MRH_(4-3)_001.jpg)
