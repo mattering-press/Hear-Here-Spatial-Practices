@@ -63,7 +63,7 @@ So, my first question for you, Catherine, is given that you engage with art, spa
 
 _\[distant voice echoing in the background\]_
 
-\[00:04:17\]
+\[00:03:41\] 
 
 **CATHERINE HAHN**: Lovely. Obviously, you know the history, but for me it was kind of new seeing it and then reading about it. So, maybe if I just begin by giving an idea of what I think was happening and then maybe what these restrictions are.
 
@@ -87,7 +87,7 @@ And one of the things that I was thinking about is this big shift in the way we 
 
 One of the things that I found extraordinary about Notre Dame in the 13th century was the colour work from its early days. The Middle Ages cathedral was in colour, both in the interior and the exterior. When we think of it now—if you've been to Notre Dame—it's quite sort of grim and Gothic in feel, because that colour's gone and quite weighted in terms of the stone. But it's also about how places do transmogrify and change across time. I think that one of the things about this Cathedral is that in order for it to be this living space, it needs to actually be open not to being only Basil Spence's design, but to being a space that speaks and lives with the city, that engages with the new ideas, with what's missing from the past and finds ways of being experimental.
 
-\[00:11:37\]
+\[00:10:02\] 
 
 I was going to show you this picture of one of my favourite architects, Demas Nwoko, whom I don't know if you know, but the Tate Modern is going to have an exhibition of his work and the work of other African modernists, either later this year or next year. He’s a sculptor primarily, and then began making these religious sites. The Dominican chapel is his most famous work in Ibadan.
 
@@ -103,7 +103,7 @@ So, if you could imagine other artists in the space, who would these be for you,
 
 **CATHERINE HAHN**: Yes, and I think what you've just said is really interesting as well. The building was recent in terms of cathedrals, and even with that notion of its fragility, it can lead to new possibilities and more makings. Rather than seeing it as a closed-down architectural or artistic monument, a kind of untouchable or sacred space, we can look at it as a breathing Cathedral. Not just to have artworks coming in for very short exhibitions, but to think about how you actually build new spaces into the design and new ways of treating things that are gradually falling apart slowly, you know, possibilities rather than moments of collapse.
 
-\[00:15:33\]
+\[00:13:25\] 
 
 I brought two artists, and I brought them because they're modernists. If the Cathedral would just take a little bit longer to make and a bit of time to think through its futures, these people, you can imagine, can give us different kinds of opportunities within the space, and one of them is Eva Frankfurther _\[page flipping\]_. She's an artist who's around very much at the same time, so 1930 to 1959. She had an incredibly brief life, 29 years. She tragically killed herself.
 
@@ -131,7 +131,7 @@ We know that Graham Sutherland’s tapestry was woven by women in France; I know
 
 **NIRMAL PUWAR:** No.
 
-\[00:20:49\]
+\[00:17:58\]
 
 **CATHERINE HAHN**: So, he is from Guyana and became really important in the Caribbean art movement in Britain. We may know him more in art school teaching, because he was very interested in Amerindian experiences in Guyana and the idea of time and how time moves in art. Much of the work that has been shown recently speaks to those kinds of artworks.
 
@@ -155,7 +155,7 @@ These images don’t do justice to his work at all. When you see Williams’ wor
 
 **NIRMAL PUWAR:** Yes, you mentioned the restrictions in the Cathedral's design and the significance of these other artworks, as well as what they can bring to the space. That's why I was thinking this could be an incredible conversation, a global conversation of colour, music, poverty, and political mobilisation. So, for you, these are some of the opportunities you see that are offered from inside the Cathedral, perhaps.
 
-\[00:26:02\]
+\[00:22:30\]
 
 And I know you've mentioned the possibilities offered by the chairs as well, and a sort of hands-on engagement. Could you share what you're thinking there?
 
@@ -177,7 +177,7 @@ These ones seem kind of almost pedestrian, but then they're not. There's a nice 
 
 **NIRMAL PUWAR:** It does. The Cathedral team reconfigures the space of the chairs. It could be a circle, a row, or it could be that you're staring out at the city. So, yes, I'm sure we could have a long conversation about the chairs, and we could even get into some experiments, couldn't we? But there are other configurations you've been considering in terms of engagements and the possibilities. Do you want to share some of those with us?
 
-\[00:29:40\]
+\[00:25:37\] 
 
 **CATHERINE HAHN**: I mean, one of the things that I felt right from the beginning, and I was looking at some of the old news reels—the boulder from Bethlehem. And it was really just a quick observation that there was this advertising of the fact that it was hands-on, so that people came and they laid their hands on the font. There was something quite striking to me about the idea of the big monolith building, and then the notion that you have a personal connection, a connection that also brings people closer to God, in terms of a religious space. But also, the idea of a space of interaction, of physical interaction, which I thought was really powerful in its origins.
 
@@ -197,9 +197,9 @@ And so, there's all this sort of, yes, defeating of the fascists; it is absolute
 
 **CATHERINE HAHN**: I think you're so right. It feels like, where is it? It's so palpably absent as well now. When I was reading back through your work, I realised it's so live because these narratives have gone on beyond this space.
 
-I mean, it was over the road at the Herbert and then, you know, London and we saw films of it at Goldsmiths. So, it has had this kind of projected life, and it has gone on to change other stories. We think of visual sociology, for example, it’s a multifaceted, multidimensional frame change. Also, the way that we would think about how we both express being subjects? And then also the fact that this is not, as you say, about commemorating or having a nostalgic relationship with the colony or with the abuses of the past.
+I mean, it was over the road at the Herbert and then, you know, London and we saw films of it at Goldsmiths. So, it has had this kind of projected life, and it has gone on to change other stories. And then also the fact that this is not, as you say, about commemorating or having a nostalgic relationship with the colony or with the abuses of the past.
 
-I was reading what you were saying about the Friends of Coventry Cathedral. I think you might have actually mentioned it in your text. I also wrote that down, that they were hoping for the Friends of Coventry Cathedral to pull in the other communities in the city for a later event. And I was thinking, it's as if it's somewhere external, as if the city and the diversity are happening externally, and that the friends would like to have some sort of relationship with it, as opposed to it being an integral part of the city here?
+But I was really struck here when I was reading what you were saying about the Friends of Coventry Cathedral. I think you might have actually mentioned it in your text. I also wrote that down, that they were hoping for the Friends of Coventry Cathedral to pull in the other communities in the city for a later event. And I was thinking, it's as if it's somewhere external, as if the city and the diversity are happening externally, and that the friends would like to have some sort of relationship with it, as opposed to it being an integral part of the city here?
 
 **NIRMAL PUWAR:** This is an ongoing conversation—an ongoing process of mobilisation. All the different administrative facets of the Cathedral are involved in various ways, including the Friends of the Cathedral, who give generously. They are continually thinking about the Cathedral’s relationship to the city. The events and engagement teams are doing this as well.
 
@@ -211,7 +211,7 @@ I think it was last year we did an event here, part of the Pod's _Outside(R) Zin
 
 So, the stone becomes this planetary time, but also a geopolitical touchstone today. That is one possibility. I know you have other thoughts on the whole reconciliation mission, peace and reconciliation that have come out of the history and the story of the Cathedral.
 
-\[00:38:55\]
+\[00:33:24\] 
 
 **CATHERINE HAHN**: Yes, I think, in terms of what's happening in Gaza now, it could never be more prescient _\[voice echoing in the background\]._ I was really pleased to see that there was a statement made by the Cathedral about what's happening in Gaza and mentioning Trump as well, which shows you how live and how important it is to touch on these issues. Both your work and others work that I'm going to mention— I'm working towards the Herbert now— has done in terms of reconciliation is acknowledging that reconciliation— which is one of the Cathedral's aims, and very much in South Africa, obviously, with the Truth and Reconciliation Commission— that it doesn't come without real discomfort, pain and real acknowledgement. It is not a one-off event. It is this constant, as you say, retouching and going back to these experiences, over and over again and living with discomfort.
 
@@ -223,7 +223,7 @@ It was the first big black art group exhibition, saying that people here are not
 
 **NIRMAL PUWAR:** What’s this?
 
-\[00:41:35\]
+\[00:35:45\] 
 
 **CATHERINE HAHN**: This is Claudette Johnson's work of a woman—[nude figure arms overhead, with an earring](https://www.nocolourbar.org/claudetter-johnson). These were pointing out some of the problems with modernism. It kind of reminded me of the masculinist, Western discourse, Picasso in particular and his imagery of women in objectification. So, she was making this work, which is very much speaking to the embodied presence of a woman, a black woman, and those absences in art spaces.
 
@@ -247,11 +247,11 @@ What was really extraordinary about her work—I know you know her work—but sh
 
 **CATHERINE HAHN**: Yes, and there’s this idea of rubbing out, of erasure. She sometimes takes her work down too, even when it’s already installed on the wall. So, there’s this really interesting play with imagery.
 
-What I really loved about her—and what I thought was so significant—was when the front door glass of the Cathedral was vandalised. She was invited, as one of the artists, to install a temporary piece in that space. Because it was during Covid-19, her work became a kind of dialogue with her children, about not being able to see them. [She included images of childhood objects](https://www.coventrycathedral.org.uk/broken-angel-barbara-walker-2): a toy—some kind of teddy bear, I think—a few bracelets, and a skateboard.
+What I really loved about her—and what I thought was so significant—was when the front door glass of the Cathedral was vandalised. She was invited, as one of the artists, to install a temporary piece in that space. Because it was during Covid-19, her work became a kind of dialogue with her children, about not being able to see them. She included images of childhood objects: a toy—some kind of teddy bear, I think—a few bracelets, and a skateboard.
 
 I thought that the skateboard was so poignant because it's so mundane; it's a day-to-day object for children. It was what people couldn't do during Covid-19; you can't travel, you can't see your children, your children can't go out and play. It also has this wheel, which reminds me of the cars in Coventry. The fact that she chose such a mundane, everyday, immediately recognisable symbol of childhood and freedom—and the fact that it was on the front of the Cathedral— is incredibly touching, and it really connects the inside and the outside world.
 
-It spoke to all those things that we're thinking about, like how do you get air in with this day-to-day object? And it’s completely contemporary. It also made me reflect on how moments of destruction can become moments of opportunity. Things come down, things go up. And that’s not new—this building has been changing for centuries. There have been times when people have been prepared to say: new things need to replace the old.
+It spoke to all those things that we're thinking about, like how do you get air in with this day-to-day object? And it’s completely contemporary. It also made me reflect on how moments of destruction can become moments of opportunity. Things come down, things go up. And that’s not new—Notre Dame has been changing for centuries. And there have been times when people have been prepared to say: new things need to replace the old.
 
 **NIRMAL PUWAR:** Yeah, you mentioned the skateboard because Duncan, our sound producer here, will know that in front of the Cathedral, on the steps and the steps of the Herbert, there are actually young people skateboarding all the time.
 
@@ -275,13 +275,13 @@ I would like you to call on your massive experience and expertise, including you
 
 **CATHERINE HAHN**: I mean, it's interesting because St. George's Cathedral —I went more than once—I went there when I was working with young people who were street homeless.
 
-And we went to the cathedral, which also has a similar history in terms of its overwhelming infrastructure. I think it was Bosehaka—I can’t quite remember who it was—but one of the people who was there. It was a Christmas Eve service, and the children on the street really wanted to go to the late mass, so we went with them.
+And we went to the cathedral, which also has a similar history in terms of its overwhelming infrastructure. I think it was Boesak (Allan Boesak) —I can’t quite remember who it was—but one of the people who was there. It was a Christmas Eve service, and the children on the street really wanted to go to the late mass, so we went with them.
 
 And it was a packed white audience, and he said to them, “Did you come in to see Tutu today? Because if you did—and you're not normally here—you're going to be disappointed—he’s in Gug’s.”
 
-But there was something about the fact that people had wanted to go to see him. Individuals were drawn to him, and it speaks to something about the political and religious conviction of people who took real risks in those days—people who were religious and acted out of a deep sense of belief. There’s also something about that personal approach that was very present in South Africa before the end of apartheid, where for those who were engaged, it was risky—it was actually really hard.
+But there was something about the fact that people had wanted to go to see him. It was almost like this kind of individuals. And something about political/religious kind of, the kind of people who took real risks in those days who were religious and did it because they had some kind of conviction. There is something also about that personal approach that was present in South Africa before the end of apartheid, where there was a real sense of the, for people who were engaged, it was risky, like it was actually really hard.
 
-I think it's fantastic that someone from South Africa is here; I also think it's really fantastic that there are LGBTQ+ conversations happening at this time, because it’s just shocking what's happening in terms of legislation. But I also think that people had to be prepared to take risks, and big spaces have voices. And so, more than just the individual—more than just Tutu or an emblem—it’s about something bigger. St. George’s Cathedral now has a window with Tutu in it, and I was thinking, that’s great, I think it’s wonderful. But there’s also something about all the people—that sense that was very present when you were involved in struggle politics—that it was about everyone. It’s about how you keep going back to that collective effort, which was something so palpable in South Africa toward the end, before the change. Things were happening because people were making them happen.
+And I think there is something about spaces like this. I think it's fantastic that someone from South Africa is here; I also think it's really fantastic that there are LGBTQ+ conversations happening at this time, because it’s just shocking what's happening in terms of legislation. But I also think that people had to be prepared to take risks, and big spaces have voices. And so, more than just the individual—more than just Tutu or an emblem—it’s about something bigger. St. George’s Cathedral now has a window with Tutu in it, and I was thinking, that’s great, I think it’s wonderful. But there’s also something about all the people—that sense that was very present when you were involved in struggle politics—that it was about everyone. It’s about how you keep going back to that, which was something so palpable in South Africa toward the end, before the change. Things were happening because people were making them happen.
 
 And I think that’s a bit like your work, and the work happening next door—it carries that kind of resonance. People take it on board, and they get inspired by it. At the time, it might seem quite small or like a one-off—people might ask, why are we even doing this? But it does change the space. Even something as simple as getting the light turned off on the Graham Sutherland work that took real effort, which is surprising, because it’s not an idol, it’s a tapestry. There's a danger of turning places into precious objects. But the fact that your work went on and became something somewhere else, I think, was really important. Fundamentally, it changes things.
 
