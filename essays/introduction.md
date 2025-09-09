@@ -1,6 +1,6 @@
 .ve-style ./custom.css
 
-.ve-header 'Introduction' background=none
+.ve-header 'Introduction' gh:mattering-press/Hear-Here-Spatial-Practices/media/generic/POD5_ChapOfIndustry_Alt detail.jpg
     - [home](/)
     - [introduction](/essays/introduction.md)
     - [contributors](/essays/contributors.md)
