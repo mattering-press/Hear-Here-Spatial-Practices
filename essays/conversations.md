@@ -1,7 +1,12 @@
 .ve-style ./custom.css
 
 .ve-header 'Conversations' background=none
-    - [Welcome Desk](/)
+    - [home](/)
+    - [introduction](/essays/introduction.md)
+    - [contributors](/essays/contributors.md)
+    - [podcasts](/essays/podcasts.md)
+    - [events](/essays/events.md)
+    - [experimental index](/essays/index.md)
 
 .ve-footer
     - Published by [![Mattering Press](https://www.matteringpress.org/wp-content/themes/matteringpress/img/mattering-press.png)](https://www.matteringpress.org/)

@@ -1,7 +1,12 @@
 .ve-style ./custom.css
 
 .ve-header 'Events' background=none
-    - [Welcome Desk](/)
+    - [home](/)
+    - [introduction](/essays/introduction.md)
+    - [contributors](/essays/contributors.md)
+    - [podcasts](/essays/podcasts.md)
+    - [conversations](/essays/conversations.md)
+    - [experimental index](/essays/index.md)
 
 .ve-footer
     - Published by [![Mattering Press](https://www.matteringpress.org/wp-content/themes/matteringpress/img/mattering-press.png)](https://www.matteringpress.org/)

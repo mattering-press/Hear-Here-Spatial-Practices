@@ -1,6 +1,12 @@
 .ve-style ./essays/custom.css
 
 .ve-header 'Hear Here: Spatial Practices' subtitle='Nirmal Puwar' background=none
+    - [introduction](/essays/introduction.md)
+    - [contributors](/essays/contributors.md)
+    - [podcasts](/essays/podcasts.md)
+    - [conversations](/essays/conversations.md)
+    - [events](/essays/events.md)
+    - [experimental index](/essays/index.md)
 
 .ve-footer background=none
     - Published by [![Mattering Press](https://www.matteringpress.org/wp-content/themes/matteringpress/img/mattering-press.png)](https://www.matteringpress.org/)
@@ -10,7 +16,7 @@ Material archives operate as spinning tops for innovating collaborative future s
 
 This book is currently under development using the [Juncture](https://www.juncture-digital.org/) visual essaying platform developed and maintained by [JSTOR Labs](https://labs.jstor.org/). Juncture renders this repository at [https://juncture-digital.org/mattering-press/Hear-Here-Spatial-Practices](https://juncture-digital.org/mattering-press/Hear-Here-Spatial-Practices).
 
-# Welcome Desk {.cards}
+# Contents {.cards}
 
 ## Introduction {href=./essays/introduction.md}
 
