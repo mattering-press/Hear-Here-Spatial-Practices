@@ -86,6 +86,10 @@ main>section:has(> .cards.wrapper) {
   padding-top: 24px;
 }
 
+#juncture ul {
+  padding: 0 0 0 6rem;
+}
+
 #juncture b, #juncture strong {
   font-weight: 400;
 }
