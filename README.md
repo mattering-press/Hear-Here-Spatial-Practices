@@ -20,15 +20,15 @@ This book is currently under development using the [Juncture](https://www.junctu
 
 ## Introduction {href=./essays/introduction.md}
 
-![](/media/generic/POD5_ChapOfIndustry_Alt detail.jpg)
+![](/media/generic/POD5_ChapOfIndustry_Alt_detail.jpg)
 
 ## Contributors {href=./essays/contributors.md}
 
-![](/media/generic/IMG_8963 chairs detail.jpg)
+![](/media/generic/IMG_8963_chairs_detail.jpg)
 
 ## Podcasts {href=./essays/podcasts.md}
 
-![](/media/generic/IMG_8909 Nave letterbox view.jpg)
+![](/media/generic/IMG_8909_Nave_letterbox_view.jpg)
 
 ## Conversations {href=./essays/conversations.md}
 
@@ -40,4 +40,4 @@ This book is currently under development using the [Juncture](https://www.junctu
 
 ## Experimental index {href=./essays/index.md}
 
-![](/media/generic/Plumbline detail 01.jpg)
+![](/media/generic/Plumbline_detail_01.jpg)
