@@ -1,7 +1,7 @@
 .ve-style ./custom.css
 .ve-script ./custom.js
 
-.ve-header 'Hear Here Podcast: Monica Brown' background=none
+.ve-header 'Hear Here Podcast: Monica Brown' gh:mattering-press/Hear-Here-Spatial-Practices/media/generic/IMG_8909_Nave_letterbox_view.jpg
     - [home](/)
     - [introduction](/essays/introduction.md)
     - [contributors](/essays/contributors.md)

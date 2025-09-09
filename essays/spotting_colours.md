@@ -1,6 +1,6 @@
 .ve-style ./custom.css
 
-.ve-header 'Spotting Colours' background=none
+.ve-header 'Spotting Colours' gh:mattering-press/Hear-Here-Spatial-Practices/media/generic/Plumbline_detail_01.jpg
     - [home](/)
     - [introduction](/essays/introduction.md)
     - [contributors](/essays/contributors.md)

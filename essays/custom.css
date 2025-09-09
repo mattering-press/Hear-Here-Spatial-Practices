@@ -104,10 +104,10 @@ ve-header {
   background-size: 100% auto;
   background-image: url(https://raw.githubusercontent.com/mattering-press/Hear-Here-Spatial-Practices/refs/heads/main/media/generic/spiral_gradient_wide.png);
   color: var(--colour-text);*/
-  padding: 3rem 1rem;
+  /*padding: 3rem 1rem;
   position: relative;
-  /*border-bottom: 4px solid #bababa;*/
-  /*transition: filter 0.3s;*/
+  border-bottom: 4px solid #bababa;
+  transition: filter 0.3s;*/
 }
 
 /*ve-header:hover {

@@ -1,7 +1,7 @@
 .ve-style ./custom.css
 .ve-script ./custom.js
 
-.ve-header 'Rocking It: Insider/Outsider Archives' background=none
+.ve-header 'Rocking It: Insider/Outsider Archives' gh:mattering-press/Hear-Here-Spatial-Practices/media/generic/Pod02_Penny_01.jpg
     - [home](/)
     - [introduction](/essays/introduction.md)
     - [contributors](/essays/contributors.md)

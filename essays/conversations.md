@@ -1,6 +1,6 @@
 .ve-style ./custom.css
 
-.ve-header 'Conversations' background=none
+.ve-header 'Conversations' gh:mattering-press/Hear-Here-Spatial-Practices/media/generic/Chair_CU.jpg
     - [home](/)
     - [introduction](/essays/introduction.md)
     - [contributors](/essays/contributors.md)

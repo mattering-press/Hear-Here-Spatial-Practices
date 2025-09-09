@@ -1,6 +1,6 @@
 .ve-style ./custom.css
 
-.ve-header 'Acorn' background=none
+.ve-header 'Acorn' gh:mattering-press/Hear-Here-Spatial-Practices/media/generic/Pod02_Penny_01.jpg
     - [home](/)
     - [introduction](/essays/introduction.md)
     - [contributors](/essays/contributors.md)
