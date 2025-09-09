@@ -68,6 +68,11 @@ body {
 
 /* MAIN SECTION AND ELEMENTS */
 
+main>section, main>p {
+  padding-left: 0 5rem;
+  padding-right: 0 5rem;
+}
+
 #juncture {
   max-width: 100%;
   /*margin: 0 auto;
