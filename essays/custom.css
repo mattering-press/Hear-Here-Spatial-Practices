@@ -68,8 +68,12 @@ body {
 
 /* MAIN SECTION AND ELEMENTS */
 
-main>p {
+main>section, main>p {
   padding: 0 5rem;
+}
+
+main>section:has(> .cards.wrapper) {
+  padding: 0 1rem;
 }
 
 #juncture {
