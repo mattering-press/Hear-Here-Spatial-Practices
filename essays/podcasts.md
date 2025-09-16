@@ -32,7 +32,7 @@ Spaces and archives are opened up, connected and enlivened through a variety of 
 
 ## #04: Nitano Muller {href=./nitano_muller.md}
 
-![Nitano Muller & Nirmal Puwar in the ruins of Coventry Cathedral](/media/podcasts/NM_(3-4)_001.jpg)
+![Nitano Muller in the ruins of Coventry Cathedral](/media/podcasts/POD04_cover.jpeg)
 
 ## #05: Aya Nassar {href=./aya_nassar.md}
 
@@ -40,7 +40,7 @@ Spaces and archives are opened up, connected and enlivened through a variety of 
 
 ## #06: Catherine Hahn {href=./catherine_hahn.md}
 
-![Catherine in the nave of Coventry Cathedral](/media/podcasts/CH_(3-4)_001.jpg)
+![Catherine Hahn in the nave of Coventry Cathedral](/media/podcasts/POD06_cover.jpeg)
 
 ## #07: Mahsa Alami Fariman, Ahmadreza Hakiminejad, Heba N. Sabboubeh {href=./fariman.md}
 
