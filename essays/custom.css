@@ -27,7 +27,7 @@
 
 body {
   font-family: var(--font-primary);
-  font-weight: 400;
+  font-weight: 300;
   margin: 0;
   background-color: var(--colour-bg);
   color: var(--colour-text);
@@ -91,7 +91,7 @@ main>section:has(> .cards.wrapper) {
 }
 
 #juncture b, #juncture strong {
-  font-weight: 700;
+  font-weight: 500;
 }
 
 #juncture h1, #juncture h2, #juncture h3, #juncture h4, #juncture h5, #juncture h6 {
