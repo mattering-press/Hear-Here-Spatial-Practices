@@ -16,6 +16,9 @@
 
 Spaces and archives are opened up, connected and enlivened through a variety of routes. Approached from the sidelines, in wayward directions, in-between the big frames and hanger narratives, a call-and-response of imaginations starts shifting our groundings. Conversations spiral towards an experimental index of the place, unfurling global planetary stories. Material archives are activated in the arts of contact zones, with generosity and care.
 
+- **Podcast Producer:** Duncan Whitley
+- **Transcription Editor:** Phavine Phung
+
 # {.cards}
 
 ## #01: Monica Brown {href=./monica_brown.md}
