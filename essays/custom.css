@@ -17,7 +17,7 @@
   --colour-gray: #bababa;
   --colour-card: linear-gradient(to right, var(--colour-bg), var(--colour-gray));
   --colour-text: #222;
-  --colour-accent: #f6a945;
+  --colour-accent: #6f2025;
   --radius: 15px;
   --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   --transition: all 0.3s ease;
