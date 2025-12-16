@@ -2,9 +2,7 @@
 
 .ve-header 'Hear Here: Spatial Practices' subtitle='Nirmal Puwar' background=black
     - [introduction](/essays/introduction.md)
-    - [contributors](/essays/contributors.md)
     - [podcasts](/essays/podcasts.md)
-    - [conversations](/essays/conversations.md)
     - [events](/essays/events.md)
     - [experimental index](/essays/index.md)
 
@@ -22,17 +20,9 @@ This book is currently under development using the [Juncture](https://www.junctu
 
 ![](/media/generic/POD5_ChapOfIndustry_Alt_detail.jpg)
 
-## Contributors {href=./essays/contributors.md}
-
-![](/media/generic/IMG_8963_chairs_detail.jpg)
-
 ## Podcasts {href=./essays/podcasts.md}
 
 ![](/media/generic/IMG_8909_Nave_letterbox_view.jpg)
-
-## Conversations {href=./essays/conversations.md}
-
-![](/media/generic/Chair_CU.jpg)
 
 ## Events {href=./essays/events.md}
 
