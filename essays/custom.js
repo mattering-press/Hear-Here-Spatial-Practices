@@ -326,3 +326,51 @@ function scanAndAddCueMarkers() {
     audio.addEventListener('loadedmetadata', addMarkers, { once: true });
   }
 }
+
+// REWRITE VE-HEADER CSS
+function rewriteHeader() {
+  function styleHeader(shadowRoot) {
+    if (!shadowRoot || shadowRoot.querySelector('style[data-custom-header]')) return;
+
+    const style = document.createElement('style');
+    style.setAttribute('data-custom-header', '');
+    style.textContent = `
+      .flex.items-center.ml-4 {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .flex.items-center.ml-4 .text-4xl {
+        line-height: 1.2;
+      }
+      .flex.items-center.ml-4 div:last-child {
+        font-size: 1.125rem;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 0.7);
+        margin-top: 0.25rem;
+        letter-spacing: 0.03em;
+      }
+    `;
+    shadowRoot.appendChild(style);
+  }
+
+  function applyToAllHeaders(root) {
+    root.querySelectorAll('ve-header').forEach(header => {
+      const sr = header.shadowRoot;
+      if (!sr) return;
+      styleHeader(sr);
+
+      // handle the nested ve-navbar's own shadow root too
+      const navbar = sr.querySelector('ve-navbar');
+      if (navbar && navbar.shadowRoot) {
+        styleHeader(navbar.shadowRoot);
+      }
+    });
+  }
+
+  // Run once on load
+  applyToAllHeaders(document);
+
+  // Re-run if Juncture re-renders the component later
+  const observer = new MutationObserver(() => applyToAllHeaders(document));
+  observer.observe(document.body, { childList: true, subtree: true });
+}

@@ -164,24 +164,6 @@ ve-header .subtitle {
   text-transform: lowercase;
 }
 
-ve-header[label="Hear Here: Spatial Practices"] .flex.items-center.ml-4 {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-ve-header[label="Hear Here: Spatial Practices"] .flex.items-center.ml-4 .text-4xl {
-  line-height: 1.2;
-}
-
-ve-header[label="Hear Here: Spatial Practices"] .flex.items-center.ml-4 div:last-child {
-  font-size: 1.125rem;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.7);
-  margin-top: 0.25rem;
-  letter-spacing: 0.03em;
-}
-
 /* NAVBAR */
 
 ve-navbar {
