@@ -1,4 +1,5 @@
 .ve-style ./essays/custom.css
+.ve-script ./custom.js
 
 .ve-header 'Hear Here: Spatial Practices' subtitle='Nirmal Puwar' background=black
     - [introduction](/essays/introduction.md)

@@ -328,82 +328,49 @@ function scanAndAddCueMarkers() {
 }
 
 // REWRITE VE-HEADER CSS
-(function () {
+function rewriteHeader() {
+  function styleHeader(shadowRoot) {
+    if (!shadowRoot || shadowRoot.querySelector('style[data-custom-header]')) return;
 
-  const STYLE_ID = 'custom-navbar-styles';
-
-  const CSS = `
-    .flex.items-center.ml-4 {
-      flex-direction: column !important;
-      align-items: flex-start !important;
-      gap: 0.25rem !important;
-    }
-    .flex.items-center.ml-4 > .text-4xl {
-      line-height: 1.1 !important;
-      letter-spacing: -0.01em !important;
-    }
-    .flex.items-center.ml-4 > div:last-child {
-      color: rgba(255, 255, 255, 0.65) !important;
-      font-size: 0.85rem !important;
-      font-weight: 400 !important;
-      letter-spacing: 0.22em !important;
-      text-transform: uppercase !important;
-      font-style: italic !important;
-    }
-  `;
-
-  function getNavbarShadow() {
-    const header = document.querySelector('ve-header');
-    if (!header)            { console.warn('[navbar-styles] ve-header not found');            return null; }
-    if (!header.shadowRoot) { console.warn('[navbar-styles] ve-header has no shadowRoot');    return null; }
-
-    const navbar = header.shadowRoot.querySelector('ve-navbar');
-    if (!navbar)            { console.warn('[navbar-styles] ve-navbar not found');            return null; }
-    if (!navbar.shadowRoot) { console.warn('[navbar-styles] ve-navbar has no shadowRoot');    return null; }
-
-    return navbar.shadowRoot;
-  }
-
-  let observer = null;
-
-  function inject(shadow) {
-    if (shadow.querySelector(`#${STYLE_ID}`)) return; // already present
     const style = document.createElement('style');
-    style.id = STYLE_ID;
-    style.textContent = CSS;
-    shadow.appendChild(style);
-    console.log('[navbar-styles] injected ✓');
+    style.setAttribute('data-custom-header', '');
+    style.textContent = `
+      .flex.items-center.ml-4 {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .flex.items-center.ml-4 .text-4xl {
+        line-height: 1.2;
+      }
+      .flex.items-center.ml-4 div:last-child {
+        font-size: 1.125rem;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 0.7);
+        margin-top: 0.25rem;
+        letter-spacing: 0.03em;
+      }
+    `;
+    shadowRoot.appendChild(style);
   }
 
-  function setup() {
-    const shadow = getNavbarShadow();
-    if (!shadow) return false;
+  function applyToAllHeaders(root) {
+    root.querySelectorAll('ve-header').forEach(header => {
+      const sr = header.shadowRoot;
+      if (!sr) return;
+      styleHeader(sr);
 
-    inject(shadow);
-
-    // Re-inject if the component re-renders and removes our style element
-    if (!observer) {
-      observer = new MutationObserver(() => {
-        if (!shadow.querySelector(`#${STYLE_ID}`)) {
-          console.log('[navbar-styles] style was removed by re-render — re-injecting');
-          inject(shadow);
-        }
-      });
-      observer.observe(shadow, { childList: true });
-    }
-
-    return true;
+      // handle the nested ve-navbar's own shadow root too
+      const navbar = sr.querySelector('ve-navbar');
+      if (navbar && navbar.shadowRoot) {
+        styleHeader(navbar.shadowRoot);
+      }
+    });
   }
 
-  function init() {
-    // Spread attempts across time to catch whichever render cycle completes first
-    [0, 100, 300, 600, 1000, 2000].forEach(delay => setTimeout(setup, delay));
-  }
+  // Run once on load
+  applyToAllHeaders(document);
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-
-})();
+  // Re-run if Juncture re-renders the component later
+  const observer = new MutationObserver(() => applyToAllHeaders(document));
+  observer.observe(document.body, { childList: true, subtree: true });
+}
