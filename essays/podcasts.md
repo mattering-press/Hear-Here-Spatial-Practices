@@ -3,8 +3,7 @@
 .ve-header 'Podcasts' gh:mattering-press/Hear-Here-Spatial-Practices/media/generic/IMG_8909_Nave_letterbox_view.jpg
     - [home](/)
     - [introduction](/essays/introduction.md)
-    - [contributors](/essays/contributors.md)
-    - [conversations](/essays/conversations.md)
+    - [podcasts](/essays/podcasts.md)
     - [events](/essays/events.md)
     - [experimental index](/essays/index.md)
     
