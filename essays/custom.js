@@ -328,44 +328,71 @@ function scanAndAddCueMarkers() {
 }
 
 // REWRITE VE-HEADER CSS
-Promise.all([
-  customElements.whenDefined('ve-header'),
-  customElements.whenDefined('ve-navbar')
-]).then(() => {
-  requestAnimationFrame(() => {
+(async function () {
+
+  const NAVBAR_STYLES = `
+    /* Stack title and author name vertically */
+    .flex.items-center.ml-4 {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.25rem;
+    }
+
+    /* Title */
+    .flex.items-center.ml-4 > .text-4xl {
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+    }
+
+    /* Author name */
+    .flex.items-center.ml-4 > div:last-child {
+      color: rgba(255, 255, 255, 0.65);
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-style: italic;
+    }
+  `;
+
+  function tryInject() {
     const navbarShadow = document.querySelector('ve-header')
       ?.shadowRoot
       ?.querySelector('ve-navbar')
       ?.shadowRoot;
 
-    if (!navbarShadow) return;
+    if (!navbarShadow) return false;
+
+    // Avoid duplicate injection
+    if (navbarShadow.querySelector('#custom-navbar-styles')) return true;
 
     const style = document.createElement('style');
-    style.textContent = `
-      /* Stack title and subtitle vertically */
-      .flex.items-center.ml-4 {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.3rem;
-      }
-
-      /* Title */
-      .flex.items-center.ml-4 > .text-4xl {
-        line-height: 1.1;
-        letter-spacing: -0.01em;
-      }
-
-      /* Subtitle */
-      .flex.items-center.ml-4 > div:last-child {
-        color: rgba(255, 255, 255, 0.65);
-        font-size: 0.95rem;
-        font-weight: 400;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        font-style: italic;
-      }
-    `;
-
+    style.id = 'custom-navbar-styles';
+    style.textContent = NAVBAR_STYLES;
     navbarShadow.appendChild(style);
-  });
-});
+    return true;
+  }
+
+  // Wait for component classes to register
+  await Promise.all([
+    customElements.whenDefined('ve-header'),
+    customElements.whenDefined('ve-navbar')
+  ]);
+
+  // Use Lit's updateComplete if available to wait for async renders
+  const veHeader = document.querySelector('ve-header');
+  if (veHeader?.updateComplete) await veHeader.updateComplete;
+
+  const veNavbar = veHeader?.shadowRoot?.querySelector('ve-navbar');
+  if (veNavbar?.updateComplete) await veNavbar.updateComplete;
+
+  // Try immediately, then poll as a fallback in case rendering
+  // hasn't fully settled (e.g. nested component render lag)
+  if (!tryInject()) {
+    let attempts = 0;
+    const interval = setInterval(() => {
+      if (tryInject() || ++attempts >= 30) clearInterval(interval);
+    }, 200); // retry every 200ms, give up after ~6 seconds
+  }
+
+})();
