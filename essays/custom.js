@@ -328,49 +328,44 @@ function scanAndAddCueMarkers() {
 }
 
 // REWRITE VE-HEADER CSS
-function rewriteHeader() {
-  function styleHeader(shadowRoot) {
-    if (!shadowRoot || shadowRoot.querySelector('style[data-custom-header]')) return;
+Promise.all([
+  customElements.whenDefined('ve-header'),
+  customElements.whenDefined('ve-navbar')
+]).then(() => {
+  requestAnimationFrame(() => {
+    const navbarShadow = document.querySelector('ve-header')
+      ?.shadowRoot
+      ?.querySelector('ve-navbar')
+      ?.shadowRoot;
+
+    if (!navbarShadow) return;
 
     const style = document.createElement('style');
-    style.setAttribute('data-custom-header', '');
     style.textContent = `
+      /* Stack title and subtitle vertically */
       .flex.items-center.ml-4 {
         flex-direction: column;
         align-items: flex-start;
+        gap: 0.3rem;
       }
-      .flex.items-center.ml-4 .text-4xl {
-        line-height: 1.2;
+
+      /* Title */
+      .flex.items-center.ml-4 > .text-4xl {
+        line-height: 1.1;
+        letter-spacing: -0.01em;
       }
-      .flex.items-center.ml-4 div:last-child {
-        font-size: 1.125rem;
+
+      /* Subtitle */
+      .flex.items-center.ml-4 > div:last-child {
+        color: rgba(255, 255, 255, 0.65);
+        font-size: 0.95rem;
         font-weight: 400;
-        color: rgba(255, 255, 255, 0.7);
-        margin-top: 0.25rem;
-        letter-spacing: 0.03em;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        font-style: italic;
       }
     `;
-    shadowRoot.appendChild(style);
-  }
 
-  function applyToAllHeaders(root) {
-    root.querySelectorAll('ve-header').forEach(header => {
-      const sr = header.shadowRoot;
-      if (!sr) return;
-      styleHeader(sr);
-
-      // handle the nested ve-navbar's own shadow root too
-      const navbar = sr.querySelector('ve-navbar');
-      if (navbar && navbar.shadowRoot) {
-        styleHeader(navbar.shadowRoot);
-      }
-    });
-  }
-
-  // Run once on load
-  applyToAllHeaders(document);
-
-  // Re-run if Juncture re-renders the component later
-  const observer = new MutationObserver(() => applyToAllHeaders(document));
-  observer.observe(document.body, { childList: true, subtree: true });
-}
+    navbarShadow.appendChild(style);
+  });
+});
