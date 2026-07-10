@@ -328,71 +328,82 @@ function scanAndAddCueMarkers() {
 }
 
 // REWRITE VE-HEADER CSS
-(async function () {
+(function () {
 
-  const NAVBAR_STYLES = `
-    /* Stack title and author name vertically */
+  const STYLE_ID = 'custom-navbar-styles';
+
+  const CSS = `
     .flex.items-center.ml-4 {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.25rem;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 0.25rem !important;
     }
-
-    /* Title */
     .flex.items-center.ml-4 > .text-4xl {
-      line-height: 1.1;
-      letter-spacing: -0.01em;
+      line-height: 1.1 !important;
+      letter-spacing: -0.01em !important;
     }
-
-    /* Author name */
     .flex.items-center.ml-4 > div:last-child {
-      color: rgba(255, 255, 255, 0.65);
-      font-size: 0.85rem;
-      font-weight: 400;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      font-style: italic;
+      color: rgba(255, 255, 255, 0.65) !important;
+      font-size: 0.85rem !important;
+      font-weight: 400 !important;
+      letter-spacing: 0.22em !important;
+      text-transform: uppercase !important;
+      font-style: italic !important;
     }
   `;
 
-  function tryInject() {
-    const navbarShadow = document.querySelector('ve-header')
-      ?.shadowRoot
-      ?.querySelector('ve-navbar')
-      ?.shadowRoot;
+  function getNavbarShadow() {
+    const header = document.querySelector('ve-header');
+    if (!header)            { console.warn('[navbar-styles] ve-header not found');            return null; }
+    if (!header.shadowRoot) { console.warn('[navbar-styles] ve-header has no shadowRoot');    return null; }
 
-    if (!navbarShadow) return false;
+    const navbar = header.shadowRoot.querySelector('ve-navbar');
+    if (!navbar)            { console.warn('[navbar-styles] ve-navbar not found');            return null; }
+    if (!navbar.shadowRoot) { console.warn('[navbar-styles] ve-navbar has no shadowRoot');    return null; }
 
-    // Avoid duplicate injection
-    if (navbarShadow.querySelector('#custom-navbar-styles')) return true;
+    return navbar.shadowRoot;
+  }
 
+  let observer = null;
+
+  function inject(shadow) {
+    if (shadow.querySelector(`#${STYLE_ID}`)) return; // already present
     const style = document.createElement('style');
-    style.id = 'custom-navbar-styles';
-    style.textContent = NAVBAR_STYLES;
-    navbarShadow.appendChild(style);
+    style.id = STYLE_ID;
+    style.textContent = CSS;
+    shadow.appendChild(style);
+    console.log('[navbar-styles] injected ✓');
+  }
+
+  function setup() {
+    const shadow = getNavbarShadow();
+    if (!shadow) return false;
+
+    inject(shadow);
+
+    // Re-inject if the component re-renders and removes our style element
+    if (!observer) {
+      observer = new MutationObserver(() => {
+        if (!shadow.querySelector(`#${STYLE_ID}`)) {
+          console.log('[navbar-styles] style was removed by re-render — re-injecting');
+          inject(shadow);
+        }
+      });
+      observer.observe(shadow, { childList: true });
+    }
+
     return true;
   }
 
-  // Wait for component classes to register
-  await Promise.all([
-    customElements.whenDefined('ve-header'),
-    customElements.whenDefined('ve-navbar')
-  ]);
+  function init() {
+    // Spread attempts across time to catch whichever render cycle completes first
+    [0, 100, 300, 600, 1000, 2000].forEach(delay => setTimeout(setup, delay));
+  }
 
-  // Use Lit's updateComplete if available to wait for async renders
-  const veHeader = document.querySelector('ve-header');
-  if (veHeader?.updateComplete) await veHeader.updateComplete;
-
-  const veNavbar = veHeader?.shadowRoot?.querySelector('ve-navbar');
-  if (veNavbar?.updateComplete) await veNavbar.updateComplete;
-
-  // Try immediately, then poll as a fallback in case rendering
-  // hasn't fully settled (e.g. nested component render lag)
-  if (!tryInject()) {
-    let attempts = 0;
-    const interval = setInterval(() => {
-      if (tryInject() || ++attempts >= 30) clearInterval(interval);
-    }, 200); // retry every 200ms, give up after ~6 seconds
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
   }
 
 })();
