@@ -3,9 +3,7 @@
 .ve-header 'Spotting Colours' gh:mattering-press/Hear-Here-Spatial-Practices/media/generic/Plumbline_detail_01.jpg
     - [home](/)
     - [introduction](/essays/introduction.md)
-    - [contributors](/essays/contributors.md)
     - [podcasts](/essays/podcasts.md)
-    - [conversations](/essays/conversations.md)
     - [events](/essays/events.md)
     - [experimental index](/essays/index.md)
 

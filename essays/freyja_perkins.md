@@ -4,9 +4,7 @@
 .ve-header 'Hear Here Podcast: Freyja Perkins and Matthew Horspool' gh:mattering-press/Hear-Here-Spatial-Practices/media/generic/IMG_8909_Nave_letterbox_view.jpg
     - [home](/)
     - [introduction](/essays/introduction.md)
-    - [contributors](/essays/contributors.md)
     - [podcasts](/essays/podcasts.md)
-    - [conversations](/essays/conversations.md)
     - [events](/essays/events.md)
     - [experimental index](/essays/index.md)
 
