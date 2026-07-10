@@ -343,8 +343,8 @@ function scanAndAddCueMarkers() {
       letter-spacing: -0.01em !important;
     }
     .flex.items-center.ml-4 > div:last-child {
-      color: rgba(255, 255, 255, 0.65) !important;
-      font-size: 0.85rem !important;
+      color: white;
+      font-size: 1.5rem !important;
       font-weight: 400 !important;
       letter-spacing: 0.22em !important;
       text-transform: uppercase !important;
