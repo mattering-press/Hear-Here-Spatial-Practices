@@ -330,8 +330,6 @@ function scanAndAddCueMarkers() {
 // REWRITE VE-HEADER CSS
 (function () {
 
-  const STYLE_ID = 'custom-navbar-styles';
-
   const CSS = `
     .flex.items-center.ml-4 {
       flex-direction: column !important;
@@ -343,7 +341,7 @@ function scanAndAddCueMarkers() {
       letter-spacing: -0.01em !important;
     }
     .flex.items-center.ml-4 > div:last-child {
-      color: white;
+      color: white !important;
       font-size: 1.5rem !important;
       font-weight: 400 !important;
       letter-spacing: 0.22em !important;
@@ -352,58 +350,19 @@ function scanAndAddCueMarkers() {
     }
   `;
 
-  function getNavbarShadow() {
-    const header = document.querySelector('ve-header');
-    if (!header)            { console.warn('[navbar-styles] ve-header not found');            return null; }
-    if (!header.shadowRoot) { console.warn('[navbar-styles] ve-header has no shadowRoot');    return null; }
+  function inject() {
+    const header = document.querySelector('ve-header[subtitle]');
+    if (!header) return;
 
-    const navbar = header.shadowRoot.querySelector('ve-navbar');
-    if (!navbar)            { console.warn('[navbar-styles] ve-navbar not found');            return null; }
-    if (!navbar.shadowRoot) { console.warn('[navbar-styles] ve-navbar has no shadowRoot');    return null; }
+    const shadow = header.shadowRoot?.querySelector('ve-navbar')?.shadowRoot;
+    if (!shadow || shadow.querySelector('#custom-navbar-styles')) return;
 
-    return navbar.shadowRoot;
-  }
-
-  let observer = null;
-
-  function inject(shadow) {
-    if (shadow.querySelector(`#${STYLE_ID}`)) return; // already present
     const style = document.createElement('style');
-    style.id = STYLE_ID;
+    style.id = 'custom-navbar-styles';
     style.textContent = CSS;
     shadow.appendChild(style);
-    console.log('[navbar-styles] injected ✓');
   }
 
-  function setup() {
-    const shadow = getNavbarShadow();
-    if (!shadow) return false;
-
-    inject(shadow);
-
-    // Re-inject if the component re-renders and removes our style element
-    if (!observer) {
-      observer = new MutationObserver(() => {
-        if (!shadow.querySelector(`#${STYLE_ID}`)) {
-          console.log('[navbar-styles] style was removed by re-render — re-injecting');
-          inject(shadow);
-        }
-      });
-      observer.observe(shadow, { childList: true });
-    }
-
-    return true;
-  }
-
-  function init() {
-    // Spread attempts across time to catch whichever render cycle completes first
-    [0, 100, 300, 600, 1000, 2000].forEach(delay => setTimeout(setup, delay));
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
+  [0, 100, 300, 600, 1000, 2000].forEach(delay => setTimeout(inject, delay));
 
 })();
