@@ -15,7 +15,7 @@
 
 ## #01: Rocking It: Insider/Outsider Archives {href=./rocking_it.md}
 
-![](/media/podcasts/monica_brown_12.jpg)
+![](/media/generic/Rocking_It.jpeg)
 
 ## #02: Acorn {href=./acorn.md}
 
