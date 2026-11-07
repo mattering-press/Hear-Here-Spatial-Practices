@@ -1,4 +1,5 @@
 .ve-style ./custom.css
+.ve-script ./custom.js
 
 .ve-header 'Experimental index' gh:mattering-press/Hear-Here-Spatial-Practices/media/generic/Plumbline_detail_01.jpg
     - [home](/)
