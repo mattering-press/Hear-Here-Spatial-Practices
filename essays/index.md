@@ -27,6 +27,6 @@ Hear more about the work of Mahsa Alami Fariman, Ahmadreza Hakiminejad, and Heba
 
 # {.cards}
 
-## #01: Spotting Colours {href=./spotting_colours.md}
+## #01: Absence/Presence {href=./spotting_colours.md}
 
-![](/media/podcasts/monica_brown_12.jpg)
+![Absence/Presence exhibition banner](/media/podcasts/absence-presence-thumb.jpeg)

@@ -1,6 +1,6 @@
 .ve-style ./custom.css
 
-.ve-header 'Spotting Colours' gh:mattering-press/Hear-Here-Spatial-Practices/media/generic/Plumbline_detail_01.jpg
+.ve-header 'Absence/Presence' gh:mattering-press/Hear-Here-Spatial-Practices/media/generic/Plumbline_detail_01.jpg
     - [home](/)
     - [introduction](/essays/introduction.md)
     - [podcasts](/essays/podcasts.md)
@@ -10,6 +10,40 @@
 .ve-footer
     - Published by [![Mattering Press](https://www.matteringpress.org/wp-content/themes/matteringpress/img/mattering-press.png)](https://www.matteringpress.org/)
     - [![CC BY](https://licensebuttons.net/l/by/4.0/88x31.png)](https://creativecommons.org/licenses/by/4.0/)
+
+
+## 1. Absence/Presence
+
+There are many ways to speak of the building of Coventry Cathedral. The migration of ideas, people and materials are very much part of the making of the cathedral. Absence/Presence is an invitation to participate in the process of searching for stories sitting on the side, outside the usual frames of reference.
+
+Whilst Basil Spence, the architect of the cathedral, was born in India due to empire, workers from the empire, as well as refugees and displaced persons from Europe and local people contributed to the building of the cathedral.
+
+We invite you to dwell on imagining what is left unseen and unheard. Take time to pause on the ambivalence of the images, pondering on who was building and making the cathedral in the fifties and sixties. Contribute towards how we try to catch up with this past in the present moment.
+
+Absence/Presence creates a contact zone for searching stories sitting on the edges. Imaginatively touching base with global and planetary threads running through the very fabric of the cathedral, it becomes necessary to sit with the space of shadows.
+
+.ve-media right ../media/podcasts/absence-presence-exhibition.jpeg caption="The Absence/Presence exhibition in the Chapel of Industry at Coventry Cathedral" alt="Exhibition display in the Chapel of Industry, with a panel and archival photograph"
+
+> **Progress in Letters**
+>
+> From St. Mary’s Jamaica, two years ago came Cyril Brown (now 49) to work as a general labourer. “It has been a happy time for me,” he says. “I was brought up as a Christian and have been proud to play a part in the building of this cathedral.” Mr Brown’s letters to relatives in Jamaica have regularly recorded progress on the cathedral.
+>
+
+> — Special Correspondent, “Men of Many Nationalities All Dedicated to Their Task,” *Coventry Evening Telegraph*
+
+> I was born in India and when I was eight years old my father took me to see the caves of Elephanta, just outside Bombay. This was the first architectural experience of my life and it is still vivid. The vast chambers carved out of solid rock, rich in sculpture and intricate detail, gave a tremendous feeling of the size; the cool temperature inside contrasted with the heat outside, and the dim lighting revealed features of the interior only after the eye had got used to darkness.
+>
+> — Basil Spence, “The Ground is Prepared,” in *Phoenix of Coventry* (1962)
+
+.ve-media right https://vimeo.com/reviews/970e9cef-d916-46fd-9380-a065b05453a0/videos/1219328656 caption="From the exhibition Absence/Presence"
+
+Source: [Vimeo review link](https://vimeo.com/reviews/970e9cef-d916-46fd-9380-a065b05453a0/videos/1219328656)
+
+.ve-media right https://vimeo.com/reviews/a922274b-44b6-4818-8f89-18aead2953e9/videos/1120434948 caption="Panel talk connected to the exhibition Absence/Presence"
+
+Source: [Vimeo review link](https://vimeo.com/reviews/a922274b-44b6-4818-8f89-18aead2953e9/videos/1120434948)
+
+## 2. Spotting Colours
 
 The forensic work of spotting a black visual presence in the making of the cathedral presents a frustrating search as well as a potentially moving happening. I have searched through thousands of online photographs from the Laing archive, zooming and freezing screenshots, looking for presence. The small number of images I have found are visually etched in me. The figures in the small number of photographs have become familiar stranger figures, their postures, the clothes they wear and the scenes they appear in stay with me. Searching for them or new acquaintances, whilst cross referencing archives becomes a minefield of digs. Just to give an example, from looking through the Laing photographic archives of the cathedral online (hosted by English Heritage), I found an image of a black RAF officer fixing the seventy-eight feet open-work bronze spire (fleche) on the roof of the new Coventry Cathedral on 26 April 1962. 
 
