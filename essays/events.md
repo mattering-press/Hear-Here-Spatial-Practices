@@ -19,12 +19,8 @@
 
 ## #02: Acorn {href=./acorn.md}
 
-![](/media/podcasts/monica_brown_12.jpg)
-
-## #03: Global Ecologies: Food Sovereignty Across Latitudes {href=./acord.md}
-
-![](/media/podcasts/monica_brown_12.jpg)
+![](/media/generic/wishtree.jpeg)
 
 ## #04: Walk {href=./acord.md}
 
-![](/media/podcasts/monica_brown_12.jpg)
+![](/media/generic/walkingsittingsketching.jpeg)
