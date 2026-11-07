@@ -22,7 +22,7 @@ We invite you to dwell on imagining what is left unseen and unheard. Take time t
 
 Absence/Presence creates a contact zone for searching stories sitting on the edges. Imaginatively touching base with global and planetary threads running through the very fabric of the cathedral, it becomes necessary to sit with the space of shadows.
 
-.ve-media right ../media/podcasts/absence-presence-exhibition.jpeg caption="The Absence/Presence exhibition in the Chapel of Industry at Coventry Cathedral" alt="Exhibition display in the Chapel of Industry, with a panel and archival photograph"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/absence-presence-exhibition.jpeg right caption="The Absence/Presence exhibition in the Chapel of Industry at Coventry Cathedral" alt="Exhibition display in the Chapel of Industry, with a panel and archival photograph"
 
 > **Progress in Letters**
 >
