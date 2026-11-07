@@ -274,6 +274,89 @@ function seekAudio(event, seconds, index = 0) {
 
 })();
 
+// SHOW REPOSITORY IMAGES DIRECTLY IF JUNCTURE'S IIIF IMAGE SERVICE IS UNAVAILABLE
+(() => {
+  const repository = 'gh:mattering-press/Hear-Here-Spatial-Practices/';
+  const rawBase = 'https://raw.githubusercontent.com/mattering-press/Hear-Here-Spatial-Practices/main/';
+  let checking = false;
+  let useFallback = false;
+
+  const directUrl = source => source?.startsWith(repository)
+    ? rawBase + source.slice(repository.length).split('/').map(encodeURIComponent).join('/')
+    : null;
+
+  function showDirectImages() {
+    document.querySelectorAll('ve-header[background^="gh:"]').forEach(header => {
+      if (header.dataset.imageFallback) return;
+      const url = directUrl(header.getAttribute('background'));
+      if (!url) return;
+      header.dataset.imageFallback = 'true';
+      header.style.backgroundImage = `url("${url}")`;
+      header.style.backgroundPosition = 'center';
+      header.style.backgroundSize = 'cover';
+      header.style.backgroundRepeat = 'no-repeat';
+    });
+
+    document.querySelectorAll('ve-media[src^="gh:"]').forEach(media => {
+      if (media.dataset.imageFallback) return;
+      const url = directUrl(media.getAttribute('src'));
+      if (!url) return;
+      media.dataset.imageFallback = 'true';
+
+      const figure = document.createElement('figure');
+      const side = media.hasAttribute('right') ? 'right' : media.hasAttribute('left') ? 'left' : 'center';
+      figure.className = `media-fallback media-fallback-${side}`;
+      figure.style.setProperty('--media-fallback-width', media.getAttribute('width') || (side === 'center' ? '100%' : '50%'));
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.target = '_blank';
+      link.rel = 'noopener';
+
+      const image = document.createElement('img');
+      image.src = url;
+      image.alt = media.getAttribute('alt') || media.getAttribute('caption') || '';
+      image.loading = 'lazy';
+      link.appendChild(image);
+      figure.appendChild(link);
+
+      const caption = media.getAttribute('caption');
+      if (caption) {
+        const label = document.createElement('figcaption');
+        label.textContent = caption;
+        figure.appendChild(label);
+      }
+
+      media.after(figure);
+      media.style.display = 'none';
+    });
+  }
+
+  function checkImageService() {
+    if (checking || useFallback) return;
+    const image = document.querySelector('ve-header[background^="gh:"], ve-media[src^="gh:"]');
+    if (!image) return;
+    const source = image.getAttribute('background') || image.getAttribute('src');
+    checking = true;
+    fetch(`https://iiif.juncture-digital.org/${source}/manifest.json`, { cache: 'no-store' })
+      .then(response => {
+        if (!response.ok) throw new Error(`IIIF returned ${response.status}`);
+      })
+      .catch(() => {
+        useFallback = true;
+        showDirectImages();
+      });
+  }
+
+  const observer = new MutationObserver(() => useFallback ? showDirectImages() : checkImageService());
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', checkImageService, { once: true });
+  } else {
+    checkImageService();
+  }
+})();
+
 // RETRIEVE TIMECODES FROM THE PAGE AND INSERT CUE MARKERS IN THE AUDIO PLAYER AT THOSE TIMECODES
 function scanAndAddCueMarkers() {
   const playerContainer = document.querySelector('.audio-player');

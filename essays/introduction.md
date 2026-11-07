@@ -1,4 +1,5 @@
 .ve-style ./custom.css
+.ve-script ./custom.js
 
 .ve-header 'Introduction' gh:mattering-press/Hear-Here-Spatial-Practices/media/generic/POD5_ChapOfIndustry_Alt_detail.jpg
     - [home](/)

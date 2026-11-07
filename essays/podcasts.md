@@ -1,4 +1,5 @@
 .ve-style ./custom.css
+.ve-script ./custom.js
 
 .ve-header 'Podcasts' gh:mattering-press/Hear-Here-Spatial-Practices/media/generic/IMG_8909_Nave_letterbox_view.jpg
     - [home](/)

@@ -1,4 +1,5 @@
 .ve-style ./custom.css
+.ve-script ./custom.js
 
 .ve-header 'Events' gh:mattering-press/Hear-Here-Spatial-Practices/media/generic/Pod02_Penny_01.jpg
     - [home](/)

@@ -1,4 +1,5 @@
 .ve-style ./custom.css
+.ve-script ./custom.js
 
 .ve-header 'Absence/Presence' gh:mattering-press/Hear-Here-Spatial-Practices/media/generic/Plumbline_detail_01.jpg
     - [home](/)
@@ -35,13 +36,15 @@ Absence/Presence creates a contact zone for searching stories sitting on the edg
 >
 > — Basil Spence, “The Ground is Prepared,” in *Phoenix of Coventry* (1962)
 
-.ve-media right https://vimeo.com/reviews/970e9cef-d916-46fd-9380-a065b05453a0/videos/1219328656 caption="From the exhibition Absence/Presence"
+<figure class="video-embed">
+  <iframe src="https://player.vimeo.com/video/1219328656?h=3eb0495169" title="Video from the Absence/Presence exhibition" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+  <figcaption>From the exhibition Absence/Presence. Source: <a href="https://vimeo.com/reviews/970e9cef-d916-46fd-9380-a065b05453a0/videos/1219328656">Vimeo</a>.</figcaption>
+</figure>
 
-Source: [Vimeo review link](https://vimeo.com/reviews/970e9cef-d916-46fd-9380-a065b05453a0/videos/1219328656)
-
-.ve-media right https://vimeo.com/reviews/a922274b-44b6-4818-8f89-18aead2953e9/videos/1120434948 caption="Panel talk connected to the exhibition Absence/Presence"
-
-Source: [Vimeo review link](https://vimeo.com/reviews/a922274b-44b6-4818-8f89-18aead2953e9/videos/1120434948)
+<figure class="video-embed">
+  <iframe src="https://player.vimeo.com/video/1120434948?h=ce8eb282d6" title="Absence/Presence exhibition panel talk" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+  <figcaption>Panel talk connected to the exhibition Absence/Presence. Source: <a href="https://vimeo.com/reviews/a922274b-44b6-4818-8f89-18aead2953e9/videos/1120434948">Vimeo</a>.</figcaption>
+</figure>
 
 ## 2. Spotting Colours
 

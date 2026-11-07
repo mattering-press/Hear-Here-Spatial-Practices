@@ -1,4 +1,5 @@
 .ve-style ./custom.css
+.ve-script ./custom.js
 
 .ve-header 'Contributors' gh:mattering-press/Hear-Here-Spatial-Practices/media/generic/IMG_8963_chairs_detail.jpg
     - [home](/)
