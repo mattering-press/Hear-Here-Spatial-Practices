@@ -39,7 +39,9 @@ In 2007, the BBC selected Monica among six others across the UK, to explore thei
 
 In November 2013, Monica was selected for a Callaloo Writing Fellowship at Goldsmiths, University of London. She is also a speaker and offers Communications Coaching and Media Engagement Training <https://monicabrown.co.uk/>
 
-Public Family Talk: <https://youtu.be/OWS5oxWLOik>
+Public Family Talk:
+
+.ve-media right [https://www.youtube.com/watch?v=OWS5oxWLOik](https://www.youtube.com/watch?v=OWS5oxWLOik)
 
 # Podcast
 
