@@ -46,6 +46,30 @@ Absence/Presence creates a contact zone for searching stories sitting on the edg
   <figcaption>Panel talk connected to the exhibition Absence/Presence. Source: <a href="https://vimeo.com/reviews/a922274b-44b6-4818-8f89-18aead2953e9/videos/1120434948">Vimeo</a>.</figcaption>
 </figure>
 
+> We are “magically feeling and grasping at how that which appears to not be there is often a seething presence.”   
+> *– Avery Gordon, Ghostly Matters, 1997 p.8*
+
+---
+
+### **Newspaper Stories**
+
+*Archival Materials for Absence Presence Display Labels*
+
+<div class="archive-list-box">
+
+1. Nightwatchman Udham Singh Giny, Coventry Standard 21.12.1967
+2. Look for the story of Cyril Brown, who wrote letters to his family in Jamacia as he worked on the site. Birmingham Post 18.05. 1962.
+3. Coventry Cathedral and the men who made it written’ by Arthur Bryant, May 1962. The list does not include those below the position of Foreman.
+4. Book of Named Persons who worked on the building from Laing with several empty pages.
+5. Look at this photo to dwell on how people from across the globe were part of building the cathedral.
+6. Staff at Welcome Desk 1979, Coventry Cathedral Network Magazine, No.33.
+7. Features on Race Relations in Coventry, written by Rev. Peter Berry, Chaplain for Community Relations, Coventry Cathedral Network Magazine,1968 No.2  & 1970 No.2.
+8. Coventry Cathedral Race Relations in the Festival of Reconciliation, during Remembrance Sunday 10-14 Nov 1967. Coventry Cathedral Relations Conference 16 Nov 1968 Sixth Annual Report 1969, by Peter Berry, Chaplain for Community Relations.
+
+</div>
+
+---
+
 ## 2. Spotting Colours
 
 The forensic work of spotting a black visual presence in the making of the cathedral presents a frustrating search as well as a potentially moving happening. I have searched through thousands of online photographs from the Laing archive, zooming and freezing screenshots, looking for presence. The small number of images I have found are visually etched in me. The figures in the small number of photographs have become familiar stranger figures, their postures, the clothes they wear and the scenes they appear in stay with me. Searching for them or new acquaintances, whilst cross referencing archives becomes a minefield of digs. Just to give an example, from looking through the Laing photographic archives of the cathedral online (hosted by English Heritage), I found an image of a black RAF officer fixing the seventy-eight feet open-work bronze spire (fleche) on the roof of the new Coventry Cathedral on 26 April 1962. 
