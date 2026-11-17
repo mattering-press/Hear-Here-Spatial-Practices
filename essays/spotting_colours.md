@@ -9,11 +9,13 @@
     - [experimental index](/essays/index.md)
 
 .ve-footer
-    - Published by [![Mattering Press](https://www.matteringpress.org/wp-content/themes/matteringpress/img/mattering-press.png)](https://www.matteringpress.org/)
-    - [![CC BY](https://licensebuttons.net/l/by/4.0/88x31.png)](https://creativecommons.org/licenses/by/4.0/)
-
+    - Published by ![Mattering Press](https://www.matteringpress.org/wp-content/themes/matteringpress/img/mattering-press.png)
+    - ![CC BY](https://licensebuttons.net/l/by/4.0/88x31.png)
 
 ## 1. Absence/Presence
+
+> We are “magically feeling and grasping at how that which appears to not be there is often a seething presence.”  
+> *– Avery Gordon, Ghostly Matters, 1997 p.8*
 
 There are many ways to speak of the building of Coventry Cathedral. The migration of ideas, people and materials are very much part of the making of the cathedral. Absence/Presence is an invitation to participate in the process of searching for stories sitting on the side, outside the usual frames of reference.
 
@@ -28,7 +30,6 @@ Absence/Presence creates a contact zone for searching stories sitting on the edg
 > **Progress in Letters**
 >
 > From St. Mary’s Jamaica, two years ago came Cyril Brown (now 49) to work as a general labourer. “It has been a happy time for me,” he says. “I was brought up as a Christian and have been proud to play a part in the building of this cathedral.” Mr Brown’s letters to relatives in Jamaica have regularly recorded progress on the cathedral.
->
 
 > — Special Correspondent, “Men of Many Nationalities All Dedicated to Their Task,” *Coventry Evening Telegraph*
 
@@ -37,25 +38,23 @@ Absence/Presence creates a contact zone for searching stories sitting on the edg
 > — Basil Spence, “The Ground is Prepared,” in *Phoenix of Coventry* (1962)
 
 <figure class="video-embed">
+
   <iframe src="https://player.vimeo.com/video/1219328656?h=3eb0495169" title="Video from the Absence/Presence exhibition" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
   <figcaption>From the exhibition Absence/Presence. Source: <a href="https://vimeo.com/reviews/970e9cef-d916-46fd-9380-a065b05453a0/videos/1219328656">Vimeo</a>.</figcaption>
+
 </figure>
 
 <figure class="video-embed">
+
   <iframe src="https://player.vimeo.com/video/1120434948?h=ce8eb282d6" title="Absence/Presence exhibition panel talk" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
   <figcaption>Panel talk connected to the exhibition Absence/Presence. Source: <a href="https://vimeo.com/reviews/a922274b-44b6-4818-8f89-18aead2953e9/videos/1120434948">Vimeo</a>.</figcaption>
+
 </figure>
 
-> We are “magically feeling and grasping at how that which appears to not be there is often a seething presence.”   
-> *– Avery Gordon, Ghostly Matters, 1997 p.8*
-
----
 
 ### **Newspaper Stories**
 
 *Archival Materials for Absence Presence Display Labels*
-
-<div class="archive-list-box">
 
 1. Nightwatchman Udham Singh Giny, Coventry Standard 21.12.1967
 2. Look for the story of Cyril Brown, who wrote letters to his family in Jamacia as he worked on the site. Birmingham Post 18.05. 1962.
@@ -66,31 +65,27 @@ Absence/Presence creates a contact zone for searching stories sitting on the edg
 7. Features on Race Relations in Coventry, written by Rev. Peter Berry, Chaplain for Community Relations, Coventry Cathedral Network Magazine,1968 No.2  & 1970 No.2.
 8. Coventry Cathedral Race Relations in the Festival of Reconciliation, during Remembrance Sunday 10-14 Nov 1967. Coventry Cathedral Relations Conference 16 Nov 1968 Sixth Annual Report 1969, by Peter Berry, Chaplain for Community Relations.
 
-</div>
-
----
-
 ## 2. Spotting Colours
 
 The forensic work of spotting a black visual presence in the making of the cathedral presents a frustrating search as well as a potentially moving happening. I have searched through thousands of online photographs from the Laing archive, zooming and freezing screenshots, looking for presence. The small number of images I have found are visually etched in me. The figures in the small number of photographs have become familiar stranger figures, their postures, the clothes they wear and the scenes they appear in stay with me. Searching for them or new acquaintances, whilst cross referencing archives becomes a minefield of digs. Just to give an example, from looking through the Laing photographic archives of the cathedral online (hosted by English Heritage), I found an image of a black RAF officer fixing the seventy-eight feet open-work bronze spire (fleche) on the roof of the new Coventry Cathedral on 26 April 1962. 
 
 <script async src="https://static.smartframe.io/embed.js"></script><smartframe-embed customer-id="27025fea9afa38753501b02dbd8a40f2" image-id="jlp01_08_062425" theme="aco" style="width: 100%; display: inline-flex; aspect-ratio: 5226/5264; max-width: 5226px;"></smartframe-embed><!-- https://smartframe.io/embedding-support -->
- 
+
 Months later, I come across a short BBC film online of this moment, with the camera shots shifting from the helicopter the spire dangles from and the audience of adults hanging around watching this moment, including two small toddler girls in bright dresses sitting in the ruins, looking up pointing to the helicopter. I start watching the film whilst being focused on whether there will be an appearance of the black officer in the photo. Two minutes into the three-minute film, after the spire is released from the helicopter and secured from nylon ropes held by staff walking on top of the roof of the cathedral, a close up shot of his face with a white helmet comes into close focus.
- 
-.ve-iframe left https://www.bbc.co.uk/programmes/p09krw1x/player 
+
+.ve-iframe left [https://www.bbc.co.uk/programmes/p09krw1x/player](https://www.bbc.co.uk/programmes/p09krw1x/player) 
 
 This is a small magic moment of forensic visual spotting, compelling me to share the dig with a network of interested community workers, academics and artists, who have been following the journey of the project. The inclination to distribute these finds with others in your network who are also hoping for these signs, is a central collaborative part of the process of recording presence. The research practice has an immediate audience for reflecting on and developing imaginative dissemination experiments.  In this case, I immediately email Monica Brown, a writer and media specialist, whose father was part of the Windrush generation who worked on several post-war buildings, including the cathedral. Monica has appeared as an eloquent speaker of personal and public black histories in my podcast Hear Here, broadcast from the cathedral archives. She also appears in a short video of her speaking from the nave of the cathedral, with reference to building, as well as what else could take place in the space, to grant a presence. In addition, I email the information to Canon Nitano Muller, a new arrivant from South Africa, who has reflecting on race and arriving in Coventry cathedral. I also email the Events team, who work closely with Nitano, whose enthusiasm and commitment to the project has kept me afloat amidst moments of potential displacement. Together we are building an exhibition on absence presence, using photography, text and this film, for the Chapel of Industry, a chapel of circular glass, built to maintain a close relationship between the cathedral and the developing city around it, at a point when a financially secure institution even had Chaplains of Industry, with links to workers and employers. This included ties to a growing population from the colonies from the sixties onwards, in a city with scope for training and employment. Canon Peter Berry was a significant figure, who developed links with new migrants, whilst being part of building anti-racist initiatives. I share the find with Holly Cooper too on email, who introduced me to Monica through her research on ‘Black Caribbean community organising, presence, and belonging in post-war Coventry, 1945 – 1990’. In the podcast for ‘Hear Here’, Holly and I reflect on Canon Berry, as well as the challenges of bringing black presence into public institutions, whilst generating speculative creative future imaginings. The forming of overlapping communities of understanding through knowledge searching has been a key driver, as a connecting methodological practice of this project.
 
 In the essay ‘questions of presence’ Gail Lewis refers to how the presence of racialised persons in English literature are at best a surprise and at worst an oxymoron (2017:1). Citing Nishnaabeg activist-scholar Leanne Simpson (2011), Lewis points out how “doing is a compound of practices, thoughts, memories, embodiment” … [within] a process of 'here-ness' and 'aliveness', is a decolonial move through which counter-histories, counter-spatialities, subaltern epistemologies and modes of being are created and announced.” (2017:4).  The compound of practices in this project emerges from a compound of networks of that respond to each other through invitations and a swaying back and forth of call-and-response. With presence we are dealing with what Avery Gordan in her prescient book calls *Ghostly Matters*, trying to address a seething absence, one that involves imagining life worlds that have been neglected, by moving between “the interstices between the factual and the fabulous, the place where the shadow and the act converge” (196-197). The Laing online archive holds many photographs of the building of the cathedral where the figures are in shadows. This presents an ambiguity of bodies in space that offers questions and openings for considering who was making the cathedral. Which geographies was migration flowing from, in different conditions. They arrived from Ireland, Jamaicia, India, Pakistan and Germany, for instance. It is said those with cloth caps were from Poland. 
 
 There are many shadowy anonymous figures in the Historic England Laing archive. This particular image is taken of the West Screen, which enabled the the ruins and the new cathedral to be always connected, so that the horrors of war and destruction are not forgotten in the making of futures of peace and reconciliation. A close up zoom shows workers laying the floor. 
- 
+
 <script async src="https://static.smartframe.io/embed.js"></script><smartframe-embed customer-id="27025fea9afa38753501b02dbd8a40f2" image-id="jlp01_08_061802a" theme="aco" style="width: 100%; display: inline-flex; aspect-ratio: 5248/6677; max-width: 5248px;"></smartframe-embed><!-- https://smartframe.io/embedding-support -->
 
 On top of the concrete are laid fossil tiles, In the Hear Here podcast, the artist Bharti Parmar, comments on the planetary deep time in the fossil floor and how she was always drawn to the pennies inlaid with 1962 pennies, to provide a straight line for clergy and choir processions. She visited the cathedral regularly when she moved from Leeds to Lanchester Polytechnic to study fine art in the eighties. The canopy in between the west screen and the ruins, a linking threshold is one of her favourite spots. When I look up at the vast canopy and grey walls coloured in different ways every minute, depending on the reflections of light through the stain glass, I imagine Barbara Walker giving presence to figures in the Laing archive. Catherine Hahn mentions Walkers art interventions in the podcast Hear Here. Her hand drawn drawings of larger-than-life forgotten figures have covered the walls of galleries, parking a presence, which she often erases at the end of the show 
 
-.ve-media right https://www.youtube.com/watch?v=bXuSRAjWe48 
+.ve-media right [https://www.youtube.com/watch?v=bXuSRAjWe48](https://www.youtube.com/watch?v=bXuSRAjWe48) 
 
 Nominated for the Turner Prize in 2024, visitors returned to the room after leaving her work title Burden of Proof, based on figures who had faced the injustices of the ongoing Windrush immigration scandal. She filled the walls with personalities, race and injustice. In 2025 a retrospective at the Whitworth Gallery, pulls a wider oeuvre of her work. The walls bring the character and texture of complex lives, in their everyday beauty, labour and legal injustices.  Barbara Walker was one of the artists commissioned to respond to the breakage of John Hutton’s glass panel with the engraving of angle of the eternal gospel in 2020. During the pandemic the isolation, deprivation of touch and need for comfort led Barbara to etch a teddy, a bracelet, a skate board and book, as the original angle was holding the gospel book. After the pandemic, the sounds of young people skateboarding occurs between the steps of the cathedral and the Herbert Art Gallery, where a permanent piece from Walker’s Shock and Awe series sits.  
 
