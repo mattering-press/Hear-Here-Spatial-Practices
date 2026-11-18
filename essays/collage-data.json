@@ -1,0 +1,144 @@
+{
+  "chapters": [
+    { "id": "rock", "label": "Rock" },
+    { "id": "glass-chapel", "label": "Glass Chapel" },
+    { "id": "live-and-dye-garden", "label": "Live and Dye Garden" },
+    { "id": "archive", "label": "Archive" }
+  ],
+  "contentTypes": [
+    { "id": "podcasts", "label": "Podcasts" },
+    { "id": "events", "label": "Events" },
+    { "id": "conversations", "label": "Conversations" }
+  ],
+  "items": [
+    {
+      "id": "rocking-it", "kind": "essay", "presentation": "feature",
+      "title": "Rocking It: Insider/Outsider Archives",
+      "chapters": ["rock", "archive"], "contentTypes": ["events"],
+      "excerpt": "A boulder from Bethlehem becomes a living research archive in Coventry Cathedral.",
+      "image": { "src": "/media/generic/Rocking_It.jpeg", "alt": "Rocking It event image" },
+      "audio": true, "destination": "/essays/rocking_it.md"
+    },
+    {
+      "id": "chapel-of-industry", "kind": "essay", "presentation": "image",
+      "title": "The Glass Chapel",
+      "chapters": ["glass-chapel"], "contentTypes": ["podcasts"],
+      "excerpt": "Aya Nassar and Nirmal Puwar think with the Chapel of Industry, Coventry and Cairo.",
+      "image": { "src": "/media/podcasts/POD05_ChapelOfIndustry(4-3).jpg", "alt": "Interior of the Chapel of Industry" },
+      "audio": true, "destination": "/essays/aya_nassar.md#podcast"
+    },
+    {
+      "id": "live-and-dye-garden", "kind": "essay", "presentation": "image",
+      "title": "Live and Dye Garden",
+      "chapters": ["live-and-dye-garden"], "contentTypes": ["podcasts"],
+      "excerpt": "Bharti Parmar follows rubble, dyes, medicinal plants and shared making.",
+      "image": { "src": "/media/podcasts/bharti_parmar_8.jpeg", "alt": "Bharti Parmar holding an object in a workshop" },
+      "audio": true, "destination": "/essays/bharti_parmar.md#podcast"
+    },
+    {
+      "id": "holly-cooper-archives", "kind": "essay", "presentation": "document",
+      "title": "Archives, stories and community histories",
+      "chapters": ["archive"], "contentTypes": ["podcasts"],
+      "excerpt": "Holly Cooper gathers Black Caribbean histories across archives and communities in Coventry.",
+      "image": { "src": "/media/podcasts/POD08_CDP4.jpg", "alt": "Detail of an archival document on race relations" },
+      "audio": true, "destination": "/essays/holly_cooper.md#podcast"
+    },
+    {
+      "id": "acorns-for-peace", "kind": "essay", "presentation": "image",
+      "title": "Acorns for Peace",
+      "chapters": ["live-and-dye-garden"], "contentTypes": ["events"],
+      "excerpt": "A participative event follows the routes and afterlives of John Lennon and Yoko Ono’s acorns.",
+      "image": { "src": "/media/generic/wishtree.jpeg", "alt": "A tree connected with the Acorn event" },
+      "destination": "/essays/acorn.md"
+    },
+    {
+      "id": "touch-and-hearing", "kind": "essay", "presentation": "document",
+      "title": "Cathedrals Through Touch and Hearing",
+      "chapters": ["archive", "glass-chapel"], "contentTypes": ["podcasts"],
+      "excerpt": "Freyja Perkins and Matthew Horspool encounter braille guides, tactile models and audio in the archive.",
+      "image": { "src": "/media/podcasts/POD03_braille_guidebook_cover.jpg", "alt": "Cover of a braille guidebook for Coventry Cathedral" },
+      "audio": true, "destination": "/essays/freyja_perkins.md#podcast"
+    },
+    {
+      "id": "monica-brown", "kind": "essay", "presentation": "image",
+      "title": "I am here because dad was here",
+      "chapters": ["archive", "rock"], "contentTypes": ["podcasts"],
+      "excerpt": "Monica Brown tells of her father’s work on the cathedral and a presence missing from its records.",
+      "image": { "src": "/media/podcasts/POD01_Contractors_Book_03-detail.jpg", "alt": "Detail of the cathedral contractors’ book" },
+      "audio": true, "destination": "/essays/monica_brown.md#podcast"
+    },
+    {
+      "id": "catherine-hahn", "kind": "essay", "presentation": "document",
+      "title": "Breathing cathedrals",
+      "chapters": ["glass-chapel", "archive"], "contentTypes": ["podcasts"],
+      "excerpt": "Catherine Hahn maps art, space and ways to reconfigure the cathedral.",
+      "image": { "src": "/media/podcasts/POD06_CH_Podcast_Plan_page-0001.jpg", "alt": "Artist map drawn by Catherine Hahn" },
+      "audio": true, "destination": "/essays/catherine_hahn.md#podcast"
+    },
+    {
+      "id": "aya-conversation", "kind": "essay", "presentation": "text",
+      "title": "Dust is a condition of the city",
+      "chapters": ["glass-chapel"], "contentTypes": ["conversations"],
+      "excerpt": "Aya Nassar describes how dust inhabits cities, archives and imagined futures.",
+      "destination": "/essays/aya_nassar.md#transcript"
+    },
+    {
+      "id": "holly-conversation", "kind": "essay", "presentation": "text",
+      "title": "An archive of archives",
+      "chapters": ["archive"], "contentTypes": ["conversations"],
+      "excerpt": "Holly Cooper and Nirmal Puwar discuss storytelling, legitimacy and historical gaps.",
+      "destination": "/essays/holly_cooper.md#transcript"
+    },
+    {
+      "id": "rock-detail", "kind": "image",
+      "chapters": ["rock"], "contentTypes": ["events", "podcasts"],
+      "image": { "src": "/media/podcasts/POD06_Boulder.jpg", "alt": "", "caption": "Boulder / Coventry Cathedral" }
+    },
+    {
+      "id": "chapel-texture", "kind": "image",
+      "chapters": ["glass-chapel"], "contentTypes": ["podcasts", "conversations"],
+      "image": { "src": "/media/podcasts/POD05_ChapelOfIndustry_textures.jpg", "alt": "", "caption": "Surface study / Chapel of Industry" }
+    },
+    {
+      "id": "garden-material", "kind": "image",
+      "chapters": ["live-and-dye-garden"], "contentTypes": ["podcasts", "events"],
+      "image": { "src": "/media/podcasts/Pod02_Plumbline_01.jpg", "alt": "", "caption": "The Plumb Line and the City / Bharti Parmar" }
+    },
+    {
+      "id": "braille-fragment", "kind": "image",
+      "chapters": ["archive", "glass-chapel"], "contentTypes": ["podcasts"],
+      "image": { "src": "/media/podcasts/POD03_braiile_book.jpg", "alt": "", "caption": "Braille guide / cathedral archive" }
+    },
+    {
+      "id": "archive-document", "kind": "image",
+      "chapters": ["archive"], "contentTypes": ["podcasts", "conversations"],
+      "image": { "src": "/media/podcasts/POD08_CDP2.jpg", "alt": "", "caption": "Meeting notes / Coventry Cathedral, 1978" }
+    },
+    {
+      "id": "rock-quote", "kind": "quote",
+      "chapters": ["rock", "archive"], "contentTypes": ["events"],
+      "quote": "We approach the rock as a living research archive hovering in the air, between light and stone.",
+      "credit": "Rocking It / Stuart Burley",
+      "destination": "/essays/rocking_it.md"
+    },
+    {
+      "id": "monica-quote", "kind": "quote",
+      "chapters": ["archive", "rock"], "contentTypes": ["podcasts", "conversations"],
+      "quote": "I am here because dad was here",
+      "credit": "Monica Brown / Hear Here",
+      "destination": "/essays/monica_brown.md#introduction"
+    },
+    {
+      "id": "garden-quote", "kind": "quote",
+      "chapters": ["live-and-dye-garden"], "contentTypes": ["podcasts", "events"],
+      "quote": "A garden made from rubble",
+      "credit": "Live and Dye Garden / index note"
+    },
+    {
+      "id": "chapel-quote", "kind": "quote",
+      "chapters": ["glass-chapel"], "contentTypes": ["podcasts", "conversations"],
+      "quote": "Big spaces have big voices",
+      "credit": "Catherine Hahn / introduction"
+    }
+  ]
+}
