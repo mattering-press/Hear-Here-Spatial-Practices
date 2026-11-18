@@ -1,43 +1,34 @@
 # Development and deployment workflow
 
-The production repository is the canonical source for this publication:
+This repository is the only source for the publication. Juncture renders it
+directly from GitHub, so there is no build step and no separate staging
+repository.
 
-- Production repository: `mattering-press/Hear-Here-Spatial-Practices`
+- Repository: `mattering-press/Hear-Here-Spatial-Practices`
 - Production branch: `main`
-- Production preview: `https://juncture-digital.org/mattering-press/Hear-Here-Spatial-Practices`
+- Production site: `https://juncture-digital.org/mattering-press/Hear-Here-Spatial-Practices`
+- Branch preview: add `?ref=<branch>` to any page URL (see below)
 
-The staging repository is a separate GitHub repository. Its exact name and URL
-should be recorded below after it has been created:
-
-- Staging repository: _to be added_
-- Staging branch rendered by Juncture: `main`
-- Staging preview: `https://juncture-digital.org/<owner>/<staging-repository>`
-
-## Branch and environment mapping
+## How it fits together
 
 ```text
-Local feature branch (for example, Dev-Collage-Branch)
-    | push the feature branch normally
+Local feature branch
+    | git push origin <branch>
     v
-Production repository feature branch (backup and pull-request source)
+Feature branch on GitHub  ->  Juncture branch preview (?ref=<branch>)
     |
-    | publish the same commit to staging/main
+    | review the preview, then merge a pull request
     v
-Staging repository main -> Juncture staging preview
-    |
-    | review and test, then merge the pull request
-    v
-Production repository main -> Juncture production site
+main on GitHub  ->  production site
 ```
 
-`main` in the production repository is always the published production version.
-`main` in the staging repository is always the version currently under review.
-They are separate branches in separate repositories and are not expected to point
-to the same commit while development is in progress.
+`main` is always the published version. Every change reaches it through a pull
+request from a feature branch, and the commit that was previewed is the commit
+that is merged.
 
-## Local development
+## Starting a piece of work
 
-Work in a feature branch based on the latest production `main`:
+Branch from the latest `main`:
 
 ```sh
 git switch main
@@ -45,51 +36,74 @@ git pull --ff-only origin main
 git switch -c <feature-branch>
 ```
 
-For the current collage work, continue using `Dev-Collage-Branch` rather than
-creating another branch.
+Use a branch name without `/` (for example `walk-page`, not `jules/walk-page`).
+Juncture splits the GitHub URL on slashes to find the branch, so a name with a
+slash cannot be previewed. If a tool creates a branch with a slash, push it
+under a flat name instead: `git push -u origin HEAD:<flat-name>`.
 
-Run the Juncture development server with this repository as its local content
-root. A generic static-file server is not a sufficient final check because it
-does not reproduce Juncture's Markdown rendering and asset handling.
-
-## Publishing a feature branch to staging
-
-After the staging remote has been configured as `staging`, publish the currently
-checked-out feature branch to the staging repository's `main` branch:
+Longer-running work, such as the collage index on `collage-index`, lives on its
+own branch and usually in its own worktree. Bring in changes from `main` with a
+merge (not a rebase, because the branch is already pushed):
 
 ```sh
-git push staging HEAD:main
+git fetch origin
+git merge origin/main
 ```
 
-This explicit refspec means "send the current local commit to `main` on the
-staging repository." Check the current branch and destination before running it:
+## Previewing a branch
 
-```sh
-git status --short --branch
-git remote -v
-```
+1. Commit on the feature branch and push it: `git push origin <branch>`.
+2. Open the page you changed with `?ref=<branch>`:
 
-If staging has moved independently, stop and investigate instead of forcing the
-push. Staging is a deployment target; source changes must be made in this local
-checkout and committed to the feature branch.
+   ```text
+   https://juncture-digital.org/mattering-press/Hear-Here-Spatial-Practices/?ref=<branch>
+   https://juncture-digital.org/mattering-press/Hear-Here-Spatial-Practices/essays/walk.md?ref=<branch>
+   ```
 
-## Promoting to production
+3. Check it on desktop and on a phone. Internal links keep `?ref=<branch>`, so
+   reviewers can click around and stay on the branch.
+4. If a change to `custom.css`, `custom.js` or a page does not show up, add
+   `&refresh=true` to the URL. Juncture caches the files it fetches from GitHub.
 
-1. Commit the changes on the local feature branch.
-2. Push the feature branch to `origin`.
-3. Publish the same commit to `staging/main`.
-4. Test the Juncture staging URL on desktop and mobile.
-5. Open a pull request from the feature branch to production `main`.
-6. Merge only after staging approval.
-7. Confirm the production Juncture URL after the merge.
+What a preview uses from the branch:
 
-Never promote by copying files manually from the staging repository. The pull
-request from the canonical feature branch is the production audit trail.
+- the Markdown pages, and `custom.css` and `custom.js`;
+- Markdown images (`![](/media/…)`), Markdown links and other relative `src` and
+  `href` values, which Juncture rewrites to the branch.
 
-## Keeping staging current
+What it always takes from `main`:
 
-At the beginning of a new piece of work, update local `main` from production and
-then publish the intended feature branch to staging. Do not accumulate unrelated
-staging-only commits. Relative asset and navigation URLs are preferred; any
-hard-coded `gh:<owner>/<repository>/...` reference should be checked in both
-staging and production.
+- `.ve-media gh:…` images and `.ve-header` backgrounds, because the `gh:` syntax
+  has no branch;
+- the direct-image fallback in `custom.js` and the hard-coded audio URLs;
+- any URL built in custom JavaScript that does not use `window.REF`.
+
+So a new image file referenced with `gh:` only appears once it is on `main`.
+Reference it as a Markdown image while previewing, or accept the gap and check
+it after merging.
+
+A preview URL is public, like the branch itself on GitHub. Do not push anything
+that should not be seen.
+
+## Publishing to production
+
+1. Preview the pushed branch as above.
+2. Open a pull request from the feature branch to `main`.
+3. Merge it once the preview has been approved.
+4. Check the production URL after the merge. Add `?refresh=true` once if the old
+   version is still showing.
+5. Delete the feature branch on GitHub and locally.
+
+Never push directly to `main`, and never copy files into `main` by hand. The
+pull request is the record of what was published.
+
+## Checking the renderer locally
+
+A generic static-file server does not reproduce Juncture's Markdown rendering,
+URL rewriting or asset handling, so it is not a sufficient check. The branch
+preview is the reference. Juncture's renderer (`serve.py` in
+`juncture-digital/juncture`) can be run locally to test without pushing, but its
+local mode does not resolve this repository's paths on its own; it needs a small
+wrapper that sets the owner, repository and branch.
+
+The Juncture compatibility rules in `AGENTS.md` apply to every change.
