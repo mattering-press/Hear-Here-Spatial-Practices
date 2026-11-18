@@ -22,6 +22,6 @@
 
 ![](/media/generic/wishtree.jpeg)
 
-## #03: Walk {href=./acord.md}
+## #03: Walk {href=./walk.md}
 
-![](/media/generic/walkingsittingsketching.jpeg)
+![](/media/generic/walk.jpeg)

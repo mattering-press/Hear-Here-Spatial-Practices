@@ -277,7 +277,8 @@ function seekAudio(event, seconds, index = 0) {
 // SHOW REPOSITORY IMAGES DIRECTLY IF JUNCTURE'S IIIF IMAGE SERVICE IS UNAVAILABLE
 (() => {
   const repository = 'gh:mattering-press/Hear-Here-Spatial-Practices/';
-  const rawBase = 'https://raw.githubusercontent.com/mattering-press/Hear-Here-Spatial-Practices/main/';
+  const ref = new URLSearchParams(location.search).get('ref') || 'main';
+  const rawBase = `https://raw.githubusercontent.com/mattering-press/Hear-Here-Spatial-Practices/${encodeURIComponent(ref)}/`;
   let checking = false;
   let useFallback = false;
 
@@ -330,13 +331,60 @@ function seekAudio(event, seconds, index = 0) {
       media.after(figure);
       media.style.display = 'none';
     });
+
+    // Multi-image .ve-media (grid gallery): one "gh:... caption="..."" entry per list item.
+    document.querySelectorAll('ve-media:not([src])').forEach(media => {
+      if (media.dataset.imageFallback) return;
+      const items = galleryItems(media);
+      if (!items.length) return;
+      media.dataset.imageFallback = 'true';
+
+      const gallery = document.createElement('div');
+      gallery.className = 'media-fallback-gallery';
+      items.forEach(item => {
+        const figure = document.createElement('figure');
+        const link = document.createElement('a');
+        link.href = item.url;
+        link.target = '_blank';
+        link.rel = 'noopener';
+        const image = document.createElement('img');
+        image.src = item.url;
+        image.alt = item.caption;
+        image.loading = 'lazy';
+        link.appendChild(image);
+        figure.appendChild(link);
+        gallery.appendChild(figure);
+      });
+
+      media.after(gallery);
+      media.style.display = 'none';
+    });
+  }
+
+  function galleryItems(media) {
+    return Array.from(media.querySelectorAll('li'))
+      .map(li => {
+        const text = li.textContent.replace(/[“”]/g, '"').trim();
+        const url = directUrl(text.split(/\s+/)[0]);
+        const caption = (text.match(/caption="([^"]*)"/) || [])[1] || '';
+        return url ? { url, caption } : null;
+      })
+      .filter(Boolean);
+  }
+
+  function firstRepositorySource() {
+    const image = document.querySelector('ve-header[background^="gh:"], ve-media[src^="gh:"]');
+    if (image) return image.getAttribute('background') || image.getAttribute('src');
+    const item = Array.from(document.querySelectorAll('ve-media:not([src]) li'))
+      .map(li => li.textContent.trim().split(/\s+/)[0])
+      .find(source => source.startsWith(repository));
+    return item || null;
   }
 
   function checkImageService() {
     if (checking || useFallback) return;
-    const image = document.querySelector('ve-header[background^="gh:"], ve-media[src^="gh:"]');
-    if (!image) return;
-    const source = image.getAttribute('background') || image.getAttribute('src');
+    const source = firstRepositorySource();
+    if (!source) return;
     checking = true;
     fetch(`https://iiif.juncture-digital.org/${source}/manifest.json`, { cache: 'no-store' })
       .then(response => {
@@ -448,4 +496,164 @@ function scanAndAddCueMarkers() {
 
   [0, 100, 300, 600, 1000, 2000].forEach(delay => setTimeout(inject, delay));
 
+})();
+
+// RESOLVE REPOSITORY-HOSTED VIDEOS, LINKS AND PDF BOOKLETS
+// Juncture renders a repository at juncture-digital.org/<owner>/<repository>/...[?ref=<branch>],
+// so files are resolved against whichever repository and branch is being viewed (staging or production).
+(() => {
+  const PDFJS_VERSION = '3.11.174';
+  const PDFJS_BASE = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS_VERSION}/`;
+
+  function repository() {
+    const [owner, name] = location.pathname.split('/').filter(Boolean);
+    const ref = new URLSearchParams(location.search).get('ref') || 'main';
+    return location.hostname.endsWith('juncture-digital.org') && owner && name ? { owner, name, ref } : null;
+  }
+
+  const encodePath = path => path.split('/').map(encodeURIComponent).join('/');
+
+  // jsDelivr serves files with their proper media type (needed for video playback and PDF links).
+  function cdnUrl(path) {
+    const repo = repository();
+    return repo
+      ? `https://cdn.jsdelivr.net/gh/${repo.owner}/${repo.name}@${repo.ref}/${encodePath(path)}`
+      : `/${encodePath(path)}`;
+  }
+
+  // GitHub raw files update within minutes and allow cross-origin reads.
+  function rawUrl(path) {
+    const repo = repository();
+    return repo
+      ? `https://raw.githubusercontent.com/${repo.owner}/${repo.name}/${repo.ref}/${encodePath(path)}`
+      : `/${encodePath(path)}`;
+  }
+
+  function resolveLinks() {
+    document.querySelectorAll('a[data-repo-href]:not([href])').forEach(link => {
+      link.href = cdnUrl(link.dataset.repoHref);
+    });
+  }
+
+  function resolveVideos() {
+    document.querySelectorAll('video[data-repo-src]').forEach(video => {
+      if (video.dataset.resolved) return;
+      video.dataset.resolved = 'true';
+      const path = video.dataset.repoSrc;
+      if (video.dataset.repoPoster) video.poster = cdnUrl(video.dataset.repoPoster);
+      [cdnUrl(path), rawUrl(path)].filter((url, i, all) => all.indexOf(url) === i).forEach(url => {
+        const source = document.createElement('source');
+        source.src = url;
+        source.type = 'video/mp4';
+        video.appendChild(source);
+      });
+      video.load();
+    });
+  }
+
+  let pdfjsPromise = null;
+  function loadPdfjs() {
+    if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
+    if (!pdfjsPromise) {
+      pdfjsPromise = new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = `${PDFJS_BASE}pdf.min.js`;
+        script.onload = () => {
+          window.pdfjsLib.GlobalWorkerOptions.workerSrc = `${PDFJS_BASE}pdf.worker.min.js`;
+          resolve(window.pdfjsLib);
+        };
+        script.onerror = () => reject(new Error('Could not load the PDF viewer'));
+        document.head.appendChild(script);
+      });
+    }
+    return pdfjsPromise;
+  }
+
+  async function fetchPdf(path) {
+    for (const url of [rawUrl(path), cdnUrl(path)]) {
+      try {
+        const response = await fetch(url);
+        if (response.ok) return new Uint8Array(await response.arrayBuffer());
+      } catch (error) {
+        // try the next source
+      }
+    }
+    throw new Error('Could not load the PDF');
+  }
+
+  async function renderPdf(figure) {
+    const pages = document.createElement('div');
+    pages.className = 'pdf-embed-pages';
+    pages.setAttribute('role', 'region');
+    pages.setAttribute('aria-label', figure.dataset.title || 'PDF document');
+    pages.tabIndex = 0;
+    const status = document.createElement('div');
+    status.className = 'pdf-embed-status';
+    status.textContent = 'Loading…';
+    pages.appendChild(status);
+    figure.insertBefore(pages, figure.firstChild);
+
+    try {
+      const [pdfjsLib, data] = await Promise.all([loadPdfjs(), fetchPdf(figure.dataset.repoPdf)]);
+      const pdf = await pdfjsLib.getDocument({ data }).promise;
+      status.remove();
+
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          observer.unobserve(entry.target);
+          drawPage(pdf, entry.target);
+        });
+      }, { root: pages, rootMargin: '800px 0px' });
+
+      for (let number = 1; number <= pdf.numPages; number++) {
+        const page = await pdf.getPage(number);
+        const viewport = page.getViewport({ scale: 1 });
+        const holder = document.createElement('div');
+        holder.className = 'pdf-embed-page';
+        holder.style.aspectRatio = `${viewport.width} / ${viewport.height}`;
+        holder.dataset.page = number;
+        holder.setAttribute('aria-label', `Page ${number} of ${pdf.numPages}`);
+        pages.appendChild(holder);
+        observer.observe(holder);
+      }
+    } catch (error) {
+      status.textContent = 'The booklet could not be displayed here. Use the link below to open it.';
+    }
+  }
+
+  async function drawPage(pdf, holder) {
+    const page = await pdf.getPage(Number(holder.dataset.page));
+    const base = page.getViewport({ scale: 1 });
+    const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+    const scale = (holder.clientWidth || base.width) * pixelRatio / base.width;
+    const viewport = page.getViewport({ scale });
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.floor(viewport.width);
+    canvas.height = Math.floor(viewport.height);
+    await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+    holder.appendChild(canvas);
+    holder.style.aspectRatio = '';
+  }
+
+  function resolvePdfs() {
+    document.querySelectorAll('figure.pdf-embed[data-repo-pdf]').forEach(figure => {
+      if (figure.dataset.resolved) return;
+      figure.dataset.resolved = 'true';
+      renderPdf(figure);
+    });
+  }
+
+  function resolveAll() {
+    resolveLinks();
+    resolveVideos();
+    resolvePdfs();
+  }
+
+  new MutationObserver(resolveAll).observe(document.documentElement, { childList: true, subtree: true });
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', resolveAll, { once: true });
+  } else {
+    resolveAll();
+  }
 })();
