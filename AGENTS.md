@@ -6,6 +6,7 @@
 - Never push directly to `main`. Use branch names without `/`, because Juncture cannot preview them; if a tool's branch name has a slash, push it as `git push -u origin HEAD:<flat-name>`.
 - The collage index is developed on the `collage-index` branch. Keep it out of `main` until it is ready, and merge `origin/main` into it to stay current.
 - Everything in this repository must stay compatible with Juncture. See the next section before changing content, CSS, JavaScript or media.
+- Parallel run with the static twin: the Markdown must stay Juncture-compatible and must also build in the static twin, unchanged. `kit/` holds that build (Pandoc, Lua filters, one template); run `npm ci && npm run build && npm run check` in `kit/` before pushing a content change. See "Static twin" in `DEVELOPMENT.md`.
 
 ## Juncture compatibility (required)
 

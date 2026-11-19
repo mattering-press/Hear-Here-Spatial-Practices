@@ -1,0 +1,149 @@
+/* The static twin's only stylesheet. The design decisions are the custom properties in :root; change
+   them to restyle the site. It loosely follows the Juncture site's essays/custom.css. */
+
+@font-face { font-family: "Roboto"; font-style: normal; font-weight: 100 900; font-display: swap; src: url("fonts/roboto-latin-wght-normal.woff2") format("woff2"); }
+@font-face { font-family: "Roboto"; font-style: italic; font-weight: 100 900; font-display: swap; src: url("fonts/roboto-latin-wght-italic.woff2") format("woff2"); }
+
+:root {
+  /* colours */
+  --colour-background: #f9f9f9;
+  --colour-surface: #fff;                 /* cards, quotes */
+  --colour-text: #222;
+  --colour-link: #7e2022;
+  --colour-accent: #7e2022;               /* heading rules, timecodes, focus rings, text selection */
+  --colour-rule: #bababa;
+  --colour-header: #111;                  /* header band; pages with a header image show it behind a shade */
+  --colour-header-text: #fff;
+  --header-shade: rgb(0 0 0 / 0.55);
+  --colour-caption: #585858;              /* caption bar under figures and videos */
+  --colour-caption-text: #fff;
+  --colour-transcript: rgb(186 186 186 / 0.17);
+  --colour-footer: #eee;
+
+  /* type */
+  --font: "Roboto", system-ui, sans-serif;
+  --font-size: 1.0625rem;
+  --line-height: 1.6;
+  --weight-text: 300;
+  --weight-strong: 500;
+  --weight-heading: 900;
+  --heading-case: lowercase;
+
+  /* spacing and measure */
+  --measure: 46rem;                       /* width of the text column */
+  --wide: 62rem;                          /* width of the header and footer contents */
+  --gap: 1rem;
+  --space: 1.5rem;                        /* space around figures and between blocks */
+  --side-figure-width: 50%;               /* default width of figures floated left or right */
+  --radius: 15px;
+  --shadow: 0 4px 12px rgb(0 0 0 / 0.08);
+}
+
+/* base */
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; background: var(--colour-background); color: var(--colour-text); font: var(--weight-text) var(--font-size) / var(--line-height) var(--font); }
+a { color: var(--colour-link); }
+b, strong { font-weight: var(--weight-strong); }
+::selection { background: var(--colour-accent); color: #fff; }
+::marker { color: var(--colour-accent); }
+:focus-visible { outline: 3px solid var(--colour-accent); outline-offset: 2px; }
+h1, h2, h3, h4, h5, h6 { line-height: 1.2; }
+img, iframe, video, object { max-width: 100%; }
+.skip-link { position: absolute; left: -100vw; }
+.skip-link:focus { left: var(--gap); top: var(--gap); z-index: 10; padding: 0.5rem 1rem; background: var(--colour-surface); }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* header band: page title, subtitle, menu */
+.site-header { position: relative; padding: 4rem var(--gap) 1.25rem; background: var(--colour-header) center / cover no-repeat; color: var(--colour-header-text); }
+.site-header::before { content: ""; position: absolute; inset: 0; background: var(--header-shade); }
+.site-header__inner { position: relative; max-width: var(--wide); margin: 0 auto; }
+.site-header :focus-visible { outline-color: currentColor; }
+.page-title { margin: 0; font-size: clamp(1.75rem, 5vw, 2.75rem); font-weight: 700; }
+.page-subtitle { margin: 0.5rem 0 0; font-size: clamp(1rem, 2.5vw, 1.4rem); font-style: italic; font-weight: 400; letter-spacing: 0.22em; text-transform: uppercase; }
+.site-menu ul { display: flex; flex-wrap: wrap; gap: 0.25rem 1.5rem; margin: 2rem 0 0; padding: 0; list-style: none; }
+.site-menu a { color: inherit; font-weight: var(--weight-strong); text-transform: lowercase; text-underline-offset: 0.25em; }
+.site-menu a:not(:hover, :focus-visible, [aria-current]) { text-decoration: none; }
+
+/* view switcher: plain links between the page and its Markdown view */
+.view-switcher { max-width: var(--wide); margin: 0 auto; padding: 0.5rem var(--gap) 0; font-size: 0.875rem; }
+.view-switcher ul { display: flex; justify-content: flex-end; gap: 1rem; margin: 0; padding: 0; list-style: none; }
+.view-switcher a[aria-current] { color: var(--colour-text); font-weight: var(--weight-strong); text-decoration: none; }
+
+/* text column */
+main { max-width: var(--measure); margin: 0 auto; padding: var(--gap) var(--gap) 3rem; overflow-wrap: break-word; }
+main::after { content: ""; display: block; clear: both; }
+main :is(h2, h3, h4, h5, h6) { clear: both; font-weight: var(--weight-heading); text-transform: var(--heading-case); }
+main h2 { margin-top: 2.5rem; padding-left: var(--gap); border-left: 6px solid var(--colour-accent); }
+blockquote { margin: var(--space) 0; padding: 0.5rem 1.25rem; border-left: 4px solid var(--colour-accent); background: var(--colour-surface); }
+
+/* figures: zoomable images, videos and other embeds */
+figure { margin: var(--space) auto; width: var(--figure-width, 100%); }
+figure.left, figure.right { width: var(--figure-width, var(--side-figure-width)); margin-top: 0.4rem; }
+figure.left { float: left; margin-right: var(--space); }
+figure.right { float: right; margin-left: var(--space); }
+figure img { display: block; width: 100%; height: auto; }
+figcaption { padding: 0.3rem 0.5rem; background: var(--colour-caption); color: var(--colour-caption-text); font-size: 0.875rem; overflow-wrap: anywhere; }
+figcaption a { color: inherit; }
+figure.zoom { position: relative; }
+.zoom-button { position: absolute; top: 0.5rem; right: 0.5rem; padding: 0.3rem 0.75rem; border: 0; border-radius: 4px; background: rgb(0 0 0 / 0.72); color: #fff; font: inherit; font-size: 0.875rem; font-weight: var(--weight-strong); cursor: zoom-in; }
+.zoom-button:hover { background: #000; }
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(15rem, 100%), 1fr)); gap: var(--gap); margin: var(--space) 0; clear: both; }
+.gallery figure { margin: 0; }
+.gallery img { aspect-ratio: 4 / 3; object-fit: cover; }
+.video-embed iframe, .embed iframe { display: block; width: 100%; border: 0; aspect-ratio: 16 / 9; }
+.embed iframe { aspect-ratio: var(--embed-ratio, 1); }
+.embed[style*="--embed-height"] iframe { aspect-ratio: auto; height: var(--embed-height); }
+.video-embed video { display: block; width: 100%; background: #000; }
+.video-embed.portrait { max-width: 360px; }
+.pdf-embed object { display: grid; place-content: center; width: 100%; height: min(550px, 75vh); background: #3a3a3a; }
+.pdf-fallback { margin: 0; padding: var(--gap); text-align: center; }   /* shown where the browser cannot display PDFs */
+.pdf-fallback a { color: #fff; }
+main iframe.left, main iframe.right { float: left; margin: 0.4rem var(--space) var(--gap) 0; }
+main iframe.right { float: right; margin: 0.4rem 0 var(--gap) var(--space); }
+smartframe-embed:not(:defined) { aspect-ratio: auto !important; }   /* third-party image: needs JavaScript */
+
+/* the deep-zoom dialog opened by zoom.js */
+.zoom-dialog { width: calc(100vw - 2rem); height: calc(100vh - 2rem); height: calc(100dvh - 2rem); max-width: none; max-height: none; padding: 0; border: 0; border-radius: 6px; background: #111; color: #fff; }
+.zoom-dialog[open] { display: flex; flex-direction: column; }
+.zoom-dialog::backdrop { background: rgb(0 0 0 / 0.8); }
+.zoom-dialog__bar { display: flex; align-items: center; gap: var(--gap); padding: 0.5rem 0.5rem 0.5rem var(--gap); }
+.zoom-dialog__title { flex: 1; margin: 0; overflow: hidden; font-size: 0.9rem; text-overflow: ellipsis; white-space: nowrap; }
+.zoom-dialog__close { padding: 0.4rem 1rem; border: 1px solid #fff; border-radius: 4px; background: transparent; color: #fff; font: inherit; font-weight: var(--weight-strong); cursor: pointer; }
+.zoom-dialog__close:hover { background: #fff; color: #111; }
+.zoom-dialog :focus-visible { outline-color: #fff; }
+.zoom-dialog__viewer { flex: 1; min-height: 0; }
+
+/* podcasts: audio player, transcript and its timecodes */
+audio { display: block; width: 100%; margin: var(--gap) 0; }
+.transcript { padding: var(--gap); background: var(--colour-transcript); }
+a.timecode { padding: 0.1rem 0.5rem; border-radius: 4px; background: var(--colour-accent); color: #fff; font-size: 0.875rem; font-weight: var(--weight-strong); text-decoration: none; }
+a.timecode:hover { text-decoration: underline; }
+
+/* cards: lists of pages with a picture */
+.cards ul { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(15rem, 100%), 1fr)); gap: var(--space); margin: var(--space) 0; padding: 0; list-style: none; }
+.cards a { display: block; height: 100%; overflow: hidden; border-radius: var(--radius); background: var(--colour-surface); box-shadow: var(--shadow); color: var(--colour-text); text-decoration: none; }
+.cards img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+.card-title { display: block; padding: 0.8rem 1rem 1rem; border-top: 2px solid var(--colour-accent); font-weight: 800; text-transform: var(--heading-case); }
+.cards a:is(:hover, :focus-visible) .card-title { color: var(--colour-accent); text-decoration: underline; }
+
+/* citations: links to the reference list, and the reference in a popup (assets/citations.js) */
+a.citation { text-decoration-thickness: 1px; text-underline-offset: 0.15em; }
+.typed-reference { scroll-margin-top: var(--space); }
+.typed-reference:target { outline: 2px solid var(--colour-accent); outline-offset: 4px; background: var(--colour-surface); }
+.typed-reference p { margin: 0 0 0.75rem; }
+/* hidden until citations.js opens one; in browsers without popovers they stay hidden and the links go to the list */
+.citation-popover { display: none; }
+.citation-popover:popover-open { display: block; position: fixed; inset: auto; margin: 0; width: max-content; max-width: min(28rem, calc(100vw - 16px)); padding: 0.75rem 1rem; border: 1px solid var(--colour-rule); border-radius: 6px; background: var(--colour-surface); color: var(--colour-text); box-shadow: var(--shadow); font-size: 0.9375rem; line-height: 1.45; overflow-wrap: anywhere; }
+.citation-popover p { margin: 0; }
+.citation-popover .citation-popover__more { margin-top: 0.5rem; font-size: 0.875rem; }
+
+/* footer */
+.site-footer { margin-top: 3rem; padding: 1.5rem var(--gap); background: var(--colour-footer); }
+.site-footer ul { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--gap) 2rem; max-width: var(--wide); margin: 0 auto; padding: 0; list-style: none; }
+.site-footer img { height: 2rem; width: auto; vertical-align: middle; }
+
+/* narrow screens: figures stop floating */
+@media (max-width: 40rem) {
+  figure.left, figure.right, main iframe.left, main iframe.right { float: none; width: 100%; margin-left: 0; margin-right: 0; }
+  main h2 { padding-left: 0.75rem; }
+}
