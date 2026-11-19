@@ -1,8 +1,9 @@
 // Turns one Juncture page (Markdown with .ve-* tags) into Pandoc Markdown, and lists what the page needs:
 // images to resize, files to copy, warnings, and anything it could not handle. No dependencies.
 //
-//   convert(source, file) -> { markdown, title, subtitle, header, menu, footer, cards, images, files,
+//   convert(source, file, { exists }) -> { markdown, title, subtitle, header, menu, footer, cards, images, files,
 //                              handled, warnings, unhandled, exceptions }
+//   exists(path) says whether a repository file is there (default: in the working tree; for a frozen version, in its tag)
 //   node convert.mjs essays/walk.md      prints the converted Markdown (paths are relative to the repository)
 //
 // The .ve-* lines, and the raw HTML that Juncture's custom.js completes in the browser, become fenced divs
@@ -59,7 +60,9 @@ const hasWord = (tag, name) => new RegExp(`\\s${name}(?=[\\s>=])`).test(tag);
 const MEDIA_OPTIONS = ['caption', 'alt', 'width', 'rotation'];
 const IMAGE_RE = /!\[([^\]]*)\]\(((?:[^()\s]|\([^()\s]*\))+)(?:\s+"[^"]*")?\)/g;
 
-export function convert(source, file) {
+const inWorkingTree = (path) => existsSync(join(REPO_ROOT, path));
+
+export function convert(source, file, { exists = inWorkingTree } = {}) {
   const lines = source.split(/\r?\n/);
   const page = { title: null, subtitle: null, header: {}, menu: [], footer: [], cards: [], images: [], files: [] };
   const handled = [], warnings = [], unhandled = [];
@@ -68,7 +71,7 @@ export function convert(source, file) {
 
   const warn = (line, text) => warnings.push({ file, line, text });
   const fail = (line, text, why) => unhandled.push({ file, line, text: text.trim(), why });
-  const needFile = (line, path, what) => { if (!existsSync(join(REPO_ROOT, path))) fail(line, path, `${what} not found in the repository`); };
+  const needFile = (line, path, what) => { if (!exists(path)) fail(line, path, `${what} not found in the repository`); };
   const addImage = (line, src, role, rotation = 0) => { needFile(line, src, 'image'); page.images.push({ src, role, rotation, file, line }); };
 
   // The indented "- item" lines that follow a tag line.
@@ -160,7 +163,7 @@ export function convert(source, file) {
       const url = m[1] ?? m[2];
       const path = GITHUB_FILE.exec(url)?.[1] ?? (/^([a-z][\w+.-]*:|#|\/$)|\.md(#.*)?$/i.test(url) ? null : url);
       const target = path && (path === url ? repoPath(url, file) : decodeURIComponent(path));
-      if (target && !existsSync(join(REPO_ROOT, target))) warn(n, `link to a file that is not in the repository: ${target}`);
+      if (target && !exists(target)) warn(n, `link to a file that is not in the repository: ${target}`);
     }
 
     // Raw HTML blocks that Juncture's custom.js completes in the browser (audio players, iframes, the figures

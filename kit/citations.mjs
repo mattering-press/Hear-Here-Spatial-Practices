@@ -27,17 +27,18 @@ const firstName = (item) => {
 };
 const yearOf = (item) => item.issued?.['date-parts']?.[0]?.[0];
 
-// options: { pandoc, work (a scratch folder), order (page files in reading order) }
+// options: { pandoc, work (a scratch folder), order (page files in reading order), bibliography (default: the
+// working tree's; a frozen version uses the one in its tag) }
 // -> { items, index, indexPath, warnings }
-export function prepareReferences({ pandoc, work, order }) {
-  const items = JSON.parse(readFileSync(BIBLIOGRAPHY, 'utf8'));
+export function prepareReferences({ pandoc, work, order, bibliography = BIBLIOGRAPHY }) {
+  const items = JSON.parse(readFileSync(bibliography, 'utf8'));
   const warnings = [];
   // The popups show one reference at a time, so the "——" for a repeated author is switched off for them.
   const popupCsl = join(work, 'popup.csl');
   writeFileSync(popupCsl, readFileSync(CSL, 'utf8').replace(/\ssubsequent-author-substitute(-rule)?="[^"]*"/g, ''));
-  const result = spawnSync(pandoc, ['-f', 'markdown', '-t', 'html', '--wrap=none', '--citeproc', '--bibliography', BIBLIOGRAPHY, '--csl', popupCsl],
+  const result = spawnSync(pandoc, ['-f', 'markdown', '-t', 'html', '--wrap=none', '--citeproc', '--bibliography', bibliography, '--csl', popupCsl],
     { input: "---\nnocite: '@*'\n---\n", encoding: 'utf8' });
-  if (result.status !== 0) throw new Error(`citeproc failed on ${BIBLIOGRAPHY}:\n${result.stderr}`);
+  if (result.status !== 0) throw new Error(`citeproc failed on ${bibliography}:\n${result.stderr}`);
   warnings.push(...result.stderr.split('\n').filter(Boolean).map((l) => `references/bibliography.json: ${l.replace(/^\[WARNING\] /, '')}`));
   const html = Object.fromEntries([...result.stdout.matchAll(/<div id="ref-([^"]+)" class="csl-entry"[^>]*>\s*([\s\S]*?)\s*<\/div>/g)].map((m) => [m[1], m[2].replace(/\s+/g, ' ')]));
   const rank = (page) => (order.includes(page) ? order.indexOf(page) : order.length);

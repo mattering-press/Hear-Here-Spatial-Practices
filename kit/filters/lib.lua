@@ -17,6 +17,28 @@ function M.init(meta)
   M.contract_path = get('contract-out')
 end
 
+-- root .. url, for a url relative to the site root. In a frozen version (v<id>/) the media shared by all versions
+-- are one level up, so their URLs in the build's manifest start with ../: against an absolute root (publication.md)
+-- these steps are resolved, and "./../images/…" becomes "../images/…".
+function M.join(root, url)
+  if root:match('^[%a][%w+.-]*://') then
+    while url:sub(1, 3) == '../' and root:match('^[%a][%w+.-]*://[^/]+/.+/$') do
+      root, url = root:match('^(.*/)[^/]+/$'), url:sub(4)
+    end
+    return root .. url
+  end
+  if root == './' and url:sub(1, 3) == '../' then return url end
+  return root .. url
+end
+
+-- Image URLs that the filters made from the manifest during this run, so that they are not resized twice.
+M.generated = {}
+function M.site_url(url)
+  local out = M.join(M.root, url)
+  M.generated[out] = true
+  return out
+end
+
 -- Escape text for HTML element content and attribute values.
 function M.esc(s)
   return (tostring(s):gsub('&', '&amp;'):gsub('<', '&lt;'):gsub('>', '&gt;'):gsub('"', '&quot;'))
@@ -88,10 +110,12 @@ function M.image_at(url)
   return entry
 end
 
--- URL for a repository file that is not an image: the copy in the site if the build copied it,
+-- URL for a repository file that is not an image: the copy in the site if the build copied it (shared by all
+-- versions, so it may start with ../),
 -- otherwise the file on GitHub, as Juncture does. (convert.mjs warns about links to missing files.)
 function M.file_url(path)
-  if load_manifest().files[path] then return M.root .. M.pct(path) end
+  local copy = load_manifest().files[path]
+  if copy then return M.join(M.root, M.pct(copy)) end
   return 'https://raw.githubusercontent.com/' .. M.repo .. '/main/' .. M.pct(path)
 end
 
