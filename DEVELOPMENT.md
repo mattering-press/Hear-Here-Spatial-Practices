@@ -122,6 +122,7 @@ cd kit
 npm ci          # once, and again after package-lock.json changes
 npm run build   # writes ../_site/ in about ten seconds
 npm run check   # every internal link and local file in _site/ exists
+npm run test:csl  # the house citation style against the style guide's examples
 npm run serve   # http://localhost:8080/
 npm run serve -- --base /Hear-Here-Spatial-Practices/   # the address layout of GitHub Pages
 ```
@@ -139,9 +140,12 @@ What is in `kit/`:
 
 - `build.mjs`: the build, with its few settings at the top
 - `convert.mjs`: turns Juncture's `.ve-*` lines and its raw HTML (audio, iframes, videos) into Pandoc Markdown
-- `filters/`: Lua filters, one job each. `to-markdown.lua` is stage 1 (writes the Markdown view); `figures`, `embeds`, `cards`, `transcript`, `links` and `contract` are stage 2 (Markdown view to HTML and `page.json`)
+- `filters/`: Lua filters, one job each. `to-markdown.lua` is stage 1 (writes the Markdown view); `figures`, `embeds`, `cards`, `transcript`, `links`, `citations` and `contract` are stage 2 (Markdown view to HTML and `page.json`)
+- `citations.mjs`: prepares the bibliography for `filters/citations.lua` and writes the build's report on citations
+- `csl/`: `mattering-press.csl`, the house citation style, and its test (`csl/test/`)
+- `scripts/to-citation-keys.mjs`: for the switch, shows how the plain-text citations would become Pandoc citations
 - `template.html`: the HTML around every page
-- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `zoom.js`, `seek.js`
+- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `zoom.js`, `seek.js`, `citations.js`
 - `images.mjs`: resized images and the tiles for zooming
 - `check.mjs`, `serve.mjs`: the link check and the local server
 - `CONTRACT.md`: the `page.json` and `publication.json` files that other frontends can read
@@ -151,6 +155,32 @@ request. On `main` it also deploys `_site/` to GitHub Pages
 (`https://mattering-press.github.io/Hear-Here-Spatial-Practices/`), but only once Pages is enabled in
 the repository settings with "GitHub Actions" as the source; until then the deploy job is skipped.
 `_site/` is never committed.
+
+### References and citations
+
+The book has one bibliography, `references/bibliography.json` (CSL-JSON), with every work that a chapter's reference list
+names, entered once. Keys are the first author's surname and the year in plain ASCII (`becker2007`, `puigdelabellacasa2017`),
+with a letter where one author has two works in a year (`stengers2005a`); a web page without author or date is keyed by
+its site (`jacobinnd`). Each entry's `custom.typed` records where it is typed (page and text as Pandoc reads it). The
+house style is `kit/csl/mattering-press.csl`, adapted from the MHRA styles of the official CSL repository; its header
+lists the changes, and `npm run test:csl` checks it against the style guide's examples.
+
+During the parallel run the essays keep their typed citations and reference lists, and the build links them:
+
+- citations such as `(Becker, 2007)`, `(Becker 2007: 74)`, `(Puwar and Sharma, 2012; Stengers et al, 2014)` and years in
+  brackets whose author is named in the sentence (`Fryer (1984)`, `(2017:147)`) are matched by surname and year. The text
+  in the brackets becomes a link, and the reference, formatted in the house style, opens in a popup on hover, keyboard
+  focus or tap. Without JavaScript the link goes to the reference;
+- a link goes to the entry in the page's own typed list, or, when the page cites a work its list does not have, to the
+  entry on the first page in reading order that lists it. That is simpler than a separate references page, and every
+  work in the bibliography is listed on some page;
+- the build prints, per page, the citations found, linked and not matched (with file, line and a hint), the years in
+  brackets it read as dates, the paragraphs of typed lists that are not bibliography entries, and the entries no page
+  cites. Correct the essay, or add the work to the bibliography, and build again.
+
+At the switch to the static edition, `node scripts/to-citation-keys.mjs` prints the change that turns the typed
+citations into Pandoc citations (`[@becker2007, p. 74]`, `[-@fryer1984]` where the author is named in the sentence) and
+replaces each typed list with the list that citeproc generates. It is a dry run: it prints a diff and changes nothing.
 
 ## Plan: stable links, versions and print companions
 
