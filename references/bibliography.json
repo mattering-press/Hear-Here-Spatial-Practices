@@ -1,0 +1,875 @@
+[
+  {
+    "id": "back2007",
+    "type": "book",
+    "author": [{"family":"Back","given":"Les"}],
+    "title": "The Art of Listening",
+    "publisher": "Berg Publishers",
+    "publisher-place": "Oxford",
+    "issued": {"date-parts":[[2007]]},
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Les Back (2007) The Art of Listening, Oxford: Berg Publishers."},
+      {"page":"essays/podcasts.md","text":"Les Back (2007) The Art of Listening, Oxford: Berg Publishers."}
+    ] }
+  },
+  {
+    "id": "back2018",
+    "type": "book",
+    "author": [{"family":"Back","given":"Les"},{"family":"Sinha","given":"S"}],
+    "title": "Migrant City",
+    "publisher": "Routledge",
+    "issued": {"date-parts":[[2018]]},
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Les Back & S Sinha (2018) Migrant City, Routledge."}
+    ] }
+  },
+  {
+    "id": "becker2007",
+    "type": "book",
+    "author": [{"family":"Becker","given":"Howard"}],
+    "title": "Telling About Society",
+    "publisher": "University of Chicago Press",
+    "issued": {"date-parts":[[2007]]},
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Howard Becker (2007) Telling About Society, Chicago University Press."}
+    ] }
+  },
+  {
+    "id": "bhambra2014",
+    "type": "book",
+    "author": [{"family":"Bhambra","given":"Gurminder"}],
+    "title": "Connected Sociologies",
+    "publisher": "Bloomsbury Academic",
+    "publisher-place": "London",
+    "issued": {"date-parts":[[2014]]},
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Gurminder Bhambra (2014) Connected Sociologies, London: Bloomsbury Academic."}
+    ] }
+  },
+  {
+    "id": "brah1996",
+    "type": "book",
+    "author": [{"family":"Brah","given":"Avtar"}],
+    "title": "Cartographies of Diaspora: Contesting Identities",
+    "publisher": "Routledge",
+    "publisher-place": "London",
+    "issued": {"date-parts":[[1996]]},
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Avtar Brah (1996) Cartographies of Diaspora: Contesting Identities, Routledge."},
+      {"page":"essays/bharti_parmar.md","text":"Brah, A. (1996) Cartographies of diaspora: contesting identities. London: Routledge."}
+    ] }
+  },
+  {
+    "id": "brentnall1987",
+    "type": "book",
+    "author": [{"family":"Brentnall","given":"Margaret"}],
+    "title": "John Hutton: Artist and Glass Engraver",
+    "publisher": "Philadelphia Art Alliance Press",
+    "issued": {"date-parts":[[1987]]},
+    "custom": { "typed": [
+      {"page":"essays/aya_nassar.md","text":"Brentnall, Margaret (1987) John Hutton: Artist and Glass Engraver, Philadelphia Art Alliance Press."}
+    ] }
+  },
+  {
+    "id": "britishmilitaryhistorynd",
+    "type": "webpage",
+    "title": "British Military Headquarters in Cairo",
+    "URL": "https://www.britishmilitaryhistory.co.uk/docs-middle-east-1930-1947-british-troops-egypt-1930-45/",
+    "custom": { "typed": [
+      {"page":"essays/aya_nassar.md","text":"British Military Headquarters in Cairo: https://www.britishmilitaryhistory.co.uk/docs-middle-east-1930-1947-british-troops-egypt-1930-45/ So we are all good, then 🙂. It is not Nasr City, but close by."}
+    ] }
+  },
+  {
+    "id": "butler2023",
+    "type": "article-magazine",
+    "author": [{"family":"Butler","given":"Judith"}],
+    "title": "The Compass of Mourning",
+    "container-title": "London Review of Books",
+    "volume": "45",
+    "issue": "20",
+    "issued": {"date-parts":[[2023]]},
+    "URL": "https://www.lrb.co.uk/the-paper/v45/n20/judith-butler/the-compass-of-mourning",
+    "custom": { "typed": [
+      {"page":"essays/fariman.md","text":"Judith Butler (2023) “The Compass of Mourning.” London Review of Books 45(20): https://www.lrb.co.uk/the-paper/v45/n20/judith-butler/the-compass-of-mourning."}
+    ] }
+  },
+  {
+    "id": "campt2017",
+    "type": "book",
+    "author": [{"family":"Campt","given":"Tina"}],
+    "title": "Listening to Images",
+    "publisher": "Duke University Press",
+    "issued": {"date-parts":[[2017]]},
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Tina Campt (2017) Listening to Images, Duke University Press"}
+    ] }
+  },
+  {
+    "id": "cook2000",
+    "type": "book",
+    "editor": [{"family":"Cook","given":"Thomas C"}],
+    "title": "A personal call to peace: an interview with Elias Jabbour",
+    "publisher": "House of Hope Publications",
+    "publisher-place": "Montreat, NC",
+    "issued": {"date-parts":[[2000]]},
+    "custom": { "typed": [
+      {"page":"essays/fariman.md","text":"Thomas C Cook (ed.) (2000) A personal call to peace: an interview with Elias Jabbour, Montreat, NC: House of Hope Publications"}
+    ] }
+  },
+  {
+    "id": "coventrycathedral2020",
+    "type": "report",
+    "author": [{"literal":"Coventry Cathedral"}],
+    "title": "Events Programme: Audience Development and Communication Strategy",
+    "publisher": "Sarah Chambers Consulting",
+    "issued": {"date-parts":[[2020]]},
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Coventry Cathedral (2020) Events Programme: Audience Development and Communication Strategy, published by Sarah Chambers Consulting."}
+    ] }
+  },
+  {
+    "id": "cvetkovich2003",
+    "type": "book",
+    "author": [{"family":"Cvetkovich","given":"Ann"}],
+    "title": "An Archive of Feelings: Trauma, Sexuality, and Lesbian Public Cultures",
+    "publisher": "Duke University Press",
+    "issued": {"date-parts":[[2003]]},
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Ann Cvetkovich (2003) An Archive of Feelings: Trauma, Sexuality, and Lesbian Public Cultures, Duke University Press."}
+    ] }
+  },
+  {
+    "id": "cvetkovich2013",
+    "type": "article-journal",
+    "author": [{"family":"Cvetkovich","given":"Ann"},{"family":"Carland","given":"Tammy Rae"}],
+    "title": "Sharing an Archive of Feelings: A Conversation",
+    "container-title": "Art Journal",
+    "volume": "72",
+    "issue": "2",
+    "page": "70-77",
+    "issued": {"date-parts":[[2013]]},
+    "DOI": "10.1080/00043249.2013.10791035",
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Ann Cvetkovich and Tammy Rae Carland (2013) Sharing an Archive of Feelings: a conversation, Art Journal, 72(2), 70–77."}
+    ] }
+  },
+  {
+    "id": "despret2004",
+    "type": "article-journal",
+    "author": [{"family":"Despret","given":"Vinciane"}],
+    "title": "The Body We Care For: Figures of Anthropo-zoo-genesis",
+    "container-title": "Body & Society",
+    "volume": "10",
+    "issue": "2–3",
+    "page": "111-134",
+    "issued": {"date-parts":[[2004]]},
+    "DOI": "10.1177/1357034x04042938",
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Vinciane Despret (2004) “The Body We Care For: Figures of Anthropo-zoo-genesis.” Body & Society, vol. 10, 2004, pp. 111-134."}
+    ] }
+  },
+  {
+    "id": "diprose2012",
+    "type": "article-journal",
+    "author": [{"family":"Diprose","given":"Rosalyn"}],
+    "title": "Building and Belonging Amid the Plight of Dwelling",
+    "container-title": "Angelaki",
+    "volume": "16",
+    "issue": "4",
+    "page": "59-72",
+    "issued": {"date-parts":[[2012]]},
+    "DOI": "10.1080/0969725x.2011.641345",
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Rosalyn Diprose (2012) ‘Building and Belonging Amid the Plight of Dwelling’, Angelaki 16, 4, (59-72)"}
+    ] }
+  },
+  {
+    "id": "escobar2017",
+    "type": "book",
+    "author": [{"family":"Escobar","given":"Arturo"}],
+    "title": "Designs for the Pluriverse: Radical Interdependence, Autonomy, and the Making of Worlds",
+    "publisher": "Duke University Press",
+    "issued": {"date-parts":[[2017]]},
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Arturo Escobar (2017) Designs for the Pluriverse: Radical Interdependence, Autonomy, and the Making of Worlds, Duke University Press."}
+    ] }
+  },
+  {
+    "id": "eshun1998",
+    "type": "book",
+    "author": [{"family":"Eshun","given":"Kodwo"}],
+    "title": "More Brilliant Than the Sun: Adventures in Sonic Fiction",
+    "publisher": "Quartet Books",
+    "publisher-place": "London",
+    "issued": {"date-parts":[[1998]]},
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Kodwo Eshun (1998) More Brilliant Than the Sun: Adventures in Sonic Fiction, Quartet Books."}
+    ] }
+  },
+  {
+    "id": "farrellcentrend",
+    "type": "webpage",
+    "title": "Concrete and highway dreams in Newcastle",
+    "URL": "https://www.farrellcentre.org.uk/concrete-dreams/",
+    "custom": { "typed": [
+      {"page":"essays/aya_nassar.md","text":"Concrete and highway dreams in Newcastle: https://www.farrellcentre.org.uk/concrete-dreams/ and https://www.theguardian.com/cities/2017/feb/07/brave-new-world-newcastle-dream-for-vertical-city"}
+    ] }
+  },
+  {
+    "id": "fowler2024",
+    "type": "book",
+    "author": [{"family":"Fowler","given":"C."}],
+    "title": "Our Island Stories: country walks through colonial Britain",
+    "publisher": "Allen Lane",
+    "publisher-place": "London",
+    "issued": {"date-parts":[[2024]]},
+    "custom": { "typed": [
+      {"page":"essays/bharti_parmar.md","text":"Fowler, C. (2024) Our Island Stories: country walks through colonial Britain. London: Allen Lane."}
+    ] }
+  },
+  {
+    "id": "frankfurther1951a",
+    "type": "graphic",
+    "author": [{"family":"Frankfurther","given":"Eva"}],
+    "title": "Self-portrait in Red",
+    "issued": {"date-parts":[[1951],[1958]],"circa":true},
+    "custom": { "typed": [
+      {"page":"essays/catherine_hahn.md","text":"Self-portrait in Red c. 1951-8"}
+    ] }
+  },
+  {
+    "id": "frankfurther1951b",
+    "type": "graphic",
+    "author": [{"family":"Frankfurther","given":"Eva"}],
+    "title": "Woman in Overall with Curled Hair",
+    "issued": {"date-parts":[[1951],[1958]],"circa":true},
+    "custom": { "typed": [
+      {"page":"essays/catherine_hahn.md","text":"Woman in Overall with Curled Hair c.1951-58"}
+    ] }
+  },
+  {
+    "id": "frankfurther1955",
+    "type": "graphic",
+    "author": [{"family":"Frankfurther","given":"Eva"}],
+    "title": "West Indian Waitresses",
+    "issued": {"date-parts":[[1955]],"circa":true},
+    "custom": { "typed": [
+      {"page":"essays/catherine_hahn.md","text":"West Indian Waitresses c.1955"}
+    ] }
+  },
+  {
+    "id": "frankfurther1958",
+    "type": "graphic",
+    "author": [{"family":"Frankfurther","given":"Eva"}],
+    "title": "Two Women and a Child",
+    "issued": {"date-parts":[[1958]],"circa":true},
+    "custom": { "typed": [
+      {"page":"essays/catherine_hahn.md","text":"Two Women and a Child c.1958"}
+    ] }
+  },
+  {
+    "id": "frichot2017",
+    "type": "article-journal",
+    "author": [{"family":"Frichot","given":"Hélène"}],
+    "title": "A Creative Ecology of Practice for Thinking Architecture",
+    "container-title": "Ardeth",
+    "volume": "1",
+    "page": "138-149",
+    "issued": {"date-parts":[[2017]]},
+    "DOI": "10.17454/ardeth01.11",
+    "URL": "http://journals.openedition.org/ardeth/1007",
+    "accessed": {"date-parts":[[2025,7,23]]},
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Hélène Frichot (2017) ‘A Creative Ecology of Practice for Thinking Architecture’ , Ardeth, accessed on 23/07/25. URL : http://journals.openedition.org/ardeth/1007"}
+    ] }
+  },
+  {
+    "id": "fryer1984",
+    "type": "book",
+    "author": [{"family":"Fryer","given":"Peter"}],
+    "title": "Staying Power: The History of Black People in Britain",
+    "publisher": "University of Alberta",
+    "issued": {"date-parts":[[1984]]},
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Peter Fryer (1984) Staying Power: The History of Black People in Britain, University of Alberta."}
+    ] }
+  },
+  {
+    "id": "gandhi2006",
+    "type": "book",
+    "author": [{"family":"Gandhi","given":"Leela"}],
+    "title": "Affective Communities: Anticolonial Thought, Fin-de-Siècle Radicalism, and the Politics of Friendship",
+    "publisher": "Duke University Press",
+    "publisher-place": "Durham, NC",
+    "issued": {"date-parts":[[2006]]},
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Leela Gandhi (2006) Affective Communities, Duke University Press."}
+    ] }
+  },
+  {
+    "id": "gilroy2004",
+    "type": "book",
+    "author": [{"family":"Gilroy","given":"Paul"}],
+    "title": "After Empire: Melancholia or Convivial Culture?",
+    "publisher": "Routledge",
+    "issued": {"date-parts":[[2004]]},
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Paul Gilroy (2004) After Empire: Melancholia or Convivial Culture, Routledge."}
+    ] }
+  },
+  {
+    "id": "gordon1997",
+    "type": "book",
+    "author": [{"family":"Gordon","given":"Avery F."}],
+    "title": "Ghostly Matters: Haunting and the Sociological Imagination",
+    "publisher": "University of Minnesota Press",
+    "publisher-place": "Minneapolis",
+    "issued": {"date-parts":[[1997]]},
+    "custom": { "typed": [
+      {"page":"essays/spotting_colours.md","text":"Gordan, A. F (1997) Ghostly Matters: Haunting and the Sociological Imagination, University of Minnesota Press."}
+    ] }
+  },
+  {
+    "id": "guha1994",
+    "type": "chapter",
+    "author": [{"family":"Guha","given":"Ranajit"}],
+    "editor": [{"family":"Amin","given":"Shahid"},{"family":"Chakrabarty","given":"Dipesh"}],
+    "title": "The small voice of history",
+    "container-title": "Subaltern Studies IX: Writings on South Asian History and Society",
+    "publisher": "Oxford University Press",
+    "publisher-place": "Delhi",
+    "issued": {"date-parts":[[1994]]},
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Ranajit Guha (1994) “The small voice of history”. In Subaltern Studies IX: Writings on South Asian History and Society, Edited by Amin, Shahid and Chakrabarty, Dipesh. Delhi: Oxford University Press."}
+    ] }
+  },
+  {
+    "id": "gunaratnam2015",
+    "type": "chapter",
+    "author": [{"family":"Gunaratnam","given":"Yasmin"},{"family":"Back","given":"Les"}],
+    "editor": [{"family":"Robson","given":"G."}],
+    "title": "Every Minute of Every Day: Mobilities, Multiculture and Time",
+    "container-title": "Digital Difference: Social Media and Intercultural Experience",
+    "publisher": "Cambridge Scholars Publishing",
+    "issued": {"date-parts":[[2015]]},
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Yasmin Gunaratnam and Les Back (2015) ‘Every Minute of Every Day: Mobilities, Multiculture and Time’, in G. Robson (ed) Digital Difference: Social Media and Intercultural Experience, Cambridge Scholars Publishing"}
+    ] }
+  },
+  {
+    "id": "hahn2023",
+    "type": "article-journal",
+    "author": [{"family":"Hahn","given":"C."}],
+    "title": "Reclaiming history in the British Museum entranceway: imperialism, patronage and female, queer and black legacies",
+    "container-title": "Rethinking History",
+    "volume": "27",
+    "issue": "2",
+    "page": "187-220",
+    "issued": {"date-parts":[[2023]]},
+    "DOI": "10.1080/13642529.2023.2184966",
+    "custom": { "typed": [
+      {"page":"essays/catherine_hahn.md","text":"Hahn, C. (2023) ‘Reclaiming history in the British Museum entranceway: imperialism, patronage and female, queer and black legacies’, Rethinking History, 27(2), pp.187–220."}
+    ] }
+  },
+  {
+    "id": "hahn2025",
+    "type": "article-journal",
+    "author": [{"family":"Hahn","given":"C."}],
+    "title": "British history at Tate Britain post-Brexit: rich, white men and space invaders",
+    "container-title": "European Journal of Cultural Studies",
+    "volume": "28",
+    "issue": "5",
+    "page": "1228-1248",
+    "issued": {"date-parts":[[2025]]},
+    "DOI": "10.1177/13675494241309204",
+    "custom": { "typed": [
+      {"page":"essays/catherine_hahn.md","text":"Hahn, C. (2025) ‘British history at Tate Britain post-Brexit: rich, white men and space invaders’, European Journal of Cultural Studies, 0(0)."}
+    ] }
+  },
+  {
+    "id": "hall2001",
+    "type": "article-journal",
+    "author": [{"family":"Hall","given":"Stuart"}],
+    "title": "Constituting an archive",
+    "container-title": "Third Text",
+    "volume": "15",
+    "issue": "54",
+    "page": "89-92",
+    "issued": {"date-parts":[[2001]]},
+    "DOI": "10.1080/09528820108576903",
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Stuart Hall (2001) ‘Constituting an archive’. Third Text, 15(54), 89–92."},
+      {"page":"essays/podcasts.md","text":"Stuart Hall (2001) ‘Constituting an archive’. Third Text, 15(54), 89–92."}
+    ] }
+  },
+  {
+    "id": "haraway2016",
+    "type": "book",
+    "author": [{"family":"Haraway","given":"Donna"}],
+    "title": "Staying with the Trouble: Making Kin in the Chthulucene",
+    "publisher": "Duke University Press",
+    "issued": {"date-parts":[[2016]]},
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Donna Haraway (2016) Staying With The Trouble: Making Kin In The Chtulucene, Duke University Press."}
+    ] }
+  },
+  {
+    "id": "hartman2018",
+    "type": "webpage",
+    "author": [{"family":"Hartman","given":"Saidiya"}],
+    "title": "On working with archives",
+    "container-title": "The Creative Independent",
+    "issued": {"date-parts":[[2018,4,18]]},
+    "URL": "https://thecreativeindependent.com/people/saidiya-hartman-on-working-with-archives/",
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Saidiya Hartman (2018) ‘On working with archives’, The Creative Independent, 18 April. Available at: https://thecreativeindependent.com/people/saidiya-hartman-on-working-with-archives."},
+      {"page":"essays/podcasts.md","text":"Saidiya Hartman (2018) ‘On working with archives’, The Creative Independent, 18 April. Available at: https://thecreativeindependent.com/people/saidiya-hartman-on-working-with-archives/"}
+    ] }
+  },
+  {
+    "id": "hesse2000",
+    "type": "book",
+    "editor": [{"family":"Hesse","given":"Barnor"}],
+    "title": "Un/settled Multiculturalisms: Diasporas, Entanglements, “Transruptions”",
+    "publisher": "Zed Books",
+    "publisher-place": "London",
+    "issued": {"date-parts":[[2000]]},
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Barnor Hesse (2000) Un/settled Multiculturalism: diaspora, entanglements, Transruptions. London: Zed Books."}
+    ] }
+  },
+  {
+    "id": "hull1991",
+    "type": "article-journal",
+    "author": [{"family":"Hull","given":"J. M."}],
+    "title": "The Tactile Heart",
+    "container-title": "The Expository Times",
+    "volume": "102",
+    "issue": "10",
+    "issued": {"date-parts":[[1991]]},
+    "custom": { "typed": [
+      {"page":"essays/freyja_perkins.md","text":"Hull, J.M. (1991) ‘The Tactile Heart’, The Expository Times, 102, 10."}
+    ] }
+  },
+  {
+    "id": "jabbour1996",
+    "type": "book",
+    "author": [{"family":"Jabbour","given":"Elias"}],
+    "title": "Sulha Palestinian Traditional Peacemaking Process",
+    "publisher": "House of Hope Publications",
+    "publisher-place": "Montreal, NC",
+    "issued": {"date-parts":[[1996]]},
+    "custom": { "typed": [
+      {"page":"essays/fariman.md","text":"Elias Jabbour (1996) Sulha Palestinian Traditional Peacemaking Process, Montreal, NC: House of Hope Publications."}
+    ] }
+  },
+  {
+    "id": "jabbour2015",
+    "type": "book",
+    "author": [{"family":"Jabbour","given":"Elias"}],
+    "title": "Echoes of Peace",
+    "publisher": "House of Hope Publications",
+    "publisher-place": "Montreat, NC",
+    "issued": {"date-parts":[[2015]]},
+    "custom": { "typed": [
+      {"page":"essays/fariman.md","text":"Elias Jabbour (2015) Echoes of Peace, Montreat, NC: House of Hope Publications."}
+    ] }
+  },
+  {
+    "id": "jacobinnd",
+    "type": "webpage",
+    "title": "Henri Curiel",
+    "URL": "https://jacobin.com/2024/09/henri-curiel-egyptian-communism-jews",
+    "custom": { "typed": [
+      {"page":"essays/aya_nassar.md","text":"Henri Curiel: https://jacobin.com/2024/09/henri-curiel-egyptian-communism-jews"}
+    ] }
+  },
+  {
+    "id": "lefebvre1991",
+    "type": "book",
+    "author": [{"family":"Lefebvre","given":"Henri"}],
+    "translator": [{"family":"Nicholson-Smith","given":"D."}],
+    "title": "The Production of Space",
+    "publisher": "Blackwell Publishers",
+    "publisher-place": "Cambridge, MA",
+    "issued": {"date-parts":[[1991]]},
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Henri Lefebvre (1991) The Production of Space. (D. Nicholson-Smith, Trans.). Cambridge, MA: Blackwell Publishers."}
+    ] }
+  },
+  {
+    "id": "leguin1989",
+    "type": "chapter",
+    "author": [{"family":"Le Guin","given":"Ursula K"}],
+    "container-author": [{"family":"Le Guin","given":"U K"}],
+    "title": "The Carrier Bag Theory of Fiction",
+    "container-title": "Dancing at the Edge of the World: Thoughts on Words, Women, Places",
+    "page": "165-16",
+    "publisher": "Grove Press",
+    "publisher-place": "New York",
+    "issued": {"date-parts":[[1989]]},
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Ursula K Le Guin (1989) ‘The Carrier Bag Theory of Fiction’. In: Le Guin U K (ed.) Dancing at the Edge of the World: Thoughts on Words, Women and Places. New York: Grove Press, pp. 165–16."}
+    ] }
+  },
+  {
+    "id": "lewis2017",
+    "type": "article-journal",
+    "author": [{"family":"Lewis","given":"G."}],
+    "title": "questions of presence",
+    "container-title": "Feminist Review",
+    "volume": "117",
+    "issue": "1",
+    "page": "1-19",
+    "issued": {"date-parts":[[2017]]},
+    "DOI": "10.1057/s41305-017-0088-1",
+    "URL": "http://www.jstor.org/stable/44987324",
+    "custom": { "typed": [
+      {"page":"essays/spotting_colours.md","text":"Lewis, G. (2017) ‘questions of presence’ Feminist Review, 117, 1–19. http://www.jstor.org/stable/44987324"}
+    ] }
+  },
+  {
+    "id": "lewis2024",
+    "type": "book",
+    "author": [{"family":"Lewis","given":"Sarah E"}],
+    "title": "The Unseen Truth: when race changed sight in America",
+    "publisher": "Harvard University Press",
+    "issued": {"date-parts":[[2024]]},
+    "URL": "https://www.hup.harvard.edu/file/feeds/PDF/9780674238343_sample.pdf",
+    "custom": { "typed": [
+      {"page":"essays/holly_cooper.md","text":"Lewis, Sarah E (2024) The Unseen Truth: when race changed sight in America, Harvard University Press. https://www.hup.harvard.edu/file/feeds/PDF/9780674238343_sample.pdf"}
+    ] }
+  },
+  {
+    "id": "mani1998",
+    "type": "book",
+    "author": [{"family":"Mani","given":"Lata"}],
+    "title": "Contentious Traditions: The Debate on Sati in Colonial India",
+    "publisher": "University of California Press",
+    "issued": {"date-parts":[[1998]]},
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Lata Mani (1998) Contentious Traditions: The Debate on Sati in Colonial India. University of California Press."}
+    ] }
+  },
+  {
+    "id": "nwoko1970",
+    "type": "graphic",
+    "author": [{"family":"Nwoko","given":"Demas"}],
+    "title": "Dominican Chapel, Ibadan",
+    "issued": {"date-parts":[[1970]]},
+    "custom": { "typed": [
+      {"page":"essays/catherine_hahn.md","text":"Dominican Chapel, Ibadan, 1970-"}
+    ] }
+  },
+  {
+    "id": "nwoko1987",
+    "type": "graphic",
+    "author": [{"family":"Nwoko","given":"Demas"}],
+    "title": "Chapel Reception Area, Benedictine Monastery at EwuEdo",
+    "issued": {"date-parts":[[1987]]},
+    "custom": { "typed": [
+      {"page":"essays/catherine_hahn.md","text":"Chapel Reception Area,"}
+    ] }
+  },
+  {
+    "id": "pangrazio2017",
+    "type": "article-journal",
+    "author": [{"family":"Pangrazio","given":"Luci"}],
+    "title": "Exploring provocation as a research method in the social sciences",
+    "container-title": "International Journal of Social Research Methodology: Theory & Practice",
+    "volume": "20",
+    "issue": "2",
+    "page": "225-236",
+    "issued": {"date-parts":[[2017]]},
+    "DOI": "10.1080/13645579.2016.1161346",
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Luci Pangrazio, L. (2017). Exploring provocation as a research method in the social sciences. International Journal of Social Research Methodology: Theory & Practice, 20(2), 225–236."}
+    ] }
+  },
+  {
+    "id": "portelli2018",
+    "type": "article-journal",
+    "author": [{"family":"Portelli","given":"Alessandro"}],
+    "title": "Living Voices: The Oral History Interview as Dialogue and Experience",
+    "container-title": "The Oral History Review",
+    "volume": "45",
+    "issue": "2",
+    "page": "239-248",
+    "issued": {"date-parts":[[2018]]},
+    "DOI": "10.1093/ohr/ohy030",
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Alessandro Portelli (2018) “Living Voices: The Oral History Interview as Dialogue and Experience”. The Oral History Review, 45(2), 239–248."},
+      {"page":"essays/podcasts.md","text":"Alessandro Portelli (2018) “Living Voices: The Oral History Interview as Dialogue and Experience”. The Oral History Review, 45(2), 239–248."}
+    ] }
+  },
+  {
+    "id": "pratt1991",
+    "type": "article-journal",
+    "author": [{"family":"Pratt","given":"Mary Louise"}],
+    "title": "Arts of the Contact Zone",
+    "container-title": "Profession",
+    "page": "33-40",
+    "issued": {"date-parts":[[1991]]},
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Mary Louise Pratt (1991) ‘Arts of the Contact Zone’, Profession, 33–40."},
+      {"page":"essays/podcasts.md","text":"Mary Louise Pratt (1991) ‘Arts of the Contact Zone’, Profession, 33–40."}
+    ] }
+  },
+  {
+    "id": "pratt1992",
+    "type": "book",
+    "author": [{"family":"Pratt","given":"Mary Louise"}],
+    "title": "Imperial Eyes: Travel Writing and Transculturation",
+    "publisher": "Routledge",
+    "publisher-place": "London and New York",
+    "issued": {"date-parts":[[1992]]},
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Mary Louise Pratt (1992) Imperial Eyes: Travel Writing and Transculturation. London and New York: Routledge."}
+    ] }
+  },
+  {
+    "id": "puigdelabellacasa2017",
+    "type": "book",
+    "author": [{"family":"Puig de la Bellacasa","given":"Maria"}],
+    "title": "Matters of Care: Speculative Ethics in More than Human Worlds",
+    "publisher": "University of Minnesota Press",
+    "issued": {"date-parts":[[2017]]},
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Maria Puig de la Bellacasa (2017) Matters of Care: Speculative Ethics in More than Human Worlds, University of Minnesota Press."},
+      {"page":"essays/podcasts.md","text":"Maria Puig de la Bellacasa (2017) Matters of Care: Speculative Ethics in More than Human Worlds, University of Minnesota Press."}
+    ] }
+  },
+  {
+    "id": "puwar2011",
+    "type": "article-journal",
+    "author": [{"family":"Puwar","given":"N."}],
+    "title": "Noise of the Past: spatial interruptions of war, nation, and memory",
+    "container-title": "The Senses and Society",
+    "volume": "6",
+    "issue": "3",
+    "page": "325-345",
+    "issued": {"date-parts":[[2011]]},
+    "DOI": "10.2752/174589311x13046098680150",
+    "custom": { "typed": [
+      {"page":"essays/catherine_hahn.md","text":"Puwar, N. (2011) ‘Noise of the Past: spatial interruptions of war, nation, and memory’, The Senses and Society, 6(3), pp.325-345."}
+    ] }
+  },
+  {
+    "id": "puwar2012",
+    "type": "article-journal",
+    "author": [{"family":"Puwar","given":"Nirmal"},{"family":"Sharma","given":"Sanjay"}],
+    "title": "Curating Sociology",
+    "container-title": "The Sociological Review",
+    "volume": "60",
+    "issue": "1_suppl",
+    "page": "40-63",
+    "issued": {"date-parts":[[2012]]},
+    "DOI": "10.1111/j.1467-954x.2012.02116.x",
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Nirmal Puwar N and Sanjay Sharma (2012) ‘Curating Sociology’. The Sociological Review, 60 (1_suppl), 40-63."},
+      {"page":"essays/podcasts.md","text":"Nirmal Puwar N and Sanjay Sharma (2012) ‘Curating Sociology’. The Sociological Review, 60 (1_suppl), 40-63."}
+    ] }
+  },
+  {
+    "id": "reeve1991",
+    "type": "article-journal",
+    "author": [{"family":"Reeve","given":"J."}],
+    "title": "Keeping in touch with cathedrals",
+    "container-title": "British Journal of Visual Impairment",
+    "volume": "9",
+    "issue": "3",
+    "page": "91-93",
+    "issued": {"date-parts":[[1991]]},
+    "DOI": "10.1177/026461969100900307",
+    "custom": { "typed": [
+      {"page":"essays/freyja_perkins.md","text":"Reeve, J. (1991) ‘Keeping in touch with cathedrals’, British Journal of Visual Impairment, 9(3), 91-93. https://doi.org/10.1177/026461969100900307"}
+    ] }
+  },
+  {
+    "id": "royalacademynd",
+    "type": "webpage",
+    "title": "The Art et Liberte group",
+    "URL": "https://www.royalacademy.org.uk/article/magazine-tate-liverpool-egypt-surrealism-anna-wallace-thompson",
+    "custom": { "typed": [
+      {"page":"essays/aya_nassar.md","text":"The Art et Liberte group: https://www.royalacademy.org.uk/article/magazine-tate-liverpool-egypt-surrealism-anna-wallace-thompson and this https://sulfur-surrealist-jungle.com/2020/05/30/destabilizing-modernity-kamel-telmisanys-surrealist-unrest-by-may-telmissany/"}
+    ] }
+  },
+  {
+    "id": "said1993",
+    "type": "book",
+    "author": [{"family":"Said","given":"Edward"}],
+    "title": "Culture and Imperialism",
+    "publisher": "Chatto and Windus",
+    "publisher-place": "London",
+    "issued": {"date-parts":[[1993]]},
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Edward Said (1993) Culture and Imperialism, Chatto and Windus."}
+    ] }
+  },
+  {
+    "id": "savransky2017",
+    "type": "chapter",
+    "author": [{"family":"Savransky","given":"Martin"},{"family":"Wilkie","given":"Alex"},{"family":"Rosengarten","given":"Marsha"}],
+    "editor": [{"family":"Wilkie","given":"Alex"},{"family":"Savransky","given":"Martin"},{"family":"Rosengarten","given":"Marsha"}],
+    "title": "The Lure of Possible Futures: On Speculative Research",
+    "container-title": "Speculative Research: The Lure of Possible Futures",
+    "page": "1-17",
+    "publisher": "Routledge",
+    "publisher-place": "New York & London",
+    "issued": {"date-parts":[[2017]]},
+    "DOI": "10.4324/9781315541860-1",
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Martin Savransky, Alex Wilkie and Marsha Rosengarten (2017) ‘The Lure of Possible Futures: On Speculative Research’. In: Alex Wilkie; Martin Savransky and Marsha Rosengarten, eds. Speculative Research: The Lure of Possible Futures. New York & London: Routledge."}
+    ] }
+  },
+  {
+    "id": "simpson2011",
+    "type": "book",
+    "author": [{"family":"Simpson","given":"L."}],
+    "title": "Dancing on Our Turtle's Back: Stories of Nishnaabeg Re-creation, Resurgence and a New Emergence",
+    "publisher": "ARP Books",
+    "publisher-place": "Winnipeg",
+    "issued": {"date-parts":[[2011]]},
+    "custom": { "typed": [
+      {"page":"essays/spotting_colours.md","text":"Simpson, L. (2011) Dancing on Our Turtle’s Back: Stories of Nishnaabeg Re-creation, Resurgence and a New Emergence. Winnipeg: ARP Books"}
+    ] }
+  },
+  {
+    "id": "stengers2005a",
+    "type": "article-journal",
+    "author": [{"family":"Stengers","given":"Isabelle"}],
+    "title": "Introductory Notes on an Ecology of Practices",
+    "container-title": "Cultural Studies Review",
+    "volume": "11",
+    "issue": "1",
+    "page": "183-196",
+    "issued": {"date-parts":[[2005,3]]},
+    "DOI": "10.5130/csr.v11i1.3459",
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Isabel Stengers (2005a), Introductory Notes on an Ecology of Practices, “Cultural Studies Review”, 1 (11), March, pp. 183-196"},
+      {"page":"essays/podcasts.md","text":"Isabel Stengers (2005), ‘Introductory Notes on an Ecology of Practices’, Cultural Studies Review, 1 (11), March, pp. 183-196."}
+    ] }
+  },
+  {
+    "id": "stengers2005b",
+    "type": "chapter",
+    "author": [{"family":"Stengers","given":"Isabelle"}],
+    "editor": [{"family":"Latour","given":"Bruno"},{"family":"Weibel","given":"Peter"}],
+    "title": "The Cosmopolitical Proposal",
+    "container-title": "Making Things Public: Atmospheres of Democracy",
+    "publisher": "MIT Press",
+    "publisher-place": "Cambridge, MA",
+    "issued": {"date-parts":[[2005]]},
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Isabelle Stengers (2005b) “The Cosmopolitical Proposal,” in Making Things: Public Atmospheres of Democracy, ed. Bruno Latour and P. Weibel, Cambridge, MA: MIT Press."}
+    ] }
+  },
+  {
+    "id": "stengers2011",
+    "type": "book",
+    "author": [{"family":"Stengers","given":"Isabelle"}],
+    "translator": [{"family":"Bononno","given":"R."}],
+    "title": "Cosmopolitics II",
+    "publisher": "University of Minnesota Press",
+    "publisher-place": "Minneapolis",
+    "issued": {"date-parts":[[2011]]},
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Isabel Stengers (2011) Cosmopolitics II, trans. R. Bononno, Minneapolis, University of Minnesota Press."}
+    ] }
+  },
+  {
+    "id": "stengers2014",
+    "type": "book",
+    "author": [{"family":"Stengers","given":"Isabelle"},{"family":"Despret","given":"Vinciane"},{"literal":"Collective"}],
+    "translator": [{"family":"Knutson","given":"April"}],
+    "title": "Women Who Make a Fuss: The Unfaithful Daughters of Virginia Woolf",
+    "publisher": "Univocal",
+    "issued": {"date-parts":[[2014]]},
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Isabelle Stengers, Vinciane Despret, and Collective (2014) Women Who Make a Fuss: The Unfaithful Daughters of Virginia Woolf. Translated by April Knutson, Univocal."}
+    ] }
+  },
+  {
+    "id": "stephenson2011",
+    "type": "book",
+    "author": [{"family":"Stephenson","given":"Paul"},{"family":"Morrison","given":"Lilleith"}],
+    "title": "Memoirs of a Black Englishman: Paul Stephenson",
+    "publisher": "Tangent Books",
+    "issued": {"date-parts":[[2011]]},
+    "custom": { "typed": [
+      {"page":"essays/holly_cooper.md","text":"Stephenson, Paul and Lilleith Morrison (2011) Memoirs of a Black Englishman: Paul Stephenson."}
+    ] }
+  },
+  {
+    "id": "stoler2009",
+    "type": "book",
+    "author": [{"family":"Stoler","given":"Ann Laura"}],
+    "title": "Along the Archival Grain: Epistemic Anxieties and Colonial Common Sense",
+    "publisher": "Princeton University Press",
+    "publisher-place": "Princeton, NJ",
+    "issued": {"date-parts":[[2009]]},
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Ann Laura Stoler (2009) Along the Archival Grain: Epistemic Anxieties and Colonial Common Sense, Princeton University Press."}
+    ] }
+  },
+  {
+    "id": "sulfursurrealistjunglend",
+    "type": "webpage",
+    "title": "The Art et Liberte group",
+    "URL": "https://sulfur-surrealist-jungle.com/2020/05/30/destabilizing-modernity-kamel-telmisanys-surrealist-unrest-by-may-telmissany/",
+    "custom": { "typed": [
+      {"page":"essays/aya_nassar.md","text":"The Art et Liberte group: https://www.royalacademy.org.uk/article/magazine-tate-liverpool-egypt-surrealism-anna-wallace-thompson and this https://sulfur-surrealist-jungle.com/2020/05/30/destabilizing-modernity-kamel-telmisanys-surrealist-unrest-by-may-telmissany/"}
+    ] }
+  },
+  {
+    "id": "theguardiannd",
+    "type": "webpage",
+    "title": "Concrete and highway dreams in Newcastle",
+    "URL": "https://www.theguardian.com/cities/2017/feb/07/brave-new-world-newcastle-dream-for-vertical-city",
+    "custom": { "typed": [
+      {"page":"essays/aya_nassar.md","text":"Concrete and highway dreams in Newcastle: https://www.farrellcentre.org.uk/concrete-dreams/ and https://www.theguardian.com/cities/2017/feb/07/brave-new-world-newcastle-dream-for-vertical-city"}
+    ] }
+  },
+  {
+    "id": "verges2020",
+    "type": "article-magazine",
+    "author": [{"family":"Vergès","given":"Françoise"}],
+    "title": "Let’s decolonise the arts! A long, difficult, and passionate struggle",
+    "container-title": "Artalk Revue",
+    "volume": "4:1",
+    "issued": {"date-parts":[[2020]]},
+    "custom": { "typed": [
+      {"page":"essays/introduction.md","text":"Françoise Vergès (2020) “Let’s decolonise the arts! A long, difficult, and passionate struggle”, Artalk Revue 4:1"}
+    ] }
+  },
+  {
+    "id": "williams1981a",
+    "type": "graphic",
+    "author": [{"family":"Williams","given":"Aubrey"}],
+    "title": "Shostakovich 10th Symphony, Opus 93",
+    "issued": {"date-parts":[[1981]]},
+    "custom": { "typed": [
+      {"page":"essays/catherine_hahn.md","text":"Shostakovich 10th Symphony, Opus 93, 1981"}
+    ] }
+  },
+  {
+    "id": "williams1981b",
+    "type": "graphic",
+    "author": [{"family":"Williams","given":"Aubrey"}],
+    "title": "Shostakovich 6th Quartet, Opus 101",
+    "issued": {"date-parts":[[1981]]},
+    "custom": { "typed": [
+      {"page":"essays/catherine_hahn.md","text":"Shostakovich 6th Quartet, Opus 101, 1981"}
+    ] }
+  },
+  {
+    "id": "williams1981c",
+    "type": "graphic",
+    "author": [{"family":"Williams","given":"Aubrey"}],
+    "title": "Symphony No 5, opus 47 (Shostakovich)",
+    "issued": {"date-parts":[[1981]]},
+    "custom": { "typed": [
+      {"page":"essays/catherine_hahn.md","text":"Symphony No 5, opus 47 (Shostakovich), 1981"}
+    ] }
+  }
+]
