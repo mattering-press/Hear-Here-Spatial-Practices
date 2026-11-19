@@ -334,6 +334,16 @@ Agreed with the publisher on 2026-11-19. These fix the data; players and viewers
 - **`/read/<name>` for documents.** PDFs and other documents get item pages at `/read/<name>`, alongside `/see`, `/listen` and `/watch`. Page links use `#page=3`. At build time each document's pages are also rendered as images, so pages can be zoomed and linked like any image, with a download of the original file.
 - **IIIF manifests for all images.** The build writes a IIIF Presentation 3 manifest for every image, image set and document, next to the static tiles. Any IIIF viewer (OpenSeadragon, Clover, Mirador, storytelling viewers), Tapestry and other projects can then show the book's images without changes.
 
+## Plan: margin notes
+
+Agreed with the publisher on 2026-11-19; not built yet.
+
+- **What:** short notes, links and small media thumbnails in a right-hand margin column. Paragraph numbers keep the left margin.
+- **Where they live in the source:** directly after the paragraph they belong to (`::: {.margin}` … `:::`), or attached to a word (`[given by Germany in 1962]{.margin}`). They are never stored by paragraph number, so they move with their paragraph from version to version. While Juncture still renders the site, write them as `<aside class="margin" markdown="1">…</aside>`, which the build converts.
+- **Layout on wide screens:** notes float in the margin starting level with their paragraph. When the margin is crowded, later notes are pushed down, so the text column never gets gaps. A marker in the text and the same mark on the note highlight together on hover and focus. Long notes show a few lines, then "more".
+- **Phones, no JavaScript and screen readers:** a note stays in reading order directly after its paragraph, as a labelled aside.
+- **Print and EPUB:** decided per note: an endnote, a small figure with address and QR code, or web-only.
+
 ## House style for the web edition
 
 A summary of the Mattering Press house style (Formatting & Style Guide, August 2025) as it applies to the build. The guide itself is not kept in this public repository; ask the publisher for it.
