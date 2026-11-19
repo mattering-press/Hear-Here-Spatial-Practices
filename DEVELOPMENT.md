@@ -151,3 +151,16 @@ request. On `main` it also deploys `_site/` to GitHub Pages
 (`https://mattering-press.github.io/Hear-Here-Spatial-Practices/`), but only once Pages is enabled in
 the repository settings with "GitHub Actions" as the source; until then the deploy job is skipped.
 `_site/` is never committed.
+
+## Plan: stable links, versions and print companions
+
+Agreed with the publisher on 2026-11-19. The static twin does not implement all of this yet; it is the plan the build must follow.
+
+- **Views.** Every page is offered as plain links that work without JavaScript: the rendered page, a Markdown view of its converted Pandoc Markdown, and later site-level Collage and List views. Media appear in the Markdown view as standard image syntax and `:::` blocks containing ordinary links.
+- **Versioned text links.** Each public release lives at a frozen address, for example `/v1/essays/aya_nassar/#p12`. Paragraphs are numbered cleanly in every release. Links that people copy or share always carry the version; plain addresses such as `/essays/aya_nassar/` mean "latest". A page in an older version shows a short notice linking to the same passage in the newest version, matched by its text. Only releases are public: corrections collect on GitHub until the next release.
+- **Exact quotes.** Links can add a text fragment (`#p12:~:text=…`) so the browser highlights the quoted words. The stylesheet styles `:target` and `::target-text`.
+- **Media addresses are unversioned.** Every image, audio and video item gets its own page at a permanent, word-based address, such as `/see/plumbline`, `/listen/boulder` or `/watch/<name>`. Audio and video addresses may carry a start time (`#t=12:40`). If a file is replaced, the address stays and the item page notes the change.
+- **Print.** Printed captions carry the item's address, and a QR code generated from the same address is always printed with it, because a printed link cannot be clicked. The colophon states which online version a printed edition corresponds to.
+- **Shared media.** Images, tiles and audio are stored once and shared by all versions, so each release adds only its pages.
+- **Two version numbers.** The book has `v1.0`, `v1.1`, `v2.0` and so on, following the text. The build kit has `kit-v0.x`, following design and behaviour. Each book release records the kit version that built it. All published versions are rebuilt with the current kit, so their text and paragraph numbers never change. Paragraph numbering is defined by the content in `kit/CONTRACT.md`, never by the template. Archived snapshots keep the exact design of their day.
+- **DOIs and archiving.** Book and chapter DOIs are registered through Thoth and point to the latest version. Each release is tagged in Git and archived as a fixed snapshot: the site package, a web archive file, the whole-book Markdown and the media masters, deposited with Zenodo and through Thoth, plus Wayback Machine captures of every page.
