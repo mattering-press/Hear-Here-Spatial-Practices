@@ -139,22 +139,144 @@ format of the Markdown media blocks is in `kit/CONTRACT.md`.
 What is in `kit/`:
 
 - `build.mjs`: the build, with its few settings at the top
+- `versions.mjs`: reads the version registry (`versions.json` at the repository root), takes each version's text from its Git tag, and matches paragraphs between versions
 - `convert.mjs`: turns Juncture's `.ve-*` lines and its raw HTML (audio, iframes, videos) into Pandoc Markdown
-- `filters/`: Lua filters, one job each. `to-markdown.lua` is stage 1 (writes the Markdown view); `figures`, `embeds`, `cards`, `transcript`, `links`, `citations` and `contract` are stage 2 (Markdown view to HTML and `page.json`)
+- `filters/`: Lua filters, one job each. `to-markdown.lua` is stage 1 (writes the Markdown view); `figures`, `embeds`, `cards`, `transcript`, `links`, `citations`, `paragraphs` and `contract` are stage 2 (Markdown view to HTML and `page.json`)
 - `citations.mjs`: prepares the bibliography for `filters/citations.lua` and writes the build's report on citations
 - `csl/`: `mattering-press.csl`, the house citation style, and its test (`csl/test/`)
 - `scripts/to-citation-keys.mjs`: for the switch, shows how the plain-text citations would become Pandoc citations
 - `template.html`: the HTML around every page
-- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `zoom.js`, `seek.js`, `citations.js`
+- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `zoom.js`, `seek.js`, `citations.js`, `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read)
 - `images.mjs`: resized images and the tiles for zooming
 - `check.mjs`, `serve.mjs`: the link check and the local server
-- `CONTRACT.md`: the `page.json` and `publication.json` files that other frontends can read
+- `CONTRACT.md`: the `page.json` and `publication.json` files that other frontends can read, and the paragraph rule
+- `package.json`: the kit's version, `version` (see "Kit version" below)
 
 GitHub Actions (`.github/workflows/static-twin.yml`) builds and checks the twin on every push and pull
-request. On `main` it also deploys `_site/` to GitHub Pages
+request. It fetches the whole history with its tags, so that it can build the frozen versions. On `main` it also deploys `_site/` to GitHub Pages
 (`https://mattering-press.github.io/Hear-Here-Spatial-Practices/`), but only once Pages is enabled in
 the repository settings with "GitHub Actions" as the source; until then the deploy job is skipped.
 `_site/` is never committed.
+
+### Paragraph numbers
+
+Every reading paragraph has a number, shown small in the left margin, so that readers and reviewers can cite a
+passage as "para. 12". Hovering over a paragraph, or reaching its number with the Tab key, shows a ¶ beside the
+number: clicking it copies a link to that paragraph, and on a frozen version the link carries the version
+(`…/v0.9-review2/essays/aya_nassar/#p12`). A link to a paragraph highlights it for a moment when it opens.
+
+What gets a number is decided by the text alone, never by the design, so the numbers stay the same whenever the
+site is rebuilt:
+
+- every paragraph of text gets the next number, including paragraphs in quotations, each item of a list, and each
+  turn of speech in a transcript;
+- headings, pictures and their captions, audio and video players, picture galleries, the cards that lead to other
+  pages, the reference list at the end of a chapter, and the header and footer get no number;
+- a paragraph that holds only a timecode such as `[00:10:13]`, or only a picture, gets no number;
+- a short line on its own, such as **Addendum** or `[music]`, is a paragraph like any other and gets a number.
+
+The precise rule is in `kit/CONTRACT.md` ("Paragraph numbers"). It must not change once a version has been frozen,
+because every frozen version would be renumbered. The build prints how many paragraphs each page has. To hide the
+numbers (the ¶ link stays), set `--paragraph-numbers: 0` at the top of `kit/assets/site.css`.
+
+### Versions and the version stamp
+
+The book's versions are listed in `versions.json` at the root of the repository. The site's root always shows the
+current text, labelled "Latest text, unreleased". Each listed version is built as well, at its own address,
+`/v<id>/` (for example `/v0.9-review2/essays/aya_nassar/`), from the text of its Git tag but with the current kit,
+so all versions share the current design and the paragraph rule. Pictures, video and other media are stored once
+and shared by all versions; a version adds only its pages, about 1.5 MB. A media file that a tag uses but that is
+no longer in the repository is taken from the tag.
+
+Every page of a frozen version starts with a notice: "You are reading version 0.9, second peer review, frozen on
+20 November 2026. Read the latest text." For an older release, the notice points to the newest release instead.
+Its link goes to the same page in the newer text and, where it can, to the same passage: the build matches each
+paragraph to the newer text by its words (the same text, or text that shares most of its word pairs), and the
+link follows the paragraph in the address or the one the reader last scrolled to. A paragraph that was deleted
+or rewritten beyond recognition leads to the nearest paragraph before it that was matched.
+
+Every page's footer shows its version, the version's date and the kit version, with a link to `/versions/`, which
+lists every version. The same stamp is in `publication.json`, every `page.json` and the front matter of the
+Markdown view.
+
+Each entry in `versions.json` has:
+
+| field | meaning |
+|---|---|
+| `id` | the version in the address, e.g. `0.9-review2`: a digit first, then letters, digits, dots and hyphens |
+| `tag` | the Git tag that holds its text, e.g. `v0.9-review2` |
+| `label` | how pages name it, e.g. `Version 0.9, second peer review` |
+| `date` | the day it was frozen or released, e.g. `2026-11-20` |
+| `status` | `review` (frozen for peer review) or `release` (published) |
+| `annotations` | `hypothesis` to open its pages for annotation with Hypothesis (below), otherwise `none` |
+| `hypothesisGroup` | the ID of the private Hypothesis group for its reviewers |
+
+Hypothesis is loaded only on the pages of a version whose `annotations` is `hypothesis`, never on the latest text
+or on a release, and its sidebar starts closed. With `hypothesisGroup` set, the client is configured with
+`groupsAllowlist`, so its group menu offers only that group (and no "Public"). This does not admit anyone: a
+reviewer must be a member of the group to see or post in it.
+
+### Kit version
+
+`version` in `kit/package.json` (now `0.3.0`) is the version of the kit, shown in every footer. Bump it in the
+same commit as the change, with `npm version <minor|patch> --no-git-tag-version` in `kit/` (it updates
+`package-lock.json` too):
+
+- `0.x.0`, the minor number, when what readers see or what the pages do changes: the template, the stylesheet,
+  the scripts, or the HTML the filters write;
+- `0.3.x`, the patch number, for fixes that change nothing a reader sees: the build, its checks, its report;
+- `1.0.0` at the switch from Juncture to the static edition.
+
+The format of `page.json` and `publication.json`, and the paragraph rule, have their own version, `CONTRACT` in
+`build.mjs` and `kit/CONTRACT.md`.
+
+### Freezing a version for review or release
+
+Freezing a version gives its text a permanent address. The text is taken from a Git tag, so later changes on
+`main` do not reach it. Only the owner decides to freeze a version.
+
+1. Make sure the text to freeze is on `main` and its build is green.
+2. Tag that commit and push the tag (tags are never moved or deleted once pushed):
+
+   ```sh
+   git switch main
+   git pull --ff-only origin main
+   git tag -a v0.9-review2 -m "Version 0.9, second peer review"
+   git push origin v0.9-review2
+   ```
+
+3. On a new branch, add the version to the `versions` list in `versions.json` (the `example` there shows the
+   fields), then build and check locally:
+
+   ```json
+   {
+     "id": "0.9-review2",
+     "tag": "v0.9-review2",
+     "label": "Version 0.9, second peer review",
+     "date": "2026-11-20",
+     "status": "review",
+     "annotations": "hypothesis",
+     "hypothesisGroup": "<group ID>"
+   }
+   ```
+
+4. Push the branch, open a pull request, and merge it when the build is green. Once GitHub Pages is enabled, the
+   version appears at `/v0.9-review2/`.
+
+For a review with Hypothesis, before step 3:
+
+1. Sign in at `https://hypothes.is`, open "Groups" and create a private group (for example "Hear Here, second
+   review").
+2. Its invite link looks like `https://hypothes.is/groups/<ID>/<name>`; the `<ID>` part is the group ID for
+   `hypothesisGroup`.
+3. Send the reviewers the invite link and the address of the frozen version. Each reviewer needs a free
+   Hypothesis account, joins the group through the invite link, then opens the frozen version, opens the sidebar
+   (the arrow at the right edge) and logs in. Their annotations go to the group, which only its members can read.
+   Reviewers should use this sidebar, built into the page, rather than the Hypothesis browser extension, so that
+   the group setting applies.
+
+To end the annotation period, set `annotations` to `none` in a later commit; the annotations stay in the group.
+To retract a version, remove its entry; its address then stops working, so do this only for a mistake.
 
 ### References and citations
 
