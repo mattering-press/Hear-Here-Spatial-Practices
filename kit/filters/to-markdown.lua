@@ -7,7 +7,8 @@
 -- URLs are rewritten to the site's: relative to the page, or (publication.md) absolute, depending on -M root.
 -- The headings of the text start at level 2. With -M title-heading=true (publication.md, which holds every page)
 -- the page starts with its title as a level-1 heading, and its subtitle in italics; index.md has the title in
--- its front matter instead. Heading ids are left out (Pandoc makes them again when it reads the Markdown).
+-- its front matter instead, with the version stamp (version: id, label, date, status; kit). Heading ids are left
+-- out (Pandoc makes them again when it reads the Markdown).
 -- Stage 2 (figures, embeds, cards, transcript and the other filters) turns this Markdown into HTML.
 package.path = pandoc.path.directory(PANDOC_SCRIPT_FILE) .. '/?.lua;' .. package.path
 local lib = require 'lib'
@@ -200,6 +201,12 @@ function Pandoc(doc)
   doc.blocks = blocks
   local meta = { title = lib.title, lang = lib.lang }
   if lib.subtitle ~= '' then meta.subtitle = lib.subtitle end
+  -- the version stamp (index.md only; publication.md has it once, in its own front matter)
+  local function get(key) return doc.meta[key] and pandoc.utils.stringify(doc.meta[key]) or '' end
+  if get('version-id') ~= '' then
+    meta.version = { id = get('version-id'), label = get('version-label'), date = get('version-date'), status = get('version-status') }
+    meta.kit = get('kit-version')
+  end
   doc.meta = pandoc.Meta(meta)
   return doc
 end

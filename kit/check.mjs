@@ -42,6 +42,14 @@ for (const file of all) {
     const html = text.replace(/<!--.*?-->/gs, '');
     for (const m of html.matchAll(/\s(?:href|src|poster|data|data-tiles)="([^"]*)"/g)) check(m[1].replace(/&amp;/g, '&'), from, base);
     for (const m of html.matchAll(/url\(['"]?([^'")]+)['"]?\)/g)) check(m[1], from, base);
+    // paragraphs are numbered p1, p2, … without gaps; a version notice's paragraph map points at paragraphs that exist
+    const numbers = [...html.matchAll(/<div id="p(\d+)" class="para">/g)].map((m) => Number(m[1]));
+    if (numbers.some((n, i) => n !== i + 1)) problems.push(`${from}: paragraphs are not numbered 1 to ${numbers.length} in order`);
+    const notice = /<a class="version-notice__link" href="([^"]*)" data-paragraphs='([^']*)'/.exec(html);
+    if (notice) {
+      const map = JSON.parse(notice[2]);
+      for (const target of new Set(Object.values(map))) check(`${notice[1]}#${target}`, from, base);
+    }
   } else if (file.endsWith('.md')) {
     // Markdown view: ](url) and (url) targets. publication.md uses absolute URLs below the site's own address.
     const own = file.endsWith('/publication.md') ? siteUrl : null;

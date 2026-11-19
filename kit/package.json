@@ -1,5 +1,6 @@
 {
   "name": "hear-here-static-twin",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "description": "Builds the static twin of the book into ../_site with Pandoc and Lua filters.",
