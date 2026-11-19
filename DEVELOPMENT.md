@@ -107,3 +107,47 @@ local mode does not resolve this repository's paths on its own; it needs a small
 wrapper that sets the owner, repository and branch.
 
 The Juncture compatibility rules in `AGENTS.md` apply to every change.
+
+## Static twin
+
+The static twin is a plain static copy of the whole book, built from the same Markdown with Pandoc,
+so that the book does not depend on Juncture alone. During the parallel run Juncture stays the public
+site, and every page of the twin tells search engines not to index it (the `NOINDEX` setting at the
+top of `kit/build.mjs`). The Markdown is not changed for the twin; the build reads Juncture's syntax.
+
+To build and preview it locally you need Node.js 20.11 or later and Pandoc 3.8:
+
+```sh
+cd kit
+npm ci          # once, and again after package-lock.json changes
+npm run build   # writes ../_site/ in about ten seconds
+npm run check   # every internal link and local file in _site/ exists
+npm run serve   # http://localhost:8080/
+npm run serve -- --base /Hear-Here-Spatial-Practices/   # the address layout of GitHub Pages
+```
+
+If a page uses a Juncture construct the twin cannot render, the build stops and names the file and
+line. Images without alt text are listed as warnings.
+
+The Markdown view: next to every page's `index.html` the build writes `index.md`, the page as clean Pandoc
+Markdown with front matter and no Juncture syntax, and `publication.md` at the site root holds the whole
+book in reading order with absolute URLs (from `siteUrl` in `build.mjs`). The HTML is built from that
+Markdown, so the two cannot drift apart. Every page has a "Page / Markdown" switch of plain links. The
+format of the Markdown media blocks is in `kit/CONTRACT.md`.
+
+What is in `kit/`:
+
+- `build.mjs`: the build, with its few settings at the top
+- `convert.mjs`: turns Juncture's `.ve-*` lines and its raw HTML (audio, iframes, videos) into Pandoc Markdown
+- `filters/`: Lua filters, one job each. `to-markdown.lua` is stage 1 (writes the Markdown view); `figures`, `embeds`, `cards`, `transcript`, `links` and `contract` are stage 2 (Markdown view to HTML and `page.json`)
+- `template.html`: the HTML around every page
+- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `zoom.js`, `seek.js`
+- `images.mjs`: resized images and the tiles for zooming
+- `check.mjs`, `serve.mjs`: the link check and the local server
+- `CONTRACT.md`: the `page.json` and `publication.json` files that other frontends can read
+
+GitHub Actions (`.github/workflows/static-twin.yml`) builds and checks the twin on every push and pull
+request. On `main` it also deploys `_site/` to GitHub Pages
+(`https://mattering-press.github.io/Hear-Here-Spatial-Practices/`), but only once Pages is enabled in
+the repository settings with "GitHub Actions" as the source; until then the deploy job is skipped.
+`_site/` is never committed.
