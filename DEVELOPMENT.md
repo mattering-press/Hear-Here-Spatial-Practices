@@ -195,6 +195,15 @@ Agreed with the publisher on 2026-11-19. The static twin does not implement all 
 - **Two version numbers.** The book has `v1.0`, `v1.1`, `v2.0` and so on, following the text. The build kit has `kit-v0.x`, following design and behaviour. Each book release records the kit version that built it. All published versions are rebuilt with the current kit, so their text and paragraph numbers never change. Paragraph numbering is defined by the content in `kit/CONTRACT.md`, never by the template. Archived snapshots keep the exact design of their day.
 - **DOIs and archiving.** Book and chapter DOIs are registered through Thoth and point to the latest version. Each release is tagged in Git and archived as a fixed snapshot: the site package, a web archive file, the whole-book Markdown and the media masters, deposited with Zenodo and through Thoth, plus Wayback Machine captures of every page.
 
+## Plan: additions from reviewing Entreluma
+
+Agreed with the publisher on 2026-11-19 after reviewing Entreluma, a static successor to Juncture by its original developer. We borrow ideas only: its repositories have no licence, so none of its code is copied.
+
+- **Links that drive the media.** A link in the text can zoom an image to a detail or move audio and video to a moment. These are real links to the media item pages, using the standard media-fragment addresses `#xywh=x,y,w,h` (an image region) and `#t=12:40` (a time), for example `/see/plumbline#xywh=1200,800,600,400` and `/listen/boulder#t=12:40`. With JavaScript they act in place on the current page; without it, in print (as QR codes) and in archives they open the item page at that region or moment. Transcript timecodes use the same mechanism.
+- **Retiring old addresses.** At the switch the site gets a "page not found" page that looks the requested address up in a redirect map and forwards the reader, so old Juncture links and any later renamed page still reach the right place.
+- **Search.** Full-text search across the book with Pagefind, which builds its index at build time and needs no server.
+- **Checks before publishing.** The build reports problems in plain language for authors and editors: missing alt text, unmatched citations, broken links, oversized images and a size limit for image tiles. During the parallel run these are warnings; from release 1.0, errors that stop a release.
+
 ## House style for the web edition
 
 A summary of the Mattering Press house style (Formatting & Style Guide, August 2025) as it applies to the build. The guide itself is not kept in this public repository; ask the publisher for it.
