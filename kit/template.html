@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="$lang$">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+$if(noindex)$
+  <meta name="robots" content="noindex">
+$endif$
+  <title>$pagetitle$$if(site-title)$ · $site-title$$endif$</title>
+  <link rel="stylesheet" href="$root$assets/site.css">
+  <link rel="alternate" type="text/markdown" href="index.md">
+  <link rel="alternate" type="application/json" href="page.json">
+  <script src="$root$assets/zoom.js" defer></script>
+  <script src="$root$assets/seek.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header"$if(header-style)$ style="$header-style$"$endif$>
+    <div class="site-header__inner">
+      <h1 class="page-title">$title$</h1>
+$if(subtitle)$
+      <p class="page-subtitle">$subtitle$</p>
+$endif$
+$if(menu)$
+      <nav class="site-menu" aria-label="Main">
+        <ul>
+$for(menu)$
+          <li>$menu$</li>
+$endfor$
+        </ul>
+      </nav>
+$endif$
+    </div>
+  </header>
+  <nav class="view-switcher" aria-label="View of this page">
+    <ul>
+      <li><a href="./" aria-current="page">Page</a></li>
+      <li><a href="index.md">Markdown</a></li>
+<!-- Later, site-level views of the whole book, once they exist:
+      <li><a href="$root$collage/">Collage</a></li>
+      <li><a href="$root$list/">List</a></li>
+-->
+    </ul>
+  </nav>
+  <main id="main">
+$body$
+  </main>
+$if(footer)$
+  <footer class="site-footer">
+    <ul>
+$for(footer)$
+      <li>$footer$</li>
+$endfor$
+    </ul>
+  </footer>
+$endif$
+</body>
+</html>
