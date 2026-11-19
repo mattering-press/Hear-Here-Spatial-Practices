@@ -6,7 +6,8 @@
   "scripts": {
     "build": "node build.mjs",
     "check": "node check.mjs",
-    "serve": "node serve.mjs"
+    "serve": "node serve.mjs",
+    "test:csl": "node csl/test/run.mjs"
   },
   "engines": {
     "node": ">=20.11"

@@ -1,4 +1,5 @@
-# Builds the static twin of the book (kit/) and checks every internal link and local file in it.
+# Builds the static twin of the book (kit/), checks every internal link and local file in it, and tests the house
+# citation style.
 # On main it also publishes the result on GitHub Pages, but only once Pages is enabled for the repository
 # with "GitHub Actions" as its source; until then the deploy job is skipped.
 name: Static twin
@@ -45,6 +46,10 @@ jobs:
       - name: Check links and files
         working-directory: kit
         run: npm run check
+
+      - name: Test the house citation style
+        working-directory: kit
+        run: npm run test:csl
 
       - name: Is GitHub Pages enabled?
         id: pages
