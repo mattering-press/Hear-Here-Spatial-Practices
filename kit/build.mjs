@@ -1,6 +1,7 @@
 // Builds the static twin: every page of the book, compiled from the unchanged Juncture Markdown into plain
 // HTML in ../_site, with resized images, zoom tiles, a Markdown view of every page (index.md, publication.md)
-// and page.json / publication.json (see CONTRACT.md).
+// and page.json / publication.json (see CONTRACT.md). Plain-text citations are linked to references/bibliography.json
+// and show their reference in a popup (citations.mjs, filters/citations.lua).
 // Each page goes through Pandoc twice: stage 1 (filters/to-markdown.lua) writes its clean Markdown view,
 // stage 2 (the other filters, template.html) turns that Markdown into HTML.
 //   npm run build      needs Pandoc 3.8 on the PATH (or its path in the PANDOC environment variable)
@@ -9,13 +10,14 @@ import { cpSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, stat
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { locate, prepareReferences, report as citationReport } from './citations.mjs';
 import { convert, REPO, REPO_ROOT, repoPath } from './convert.mjs';
 import { makeImages } from './images.mjs';
 
 // ---- Settings ------------------------------------------------------------------------------------------
 const NOINDEX = true;   // tell search engines to skip the twin while Juncture serves the public site
 const PUBLICATION = { creators: ['Nirmal Puwar'], publisher: 'Mattering Press', language: 'en' };
-const CONTRACT = '0.1';  // version of the page.json / publication.json format
+const CONTRACT = '0.2';  // version of the page.json / publication.json format
 // Where the site is published. publication.md uses absolute URLs built from this; the pages use relative ones.
 // It becomes 'https://hearhere.matteringpress.org/' when the site moves to its own domain.
 const siteUrl = 'https://mattering-press.github.io/Hear-Here-Spatial-Practices/';
@@ -24,7 +26,7 @@ const siteUrl = 'https://mattering-press.github.io/Hear-Here-Spatial-Practices/'
 const KIT = dirname(fileURLToPath(import.meta.url));
 const SITE = join(REPO_ROOT, '_site');
 const PANDOC = process.env.PANDOC || 'pandoc';
-const FILTERS = ['figures', 'embeds', 'cards', 'transcript', 'links', 'contract'];
+const FILTERS = ['figures', 'embeds', 'cards', 'transcript', 'links', 'citations', 'contract'];
 const started = Date.now();
 
 const version = spawnSync(PANDOC, ['--version'], { encoding: 'utf8' }).stdout?.match(/^pandoc (\d+)\.(\d+)(\S*)/);
@@ -46,6 +48,19 @@ if (unhandled.length) {
 const home = pages[0];
 const urlOf = (file) => (file === 'README.md' ? '' : file.replace(/\.md$/, '/').split('/').map(encodeURIComponent).join('/'));
 
+// Reading order: the home page, then the pages of its menu in order, each followed by the pages its cards lead to
+// (depth first), then any page not reached that way, alphabetically.
+const byFile = new Map(pages.map((page) => [page.file, page]));
+const order = [];
+const visit = (file) => {
+  if (order.includes(file) || !byFile.has(file)) return;
+  order.push(file);
+  byFile.get(file).cards.forEach(visit);
+};
+order.push(home.file);
+for (const item of home.menu) visit(repoPath(/\]\(([^)\s]+)\)/.exec(item)?.[1] ?? '', home.file).replace(/^\.$/, 'README.md'));
+files.forEach(visit);
+
 // 2. Images, zoom tiles, and the repository files that pages embed (data-repo-* in essays/walk.md).
 rmSync(SITE, { recursive: true, force: true });
 mkdirSync(SITE, { recursive: true });
@@ -64,6 +79,9 @@ const work = mkdtempSync(join(tmpdir(), 'static-twin-'));
 const manifest = join(work, 'manifest.json');
 writeFileSync(manifest, JSON.stringify({ images, by_url: byUrl, files: copied }));
 const warnings = pages.flatMap((page) => page.warnings.map((w) => `${w.file}:${w.line}  ${w.text}`));
+// The bibliography, formatted once in the house style; citations.lua links each page's citations to it.
+const references = prepareReferences({ pandoc: PANDOC, work, order });
+const citations = [];   // per page, for the report
 const list = (value) => (Array.isArray(value) ? value : []);
 const filterArgs = (names) => names.flatMap((f) => ['--lua-filter', join(KIT, 'filters', `${f}.lua`)]);
 const metaArgs = (meta) => Object.entries(meta).filter(([, v]) => v).flatMap(([k, v]) => ['-M', `${k}=${v}`]);
@@ -95,7 +113,7 @@ for (const page of pages) {
   const headerStyle = page.header.image ? `background-image: url('${root}${images[`header|${page.header.image}|0`].url}')`
     : page.header.colour ? `background-color: ${page.header.colour.replace(/[^#\w(),.% -]/g, '')}` : '';
   const html = pandoc(['-f', 'markdown-implicit_figures', '-t', 'html5', '--wrap=none', '-s', '--template', join(KIT, 'template.html'), '--metadata-file', extra,
-    ...metaArgs({ ...meta, root, 'header-style': headerStyle, 'site-title': page === home ? '' : home.title, noindex: NOINDEX ? 'true' : '' }),
+    ...metaArgs({ ...meta, root, citations: references.indexPath, 'header-style': headerStyle, 'site-title': page === home ? '' : home.title, noindex: NOINDEX ? 'true' : '' }),
     ...filterArgs(FILTERS)], readFileSync(join(dir, 'index.md'), 'utf8'), page.file);
   writeFileSync(join(dir, 'index.html'), html);
 
@@ -109,22 +127,13 @@ for (const page of pages) {
     audio: list(data.audio).map(({ url, title }) => ({ url, title })),
     video: list(data.video).map(({ url, title, kind }) => ({ url, title, kind })),
     links: list(data.links).map(({ id, url, text }) => ({ id, url: url || './', text })),
+    references: list(data.references).map(({ key, html, url, citations }) => ({ key, html, url, citations: list(citations) })),
   }, null, 2) + '\n');
+  citations.push({ file: page.file, citations: locate(readFileSync(join(REPO_ROOT, page.file), 'utf8'), list(data.citations)), typed: list(data.typed)[0] || { listed: [], unmatched: [] } });
 }
 rmSync(work, { recursive: true, force: true });
 
-// 4. publication.json. Reading order: the home page, then the pages of its menu in order, each followed by
-//    the pages its cards lead to (depth first), then any page not reached that way, alphabetically.
-const byFile = new Map(pages.map((page) => [page.file, page]));
-const order = [];
-const visit = (file) => {
-  if (order.includes(file) || !byFile.has(file)) return;
-  order.push(file);
-  byFile.get(file).cards.forEach(visit);
-};
-order.push(home.file);
-for (const item of home.menu) visit(repoPath(/\]\(([^)\s]+)\)/.exec(item)?.[1] ?? '', home.file).replace(/^\.$/, 'README.md'));
-files.forEach(visit);
+// 4. publication.json, in the reading order worked out above.
 writeFileSync(join(SITE, 'publication.json'), JSON.stringify({
   contract: CONTRACT, title: home.title, subtitle: home.subtitle, ...PUBLICATION, url: siteUrl, markdown: 'publication.md',
   readingOrder: order.map((file) => ({ id: file, url: byFile.get(file).url, title: byFile.get(file).title })),
@@ -152,3 +161,4 @@ console.log(`Built ${pages.length} pages into _site/ in ${((Date.now() - started
   `(images ${mb(imageBytes)}, tiles ${mb(tileBytes)}, other ${mb(total - imageBytes - tileBytes)}); ` +
   `${sources} source images, ${tiles} tiles${NOINDEX ? '; pages carry noindex' : ''}.`);
 if (warnings.length) console.log(`\n${warnings.length} warnings:\n${warnings.map((w) => `  ${w}`).join('\n')}`);
+console.log(citationReport(citations.map((c) => ({ ...c, typed: { listed: list(c.typed.listed), unmatched: list(c.typed.unmatched) } })), references.index, references.warnings).join('\n'));

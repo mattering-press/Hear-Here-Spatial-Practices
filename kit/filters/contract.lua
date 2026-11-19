@@ -1,6 +1,7 @@
--- The page's data for page.json (see CONTRACT.md): its headings and links, plus the figures, audio and video
--- that the other filters recorded. Written as JSON to the file given with -M contract-out; build.mjs adds
--- the fields it knows itself and writes page.json. Runs last, so headings have their ids.
+-- The page's data for page.json (see CONTRACT.md): its headings and links, plus the figures, audio, video and
+-- references that the other filters recorded (and the citations and typed references for the build's report).
+-- Written as JSON to the file given with -M contract-out; build.mjs adds the fields it knows itself and writes
+-- page.json. Runs last, so headings have their ids.
 package.path = pandoc.path.directory(PANDOC_SCRIPT_FILE) .. '/?.lua;' .. package.path
 local lib = require 'lib'
 
@@ -12,8 +13,10 @@ function Pandoc(doc)
     Header = function(h)
       data.headings[#data.headings + 1] = { level = h.level, text = pandoc.utils.stringify(h.content), id = h.identifier }
     end,
-    -- links to other pages of the site: relative targets that end in a slash (stage 1 made them so)
+    -- links to other pages of the site: relative targets that end in a slash (stage 1 made them so); citation links
+    -- to a reference list on another page are references, not links
     Link = function(link)
+      if link.classes:includes('citation') then return end
       local url = link.target
       if url:match('^[%a][%w+.-]*:') or url:sub(1, 1) == '#' then return end
       local path = url:match('^([^#?]*)')
@@ -26,7 +29,7 @@ function Pandoc(doc)
       end
     end,
   }
-  for _, key in ipairs { 'figures', 'audio', 'video' } do
+  for _, key in ipairs { 'figures', 'audio', 'video', 'references', 'citations', 'typed' } do
     data[key] = lib.get(doc, key)
     doc.meta['twin-' .. key] = nil
   end

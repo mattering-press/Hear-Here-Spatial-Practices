@@ -126,6 +126,17 @@ a.timecode:hover { text-decoration: underline; }
 .card-title { display: block; padding: 0.8rem 1rem 1rem; border-top: 2px solid var(--colour-accent); font-weight: 800; text-transform: var(--heading-case); }
 .cards a:is(:hover, :focus-visible) .card-title { color: var(--colour-accent); text-decoration: underline; }
 
+/* citations: links to the reference list, and the reference in a popup (assets/citations.js) */
+a.citation { text-decoration-thickness: 1px; text-underline-offset: 0.15em; }
+.typed-reference { scroll-margin-top: var(--space); }
+.typed-reference:target { outline: 2px solid var(--colour-accent); outline-offset: 4px; background: var(--colour-surface); }
+.typed-reference p { margin: 0 0 0.75rem; }
+/* hidden until citations.js opens one; in browsers without popovers they stay hidden and the links go to the list */
+.citation-popover { display: none; }
+.citation-popover:popover-open { display: block; position: fixed; inset: auto; margin: 0; width: max-content; max-width: min(28rem, calc(100vw - 16px)); padding: 0.75rem 1rem; border: 1px solid var(--colour-rule); border-radius: 6px; background: var(--colour-surface); color: var(--colour-text); box-shadow: var(--shadow); font-size: 0.9375rem; line-height: 1.45; overflow-wrap: anywhere; }
+.citation-popover p { margin: 0; }
+.citation-popover .citation-popover__more { margin-top: 0.5rem; font-size: 0.875rem; }
+
 /* footer */
 .site-footer { margin-top: 3rem; padding: 1.5rem var(--gap); background: var(--colour-footer); }
 .site-footer ul { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--gap) 2rem; max-width: var(--wide); margin: 0 auto; padding: 0; list-style: none; }
