@@ -18,7 +18,7 @@
 
 # Introduction
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/jlp01_08_061829.jpg right caption="Info on permissible rights for use of this image from Historic England Archive https://historicengland.org.uk/images-books/archive/policies/using-images/"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/jlp01_08_061829.jpg right caption="Info on permissible rights for use of this image from Historic England Archive https://historicengland.org.uk/images-books/archive/policies/using-images/" alt="Black-and-white photograph of fourteen workers posed in three rows on steps at the cathedral building site, with scaffolding behind them. A Black worker in a cap stands at the left."
 
 The writer Monica Brown, whose father worked on building Coventry Cathedral, states in her visit to the cathedral for the _Hear Here_ podcast: “I am here because dad was here”. Monica brings an inter-connected set of journeys to our dialogue, vividly relaying the strength and struggles of her family, in the context of the Windrush Generation, whilst moving back and forth between Jamaica and Leamington. Monica undertakes the art of transnational diasporic storytelling, one that is also locally situated. Recently her mother faced the burden of doubt, in terms of immigration, when she was refused entry to the UK for her grandson’s graduation. Monica and her siblings fought a campaign against this decision. Monica takes us to the heart of how to take matters on when people are made to feel they don’t matter. She carries her embodied signature voice and specialism in media production and histories right into the cathedral.
 
