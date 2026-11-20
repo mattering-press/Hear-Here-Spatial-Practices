@@ -143,9 +143,6 @@ The frame of every page:
   band of the same height on every page. A page reached through a card names its section above its title (Podcasts,
   Events), and that section is marked in the menu. To give a page its own header picture, change the picture in its
   `.ve-header` line.
-- **Home page.** The book's cover beside its title and author, from `FRAME.cover` at the top of
-  `every_trick/build.mjs` (now `media/cover/tea.gif`, the temporary cover). An animated GIF becomes an animated WebP,
-  with its first frame shown to readers who ask their system for less motion.
 - **Footer.** The publisher's logo (the long one; the icon alone on phones), a credit line with the licence, the
   book's version line and the toolkit's line. They are set in `FRAME` at the top of `every_trick/build.mjs`, with the
   logos in `media/publisher/`; the `.ve-footer` lines in the pages are ignored.
@@ -161,7 +158,7 @@ What is in `every_trick/`:
 - `scripts/to-citation-keys.mjs`: for the switch, shows how the plain-text citations would become Pandoc citations
 - `template.html`: the HTML around every page. It links the stylesheet and scripts with `?v=` and a hash of their contents, so that browsers fetch them again after every change instead of keeping an old copy
 - `assets/`: `site.css` (colours, fonts and spacing are set at its top), `zoom.js`, `seek.js`, `citations.js`, `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens)
-- `images.mjs`: resized images, the tiles for zooming, and the cover
+- `images.mjs`: resized images and the tiles for zooming; an animated GIF becomes an animated WebP and a still
 - `check.mjs`, `serve.mjs`: the link check and the local server
 - `CONTRACT.md`: the `page.json` and `publication.json` files that other frontends can read, and the paragraph rule
 - `package.json`: the toolkit's name and version (see "Versions of the book and of every_trick" below)
@@ -400,7 +397,7 @@ Agreed with the publisher on 2026-11-19. These fix the data; players and viewers
 
 ## Plan: margin notes
 
-Agreed with the publisher on 2026-11-19. Text notes are built (`every_trick/filters/margins.lua`, `every_trick/assets/margins.js`); media in the margin and the print and EPUB forms are not built yet.
+Agreed with the publisher on 2026-11-19. Text notes and media in the margin are built (`every_trick/filters/margins.lua`, `every_trick/assets/margins.js`): a margin note may hold pictures, animated GIFs, video and audio players, and one that holds only media has no number (example: the cover beside para. 1 of the home page). Figure numbers for margin media and the print and EPUB forms are not built yet.
 
 - **What:** short notes, links and small media thumbnails in a right-hand margin column. Paragraph numbers keep the left margin.
 - **Where they live in the source:** directly after the paragraph they belong to (`::: {.margin}` … `:::`), or attached to a word (`[given by Germany in 1962]{.margin}`). They are never stored by paragraph number, so they move with their paragraph from version to version. While Juncture still renders the site, write them as `<aside class="margin" markdown="1">…</aside>`, which the build converts.

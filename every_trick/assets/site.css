@@ -38,10 +38,8 @@
   --radius: 4px;
   --shadow: 0 4px 12px rgb(0 0 0 / 0.08);
 
-  /* the page's opening: its height (the same on every page, with or without a header picture), and the height
-     of the book's cover on the home page */
+  /* the page's opening: its height, the same on every page, with or without a header picture */
   --opener-height: 11rem;
-  --opener-cover: 20rem;
   --band-shade: linear-gradient(rgb(0 0 0 / 0.35), rgb(0 0 0 / 0.65));   /* over the header picture, under the title */
 
   /* paragraph numbers: 1 shows them in the margin; 0 hides them (the ¶ link still appears on hover and focus) */
@@ -90,8 +88,7 @@ img, iframe, video, object { max-width: 100%; }
 .view-switcher a[aria-current] { background: var(--colour-header-text); color: var(--colour-header); }
 
 /* the page's opening: section, title and subtitle over the page's header picture, cropped to a band of the same
-   height on every page (the home page shows the book's cover beside its title instead). The title starts where the
-   text column starts. */
+   height on every page. The title starts where the text column starts. */
 .page-opener { position: relative; border-top: 1px solid rgb(255 255 255 / 0.14); container-type: inline-size; }
 .page-opener__band { position: absolute; inset: 0; overflow: hidden; }
 .page-opener__band::after { content: ""; position: absolute; inset: 0; background: var(--band-shade); }
@@ -103,8 +100,6 @@ img, iframe, video, object { max-width: 100%; }
 .page-section a:hover { color: var(--colour-header-text); text-decoration: underline; }
 .page-title { margin: 0; font-size: clamp(1.75rem, 1.2rem + 2vw, 2.6rem); font-weight: 700; line-height: 1.12; letter-spacing: -0.01em; }
 .page-subtitle { margin: 0.75rem 0 0; font-size: clamp(0.95rem, 0.8rem + 0.6vw, 1.2rem); font-style: italic; font-weight: 400; letter-spacing: 0.22em; text-transform: uppercase; }
-.page-opener.is-cover .page-opener__inner { min-height: calc(var(--opener-cover) + 4.25rem); }
-.page-opener__image img { display: block; height: var(--opener-cover); width: auto; max-width: min(28rem, 45cqw); }
 
 /* text column */
 main { max-width: var(--measure); margin: 0 auto; padding: 2.25rem var(--gap) 3rem; overflow-wrap: break-word; }
@@ -152,6 +147,10 @@ aside.margin :is(p, ol, ul) { margin: 0 0 0.5rem; }
 aside.margin :is(ol, ul) { padding-left: 1.25rem; }
 aside.margin .margin-body > :last-child { margin-bottom: 0; }
 .margin-number { position: absolute; left: 0.75rem; top: 0.6rem; color: var(--colour-accent); font-weight: var(--weight-strong); text-decoration: none; }
+/* media in the margin (a picture, an animated GIF, a video, an audio player): no number, no box, the full width of
+   the margin */
+aside.margin.margin-media { padding: 0; border-left: 0; background: none; }
+aside.margin.margin-media :is(figure, audio) { width: 100%; margin: 0 0 0.75rem; float: none; }
 .margin-more { margin-top: 0.25rem; padding: 0; border: 0; background: none; color: var(--colour-link); font: inherit; font-weight: var(--weight-strong); text-decoration: underline; cursor: pointer; }
 :is(aside.margin, .margin-mark).is-active, aside.margin:target { border-left-color: var(--colour-accent); background: var(--colour-highlight); }
 .margin-mark.is-active { background: var(--colour-highlight); border-radius: 3px; }
@@ -263,15 +262,12 @@ a.toolkit-name, a .toolkit-name, .toolkit-name a, .built-with a { text-underline
   .site-menu ul { flex-wrap: wrap; gap: 0.2rem 1rem; }
 }
 
-/* phones: the picture above the title, both in line with the bar; figures stop floating; the footer shows the
+/* phones: the title in line with the bar; figures stop floating; the footer shows the
    publisher's icon */
 @media (max-width: 40rem) {
-  :root { --font-size: 1.0625rem; --opener-height: 9.5rem; --opener-cover: 17rem; }
+  :root { --font-size: 1.0625rem; --opener-height: 9.5rem; }
   .page-opener { --number-room: 0rem; }
   .page-opener__inner { grid-template-columns: minmax(0, 1fr); padding: 1.25rem var(--gap) 1.5rem; }
-  .page-opener.is-cover .page-opener__inner { min-height: 0; }
-  .page-opener__image { order: -1; }
-  .page-opener__image img { max-width: 100%; }
   figure.left, figure.right, main iframe.left, main iframe.right { float: none; width: 100%; margin-left: 0; margin-right: 0; }
   .site-footer__logo img { height: 2.5rem; }
 }

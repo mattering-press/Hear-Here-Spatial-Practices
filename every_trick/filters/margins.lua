@@ -7,10 +7,33 @@
 -- Text notes are numbered from 1 on each page, in order, as n1, n2 …, and become
 --   <aside id="n1" class="margin" aria-label="Note 1"><a class="margin-number" href="#n1-mark">1</a>…</aside>
 -- with a matching mark, <a class="margin-mark" id="n1-mark" href="#n1">1</a>, at the end of the paragraph before the note.
+-- A note that holds only media (pictures, animated GIFs, galleries, video, audio: what figures.lua and embeds.lua have
+-- made of them) is not a text note: it gets no number and no mark, as <aside id="m1" class="margin margin-media">,
+-- counted m1, m2 … on its own. (Media in the margin will take figure numbers, Fig. 2.3, once figures are numbered.)
 -- On wide screens the stylesheet sets the note in the right-hand margin, level with that paragraph; elsewhere
 -- (phones, print) it stays in reading order after the paragraph.
 -- Runs after paragraphs.lua, which does not number anything inside a note, so paragraph numbers ignore the margin.
-local count = 0
+local count, media_count = 0, 0
+
+local function is_media(b)
+  if b.t == 'RawBlock' and b.format == 'html' then return b.text:match('^%s*<figure') or b.text:match('^%s*<audio') end
+  return b.t == 'Div' and b.classes:includes('gallery')
+end
+
+local function only_media(div)
+  if #div.content == 0 then return false end
+  for _, b in ipairs(div.content) do if not is_media(b) then return false end end
+  return true
+end
+
+local function media_note(div)
+  media_count = media_count + 1
+  local id = 'm' .. media_count
+  local out = pandoc.Blocks { pandoc.RawBlock('html', string.format('<aside id="%s" class="margin margin-media">', id)) }
+  out:extend(div.content)
+  out:insert(pandoc.RawBlock('html', '</aside>'))
+  return out
+end
 
 local function last_para(block)
   if not block then return nil end
@@ -41,7 +64,7 @@ local function walk(blocks)
   local out = pandoc.Blocks {}
   for _, b in ipairs(blocks) do
     if b.t == 'Div' and b.classes:includes('margin') then
-      out:extend(note(b, out[#out]))
+      out:extend(only_media(b) and media_note(b) or note(b, out[#out]))
     else
       if b.t == 'Div' or b.t == 'BlockQuote' then b.content = walk(b.content) end
       out:insert(b)

@@ -110,8 +110,10 @@ Poetry is cited by line, not by paragraph ("ll. 12–14"), so poems have their o
 
 ## Margin notes and their numbers
 
-A margin note is written directly after its paragraph as `::: {.margin}` … `:::`. Text notes are built; media in
-the margin are not built yet. In the HTML a text note is `<aside id="n1" class="margin" aria-label="Note 1">`, and
+A margin note is written directly after its paragraph as `::: {.margin}` … `:::`. It may hold text, or media:
+pictures, animated GIFs, galleries, video and audio players, written as anywhere else on the page. A note that holds
+only media is `<aside id="m1" class="margin margin-media">` (`m1`, `m2` … in page order), with no number and no mark
+in the text; figure numbers for them are not built yet. In the HTML a text note is `<aside id="n1" class="margin" aria-label="Note 1">`, and
 its mark in the text, at the end of the paragraph before it, is `<a class="margin-mark" id="n1-mark" href="#n1">1</a>`.
 
 - Paragraph numbers ignore the margin entirely: adding, moving or removing a margin item never changes them.
@@ -174,6 +176,9 @@ itself; `publication.md` uses absolute URLs and starts each page with its title 
 Media are written as:
 
 - zoomable images: `![caption](images/x-1600.jpg){.zoom .right width="75%" alt="…"}` (`.left` or `.right` optional)
+- animated images (from an animated GIF): `![caption](images/x.webp){.animated alt="…"}`, an animated WebP that does not
+  zoom; in the HTML its first frame, `images/x-still.jpg`, is shown to readers who ask for less motion. In `page.json`
+  its `tiles` is `null`
 - `::: {.video}` and `::: {.embed}`: a div that starts with an ordinary link to the video or embedded page (a
   video file, a PDF); any text after the link is the caption
 - `::: {.audio}`: a div with a link to the MP3

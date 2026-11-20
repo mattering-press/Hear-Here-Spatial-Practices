@@ -19,13 +19,14 @@ local function class_list(...)
   return list
 end
 
--- A zoomable image: its 1600 px copy, with the caption as the image text.
+-- A zoomable image: its 1600 px copy, with the caption as the image text. An animated GIF is an animated WebP
+-- instead, marked .animated, which cannot zoom.
 local function figure(div)
   local a = div.attributes
   local img = lib.image('figure', a.src, a.rotation)
   local attrs = { { 'alt', a.alt or '' } }
   if a.width then table.insert(attrs, 1, { 'width', a.width }) end
-  return pandoc.Para { pandoc.Image(lib.words(a.caption), lib.site_url(img.url), '', pandoc.Attr('', class_list('zoom', a.side), attrs)) }
+  return pandoc.Para { pandoc.Image(lib.words(a.caption), lib.site_url(img.url), '', pandoc.Attr('', class_list(img.animated and 'animated' or 'zoom', a.side), attrs)) }
 end
 
 local function target(a) return (lib.fix_link(a.src)) or a.src end
