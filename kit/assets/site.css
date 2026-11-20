@@ -119,15 +119,13 @@ aside.margin :is(p, ol, ul) { margin: 0 0 0.5rem; }
 aside.margin :is(ol, ul) { padding-left: 1.25rem; }
 aside.margin .margin-body > :last-child { margin-bottom: 0; }
 .margin-number { position: absolute; left: 0.75rem; top: 0.6rem; color: var(--colour-accent); font-weight: var(--weight-strong); text-decoration: none; }
-.margin-more { display: none; margin-top: 0.25rem; padding: 0; border: 0; background: none; color: var(--colour-link); font: inherit; font-weight: var(--weight-strong); text-decoration: underline; cursor: pointer; }
+.margin-more { margin-top: 0.25rem; padding: 0; border: 0; background: none; color: var(--colour-link); font: inherit; font-weight: var(--weight-strong); text-decoration: underline; cursor: pointer; }
 :is(aside.margin, .margin-mark).is-active, aside.margin:target { border-left-color: var(--colour-accent); background: var(--colour-highlight); }
 .margin-mark.is-active { background: var(--colour-highlight); border-radius: 3px; }
 main.has-margin aside.margin { position: absolute; left: calc(100% + 1.5rem); width: min(18rem, calc((100vw - var(--measure)) / 2 - 3rem)); margin: 0; padding: 0 0 0 1.5rem; border-left: 0; background: none; }
 main.has-margin aside.margin.is-active, main.has-margin aside.margin:target { box-shadow: -4px 0 0 var(--colour-accent); }
 main.has-margin .margin-number { left: 0; top: 0; }
 main.has-margin aside.margin.is-long:not(.is-open) .margin-body { max-height: var(--margin-lines-height); overflow: hidden; mask-image: linear-gradient(to bottom, #000 60%, transparent); }
-main.has-margin aside.margin.is-long .margin-more { display: block; }
-
 /* the notice on a frozen version, with a link to the same passage in the newer text */
 .version-notice { padding: 0.6rem var(--gap); border-bottom: 3px solid var(--colour-accent); background: var(--colour-surface); font-size: 0.9375rem; }
 .version-notice p { max-width: var(--wide); margin: 0 auto; }
