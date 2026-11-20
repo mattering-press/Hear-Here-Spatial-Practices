@@ -98,6 +98,9 @@ main { position: relative; padding-left: var(--column-inset, var(--gap)); }
 @media (prefers-reduced-motion: reduce) {
   .para:target { animation: none; background: var(--colour-highlight); box-shadow: 0 0 0 0.4rem var(--colour-highlight); }
 }
+.poem .line-block, .poem p { white-space: pre-wrap; }   /* keep a poem's spacing */
+.line:target { animation: para-highlight 3s ease-out; }
+@media (prefers-reduced-motion: reduce) { .line:target { animation: none; background: var(--colour-highlight); } }
 ::target-text { background: color-mix(in srgb, var(--colour-accent) 22%, transparent); color: inherit; }
 /* the status line that says a paragraph's link was copied (an aria-live region, hidden while empty) */
 .copy-status { position: fixed; left: 50%; bottom: 1rem; z-index: 20; max-width: calc(100vw - 2rem); padding: 0.5rem 1rem; transform: translateX(-50%); border-radius: 6px; background: var(--colour-text); color: var(--colour-surface); box-shadow: var(--shadow); font-size: 0.875rem; overflow-wrap: anywhere; }

@@ -102,6 +102,62 @@ function Pandoc(doc)
     return pandoc.Div({ block }, pandoc.Attr(id, { 'para' }))
   end
 
+  -- A poem (::: {.poem} … :::) counts as one paragraph of the chapter, and its lines are numbered within the
+  -- poem: every line of its line blocks (| …) and every line of its other paragraphs, in order, as
+  -- <poem id>-l1, -l2 … The poem id is the div's own id, or poem1, poem2 … in page order. Stanza breaks and
+  -- empty lines are not numbered. See CONTRACT.md, "Poems".
+  local poems = 0
+  local function number_poem(div)
+    poems = poems + 1
+    if div.identifier == '' then div.identifier = 'poem' .. poems end
+    local pid, n, texts = div.identifier, 0, {}
+    local function line_span(inlines)
+      n = n + 1
+      texts[#texts + 1] = pandoc.utils.stringify(inlines)
+      return pandoc.Span(inlines, pandoc.Attr(pid .. '-l' .. n, { 'line' }, { { 'data-line', tostring(n) } }))
+    end
+    local function split(inlines)   -- a paragraph's lines, separated by line breaks
+      local lines, cur = {}, pandoc.Inlines {}
+      for _, el in ipairs(inlines) do
+        if el.t == 'LineBreak' or el.t == 'SoftBreak' then lines[#lines + 1] = cur; cur = pandoc.Inlines {}
+        else cur:insert(el) end
+      end
+      lines[#lines + 1] = cur
+      return lines
+    end
+    local out = pandoc.Blocks {}
+    for _, block in ipairs(div.content) do
+      if block.t == 'LineBlock' then
+        local lines = {}
+        for i, line in ipairs(block.content) do
+          lines[i] = (pandoc.utils.stringify(line):match('%S')) and pandoc.Inlines { line_span(line) } or line
+        end
+        block.content = lines
+        out:insert(block)
+      elseif block.t == 'Para' or block.t == 'Plain' then
+        local inlines = pandoc.Inlines {}
+        for i, line in ipairs(split(block.content)) do
+          if i > 1 then inlines:insert(pandoc.LineBreak()) end
+          if pandoc.utils.stringify(line):match('%S') then inlines:insert(line_span(line)) else inlines:extend(line) end
+        end
+        block.content = inlines
+        out:insert(block)
+      else
+        out:insert(block)
+      end
+    end
+    div.content = out
+    div.attributes['data-lines'] = tostring(n)
+    -- the whole poem is one paragraph of the chapter
+    local num = #paragraphs + 1
+    local id = 'p' .. num
+    local text = normalise(table.concat(texts, ' '))
+    paragraphs[num] = { id = id, n = num, text_hash = pandoc.utils.sha1(text):sub(1, 12), text = text, poem = pid, lines = n }
+    local link = pandoc.Plain { pandoc.RawInline('html', string.format('<a class="para-link" href="#%s" data-n="%d" aria-label="Paragraph %d"></a>', id, num, num)) }
+    div.content:insert(1, link)
+    return pandoc.Div({ div }, pandoc.Attr(id, { 'para', 'para-poem' }))
+  end
+
   local walk_blocks
   local function walk_block(b)
     if b.t == 'Header' then
@@ -125,6 +181,8 @@ function Pandoc(doc)
       return readable(para) and number(b, para) or b
     elseif b.t == 'BlockQuote' then
       b.content = walk_blocks(b.content)
+    elseif b.t == 'Div' and b.classes:includes('poem') then
+      return number_poem(b)
     elseif b.t == 'Div' then
       for _, c in ipairs(b.classes) do if SKIP[c] then return b end end
       b.content = walk_blocks(b.content)
