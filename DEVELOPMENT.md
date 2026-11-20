@@ -167,15 +167,18 @@ number: clicking it copies a link to that paragraph, and on a frozen version the
 What gets a number is decided by the text alone, never by the design, so the numbers stay the same whenever the
 site is rebuilt:
 
-- every paragraph of text gets the next number, including paragraphs in quotations, each item of a list, and each
-  turn of speech in a transcript;
+- every paragraph of text gets the next number, including paragraphs in quotations and each turn of speech in a
+  transcript;
+- a list counts as one paragraph and gets one number, however many items it has;
 - headings, pictures and their captions, audio and video players, picture galleries, the cards that lead to other
   pages, notes in the margin, the reference list at the end of a chapter, and the header and footer get no number;
 - a paragraph that holds only a timecode such as `[00:10:13]`, or only a picture, gets no number;
 - a short line on its own, such as **Addendum** or `[music]`, is a paragraph like any other and gets a number.
 
-The precise rule is in `every_trick/CONTRACT.md` ("Paragraph numbers"). It must not change once a version has been frozen,
-because every frozen version would be renumbered. The build prints how many paragraphs each page has. To hide the
+The precise rule is in `every_trick/CONTRACT.md` ("Paragraph numbers"). A rule never changes once a version has been
+frozen with it, because that version would be renumbered: a new rule comes with a new contract version, and each
+frozen version keeps the rule it was frozen under (`contract` in `versions.json`). Version 0.1 is numbered by
+contract 0.3, which gave each list item its own number. The build prints how many paragraphs each page has. To hide the
 numbers (the ¶ link stays), set `--paragraph-numbers: 0` at the top of `every_trick/assets/site.css`.
 
 ### Versions and the version stamp
@@ -183,7 +186,7 @@ numbers (the ¶ link stays), set `--paragraph-numbers: 0` at the top of `every_t
 The book's versions are listed in `versions.json` at the root of the repository. The site's root always shows the
 current text, labelled "Latest text, unreleased". Each listed version is built as well, at its own address,
 `/v<id>/` (for example `/v0.9-review2/essays/aya_nassar/`), from the text of its Git tag but with the current toolkit,
-so all versions share the current design and the paragraph rule. Pictures, video and other media are stored once
+so all versions share the current design; each keeps the paragraph rule it was frozen under. Pictures, video and other media are stored once
 and shared by all versions; a version adds only its pages, about 1.5 MB. A media file that a tag uses but that is
 no longer in the repository is taken from the tag.
 
@@ -208,6 +211,7 @@ Each entry in `versions.json` has:
 | `label` | how pages name it, e.g. `Version 0.9, second peer review` |
 | `date` | the day it was frozen or released, e.g. `2026-11-20` |
 | `status` | `review` (frozen for peer review) or `release` (published) |
+| `contract` | the contract current when it was frozen (`CONTRACT` in `every_trick/build.mjs`, e.g. `0.4`): its paragraph rule numbers this version, so its numbers never change |
 | `annotations` | `hypothesis` to open its pages for annotation with Hypothesis (below), otherwise `none` |
 | `hypothesisGroup` | the ID of the private Hypothesis group for its reviewers |
 
@@ -272,6 +276,7 @@ Freezing a version gives its text a permanent address. The text is taken from a 
      "label": "Version 0.9, second peer review",
      "date": "2026-11-20",
      "status": "review",
+     "contract": "0.4",
      "annotations": "hypothesis",
      "hypothesisGroup": "<group ID>"
    }

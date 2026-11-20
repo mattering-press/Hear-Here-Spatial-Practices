@@ -11,6 +11,15 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of every_trick’ in `DEVELOPMENT.md`.
 
+## 1.1.0
+
+20 November 2026
+
+- A list counts as one paragraph, with one number and one link, however many items it has (contract 0.4). Before,
+  every item had its own number.
+- Frozen versions keep the numbers they were frozen with: each is numbered by the rule of the contract it was frozen
+  under, so version 0.1 still numbers each list item.
+
 ## 1.0.0
 
 20 November 2026. The first version since the static edition replaced Juncture as the book’s public site.
