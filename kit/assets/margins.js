@@ -37,6 +37,7 @@
     more.className = 'margin-more';
     more.textContent = 'more';
     more.setAttribute('aria-expanded', 'false');
+    more.hidden = true;   // shown by layout() only where a note is folded, whatever stylesheet the browser has
     more.addEventListener('click', function () {
       var open = note.classList.toggle('is-open');
       more.textContent = open ? 'less' : 'more';
@@ -54,12 +55,15 @@
     var mainTop = main.getBoundingClientRect().top;
     var limit = on ? noteLines() : 0;
     notes.forEach(function (note) {
+      var more = note.querySelector('.margin-more');
       note.style.top = '';
-      if (!on) { note.classList.remove('is-long'); return; }
+      if (!on) { note.classList.remove('is-long'); more.hidden = true; return; }
       var body = note.querySelector('.margin-body');
       var line = parseFloat(getComputedStyle(body).lineHeight) || 20;
       note.style.setProperty('--margin-lines-height', (limit * line) + 'px');
-      note.classList.toggle('is-long', limit > 0 && body.scrollHeight > (limit + 1) * line);
+      var folded = limit > 0 && body.scrollHeight > (limit + 1) * line;
+      note.classList.toggle('is-long', folded);
+      more.hidden = !folded;
       var anchor = note.previousElementSibling;
       var top = anchor ? anchor.getBoundingClientRect().top - mainTop : 0;
       top = Math.max(top, bottom + GAP);

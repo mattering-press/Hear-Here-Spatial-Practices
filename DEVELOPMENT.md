@@ -143,7 +143,7 @@ What is in `kit/`:
 - `citations.mjs`: prepares the bibliography for `filters/citations.lua` and writes the build's report on citations
 - `csl/`: `mattering-press.csl`, the house citation style, and its test (`csl/test/`)
 - `scripts/to-citation-keys.mjs`: for the switch, shows how the plain-text citations would become Pandoc citations
-- `template.html`: the HTML around every page
+- `template.html`: the HTML around every page. It links the stylesheet and scripts with `?v=` and a hash of their contents, so that browsers fetch them again after every change instead of keeping an old copy
 - `assets/`: `site.css` (colours, fonts and spacing are set at its top), `zoom.js`, `seek.js`, `citations.js`, `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens)
 - `images.mjs`: resized images and the tiles for zooming
 - `check.mjs`, `serve.mjs`: the link check and the local server
@@ -216,13 +216,13 @@ reviewer must be a member of the group to see or post in it.
 
 ### Kit version
 
-`version` in `kit/package.json` (now `0.4.0`) is the version of the kit, shown in every footer. Bump it in the
+`version` in `kit/package.json` (now `0.5.0`) is the version of the kit, shown in every footer. Bump it in the
 same commit as the change, with `npm version <minor|patch> --no-git-tag-version` in `kit/` (it updates
 `package-lock.json` too):
 
 - `0.x.0`, the minor number, when what readers see or what the pages do changes: the template, the stylesheet,
   the scripts, or the HTML the filters write;
-- `0.4.x`, the patch number, for fixes that change nothing a reader sees: the build, its checks, its report;
+- `0.5.x`, the patch number, for fixes that change nothing a reader sees: the build, its checks, its report;
 - `1.0.0` at the switch from Juncture to the static edition.
 
 The format of `page.json` and `publication.json`, and the paragraph rule, have their own version, `CONTRACT` in
