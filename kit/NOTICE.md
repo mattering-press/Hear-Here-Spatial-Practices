@@ -1,29 +1,32 @@
-# Every Trick in the Book
+# every-trick-in-the-book
 
-Every Trick in the Book by SJMcH, a Mattering toolkit.
+every-trick-in-the-book by SJMcH, a Mattering toolkit: every trick in the book for making books.
 
 Copyright © 2026 Studio Julien McHardy (SJMcH). Made for Mattering Press, its first publisher.
 
+The name is written in lower case with hyphens, `every-trick-in-the-book`, and `every-trick` for short in running
+text. Its parts are named like folders: `every-trick/markdown`, `every-trick/conventions`, `every-trick/plain`
+(the open default style) and `sjmch/styles` (the designed styles).
+
 ## Licences
 
-- **The toolkit** (the build, filters, scripts, template and the default style in this folder): Mozilla Public
-  License 2.0, see `LICENSE`. You may use, change and share it, also commercially; changes to these files must be
-  shared under the same licence, and this notice must be kept.
-- **Every Trick in the Book Conventions and the documentation** (`CONTRACT.md` and the writing conventions):
-  Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0).
+- **The toolkit** (the build, filters, scripts, template and `every-trick/plain`, the default style in this folder):
+  Mozilla Public License 2.0, see `LICENSE`. You may use, change and share it, also commercially; changes to these
+  files must be shared under the same licence, and this notice must be kept.
+- **`every-trick/markdown`, `every-trick/conventions` and the documentation** (`CONTRACT.md` and the writing
+  conventions): Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0).
 - **The house citation style** (`csl/mattering-press.csl`): CC BY-SA 3.0, as required by the Citation Style
   Language styles it is adapted from; see the file's header.
-- **Every Trick in the Book Styles** (designed reading, collage and other styles, published separately): free for
-  non-commercial use, with a paid licence for commercial use. The default style in this folder stays under the
-  MPL 2.0.
+- **`sjmch/styles`** (the designed reading, collage and other styles by Studio Julien McHardy, published
+  separately): free for non-commercial use, with a paid licence for commercial use.
 - **Books made with the toolkit** keep their own licence; *Hear Here: Spatial Practices* is published by
   Mattering Press under CC BY 4.0.
 - **Pandoc**, which the build runs as a separate program, is under its own licence (GPL).
 
 ## Contributing
 
-To keep the option of offering commercial licences, contributions to the toolkit and the Styles are accepted under
+To keep the option of offering commercial licences, contributions to the toolkit and the styles are accepted under
 a short contributor agreement with Studio Julien McHardy. Please get in touch before sending changes.
 
-"Every Trick in the Book" and "SJMcH" are names of Studio Julien McHardy; the licences above do not grant use of
+"every-trick-in-the-book" and "SJMcH" are names of Studio Julien McHardy; the licences above do not grant use of
 these names for other products.

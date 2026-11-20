@@ -2,13 +2,17 @@
 
 - For browser-based work, use a separate test Chromium instance controlled with Playwright. The user's main browser may be used for previews when the user explicitly authorizes it.
 - Follow the development and deployment workflow in `DEVELOPMENT.md`.
-- This repository is the only source of history; there is no staging repository. Make changes on a feature branch, push it to `origin`, review it in Juncture's branch preview (`?ref=<branch>`), and reach `main` only through a pull request.
-- Never push directly to `main`. Use branch names without `/`, because Juncture cannot preview them; if a tool's branch name has a slash, push it as `git push -u origin HEAD:<flat-name>`.
+- Since version 0.1 (2026-11-20) the public site is the static edition at https://hearhere.matteringpress.org/, built from `main` by GitHub Actions and published on GitHub Pages. Juncture is retired: every Juncture page forwards to the new home page (`essays/custom.js`).
+- This repository is the only source of history. Make changes on a feature branch, push it to `origin`, review it in its private preview on Cloudflare Pages (the address is in the workflow run's summary), and reach `main` only through a pull request.
+- Never push directly to `main`. Use short branch names without `/`; preview addresses are made from branch names.
+- The build is every-trick-in-the-book (by SJMcH, a Mattering toolkit) in `kit/`: Pandoc, Lua filters, one template. Run `npm ci && npm run build && npm run check` in `kit/` before pushing. Its rules for content (paragraph numbers, poems, citations, versions) are in `kit/CONTRACT.md`; the plan and house style are in `DEVELOPMENT.md`.
+- Frozen versions (Git tags listed in `versions.json`) are permanent: never move or delete a pushed tag, and never change a numbering rule in `kit/CONTRACT.md` within a contract version.
 - The collage index is developed on the `collage-index` branch. Keep it out of `main` until it is ready, and merge `origin/main` into it to stay current.
-- Everything in this repository must stay compatible with Juncture. See the next section before changing content, CSS, JavaScript or media.
-- Parallel run with the static twin: the Markdown must stay Juncture-compatible and must also build in the static twin, unchanged. `kit/` holds that build (Pandoc, Lua filters, one template); run `npm ci && npm run build && npm run check` in `kit/` before pushing a content change. See "Static twin" in `DEVELOPMENT.md`.
+- Content no longer has to render on Juncture. Existing pages still use Juncture's `.ve-*` syntax, which the build converts; new content may use the Pandoc conventions in `kit/CONTRACT.md`. The section below is kept as a record of that legacy syntax.
 
-## Juncture compatibility (required)
+## Juncture (retired 2026-11-20): legacy syntax and quirks
+
+Kept for reference. Juncture no longer serves this book, so none of this is a requirement any more; it explains the `.ve-*` lines in existing pages, which `kit/convert.mjs` turns into Pandoc Markdown.
 
 This site has no build step. Juncture v2 (the `juncture-digital.org` server plus the `juncture-digital` web components) renders the Markdown in this repository on every request. Every change must work when served that way, including custom pages such as the collage index and its modal overlays. A change that only works on a static file server or in a local preview is not finished.
 

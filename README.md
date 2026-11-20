@@ -13,7 +13,7 @@
 
 Material archives operate as spinning tops for innovating collaborative future spatial practices; incubating what else could be imagined in the space of Coventry Cathedral, an internationally recognised post-war brutalist modernist infrastructure. *Hear Here: Spatial Practices* is published by Mattering Press as a book of site-specific global planetary possibilities, convened by Nirmal Puwar.
 
-The first version of this book was developed on the [Juncture](https://www.juncture-digital.org/) visual essaying platform, created by [JSTOR Labs](https://labs.jstor.org/) (now ITHAKA Labs). It now lives as a static, open publication built with Every Trick in the Book by SJMcH, a Mattering toolkit. Its source is open on [GitHub](https://github.com/mattering-press/Hear-Here-Spatial-Practices).
+The first version of this book was developed on the [Juncture](https://www.juncture-digital.org/) visual essaying platform, created by [JSTOR Labs](https://labs.jstor.org/) (now ITHAKA Labs). It now lives as a static, open publication built with every-trick-in-the-book by SJMcH, a Mattering toolkit. Its source is open on [GitHub](https://github.com/mattering-press/Hear-Here-Spatial-Practices).
 
 # Contents {.cards}
 
