@@ -16,7 +16,7 @@ matter), `versions` in publication.json, and frozen versions, each an edition of
 ## Editions
 
 The root of the site is the working text, "latest, unreleased". Every version listed in `versions.json` at the
-root of the repository is built as well, from the text of its Git tag but with the current kit, into its own
+root of the repository is built as well, from the text of its Git tag but with the current toolkit, into its own
 folder, `v<id>/` (for example `v0.9-review2/essays/aya_nassar/`). Each such edition has its own
 `publication.json`, `publication.md` and pages. Images, tiles, video, PDF files, the stylesheet and the scripts are
 stored once, at the site's root, and shared by all editions, so inside a frozen version their URLs start with `../`
@@ -30,7 +30,7 @@ unit: today every page is one chapter, and every chapter has its own DOI, so a c
 12)" and the link `/v1/essays/aya_nassar/#p12`. If a chapter is ever split over several pages, or one page holds
 several chapters, numbering follows the chapter and starts again at 1 in each chapter. The number
 depends only on the page's content, as its Markdown view (`index.md`) has it, never on the template or the
-stylesheet. Every version is rebuilt with the current kit, so this rule must not change within contract 0.x:
+stylesheet. Every version is rebuilt with the current toolkit, so this rule must not change within contract 0.x:
 changing it would renumber the paragraphs of every frozen version and break every citation of them.
 
 Numbered, wherever they are (at the top level, in block quotes, in list items, in the transcript, in any other
@@ -80,7 +80,7 @@ hover and focus, so that copied text and text fragments (`#p12:~:text=…`) see 
 On a frozen version every page starts with a notice, `<aside class="version-notice">`, whose link
 `<a class="version-notice__link" href="…" data-paragraphs='{"p12": "p14", …}'>` goes to the same page in the newer
 text (the latest text, or for an older release the newest release). `data-paragraphs` maps each of the page's
-paragraphs to the matching paragraph there (see `kit/versions.mjs`).
+paragraphs to the matching paragraph there (see `every_trick/versions.mjs`).
 
 ## Poems
 
@@ -125,7 +125,7 @@ Margin notes are not built yet; this fixes how they will be numbered, so it is s
 | `url` | where this edition is published: the `siteUrl` setting in `build.mjs`, followed by `v<id>/` for a frozen version; the Markdown view `publication.md` uses it for its absolute URLs |
 | `markdown` | `"publication.md"` |
 | `version` | this edition: `{ id, label, date, status }`. `status` is `latest` for the working text (`id` `"latest"`, `label` `"Latest text, unreleased"`, `date` the day of its last commit), or `review` or `release` for a frozen version, with the `id`, `label` and `date` (`YYYY-MM-DD`) of its entry in `versions.json` |
-| `kit` | the version of the kit that built the site (`kit/package.json`), e.g. `"0.3.0"` |
+| `kit` | the version of every_trick_in_the_book, the toolkit that built the site (`version` in `every_trick/package.json`; `every_trick/CHANGELOG.md` lists what changed in each), e.g. `"1.0.0"`. It is numbered separately from the book's version, `version` |
 | `versions` | every edition, the latest text first, then the frozen versions, newest first: `{ id, label, date, status, url }`, `url` relative to this edition's root (`"./"` for itself) |
 | `readingOrder` | every page once, as `{ id, url, title }`: the home page; then each page in the home page's menu, followed by the pages its cards lead to (depth first); then any other page, alphabetically |
 

@@ -178,7 +178,7 @@ a.citation { text-decoration-thickness: 1px; text-underline-offset: 0.15em; }
 .site-footer ul { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--gap) 2rem; max-width: var(--wide); margin: 0 auto; padding: 0; list-style: none; }
 .site-footer img { height: 2rem; width: auto; vertical-align: middle; }
 
-/* the version, its date and the kit's version, under the footer's logos */
+/* the book's version and its date, under the footer's logos; the toolkit's name and version follow in .built-with */
 .site-footer__version { max-width: var(--wide); margin: 0 auto; font-size: 0.875rem; text-align: center; }
 .site-footer ul + .site-footer__version { margin-top: 1.25rem; }
 
@@ -196,5 +196,5 @@ a.citation { text-decoration-thickness: 1px; text-underline-offset: 0.15em; }
 }
 .built-with { margin: 0.5rem 0 0; font-size: 0.85em; opacity: 0.8; }
 .toolkit-name { white-space: nowrap; }
-/* where the name is a link, drop the underline below the underscores so they stay visible */
-a .toolkit-name, .toolkit-name a { text-underline-offset: 0.35em; text-decoration-thickness: 1px; }
+/* where the name is a link, drop the underline below the underscores so they stay visible (and the version's with it) */
+a.toolkit-name, a .toolkit-name, .toolkit-name a, .built-with a { text-underline-offset: 0.35em; text-decoration-thickness: 1px; }

@@ -49,7 +49,7 @@ export function readRegistry() {
     .map(({ position, ...v }) => v);
 }
 
-// The version's text from its tag. The kit is never taken from the tag: every version is built with the current one.
+// The version's text from its tag. The toolkit is never taken from the tag: every version is built with the current one.
 // -> { root, commit, has(path), take(path) }: take copies a file of the tag (a media file) into root.
 export function checkout(version, dir) {
   const tag = `refs/tags/${version.tag}`;

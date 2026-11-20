@@ -7,7 +7,7 @@
 // stage 2 (the other filters, template.html) turns that Markdown into HTML.
 //
 // Editions: the root of _site/ is the working text ("latest, unreleased"). Every version in ../versions.json is
-// built too, from the text of its Git tag but always with this kit, into _site/v<id>/; its pages carry a notice that
+// built too, from the text of its Git tag but always with this toolkit, into _site/v<id>/; its pages carry a notice that
 // links to the same passage in the newest text (versions.mjs). Images, tiles and other media are stored once, at the
 // root, and shared by all editions. _site/versions/ lists them all.
 //   npm run build      needs Pandoc 3.8 on the PATH (or its path in the PANDOC environment variable)
@@ -25,6 +25,10 @@ import { checkout, longDate, matchParagraphs, readRegistry } from './versions.mj
 const NOINDEX = false;  // true hides every page from search engines (it was true while Juncture served the public site)
 const PUBLICATION = { creators: ['Nirmal Puwar'], publisher: 'Mattering Press', language: 'en' };
 const CONTRACT = '0.3';  // version of the page.json / publication.json format, and of the paragraph rule
+// every_trick_in_the_book, the toolkit in this folder. Every footer names it with its version (every_trick/package.json),
+// and links the name to its home and the version to the list of what changed in each version.
+const TOOLKIT_HOME = 'https://github.com/every-trick/every_trick_in_the_book';
+const TOOLKIT_CHANGES = 'https://github.com/mattering-press/Hear-Here-Spatial-Practices/blob/main/every_trick/CHANGELOG.md';
 // Where the site is published. publication.md uses absolute URLs built from this; the pages use relative ones.
 // It becomes 'https://hearhere.matteringpress.org/' when the site moves to its own domain.
 const siteUrl = 'https://hearhere.matteringpress.org/';
@@ -143,8 +147,10 @@ const versionLine = (edition, shared) => {
   const v = edition.version;
   const what = v.status === 'latest' ? `${esc(v.label)} · last changed ${longDate(v.date)}`
     : `${esc(v.label)} · ${v.status === 'review' ? 'frozen' : 'released'} on ${longDate(v.date)}`;
-  return `<p class="site-footer__version">${what} · built with kit ${esc(KIT_VERSION)} · <a href="${shared}versions/">All versions</a></p>`;
+  return `<p class="site-footer__version">${what} · <a href="${shared}versions/">All versions</a></p>`;
 };
+// The toolkit's line in every footer (template.html), below the book's version line.
+const toolkitMeta = { 'kit-version': KIT_VERSION, 'kit-home': TOOLKIT_HOME, 'kit-changes': TOOLKIT_CHANGES };
 const lcFirst = (s) => s.charAt(0).toLowerCase() + s.slice(1);
 const hypothesis = (edition) => {
   const config = { openSidebar: false };
@@ -216,7 +222,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     const headerStyle = headerImage ? `background-image: url('${join2(root, headerImage.url)}')`
       : page.header.colour ? `background-color: ${page.header.colour.replace(/[^#\w(),.% -]/g, '')}` : '';
     let html = pandoc(['-f', 'markdown-implicit_figures', '-t', 'html5', '--wrap=none', '-s', '--template', join(KIT, 'template.html'), '--metadata-file', yaml,
-      ...metaArgs({ ...meta, root, shared, views: 'true', citations: references.indexPath, 'header-style': headerStyle, 'site-title': page === edition.home ? '' : edition.home.title, noindex: NOINDEX ? 'true' : '' }),
+      ...metaArgs({ ...meta, ...toolkitMeta, root, shared, views: 'true', citations: references.indexPath, 'header-style': headerStyle, 'site-title': page === edition.home ? '' : edition.home.title, noindex: NOINDEX ? 'true' : '' }),
       ...filterArgs(FILTERS)], readFileSync(join(dir, 'index.md'), 'utf8'), page.file);
     const data = JSON.parse(readFileSync(contractOut, 'utf8'));
     const paragraphs = list(data.paragraphs);
@@ -278,7 +284,9 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     '',
     ...items,
     '',
-    editions.length === 1 ? 'No version has been frozen yet.' : 'A frozen version is built with the current design of the site; its text does not change.',
+    editions.length === 1 ? 'No version has been frozen yet.' : 'A frozen version keeps its text, but it is shown with the current design of the site.',
+    '',
+    `The site’s design, and what its pages do, come from the toolkit that builds it: [every_trick_in_the_book](${TOOLKIT_HOME}){.toolkit-name aria-label="every trick in the book"} ${KIT_VERSION} ([what’s new](${TOOLKIT_CHANGES})). The toolkit’s versions are numbered separately from the book’s.`,
   ].join('\n');
   const dir = join(SITE, 'versions');
   mkdirSync(dir, { recursive: true });
@@ -290,7 +298,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
   ].join(''));
   const html = pandoc(['-f', 'markdown', '-t', 'html5', '--wrap=none', '-s', '--template', join(KIT, 'template.html'), '--metadata-file', yaml,
     ...metaArgs({ page: 'versions.md', repo: REPO, manifest: latest.manifest, 'contract-out': join(work, 'versions.json'), lang: PUBLICATION.language, title: 'Versions',
-      root: '../', shared: '../', 'site-title': home.title, 'paragraph-numbers': 'false', noindex: NOINDEX ? 'true' : '' }),
+      ...toolkitMeta, root: '../', shared: '../', 'site-title': home.title, 'paragraph-numbers': 'false', noindex: NOINDEX ? 'true' : '' }),
     ...filterArgs(['links', 'paragraphs', 'contract'])], markdown, 'versions page');
   writeFileSync(join(dir, 'index.html'), html);
 }
@@ -311,7 +319,7 @@ const total = size(SITE), imageBytes = size(join(SITE, 'images')), tileBytes = s
 const pageCount = editions.reduce((n, e) => n + e.pages.length, 0);
 console.log(`Built ${pageCount} pages${editions.length > 1 ? ` in ${editions.length} editions` : ''} into _site/ in ${((Date.now() - started) / 1000).toFixed(1)} s: ${mb(total)} ` +
   `(images ${mb(imageBytes)}, tiles ${mb(tileBytes)}, other ${mb(total - imageBytes - tileBytes)}); ` +
-  `${sources} source images, ${tiles} tiles; kit ${KIT_VERSION}, contract ${CONTRACT}${NOINDEX ? '; pages carry noindex' : ''}.`);
+  `${sources} source images, ${tiles} tiles; every_trick_in_the_book ${KIT_VERSION}, contract ${CONTRACT}${NOINDEX ? '; pages carry noindex' : ''}.`);
 for (const edition of editions.slice(1)) {
   console.log(`  ${edition.dir.padEnd(22)} ${edition.version.label} (${edition.version.status}, tag at ${edition.commit.slice(0, 7)}): ${edition.pages.length} pages, ${mb(size(join(SITE, edition.dir)))}` +
     `${edition.annotations === 'hypothesis' ? `, Hypothesis${edition.group ? ` for group ${edition.group}` : ' (no hypothesisGroup set: annotations go to the group each reviewer picks)'}` : ''}`);
