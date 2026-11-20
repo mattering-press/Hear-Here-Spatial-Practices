@@ -12,6 +12,7 @@
 // root, and shared by all editions. _site/versions/ lists them all.
 //   npm run build      needs Pandoc 3.8 on the PATH (or its path in the PANDOC environment variable)
 import { spawnSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
@@ -37,9 +38,17 @@ const LATEST_LABEL = 'Latest text, unreleased';
 
 const KIT = dirname(fileURLToPath(import.meta.url));
 const KIT_VERSION = JSON.parse(readFileSync(join(KIT, 'package.json'), 'utf8')).version;
+// A short hash of the stylesheet and scripts in assets/. The template adds it to their addresses (site.css?v=…), so
+// that browsers fetch them again whenever they change: GitHub Pages lets browsers keep a file for ten minutes, and a
+// page could otherwise arrive with an old stylesheet.
+const ASSET_VERSION = (() => {
+  const hash = createHash('sha1');
+  for (const name of readdirSync(join(KIT, 'assets')).filter((f) => /\.(css|js)$/.test(f)).sort()) hash.update(name).update(readFileSync(join(KIT, 'assets', name)));
+  return hash.digest('hex').slice(0, 10);
+})();
 const SITE = join(REPO_ROOT, '_site');
 const PANDOC = process.env.PANDOC || 'pandoc';
-const FILTERS = ['figures', 'embeds', 'cards', 'transcript', 'links', 'citations', 'paragraphs', 'contract'];
+const FILTERS = ['figures', 'embeds', 'cards', 'transcript', 'links', 'citations', 'paragraphs', 'margins', 'contract'];
 const started = Date.now();
 const fail = (message) => { console.error(message); process.exit(1); };
 
@@ -222,7 +231,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     const headerStyle = headerImage ? `background-image: url('${join2(root, headerImage.url)}')`
       : page.header.colour ? `background-color: ${page.header.colour.replace(/[^#\w(),.% -]/g, '')}` : '';
     let html = pandoc(['-f', 'markdown-implicit_figures', '-t', 'html5', '--wrap=none', '-s', '--template', join(KIT, 'template.html'), '--metadata-file', yaml,
-      ...metaArgs({ ...meta, ...toolkitMeta, root, shared, views: 'true', citations: references.indexPath, 'header-style': headerStyle, 'site-title': page === edition.home ? '' : edition.home.title, noindex: NOINDEX ? 'true' : '' }),
+      ...metaArgs({ ...meta, ...toolkitMeta, root, shared, 'asset-version': ASSET_VERSION, views: 'true', citations: references.indexPath, 'header-style': headerStyle, 'site-title': page === edition.home ? '' : edition.home.title, noindex: NOINDEX ? 'true' : '' }),
       ...filterArgs(FILTERS)], readFileSync(join(dir, 'index.md'), 'utf8'), page.file);
     const data = JSON.parse(readFileSync(contractOut, 'utf8'));
     const paragraphs = list(data.paragraphs);
@@ -298,7 +307,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
   ].join(''));
   const html = pandoc(['-f', 'markdown', '-t', 'html5', '--wrap=none', '-s', '--template', join(KIT, 'template.html'), '--metadata-file', yaml,
     ...metaArgs({ page: 'versions.md', repo: REPO, manifest: latest.manifest, 'contract-out': join(work, 'versions.json'), lang: PUBLICATION.language, title: 'Versions',
-      ...toolkitMeta, root: '../', shared: '../', 'site-title': home.title, 'paragraph-numbers': 'false', noindex: NOINDEX ? 'true' : '' }),
+      ...toolkitMeta, root: '../', shared: '../', 'asset-version': ASSET_VERSION, 'site-title': home.title, 'paragraph-numbers': 'false', noindex: NOINDEX ? 'true' : '' }),
     ...filterArgs(['links', 'paragraphs', 'contract'])], markdown, 'versions page');
   writeFileSync(join(dir, 'index.html'), html);
 }

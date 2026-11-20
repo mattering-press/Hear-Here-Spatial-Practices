@@ -23,6 +23,22 @@ reader sees. How to add a version: ‘Versions of the book and of every_trick’
 - The toolkit’s folder is called every_trick (it was kit), and its `package.json` names it every_trick_in_the_book
   (it was hear-here-static-twin).
 
+## 0.5.0
+
+20 November 2026
+
+- The stylesheet and scripts are linked with a fingerprint of their content (`site.css?v=…`), so a reader whose browser
+  kept an older copy still gets the styles a new page needs. Before, a margin note could show without its styles.
+
+## 0.4.0
+
+20 November 2026
+
+- Margin notes. A note written right after its paragraph (`::: {.margin}`) is numbered per page (n1, n2 …) with a
+  matching mark in the text, and the two highlight together. On wide screens the note sits in the right-hand margin,
+  level with its paragraph; on phones, without JavaScript and for screen readers it follows its paragraph. Paragraph
+  numbers ignore the margin.
+
 ## 0.3.0
 
 20 November 2026. Version 0.1 of *Hear Here: Spatial Practices*, its first public version, was released with it.

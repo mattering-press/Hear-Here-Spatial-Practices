@@ -24,7 +24,7 @@ main on GitHub  ->  GitHub Actions build  ->  https://hearhere.matteringpress.or
 ```
 
 `main` is always the published working text. Every change reaches it through a pull request from a feature
-branch, and the commit that was previewed is the commit that is merged.
+branch. When the branch was previewed, the commit that was previewed is the commit that is merged.
 
 ## Starting a piece of work
 
@@ -89,33 +89,29 @@ that should not be seen.
 
 ## Publishing to production
 
-1. Preview the pushed branch as above.
+1. Review the pushed branch in its private preview (see "Private previews"), on desktop and on a phone. The
+   publisher may waive the preview for a change; the pull request is still needed.
 2. Open a pull request from the feature branch to `main`.
-3. Merge it once the preview has been approved.
-4. Check the production URL after the merge. Add `?refresh=true` once if the old
-   version is still showing.
-5. Delete the feature branch on GitHub and locally.
+3. Merge it once the preview has been approved, or waived, and the checks on the pull request have passed.
+4. Check the production site, `https://hearhere.matteringpress.org/`, once the "Static twin" run on `main` has
+   deployed it, a few minutes after the merge.
+5. Delete the feature branch on GitHub, which also deletes its previews, and locally.
 
 Never push directly to `main`, and never copy files into `main` by hand. The
 pull request is the record of what was published.
 
-## Checking the renderer locally
+## Checking a change locally
 
-A generic static-file server does not reproduce Juncture's Markdown rendering,
-URL rewriting or asset handling, so it is not a sufficient check. The branch
-preview is the reference. Juncture's renderer (`serve.py` in
-`juncture-digital/juncture`) can be run locally to test without pushing, but its
-local mode does not resolve this repository's paths on its own; it needs a small
-wrapper that sets the owner, repository and branch.
-
-The Juncture compatibility rules in `AGENTS.md` apply to every change.
+`npm run build` and `npm run serve` in `every_trick/` (see "Static twin" below) show the site at `http://localhost:8080/`,
+made by the same build as the previews and the public site. Check the pages you changed there before pushing, at
+desktop and phone widths. The private preview adds only the real hosting.
 
 ## Static twin
 
 The static twin is a plain static copy of the whole book, built from the same Markdown with Pandoc,
-so that the book does not depend on Juncture alone. During the parallel run Juncture stays the public
-site, and every page of the twin tells search engines not to index it (the `NOINDEX` setting at the
-top of `every_trick/build.mjs`). The Markdown is not changed for the twin; the build reads Juncture's syntax.
+so that the book does not depend on Juncture alone. Since version 0.1 (2026-11-20) it is the public site,
+open to search engines (the `NOINDEX` setting at the top of `every_trick/build.mjs` is off). Existing pages keep
+Juncture's syntax, which the build reads; new content may use the Pandoc conventions in `every_trick/CONTRACT.md`.
 
 To build and preview it locally you need Node.js 20.11 or later and Pandoc 3.8:
 
@@ -126,7 +122,7 @@ npm run build   # writes ../_site/ in about ten seconds
 npm run check   # every internal link and local file in _site/ exists
 npm run test:csl  # the house citation style against the style guide's examples
 npm run serve   # http://localhost:8080/
-npm run serve -- --base /Hear-Here-Spatial-Practices/   # the address layout of GitHub Pages
+npm run serve -- --base /Hear-Here-Spatial-Practices/   # under a path, as on a GitHub Pages address without a custom domain
 ```
 
 If a page uses a Juncture construct the twin cannot render, the build stops and names the file and
@@ -143,12 +139,12 @@ What is in `every_trick/`:
 - `build.mjs`: the build, with its few settings at the top
 - `versions.mjs`: reads the version registry (`versions.json` at the repository root), takes each version's text from its Git tag, and matches paragraphs between versions
 - `convert.mjs`: turns Juncture's `.ve-*` lines and its raw HTML (audio, iframes, videos) into Pandoc Markdown
-- `filters/`: Lua filters, one job each. `to-markdown.lua` is stage 1 (writes the Markdown view); `figures`, `embeds`, `cards`, `transcript`, `links`, `citations`, `paragraphs` and `contract` are stage 2 (Markdown view to HTML and `page.json`)
+- `filters/`: Lua filters, one job each. `to-markdown.lua` is stage 1 (writes the Markdown view); `figures`, `embeds`, `cards`, `transcript`, `links`, `citations`, `paragraphs`, `margins` and `contract` are stage 2 (Markdown view to HTML and `page.json`)
 - `citations.mjs`: prepares the bibliography for `filters/citations.lua` and writes the build's report on citations
 - `csl/`: `mattering-press.csl`, the house citation style, and its test (`csl/test/`)
 - `scripts/to-citation-keys.mjs`: for the switch, shows how the plain-text citations would become Pandoc citations
-- `template.html`: the HTML around every page
-- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `zoom.js`, `seek.js`, `citations.js`, `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read)
+- `template.html`: the HTML around every page. It links the stylesheet and scripts with `?v=` and a hash of their contents, so that browsers fetch them again after every change instead of keeping an old copy
+- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `zoom.js`, `seek.js`, `citations.js`, `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens)
 - `images.mjs`: resized images and the tiles for zooming
 - `check.mjs`, `serve.mjs`: the link check and the local server
 - `CONTRACT.md`: the `page.json` and `publication.json` files that other frontends can read, and the paragraph rule
@@ -156,10 +152,10 @@ What is in `every_trick/`:
 - `CHANGELOG.md`: every version of the toolkit and what changed in it
 
 GitHub Actions (`.github/workflows/static-twin.yml`) builds and checks the twin on every push and pull
-request. It fetches the whole history with its tags, so that it can build the frozen versions. On `main` it also deploys `_site/` to GitHub Pages
-(`https://mattering-press.github.io/Hear-Here-Spatial-Practices/`), but only once Pages is enabled in
-the repository settings with "GitHub Actions" as the source; until then the deploy job is skipped.
-`_site/` is never committed.
+request, and uploads every pushed branch as a private preview (see "Private previews"). It fetches the whole
+history with its tags, so that it can build the frozen versions. On `main` it also deploys `_site/` to GitHub
+Pages, which serves it at `https://hearhere.matteringpress.org/` (the deploy is skipped if Pages is not enabled
+with "GitHub Actions" as its source). `_site/` is never committed.
 
 ### Paragraph numbers
 
@@ -174,7 +170,7 @@ site is rebuilt:
 - every paragraph of text gets the next number, including paragraphs in quotations, each item of a list, and each
   turn of speech in a transcript;
 - headings, pictures and their captions, audio and video players, picture galleries, the cards that lead to other
-  pages, the reference list at the end of a chapter, and the header and footer get no number;
+  pages, notes in the margin, the reference list at the end of a chapter, and the header and footer get no number;
 - a paragraph that holds only a timecode such as `[00:10:13]`, or only a picture, gets no number;
 - a short line on its own, such as **Addendum** or `[music]`, is a paragraph like any other and gets a number.
 
@@ -336,7 +332,8 @@ their branch.
   The workflow run's summary on GitHub lists both.
 - **Who can see them:** only the email addresses on the project's Access list. A visitor enters their email and
   receives a one-time code; no account or password is needed.
-- **Search engines:** previews carry the same `noindex` as every build.
+- **Search engines:** they cannot reach previews, which are behind Access. (Builds no longer carry `noindex`
+  since version 0.1.)
 - **Cleanup:** deleting a branch on GitHub deletes its previews (`.github/workflows/preview-cleanup.yml`). Old
   previews of a branch that is kept can be deleted by running that workflow by hand.
 - **Setup:** the repository secrets `CLOUDFLARE_API_TOKEN` (an account token with only "Cloudflare Pages: Edit",
@@ -382,11 +379,11 @@ Agreed with the publisher on 2026-11-19. These fix the data; players and viewers
 
 ## Plan: margin notes
 
-Agreed with the publisher on 2026-11-19; not built yet.
+Agreed with the publisher on 2026-11-19. Text notes are built (`every_trick/filters/margins.lua`, `every_trick/assets/margins.js`); media in the margin and the print and EPUB forms are not built yet.
 
 - **What:** short notes, links and small media thumbnails in a right-hand margin column. Paragraph numbers keep the left margin.
 - **Where they live in the source:** directly after the paragraph they belong to (`::: {.margin}` … `:::`), or attached to a word (`[given by Germany in 1962]{.margin}`). They are never stored by paragraph number, so they move with their paragraph from version to version. While Juncture still renders the site, write them as `<aside class="margin" markdown="1">…</aside>`, which the build converts.
-- **Layout on wide screens:** notes float in the margin starting level with their paragraph. When the margin is crowded, later notes are pushed down, so the text column never gets gaps. A marker in the text and the same mark on the note highlight together on hover and focus. Long notes show a few lines, then "more".
+- **Layout on wide screens:** notes float in the margin starting level with their paragraph. When the margin is crowded, later notes are pushed down, so the text column never gets gaps. A marker in the text and the same mark on the note highlight together on hover and focus. Notes show in full (the publisher's preset, 2026-11-20). Setting `--margin-note-lines` in `every_trick/assets/site.css` above 0 makes long notes show that many lines, then "more".
 - **Phones, no JavaScript and screen readers:** a note stays in reading order directly after its paragraph, as a labelled aside.
 - **Print and EPUB:** decided per note: an endnote, a small figure with address and QR code, or web-only.
 - **Numbering:** text notes are numbered per chapter (`n1`, `n2`), matching the endnote numbers they get in print; media in the margin are figures with `Fig. 2.3` numbers and their own item addresses; plain links are not numbered; paragraph numbers ignore the margin. Details in `every_trick/CONTRACT.md`.

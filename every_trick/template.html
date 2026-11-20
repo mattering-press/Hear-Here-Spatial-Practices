@@ -7,16 +7,17 @@ $if(noindex)$
   <meta name="robots" content="noindex">
 $endif$
   <title>$pagetitle$$if(site-title)$ · $site-title$$endif$</title>
-  <link rel="stylesheet" href="$shared$assets/site.css">
+  <link rel="stylesheet" href="$shared$assets/site.css?v=$asset-version$">
 $if(views)$
   <link rel="alternate" type="text/markdown" href="index.md">
   <link rel="alternate" type="application/json" href="page.json">
 $endif$
-  <script src="$shared$assets/zoom.js" defer></script>
-  <script src="$shared$assets/seek.js" defer></script>
-  <script src="$shared$assets/paragraphs.js" defer></script>
+  <script src="$shared$assets/zoom.js?v=$asset-version$" defer></script>
+  <script src="$shared$assets/seek.js?v=$asset-version$" defer></script>
+  <script src="$shared$assets/paragraphs.js?v=$asset-version$" defer></script>
+  <script src="$shared$assets/margins.js?v=$asset-version$" defer></script>
 $if(has-citations)$
-  <script src="$shared$assets/citations.js" defer></script>
+  <script src="$shared$assets/citations.js?v=$asset-version$" defer></script>
 $endif$
 $if(annotations)$
   $annotations$

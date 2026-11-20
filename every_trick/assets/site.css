@@ -41,6 +41,9 @@
 
   /* paragraph numbers: 1 shows them in the margin; 0 hides them (the ¶ link still appears on hover and focus) */
   --paragraph-numbers: 1;
+
+  /* margin notes: how many lines a long note shows in the margin before "more"; 0 shows every note in full */
+  --margin-note-lines: 0;
 }
 
 /* base */
@@ -106,6 +109,23 @@ main { position: relative; padding-left: var(--column-inset, var(--gap)); }
 .copy-status { position: fixed; left: 50%; bottom: 1rem; z-index: 20; max-width: calc(100vw - 2rem); padding: 0.5rem 1rem; transform: translateX(-50%); border-radius: 6px; background: var(--colour-text); color: var(--colour-surface); box-shadow: var(--shadow); font-size: 0.875rem; overflow-wrap: anywhere; }
 .copy-status:not(.is-shown) { width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); }
 
+/* margin notes (filters/margins.lua, assets/margins.js): a small mark in the text and the same number on the note.
+   Without JavaScript and on narrow screens a note stays after its paragraph; on wide screens margins.js sets it in
+   the right-hand margin (main.has-margin), level with its paragraph, in full; with --margin-note-lines above 0, a long
+   note shows that many lines, then "more". */
+.margin-mark { margin-left: 0.15em; font-size: 0.75em; font-weight: var(--weight-strong); line-height: 0; vertical-align: super; text-decoration: none; }
+aside.margin { position: relative; margin: var(--space) 0; padding: 0.6rem 1rem 0.6rem 2.25rem; border-left: 4px solid var(--colour-rule); background: var(--colour-surface); font-size: 0.875rem; line-height: 1.45; scroll-margin-top: var(--space); }
+aside.margin :is(p, ol, ul) { margin: 0 0 0.5rem; }
+aside.margin :is(ol, ul) { padding-left: 1.25rem; }
+aside.margin .margin-body > :last-child { margin-bottom: 0; }
+.margin-number { position: absolute; left: 0.75rem; top: 0.6rem; color: var(--colour-accent); font-weight: var(--weight-strong); text-decoration: none; }
+.margin-more { margin-top: 0.25rem; padding: 0; border: 0; background: none; color: var(--colour-link); font: inherit; font-weight: var(--weight-strong); text-decoration: underline; cursor: pointer; }
+:is(aside.margin, .margin-mark).is-active, aside.margin:target { border-left-color: var(--colour-accent); background: var(--colour-highlight); }
+.margin-mark.is-active { background: var(--colour-highlight); border-radius: 3px; }
+main.has-margin aside.margin { position: absolute; left: calc(100% + 1.5rem); width: min(18rem, calc((100vw - var(--measure)) / 2 - 3rem)); margin: 0; padding: 0 0 0 1.5rem; border-left: 0; background: none; }
+main.has-margin aside.margin.is-active, main.has-margin aside.margin:target { box-shadow: -4px 0 0 var(--colour-accent); }
+main.has-margin .margin-number { left: 0; top: 0; }
+main.has-margin aside.margin.is-long:not(.is-open) .margin-body { max-height: var(--margin-lines-height); overflow: hidden; mask-image: linear-gradient(to bottom, #000 60%, transparent); }
 /* the notice on a frozen version, with a link to the same passage in the newer text */
 .version-notice { padding: 0.6rem var(--gap); border-bottom: 3px solid var(--colour-accent); background: var(--colour-surface); font-size: 0.9375rem; }
 .version-notice p { max-width: var(--wide); margin: 0 auto; }

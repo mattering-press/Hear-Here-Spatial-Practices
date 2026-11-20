@@ -13,8 +13,9 @@ package.path = pandoc.path.directory(PANDOC_SCRIPT_FILE) .. '/?.lua;' .. package
 local lib = require 'lib'
 os.setlocale('C', 'ctype')   -- %p and %c match ASCII only, never a byte inside a UTF-8 character
 
--- Divs whose contents are never reading paragraphs: media, card lists, and what the citation filter added.
-local SKIP = { video = true, embed = true, audio = true, gallery = true, cards = true, ['typed-reference'] = true, ['citation-popovers'] = true }
+-- Divs whose contents are never reading paragraphs: media, card lists, margin notes (paragraph numbers ignore the
+-- margin) and what the citation filter added.
+local SKIP = { margin = true, video = true, embed = true, audio = true, gallery = true, cards = true, ['typed-reference'] = true, ['citation-popovers'] = true }
 
 -- Punctuation that the normalised text leaves out, besides ASCII punctuation.
 local PUNCT = { '‘', '’', '‚', '‛', '“', '”', '„', '‟', '–', '—', '―', '‐', '‑', '…', '•', '·', '«', '»', '‹', '›', '¶', '§', '′', '″', '\u{00A0}', '\u{2009}', '\u{202F}' }
