@@ -25,7 +25,8 @@ import { checkout, longDate, matchParagraphs, readRegistry } from './versions.mj
 // ---- Settings ------------------------------------------------------------------------------------------
 const NOINDEX = false;  // true hides every page from search engines (it was true while Juncture served the public site)
 const PUBLICATION = { creators: ['Nirmal Puwar'], publisher: 'Mattering Press', language: 'en' };
-const CONTRACT = '0.3';  // version of the page.json / publication.json format, and of the paragraph rule
+const CONTRACT = '0.4';  // version of the page.json / publication.json format, and of the paragraph rule for new text
+// A frozen version keeps the paragraph rule of the contract it was frozen under ("contract" in versions.json).
 // every_trick_in_the_book, the toolkit in this folder. Every footer names it with its version (every_trick/package.json),
 // and links the name to its home and the version to the list of what changed in each version.
 const TOOLKIT_HOME = 'https://github.com/every-trick/every_trick_in_the_book';
@@ -67,7 +68,7 @@ try { registry = readRegistry(); } catch (e) { fail(`The version registry has pr
 const lastChange = spawnSync('git', ['-C', REPO_ROOT, 'log', '-1', '--format=%cs'], { encoding: 'utf8' }).stdout?.trim() || new Date().toISOString().slice(0, 10);
 const latest = {
   dir: '', name: 'the working text', contentRoot: REPO_ROOT, has: (path) => existsSync(join(REPO_ROOT, path)), take: () => REPO_ROOT,
-  version: { id: 'latest', label: LATEST_LABEL, date: lastChange, status: 'latest' }, annotations: 'none',
+  version: { id: 'latest', label: LATEST_LABEL, date: lastChange, status: 'latest' }, annotations: 'none', rule: CONTRACT,
 };
 const editions = [latest];
 for (const entry of registry) {
@@ -76,6 +77,7 @@ for (const entry of registry) {
   editions.push({
     dir: `v${entry.id}/`, name: `version ${entry.id} (tag ${entry.tag})`, contentRoot: text.root, has: text.has, take: text.take, commit: text.commit,
     version: { id: entry.id, label: entry.label, date: entry.date, status: entry.status }, annotations: entry.annotations, group: entry.hypothesisGroup,
+    rule: entry.contract,
   });
 }
 // Which edition a frozen one points its readers to: an older release to the newest release, anything else (a review
@@ -231,7 +233,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     const headerStyle = headerImage ? `background-image: url('${join2(root, headerImage.url)}')`
       : page.header.colour ? `background-color: ${page.header.colour.replace(/[^#\w(),.% -]/g, '')}` : '';
     let html = pandoc(['-f', 'markdown-implicit_figures', '-t', 'html5', '--wrap=none', '-s', '--template', join(KIT, 'template.html'), '--metadata-file', yaml,
-      ...metaArgs({ ...meta, ...toolkitMeta, root, shared, 'asset-version': ASSET_VERSION, views: 'true', citations: references.indexPath, 'header-style': headerStyle, 'site-title': page === edition.home ? '' : edition.home.title, noindex: NOINDEX ? 'true' : '' }),
+      ...metaArgs({ ...meta, ...toolkitMeta, root, shared, 'paragraph-rule': edition.rule, 'asset-version': ASSET_VERSION, views: 'true', citations: references.indexPath, 'header-style': headerStyle, 'site-title': page === edition.home ? '' : edition.home.title, noindex: NOINDEX ? 'true' : '' }),
       ...filterArgs(FILTERS)], readFileSync(join(dir, 'index.md'), 'utf8'), page.file);
     const data = JSON.parse(readFileSync(contractOut, 'utf8'));
     const paragraphs = list(data.paragraphs);
@@ -247,7 +249,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
 
     page.url = url || './';
     writeFileSync(join(dir, 'page.json'), JSON.stringify({
-      contract: CONTRACT, id: page.file, url: page.url, title: page.title, subtitle: page.subtitle,
+      contract: CONTRACT, paragraphRule: edition.rule, id: page.file, url: page.url, title: page.title, subtitle: page.subtitle,
       version: edition.version, kit: KIT_VERSION,
       markdown: `${url}index.md`,
       headings: list(data.headings).map(({ level, text, id }) => ({ level, text, id })),
@@ -265,7 +267,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
   const home = edition.home;
   const versionsList = [latest, ...editions.slice(1).reverse()].map((e) => ({ ...e.version, url: e === edition ? './' : prefix + e.dir || './' }));
   writeFileSync(join(out, 'publication.json'), JSON.stringify({
-    contract: CONTRACT, title: home.title, subtitle: home.subtitle, ...PUBLICATION, url: siteUrl + edition.dir, markdown: 'publication.md',
+    contract: CONTRACT, paragraphRule: edition.rule, title: home.title, subtitle: home.subtitle, ...PUBLICATION, url: siteUrl + edition.dir, markdown: 'publication.md',
     version: edition.version, kit: KIT_VERSION, versions: versionsList,
     readingOrder: edition.order.map((file) => ({ id: file, url: edition.byFile.get(file).url, title: edition.byFile.get(file).title })),
   }, null, 2) + '\n');
