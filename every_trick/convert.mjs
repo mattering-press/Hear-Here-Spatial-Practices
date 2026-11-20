@@ -1,10 +1,8 @@
 // Turns one Juncture page (Markdown with .ve-* tags) into Pandoc Markdown, and lists what the page needs:
 // images to resize, files to copy, warnings, and anything it could not handle. No dependencies.
 //
-//   convert(source, file, { exists }) -> { markdown, title, subtitle, header, menu, footer, cards, cardImages, images,
-//                              files, handled, warnings, unhandled, exceptions }
-//   cardImages maps each page a card leads to onto the card's picture ({ src, alt }); build.mjs shows that picture
-//   beside the title of the page it leads to.
+//   convert(source, file, { exists }) -> { markdown, title, subtitle, header, menu, footer, cards, images, files,
+//                              handled, warnings, unhandled, exceptions }
 //   exists(path) says whether a repository file is there (default: in the working tree; for a frozen version, in its tag)
 //   node convert.mjs essays/walk.md      prints the converted Markdown (paths are relative to the repository)
 //
@@ -66,10 +64,10 @@ const inWorkingTree = (path) => existsSync(join(REPO_ROOT, path));
 
 export function convert(source, file, { exists = inWorkingTree } = {}) {
   const lines = source.split(/\r?\n/);
-  const page = { title: null, subtitle: null, header: {}, menu: [], footer: [], cards: [], cardImages: {}, images: [], files: [] };
+  const page = { title: null, subtitle: null, header: {}, menu: [], footer: [], cards: [], images: [], files: [] };
   const handled = [], warnings = [], unhandled = [];
   const out = [];
-  let fence = false, cardLevel = 0, cardTarget = null;
+  let fence = false, cardLevel = 0;
 
   const warn = (line, text) => warnings.push({ file, line, text });
   const fail = (line, text, why) => unhandled.push({ file, line, text: text.trim(), why });
@@ -145,26 +143,19 @@ export function convert(source, file, { exists = inWorkingTree } = {}) {
     const heading = /^(#{1,6})\s.*?(\{[^}]*\})?\s*$/.exec(line);
     if (heading) {
       const level = heading[1].length;
-      cardTarget = null;
       if (cardLevel && level <= cardLevel) cardLevel = 0;
       if (/\.cards\b/.test(heading[2] || '')) cardLevel = level;
       else if (cardLevel) {
         const href = /href=("([^"]*)"|\S+?)\s*\}/.exec(heading[2] || '');
-        if (href) page.cards.push(cardTarget = repoPath(href[2] ?? href[1], file));
+        if (href) page.cards.push(repoPath(href[2] ?? href[1], file));
       }
     }
 
-    // Markdown images ![alt](/media/…): card thumbnails or inline images. A card's first picture also becomes the
-    // lead picture of the page the card leads to.
+    // Markdown images ![alt](/media/…): card thumbnails or inline images.
     for (const m of line.matchAll(IMAGE_RE)) {
       if (/^[a-z][\w+.-]*:/i.test(m[2])) continue;               // remote image, e.g. footer logos
       if (!m[1].trim()) warn(n, `image without alt text: ${m[2]}`);
-      const src = repoPath(m[2], file);
-      addImage(n, src, cardLevel ? 'card' : 'inline');
-      if (cardLevel && cardTarget && !page.cardImages[cardTarget]) {
-        page.cardImages[cardTarget] = { src, alt: m[1].trim() };
-        addImage(n, src, 'lead');
-      }
+      addImage(n, repoPath(m[2], file), cardLevel ? 'card' : 'inline');
     }
 
     // Links to repository files, relative or on GitHub, should point at files that exist.
@@ -202,7 +193,7 @@ export function convert(source, file, { exists = inWorkingTree } = {}) {
       page.title = bare.find((a) => a.quoted)?.value ?? null;
       page.subtitle = args.find((a) => a.key === 'subtitle')?.value ?? null;
       const bg = args.find((a) => a.key === 'background') || bare.find((a) => !a.quoted);
-      if (bg && ghPath(bg.value)) { page.header.image = ghPath(bg.value); addImage(n, page.header.image, 'lead'); }
+      if (bg && ghPath(bg.value)) { page.header.image = ghPath(bg.value); addImage(n, page.header.image, 'header'); }
       else if (bg) page.header.colour = bg.value;
       for (const a of args) if (a.key && !['subtitle', 'background'].includes(a.key)) fail(n, line, `.ve-header option ${a.key}= is not supported`);
       page.menu = items.map((item) => item.text);

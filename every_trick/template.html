@@ -53,7 +53,10 @@ $if(views)$
       </nav>
 $endif$
     </div>
-    <div class="page-opener$if(page-image)$ has-image$endif$$if(is-cover)$ is-cover$endif$">
+    <div class="page-opener$if(page-band)$ has-band$endif$$if(is-cover)$ is-cover$endif$">
+$if(page-band)$
+      <div class="page-opener__band">$page-band$</div>
+$endif$
       <div class="page-opener__inner">
         <div class="page-opener__text">
 $if(section-title)$

@@ -1,7 +1,7 @@
 // Resized copies of the book's photographs, and static IIIF tiles for the zoomable ones (uses sharp).
 //   figure, inline  ->  images/<name>-1600.jpg, 1600 px on the long edge
 //   figure          ->  also iiif/<name>/: info.json and 512 px tiles (IIIF Image API 2, level 0)
-//   lead            ->  images/<name>-1200.jpg, 1200 px on the long edge: the picture beside a page's title
+//   header          ->  images/<name>-2000.jpg, 2000 px wide: the band behind a page's title
 //   card, poster    ->  images/<name>-800.jpg, 800 px wide
 // A photo's EXIF orientation is applied, as browsers do. Juncture's rotation=90 instead turns the stored
 // pixels clockwise, as Juncture's image service does (that service ignores the EXIF orientation).
@@ -10,8 +10,8 @@ import { availableParallelism } from 'node:os';
 import { join } from 'node:path';
 import sharp from 'sharp';
 
-const SIZES = { figure: 1600, inline: 1600, lead: 1200, card: 800, poster: 800 };
-const LONG_EDGE = new Set(['figure', 'inline', 'lead']);
+const SIZES = { figure: 1600, inline: 1600, header: 2000, card: 800, poster: 800 };
+const LONG_EDGE = new Set(['figure', 'inline']);
 const TILE = 512;
 const JPEG = { quality: 80, progressive: true, mozjpeg: true };
 const TILE_JPEG = { quality: 80 };

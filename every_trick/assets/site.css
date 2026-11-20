@@ -38,9 +38,11 @@
   --radius: 4px;
   --shadow: 0 4px 12px rgb(0 0 0 / 0.08);
 
-  /* the page's opening: the height of its picture, and of the book's cover on the home page */
-  --opener-picture: 13rem;
+  /* the page's opening: its height (the same on every page, with or without a header picture), and the height
+     of the book's cover on the home page */
+  --opener-height: 11rem;
   --opener-cover: 20rem;
+  --band-shade: linear-gradient(rgb(0 0 0 / 0.35), rgb(0 0 0 / 0.65));   /* over the header picture, under the title */
 
   /* paragraph numbers: 1 shows them in the margin; 0 hides them (the ¶ link still appears on hover and focus) */
   --paragraph-numbers: 1;
@@ -87,21 +89,22 @@ img, iframe, video, object { max-width: 100%; }
 .view-switcher a:hover { color: var(--colour-header-text); }
 .view-switcher a[aria-current] { background: var(--colour-header-text); color: var(--colour-header); }
 
-/* the page's opening: section, title and subtitle, with the page's picture beside them (the book's cover on the
-   home page). The picture keeps its proportions and a fixed height, so the opening has the same height on every
-   page; the title starts where the text column starts. */
-.page-opener { border-top: 1px solid rgb(255 255 255 / 0.14); container-type: inline-size; }
-.page-opener__inner { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 1.25rem 2.5rem; max-width: var(--wide); margin: 0 auto; padding: 2rem var(--gap) 2.25rem; }
-.page-opener.has-image .page-opener__inner { min-height: calc(var(--opener-picture) + 4.25rem); }
+/* the page's opening: section, title and subtitle over the page's header picture, cropped to a band of the same
+   height on every page (the home page shows the book's cover beside its title instead). The title starts where the
+   text column starts. */
+.page-opener { position: relative; border-top: 1px solid rgb(255 255 255 / 0.14); container-type: inline-size; }
+.page-opener__band { position: absolute; inset: 0; overflow: hidden; }
+.page-opener__band::after { content: ""; position: absolute; inset: 0; background: var(--band-shade); }
+.page-opener__band img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.page-opener__inner { position: relative; box-sizing: border-box; min-height: var(--opener-height); display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 1.25rem 2.5rem; max-width: var(--wide); margin: 0 auto; padding: 2rem var(--gap) 2.25rem; }
 .page-opener__text { padding-left: calc(max(0px, (min(100cqw, var(--wide)) - var(--measure)) / 2) + var(--number-room, 0rem)); }
 .page-section { margin: 0 0 0.6rem; font-size: 0.8125rem; font-weight: var(--weight-strong); letter-spacing: 0.12em; text-transform: uppercase; }
 .page-section a { color: var(--colour-header-muted); text-decoration: none; }
 .page-section a:hover { color: var(--colour-header-text); text-decoration: underline; }
 .page-title { margin: 0; font-size: clamp(1.75rem, 1.2rem + 2vw, 2.6rem); font-weight: 700; line-height: 1.12; letter-spacing: -0.01em; }
 .page-subtitle { margin: 0.75rem 0 0; font-size: clamp(0.95rem, 0.8rem + 0.6vw, 1.2rem); font-style: italic; font-weight: 400; letter-spacing: 0.22em; text-transform: uppercase; }
-.page-opener__image img { display: block; height: var(--opener-picture); width: auto; max-width: min(28rem, 45cqw); object-fit: cover; }
 .page-opener.is-cover .page-opener__inner { min-height: calc(var(--opener-cover) + 4.25rem); }
-.page-opener.is-cover .page-opener__image img { height: var(--opener-cover); }
+.page-opener__image img { display: block; height: var(--opener-cover); width: auto; max-width: min(28rem, 45cqw); }
 
 /* text column */
 main { max-width: var(--measure); margin: 0 auto; padding: 2.25rem var(--gap) 3rem; overflow-wrap: break-word; }
@@ -263,9 +266,10 @@ a.toolkit-name, a .toolkit-name, .toolkit-name a, .built-with a { text-underline
 /* phones: the picture above the title, both in line with the bar; figures stop floating; the footer shows the
    publisher's icon */
 @media (max-width: 40rem) {
-  :root { --font-size: 1.0625rem; --opener-picture: 12rem; --opener-cover: 17rem; }
+  :root { --font-size: 1.0625rem; --opener-height: 9.5rem; --opener-cover: 17rem; }
   .page-opener { --number-room: 0rem; }
-  .page-opener__inner, .page-opener.has-image .page-opener__inner, .page-opener.is-cover .page-opener__inner { grid-template-columns: minmax(0, 1fr); min-height: 0; padding: 1.25rem var(--gap) 1.75rem; }
+  .page-opener__inner { grid-template-columns: minmax(0, 1fr); padding: 1.25rem var(--gap) 1.5rem; }
+  .page-opener.is-cover .page-opener__inner { min-height: 0; }
   .page-opener__image { order: -1; }
   .page-opener__image img { max-width: 100%; }
   figure.left, figure.right, main iframe.left, main iframe.right { float: none; width: 100%; margin-left: 0; margin-right: 0; }

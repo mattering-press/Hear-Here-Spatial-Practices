@@ -40,7 +40,7 @@ const LATEST_LABEL = 'Latest text, unreleased';
 // the repository. The cover may be an animated GIF: the build turns it into an animated WebP, with its first frame
 // as a still for readers who ask their system for less motion.
 const FRAME = {
-  cover: { src: 'media/cover/tea.gif', alt: 'A glass of tea on the boulder font in Coventry Cathedral, in front of the Baptistery window' },
+  cover: { src: 'media/cover/tea.gif', alt: 'A glass of tea on the boulder font in Coventry Cathedral' },
   credit: 'convened by Nirmal Puwar',
   publisherUrl: 'https://www.matteringpress.org/',
   logo: 'media/publisher/mattering-press-logo.svg',
@@ -126,16 +126,9 @@ for (const edition of editions) {
   // Every page shows the home page's menu, its links made root-absolute so that they work from any page.
   edition.menu = edition.home.menu.map((item) => item.replace(/\]\(([^)\s]+)\)/g, (m, target) =>
     (/^([a-z][\w+.-]*:|#)/i.test(target) ? m : `](/${repoPath(target, edition.home.file).replace(/^\.$/, '')})`)));
-  // A page's section is the page whose cards lead to it (Podcasts for each podcast), and its lead picture is that
-  // card's picture, else the picture in its own .ve-header. The first card in reading order wins.
+  // A page's section is the page whose cards lead to it (Podcasts for each podcast); the first in reading order wins.
   edition.section = new Map();
-  edition.lead = new Map();
-  for (const file of order) {
-    const page = edition.byFile.get(file);
-    for (const target of page.cards) if (!edition.section.has(target)) edition.section.set(target, file);
-    for (const [target, image] of Object.entries(page.cardImages)) if (!edition.lead.has(target)) edition.lead.set(target, image);
-  }
-  for (const page of edition.pages) if (!edition.lead.has(page.file) && page.header.image) edition.lead.set(page.file, { src: page.header.image, alt: '' });
+  for (const file of order) for (const target of edition.byFile.get(file).cards) if (!edition.section.has(target)) edition.section.set(target, file);
 }
 
 // 3. Images, zoom tiles, and the repository files that pages embed (data-repo-* in essays/walk.md), made once for
@@ -215,8 +208,6 @@ const frameMeta = (edition, s) => ({
 // The cover on the home page: animated, or its first frame for readers who ask for less motion.
 const coverHtml = (s) => `<picture><source srcset="${esc(s + cover.still)}" media="(prefers-reduced-motion: reduce)">` +
   `<img src="${esc(s + cover.animated)}" width="${cover.width}" height="${cover.height}" alt="${esc(FRAME.cover.alt)}" fetchpriority="high"></picture>`;
-// A page without a picture of its own (the versions page) shows the cover's still, as decoration.
-const stillHtml = (s) => `<img src="${esc(s + cover.still)}" width="${cover.width}" height="${cover.height}" alt="">`;
 // The metadata file that stage 2 reads: the menu, and values of raw HTML (version notice, footer line, picture).
 const writeYaml = (file, menu, extra) => writeFileSync(file, [
   menu.length ? `menu:\n${menu.map((item) => `  - ${JSON.stringify(item)}`).join('\n')}\n` : '',
@@ -262,12 +253,11 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     writeFileSync(join(dir, 'index.md'), bracedDivs(pandoc([...toMarkdown, '-s', ...metaArgs({ ...meta, ...versionMeta(edition), root })], page.markdown, page.file)));
     page.markdownBody = bracedDivs(pandoc([...toMarkdown, ...metaArgs({ ...meta, root: siteUrl + edition.dir, 'title-heading': 'true' })], page.markdown, page.file)).trim();
 
-    // stage 2: HTML from the Markdown view, with the menu, the page's lead picture, the footer and the version
+    // stage 2: HTML from the Markdown view, with the menu, the page's header band or the cover, the footer and the version
     // notice as metadata. The same frame, with the page's Markdown as its text, makes the Markdown view's page.
     const there = target && target.paragraphs.get(page.file);   // this page in the edition the notice points to
     const section = edition.section.get(page.file);
-    const lead = page === edition.home ? null : edition.lead.get(page.file);
-    const leadImage = lead && editionImages[`lead|${lead.src}|0`];
+    const band = page !== edition.home && page.header.image && editionImages[`header|${page.header.image}|0`];
     // the frame of this page as seen from `from`, the page's own folder ('') or its Markdown view ('markdown/')
     const frame = (from) => {
       const r = from ? deeper(root) : root, s = join2(r, prefix) || './';
@@ -284,8 +274,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
           `<a class="version-notice__link" href="${esc(href)}" data-paragraphs="{}">${esc(link)}</a>.</p></aside>`;
       }
       if (page === edition.home && cover) extra.page_image = coverHtml(s);
-      else if (leadImage) extra.page_image = `<img src="${esc(join2(r, leadImage.url))}" width="${leadImage.width}" height="${leadImage.height}" alt="${esc(lead.alt)}" fetchpriority="high">`;
-      else if (cover) extra.page_image = stillHtml(s);
+      else if (band) extra.page_band = `<img src="${esc(join2(r, band.url))}" width="${band.width}" height="${band.height}" alt="" fetchpriority="high">`;
       const yaml = join(scratch, page.file.replace(/\W/g, '_') + (from ? '.markdown' : '') + '.yaml');
       writeYaml(yaml, edition.menu, extra);
       return ['--metadata-file', yaml, ...metaArgs({ ...meta, ...toolkitMeta, ...frameMeta(edition, s), root: r, shared: s, 'paragraph-rule': edition.rule, 'asset-version': ASSET_VERSION, views: 'true',
@@ -373,7 +362,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
   mkdirSync(dir, { recursive: true });
   const yaml = join(work, 'versions.yaml');
   const home = latest.home;
-  writeYaml(yaml, latest.menu, { version_line: versionLine(latest, '../'), ...(cover ? { page_image: stillHtml('../') } : {}) });
+  writeYaml(yaml, latest.menu, { version_line: versionLine(latest, '../') });
   const html = pandoc(['-f', 'markdown', '-t', 'html5', '--wrap=none', '-s', '--template', join(KIT, 'template.html'), '--metadata-file', yaml,
     ...metaArgs({ page: 'versions.md', repo: REPO, manifest: latest.manifest, 'contract-out': join(work, 'versions.json'), lang: PUBLICATION.language, title: 'Versions',
       ...toolkitMeta, ...frameMeta(latest, '../'), root: '../', shared: '../', 'asset-version': ASSET_VERSION, 'site-title': home.title, 'paragraph-numbers': 'false', noindex: NOINDEX ? 'true' : '' }),
