@@ -22,12 +22,12 @@ import { makeImages } from './images.mjs';
 import { checkout, longDate, matchParagraphs, readRegistry } from './versions.mjs';
 
 // ---- Settings ------------------------------------------------------------------------------------------
-const NOINDEX = true;   // tell search engines to skip the twin while Juncture serves the public site
+const NOINDEX = false;  // true hides every page from search engines (it was true while Juncture served the public site)
 const PUBLICATION = { creators: ['Nirmal Puwar'], publisher: 'Mattering Press', language: 'en' };
 const CONTRACT = '0.3';  // version of the page.json / publication.json format, and of the paragraph rule
 // Where the site is published. publication.md uses absolute URLs built from this; the pages use relative ones.
 // It becomes 'https://hearhere.matteringpress.org/' when the site moves to its own domain.
-const siteUrl = 'https://mattering-press.github.io/Hear-Here-Spatial-Practices/';
+const siteUrl = 'https://hearhere.matteringpress.org/';
 const LATEST_LABEL = 'Latest text, unreleased';
 // ---------------------------------------------------------------------------------------------------------
 

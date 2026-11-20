@@ -194,3 +194,4 @@ a.citation { text-decoration-thickness: 1px; text-underline-offset: 0.15em; }
   figure.left, figure.right, main iframe.left, main iframe.right { float: none; width: 100%; margin-left: 0; margin-right: 0; }
   main h2 { padding-left: 0.75rem; }
 }
+.built-with { margin: 0.5rem 0 0; font-size: 0.85em; opacity: 0.8; }
