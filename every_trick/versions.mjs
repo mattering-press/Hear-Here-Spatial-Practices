@@ -14,6 +14,8 @@ import { REPO_ROOT } from './convert.mjs';
 
 export const REGISTRY = join(REPO_ROOT, 'versions.json');
 const STATUS = ['review', 'release'], ANNOTATIONS = ['none', 'hypothesis'];
+// Contracts whose paragraph rule the build knows (CONTRACT.md, "Paragraph numbers"): a frozen version is numbered by its own.
+const RULES = ['0.3', '0.4'];
 
 function git(args, { binary = false, input } = {}) {
   const result = spawnSync('git', ['-C', REPO_ROOT, ...args], { encoding: binary ? 'buffer' : 'utf8', maxBuffer: 1 << 30, input });
@@ -42,6 +44,7 @@ export function readRegistry() {
     if (!STATUS.includes(v.status)) problems.push(`${where}: "status" must be ${STATUS.join(' or ')}`);
     if (!ANNOTATIONS.includes(v.annotations ?? 'none')) problems.push(`${where}: "annotations" must be ${ANNOTATIONS.join(' or ')}`);
     if (v.hypothesisGroup !== undefined && typeof v.hypothesisGroup !== 'string') problems.push(`${where}: "hypothesisGroup" must be text`);
+    if (!RULES.includes(v.contract)) problems.push(`${where}: "contract" must be the contract it was frozen under, whose paragraph rule numbers it: ${RULES.join(' or ')}`);
   });
   if (problems.length) throw new Error(problems.join('\n'));
   return list.map((v, i) => ({ annotations: 'none', hypothesisGroup: '', ...v, position: i }))
@@ -49,7 +52,7 @@ export function readRegistry() {
     .map(({ position, ...v }) => v);
 }
 
-// The version's text from its tag. The kit is never taken from the tag: every version is built with the current one.
+// The version's text from its tag. The toolkit is never taken from the tag: every version is built with the current one.
 // -> { root, commit, has(path), take(path) }: take copies a file of the tag (a media file) into root.
 export function checkout(version, dir) {
   const tag = `refs/tags/${version.tag}`;

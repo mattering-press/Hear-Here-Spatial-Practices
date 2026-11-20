@@ -9,12 +9,17 @@
 -- filters, and reads their output as what it was in the Markdown (a figure, a video, a card list). The paragraph
 -- texts, normalised, and a short hash of each go to page.json (contract.lua), so that versions can be matched.
 -- With -M paragraph-numbers=false (the versions page) nothing is numbered.
+--
+-- -M paragraph-rule=<contract> numbers a frozen version by the rule of the contract it was frozen under, so that its
+-- numbers never change (versions.json, "contract"). Rules: 0.3 numbers each item of a list; 0.4 (the current one)
+-- numbers a whole list as one paragraph, <div id="p12" class="para para-list"><a class="para-link" …></a><ul>…</ul></div>.
 package.path = pandoc.path.directory(PANDOC_SCRIPT_FILE) .. '/?.lua;' .. package.path
 local lib = require 'lib'
 os.setlocale('C', 'ctype')   -- %p and %c match ASCII only, never a byte inside a UTF-8 character
 
--- Divs whose contents are never reading paragraphs: media, card lists, and what the citation filter added.
-local SKIP = { video = true, embed = true, audio = true, gallery = true, cards = true, ['typed-reference'] = true, ['citation-popovers'] = true }
+-- Divs whose contents are never reading paragraphs: media, card lists, margin notes (paragraph numbers ignore the
+-- margin) and what the citation filter added.
+local SKIP = { margin = true, video = true, embed = true, audio = true, gallery = true, cards = true, ['typed-reference'] = true, ['citation-popovers'] = true }
 
 -- Punctuation that the normalised text leaves out, besides ASCII punctuation.
 local PUNCT = { '‘', '’', '‚', '‛', '“', '”', '„', '‟', '–', '—', '―', '‐', '‑', '…', '•', '·', '«', '»', '‹', '›', '¶', '§', '′', '″', '\u{00A0}', '\u{2009}', '\u{202F}' }
@@ -87,6 +92,9 @@ function Pandoc(doc)
   lib.init(doc.meta)
   local setting = doc.meta['paragraph-numbers']   -- -M paragraph-numbers=false arrives as a boolean
   if setting == false or (setting and pandoc.utils.stringify(setting) == 'false') then return nil end
+  local rule = doc.meta['paragraph-rule'] and pandoc.utils.stringify(doc.meta['paragraph-rule']) or '0.4'
+  if rule ~= '0.3' and rule ~= '0.4' then error('paragraphs.lua: unknown paragraph rule ' .. rule .. ' (known: 0.3, 0.4)') end
+  local whole_lists = rule ~= '0.3'
   local paragraphs = {}
   local references_level = nil   -- inside a "References" section: the level of its heading
   local seen_header = false      -- a metadata list only counts before the first heading
@@ -158,6 +166,34 @@ function Pandoc(doc)
     return pandoc.Div({ div }, pandoc.Attr(id, { 'para', 'para-poem' }))
   end
 
+  -- Rule 0.4: a whole list (bulleted, numbered or a definition list, with any lists nested in it) is one paragraph.
+  -- Its text is the text of its items, in order; the link goes before the list, as for a poem.
+  local function number_list(list)
+    local texts = {}
+    local function collect(blocks)
+      pandoc.Blocks(blocks):walk {
+        Plain = function(el) texts[#texts + 1] = pandoc.utils.stringify(el) end,
+        Para = function(el) texts[#texts + 1] = pandoc.utils.stringify(el) end,
+        LineBlock = function(el) for _, line in ipairs(el.content) do texts[#texts + 1] = pandoc.utils.stringify(line) end end,
+      }
+    end
+    if list.t == 'DefinitionList' then
+      for _, item in ipairs(list.content) do
+        texts[#texts + 1] = pandoc.utils.stringify(item[1])
+        for _, def in ipairs(item[2]) do collect(def) end
+      end
+    else
+      collect({ list })
+    end
+    local text = normalise(table.concat(texts, ' '))
+    if text == '' then return list end
+    local num = #paragraphs + 1
+    local id = 'p' .. num
+    paragraphs[num] = { id = id, n = num, text_hash = pandoc.utils.sha1(text):sub(1, 12), text = text }
+    local link = pandoc.Plain { pandoc.RawInline('html', string.format('<a class="para-link" href="#%s" data-n="%d" aria-label="Paragraph %d"></a>', id, num, num)) }
+    return pandoc.Div({ link, list }, pandoc.Attr(id, { 'para', 'para-list' }))
+  end
+
   local walk_blocks
   local function walk_block(b)
     if b.t == 'Header' then
@@ -188,10 +224,12 @@ function Pandoc(doc)
       b.content = walk_blocks(b.content)
     elseif b.t == 'BulletList' or b.t == 'OrderedList' then
       if not seen_header and is_metadata_list(b) then return b end
+      if whole_lists then return number_list(b) end
       local items = {}
       for i, item in ipairs(b.content) do items[i] = walk_blocks(item) end
       b.content = items
     elseif b.t == 'DefinitionList' then
+      if whole_lists then return number_list(b) end
       local items = {}
       for i, item in ipairs(b.content) do
         local definitions = {}

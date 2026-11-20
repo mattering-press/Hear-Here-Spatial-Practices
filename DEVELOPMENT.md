@@ -1,7 +1,7 @@
 # Development and deployment workflow
 
 This repository is the only source for the publication. Since version 0.1 (2026-11-20) the public site is the
-static edition built by every_trick_in_the_book in `kit/`; Juncture, which rendered the first version, is
+static edition built by every_trick_in_the_book in `every_trick/`; Juncture, which rendered the first version, is
 retired and forwards its visitors to the new site.
 
 - Repository: `mattering-press/Hear-Here-Spatial-Practices`
@@ -24,7 +24,7 @@ main on GitHub  ->  GitHub Actions build  ->  https://hearhere.matteringpress.or
 ```
 
 `main` is always the published working text. Every change reaches it through a pull request from a feature
-branch, and the commit that was previewed is the commit that is merged.
+branch. When the branch was previewed, the commit that was previewed is the commit that is merged.
 
 ## Starting a piece of work
 
@@ -89,44 +89,40 @@ that should not be seen.
 
 ## Publishing to production
 
-1. Preview the pushed branch as above.
+1. Review the pushed branch in its private preview (see "Private previews"), on desktop and on a phone. The
+   publisher may waive the preview for a change; the pull request is still needed.
 2. Open a pull request from the feature branch to `main`.
-3. Merge it once the preview has been approved.
-4. Check the production URL after the merge. Add `?refresh=true` once if the old
-   version is still showing.
-5. Delete the feature branch on GitHub and locally.
+3. Merge it once the preview has been approved, or waived, and the checks on the pull request have passed.
+4. Check the production site, `https://hearhere.matteringpress.org/`, once the "Static twin" run on `main` has
+   deployed it, a few minutes after the merge.
+5. Delete the feature branch on GitHub, which also deletes its previews, and locally.
 
 Never push directly to `main`, and never copy files into `main` by hand. The
 pull request is the record of what was published.
 
-## Checking the renderer locally
+## Checking a change locally
 
-A generic static-file server does not reproduce Juncture's Markdown rendering,
-URL rewriting or asset handling, so it is not a sufficient check. The branch
-preview is the reference. Juncture's renderer (`serve.py` in
-`juncture-digital/juncture`) can be run locally to test without pushing, but its
-local mode does not resolve this repository's paths on its own; it needs a small
-wrapper that sets the owner, repository and branch.
-
-The Juncture compatibility rules in `AGENTS.md` apply to every change.
+`npm run build` and `npm run serve` in `every_trick/` (see "Static twin" below) show the site at `http://localhost:8080/`,
+made by the same build as the previews and the public site. Check the pages you changed there before pushing, at
+desktop and phone widths. The private preview adds only the real hosting.
 
 ## Static twin
 
 The static twin is a plain static copy of the whole book, built from the same Markdown with Pandoc,
-so that the book does not depend on Juncture alone. During the parallel run Juncture stays the public
-site, and every page of the twin tells search engines not to index it (the `NOINDEX` setting at the
-top of `kit/build.mjs`). The Markdown is not changed for the twin; the build reads Juncture's syntax.
+so that the book does not depend on Juncture alone. Since version 0.1 (2026-11-20) it is the public site,
+open to search engines (the `NOINDEX` setting at the top of `every_trick/build.mjs` is off). Existing pages keep
+Juncture's syntax, which the build reads; new content may use the Pandoc conventions in `every_trick/CONTRACT.md`.
 
 To build and preview it locally you need Node.js 20.11 or later and Pandoc 3.8:
 
 ```sh
-cd kit
+cd every_trick
 npm ci          # once, and again after package-lock.json changes
 npm run build   # writes ../_site/ in about ten seconds
 npm run check   # every internal link and local file in _site/ exists
 npm run test:csl  # the house citation style against the style guide's examples
 npm run serve   # http://localhost:8080/
-npm run serve -- --base /Hear-Here-Spatial-Practices/   # the address layout of GitHub Pages
+npm run serve -- --base /Hear-Here-Spatial-Practices/   # under a path, as on a GitHub Pages address without a custom domain
 ```
 
 If a page uses a Juncture construct the twin cannot render, the build stops and names the file and
@@ -136,29 +132,30 @@ The Markdown view: next to every page's `index.html` the build writes `index.md`
 Markdown with front matter and no Juncture syntax, and `publication.md` at the site root holds the whole
 book in reading order with absolute URLs (from `siteUrl` in `build.mjs`). The HTML is built from that
 Markdown, so the two cannot drift apart. Every page has a "Page / Markdown" switch of plain links. The
-format of the Markdown media blocks is in `kit/CONTRACT.md`.
+format of the Markdown media blocks is in `every_trick/CONTRACT.md`.
 
-What is in `kit/`:
+What is in `every_trick/`:
 
 - `build.mjs`: the build, with its few settings at the top
 - `versions.mjs`: reads the version registry (`versions.json` at the repository root), takes each version's text from its Git tag, and matches paragraphs between versions
 - `convert.mjs`: turns Juncture's `.ve-*` lines and its raw HTML (audio, iframes, videos) into Pandoc Markdown
-- `filters/`: Lua filters, one job each. `to-markdown.lua` is stage 1 (writes the Markdown view); `figures`, `embeds`, `cards`, `transcript`, `links`, `citations`, `paragraphs` and `contract` are stage 2 (Markdown view to HTML and `page.json`)
+- `filters/`: Lua filters, one job each. `to-markdown.lua` is stage 1 (writes the Markdown view); `figures`, `embeds`, `cards`, `transcript`, `links`, `citations`, `paragraphs`, `margins` and `contract` are stage 2 (Markdown view to HTML and `page.json`)
 - `citations.mjs`: prepares the bibliography for `filters/citations.lua` and writes the build's report on citations
 - `csl/`: `mattering-press.csl`, the house citation style, and its test (`csl/test/`)
 - `scripts/to-citation-keys.mjs`: for the switch, shows how the plain-text citations would become Pandoc citations
-- `template.html`: the HTML around every page
-- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `zoom.js`, `seek.js`, `citations.js`, `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read)
+- `template.html`: the HTML around every page. It links the stylesheet and scripts with `?v=` and a hash of their contents, so that browsers fetch them again after every change instead of keeping an old copy
+- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `zoom.js`, `seek.js`, `citations.js`, `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens)
 - `images.mjs`: resized images and the tiles for zooming
 - `check.mjs`, `serve.mjs`: the link check and the local server
 - `CONTRACT.md`: the `page.json` and `publication.json` files that other frontends can read, and the paragraph rule
-- `package.json`: the kit's version, `version` (see "Kit version" below)
+- `package.json`: the toolkit's name and version (see "Versions of the book and of every_trick" below)
+- `CHANGELOG.md`: every version of the toolkit and what changed in it
 
 GitHub Actions (`.github/workflows/static-twin.yml`) builds and checks the twin on every push and pull
-request. It fetches the whole history with its tags, so that it can build the frozen versions. On `main` it also deploys `_site/` to GitHub Pages
-(`https://mattering-press.github.io/Hear-Here-Spatial-Practices/`), but only once Pages is enabled in
-the repository settings with "GitHub Actions" as the source; until then the deploy job is skipped.
-`_site/` is never committed.
+request, and uploads every pushed branch as a private preview (see "Private previews"). It fetches the whole
+history with its tags, so that it can build the frozen versions. On `main` it also deploys `_site/` to GitHub
+Pages, which serves it at `https://hearhere.matteringpress.org/` (the deploy is skipped if Pages is not enabled
+with "GitHub Actions" as its source). `_site/` is never committed.
 
 ### Paragraph numbers
 
@@ -170,23 +167,26 @@ number: clicking it copies a link to that paragraph, and on a frozen version the
 What gets a number is decided by the text alone, never by the design, so the numbers stay the same whenever the
 site is rebuilt:
 
-- every paragraph of text gets the next number, including paragraphs in quotations, each item of a list, and each
-  turn of speech in a transcript;
+- every paragraph of text gets the next number, including paragraphs in quotations and each turn of speech in a
+  transcript;
+- a list counts as one paragraph and gets one number, however many items it has;
 - headings, pictures and their captions, audio and video players, picture galleries, the cards that lead to other
-  pages, the reference list at the end of a chapter, and the header and footer get no number;
+  pages, notes in the margin, the reference list at the end of a chapter, and the header and footer get no number;
 - a paragraph that holds only a timecode such as `[00:10:13]`, or only a picture, gets no number;
 - a short line on its own, such as **Addendum** or `[music]`, is a paragraph like any other and gets a number.
 
-The precise rule is in `kit/CONTRACT.md` ("Paragraph numbers"). It must not change once a version has been frozen,
-because every frozen version would be renumbered. The build prints how many paragraphs each page has. To hide the
-numbers (the ¶ link stays), set `--paragraph-numbers: 0` at the top of `kit/assets/site.css`.
+The precise rule is in `every_trick/CONTRACT.md` ("Paragraph numbers"). A rule never changes once a version has been
+frozen with it, because that version would be renumbered: a new rule comes with a new contract version, and each
+frozen version keeps the rule it was frozen under (`contract` in `versions.json`). Version 0.1 is numbered by
+contract 0.3, which gave each list item its own number. The build prints how many paragraphs each page has. To hide the
+numbers (the ¶ link stays), set `--paragraph-numbers: 0` at the top of `every_trick/assets/site.css`.
 
 ### Versions and the version stamp
 
 The book's versions are listed in `versions.json` at the root of the repository. The site's root always shows the
 current text, labelled "Latest text, unreleased". Each listed version is built as well, at its own address,
-`/v<id>/` (for example `/v0.9-review2/essays/aya_nassar/`), from the text of its Git tag but with the current kit,
-so all versions share the current design and the paragraph rule. Pictures, video and other media are stored once
+`/v<id>/` (for example `/v0.9-review2/essays/aya_nassar/`), from the text of its Git tag but with the current toolkit,
+so all versions share the current design; each keeps the paragraph rule it was frozen under. Pictures, video and other media are stored once
 and shared by all versions; a version adds only its pages, about 1.5 MB. A media file that a tag uses but that is
 no longer in the repository is taken from the tag.
 
@@ -197,9 +197,10 @@ paragraph to the newer text by its words (the same text, or text that shares mos
 link follows the paragraph in the address or the one the reader last scrolled to. A paragraph that was deleted
 or rewritten beyond recognition leads to the nearest paragraph before it that was matched.
 
-Every page's footer shows its version, the version's date and the kit version, with a link to `/versions/`, which
-lists every version. The same stamp is in `publication.json`, every `page.json` and the front matter of the
-Markdown view.
+Every page's footer shows the book's version and its date, with a link to `/versions/`, which lists every version.
+The line below it names the version of every_trick_in_the_book that built the page (see "Versions of the book and
+of every_trick"). The same stamp, `version` for the book and `kit` for the toolkit, is in `publication.json`, every
+`page.json` and the front matter of the Markdown view.
 
 Each entry in `versions.json` has:
 
@@ -210,6 +211,7 @@ Each entry in `versions.json` has:
 | `label` | how pages name it, e.g. `Version 0.9, second peer review` |
 | `date` | the day it was frozen or released, e.g. `2026-11-20` |
 | `status` | `review` (frozen for peer review) or `release` (published) |
+| `contract` | the contract current when it was frozen (`CONTRACT` in `every_trick/build.mjs`, e.g. `0.4`): its paragraph rule numbers this version, so its numbers never change |
 | `annotations` | `hypothesis` to open its pages for annotation with Hypothesis (below), otherwise `none` |
 | `hypothesisGroup` | the ID of the private Hypothesis group for its reviewers |
 
@@ -218,19 +220,36 @@ or on a release, and its sidebar starts closed. With `hypothesisGroup` set, the 
 `groupsAllowlist`, so its group menu offers only that group (and no "Public"). This does not admit anyone: a
 reviewer must be a member of the group to see or post in it.
 
-### Kit version
+### Versions of the book and of every_trick
 
-`version` in `kit/package.json` (now `0.3.0`) is the version of the kit, shown in every footer. Bump it in the
-same commit as the change, with `npm version <minor|patch> --no-git-tag-version` in `kit/` (it updates
-`package-lock.json` too):
+The book and every_trick_in_the_book, the toolkit that builds it, have separate version numbers. The site never
+shows one without saying which it is: the book's version is written with its label, the toolkit's with its name.
 
-- `0.x.0`, the minor number, when what readers see or what the pages do changes: the template, the stylesheet,
-  the scripts, or the HTML the filters write;
-- `0.3.x`, the patch number, for fixes that change nothing a reader sees: the build, its checks, its report;
-- `1.0.0` at the switch from Juncture to the static edition.
+| | the book | the toolkit |
+|---|---|---|
+| follows | the text | the design and what the pages do |
+| written | `Version 0.1, first public version` (its `label`) | `every_trick_in_the_book 1.0.0`, never "version 1.0.0" alone |
+| set in | `versions.json`, each version with its Git tag (`v0.1`) | `version` in `every_trick/package.json` |
+| what changed | the text of each frozen version, online at `/v<id>/` | `every_trick/CHANGELOG.md` |
+| on the site | the footer's version line, the version notice, `/versions/` | the footer's credit line, linked to the toolkit's home and to `every_trick/CHANGELOG.md` |
+| in the data | `version` in `page.json`, `publication.json` and the Markdown view | `kit` in the same files |
 
-The format of `page.json` and `publication.json`, and the paragraph rule, have their own version, `CONTRACT` in
-`build.mjs` and `kit/CONTRACT.md`.
+Every version of the book is built with the current toolkit, so a frozen version keeps its text but takes on the
+current design.
+
+A change to the toolkit bumps its version and adds an entry to its list of changes, in the same commit:
+
+1. In `every_trick/`, run `npm version <minor|patch> --no-git-tag-version` (it updates `package-lock.json` too):
+   - `1.x.0`, the minor number, when what readers see or what the pages do changes: the template, the stylesheet,
+     the scripts, or the HTML the filters write;
+   - `1.x.y`, the patch number, for fixes that change nothing a reader sees: the build, its checks, its report;
+   - `1.0.0` marked the switch from Juncture to the static edition (20 November 2026).
+2. Add the version at the top of `every_trick/CHANGELOG.md`: its number as the heading, the date, and what changed, in a
+   few plain sentences written for editors and readers rather than developers.
+
+The footer's two links are set at the top of `every_trick/build.mjs`: `TOOLKIT_HOME`, the toolkit's home, and
+`TOOLKIT_CHANGES`, its list of changes. The format of `page.json` and `publication.json`, and the paragraph rule,
+have their own version, `CONTRACT` in `build.mjs` and `every_trick/CONTRACT.md`.
 
 ### Freezing a version for review or release
 
@@ -257,6 +276,7 @@ Freezing a version gives its text a permanent address. The text is taken from a 
      "label": "Version 0.9, second peer review",
      "date": "2026-11-20",
      "status": "review",
+     "contract": "0.4",
      "annotations": "hypothesis",
      "hypothesisGroup": "<group ID>"
    }
@@ -286,7 +306,7 @@ The book has one bibliography, `references/bibliography.json` (CSL-JSON), with e
 names, entered once. Keys are the first author's surname and the year in plain ASCII (`becker2007`, `puigdelabellacasa2017`),
 with a letter where one author has two works in a year (`stengers2005a`); a web page without author or date is keyed by
 its site (`jacobinnd`). Each entry's `custom.typed` records where it is typed (page and text as Pandoc reads it). The
-house style is `kit/csl/mattering-press.csl`, adapted from the MHRA styles of the official CSL repository; its header
+house style is `every_trick/csl/mattering-press.csl`, adapted from the MHRA styles of the official CSL repository; its header
 lists the changes, and `npm run test:csl` checks it against the style guide's examples.
 
 During the parallel run the essays keep their typed citations and reference lists, and the build links them:
@@ -317,7 +337,8 @@ their branch.
   The workflow run's summary on GitHub lists both.
 - **Who can see them:** only the email addresses on the project's Access list. A visitor enters their email and
   receives a one-time code; no account or password is needed.
-- **Search engines:** previews carry the same `noindex` as every build.
+- **Search engines:** they cannot reach previews, which are behind Access. (Builds no longer carry `noindex`
+  since version 0.1.)
 - **Cleanup:** deleting a branch on GitHub deletes its previews (`.github/workflows/preview-cleanup.yml`). Old
   previews of a branch that is kept can be deleted by running that workflow by hand.
 - **Setup:** the repository secrets `CLOUDFLARE_API_TOKEN` (an account token with only "Cloudflare Pages: Edit",
@@ -341,7 +362,7 @@ Agreed with the publisher on 2026-11-19. The static twin does not implement all 
 - **Media addresses are unversioned.** Every image, audio and video item gets its own page at a permanent, word-based address, such as `/see/plumbline`, `/listen/boulder` or `/watch/<name>`. Audio and video addresses may carry a start time (`#t=12:40`). If a file is replaced, the address stays and the item page notes the change.
 - **Print.** Printed captions carry the item's address, and a QR code generated from the same address is always printed with it, because a printed link cannot be clicked. The colophon states which online version a printed edition corresponds to.
 - **Shared media.** Images, tiles and audio are stored once and shared by all versions, so each release adds only its pages.
-- **Two version numbers.** The book has `v1.0`, `v1.1`, `v2.0` and so on, following the text. The build kit has `kit-v0.x`, following design and behaviour. Each book release records the kit version that built it. All published versions are rebuilt with the current kit, so their text and paragraph numbers never change. Paragraph numbering is defined by the content in `kit/CONTRACT.md`, never by the template. Archived snapshots keep the exact design of their day.
+- **Two version numbers.** The book has `v1.0`, `v1.1`, `v2.0` and so on, following the text. every_trick_in_the_book, the toolkit, has its own numbers (`1.0.0`), following design and behaviour, and `every_trick/CHANGELOG.md` lists them with what changed. Each book release records the toolkit version that built it. All published versions are rebuilt with the current toolkit, so their text and paragraph numbers never change. Paragraph numbering is defined by the content in `every_trick/CONTRACT.md`, never by the template. Archived snapshots keep the exact design of their day.
 - **DOIs and archiving.** Book and chapter DOIs are registered through Thoth and point to the latest version. Each release is tagged in Git and archived as a fixed snapshot: the site package, a web archive file, the whole-book Markdown and the media masters, deposited with Zenodo and through Thoth, plus Wayback Machine captures of every page.
 
 ## Plan: additions from reviewing Entreluma
@@ -363,14 +384,14 @@ Agreed with the publisher on 2026-11-19. These fix the data; players and viewers
 
 ## Plan: margin notes
 
-Agreed with the publisher on 2026-11-19; not built yet.
+Agreed with the publisher on 2026-11-19. Text notes are built (`every_trick/filters/margins.lua`, `every_trick/assets/margins.js`); media in the margin and the print and EPUB forms are not built yet.
 
 - **What:** short notes, links and small media thumbnails in a right-hand margin column. Paragraph numbers keep the left margin.
 - **Where they live in the source:** directly after the paragraph they belong to (`::: {.margin}` … `:::`), or attached to a word (`[given by Germany in 1962]{.margin}`). They are never stored by paragraph number, so they move with their paragraph from version to version. While Juncture still renders the site, write them as `<aside class="margin" markdown="1">…</aside>`, which the build converts.
-- **Layout on wide screens:** notes float in the margin starting level with their paragraph. When the margin is crowded, later notes are pushed down, so the text column never gets gaps. A marker in the text and the same mark on the note highlight together on hover and focus. Long notes show a few lines, then "more".
+- **Layout on wide screens:** notes float in the margin starting level with their paragraph. When the margin is crowded, later notes are pushed down, so the text column never gets gaps. A marker in the text and the same mark on the note highlight together on hover and focus. Notes show in full (the publisher's preset, 2026-11-20). Setting `--margin-note-lines` in `every_trick/assets/site.css` above 0 makes long notes show that many lines, then "more".
 - **Phones, no JavaScript and screen readers:** a note stays in reading order directly after its paragraph, as a labelled aside.
 - **Print and EPUB:** decided per note: an endnote, a small figure with address and QR code, or web-only.
-- **Numbering:** text notes are numbered per chapter (`n1`, `n2`), matching the endnote numbers they get in print; media in the margin are figures with `Fig. 2.3` numbers and their own item addresses; plain links are not numbered; paragraph numbers ignore the margin. Details in `kit/CONTRACT.md`.
+- **Numbering:** text notes are numbered per chapter (`n1`, `n2`), matching the endnote numbers they get in print; media in the margin are figures with `Fig. 2.3` numbers and their own item addresses; plain links are not numbered; paragraph numbers ignore the margin. Details in `every_trick/CONTRACT.md`.
 
 ## House style for the web edition
 

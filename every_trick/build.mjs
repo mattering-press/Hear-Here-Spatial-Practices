@@ -7,11 +7,12 @@
 // stage 2 (the other filters, template.html) turns that Markdown into HTML.
 //
 // Editions: the root of _site/ is the working text ("latest, unreleased"). Every version in ../versions.json is
-// built too, from the text of its Git tag but always with this kit, into _site/v<id>/; its pages carry a notice that
+// built too, from the text of its Git tag but always with this toolkit, into _site/v<id>/; its pages carry a notice that
 // links to the same passage in the newest text (versions.mjs). Images, tiles and other media are stored once, at the
 // root, and shared by all editions. _site/versions/ lists them all.
 //   npm run build      needs Pandoc 3.8 on the PATH (or its path in the PANDOC environment variable)
 import { spawnSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
@@ -24,7 +25,12 @@ import { checkout, longDate, matchParagraphs, readRegistry } from './versions.mj
 // ---- Settings ------------------------------------------------------------------------------------------
 const NOINDEX = false;  // true hides every page from search engines (it was true while Juncture served the public site)
 const PUBLICATION = { creators: ['Nirmal Puwar'], publisher: 'Mattering Press', language: 'en' };
-const CONTRACT = '0.3';  // version of the page.json / publication.json format, and of the paragraph rule
+const CONTRACT = '0.4';  // version of the page.json / publication.json format, and of the paragraph rule for new text
+// A frozen version keeps the paragraph rule of the contract it was frozen under ("contract" in versions.json).
+// every_trick_in_the_book, the toolkit in this folder. Every footer names it with its version (every_trick/package.json),
+// and links the name to its home and the version to the list of what changed in each version.
+const TOOLKIT_HOME = 'https://github.com/every-trick/every_trick_in_the_book';
+const TOOLKIT_CHANGES = 'https://github.com/mattering-press/Hear-Here-Spatial-Practices/blob/main/every_trick/CHANGELOG.md';
 // Where the site is published. publication.md uses absolute URLs built from this; the pages use relative ones.
 // It becomes 'https://hearhere.matteringpress.org/' when the site moves to its own domain.
 const siteUrl = 'https://hearhere.matteringpress.org/';
@@ -45,9 +51,17 @@ const FRAME = {
 
 const KIT = dirname(fileURLToPath(import.meta.url));
 const KIT_VERSION = JSON.parse(readFileSync(join(KIT, 'package.json'), 'utf8')).version;
+// A short hash of the stylesheet and scripts in assets/. The template adds it to their addresses (site.css?v=…), so
+// that browsers fetch them again whenever they change: GitHub Pages lets browsers keep a file for ten minutes, and a
+// page could otherwise arrive with an old stylesheet.
+const ASSET_VERSION = (() => {
+  const hash = createHash('sha1');
+  for (const name of readdirSync(join(KIT, 'assets')).filter((f) => /\.(css|js)$/.test(f)).sort()) hash.update(name).update(readFileSync(join(KIT, 'assets', name)));
+  return hash.digest('hex').slice(0, 10);
+})();
 const SITE = join(REPO_ROOT, '_site');
 const PANDOC = process.env.PANDOC || 'pandoc';
-const FILTERS = ['figures', 'embeds', 'cards', 'transcript', 'links', 'citations', 'paragraphs', 'contract'];
+const FILTERS = ['figures', 'embeds', 'cards', 'transcript', 'links', 'citations', 'paragraphs', 'margins', 'contract'];
 const started = Date.now();
 const fail = (message) => { console.error(message); process.exit(1); };
 
@@ -66,7 +80,7 @@ try { registry = readRegistry(); } catch (e) { fail(`The version registry has pr
 const lastChange = spawnSync('git', ['-C', REPO_ROOT, 'log', '-1', '--format=%cs'], { encoding: 'utf8' }).stdout?.trim() || new Date().toISOString().slice(0, 10);
 const latest = {
   dir: '', name: 'the working text', contentRoot: REPO_ROOT, has: (path) => existsSync(join(REPO_ROOT, path)), take: () => REPO_ROOT,
-  version: { id: 'latest', label: LATEST_LABEL, date: lastChange, status: 'latest' }, annotations: 'none',
+  version: { id: 'latest', label: LATEST_LABEL, date: lastChange, status: 'latest' }, annotations: 'none', rule: CONTRACT,
 };
 const editions = [latest];
 for (const entry of registry) {
@@ -75,6 +89,7 @@ for (const entry of registry) {
   editions.push({
     dir: `v${entry.id}/`, name: `version ${entry.id} (tag ${entry.tag})`, contentRoot: text.root, has: text.has, take: text.take, commit: text.commit,
     version: { id: entry.id, label: entry.label, date: entry.date, status: entry.status }, annotations: entry.annotations, group: entry.hypothesisGroup,
+    rule: entry.contract,
   });
 }
 // Which edition a frozen one points its readers to: an older release to the newest release, anything else (a review
@@ -178,8 +193,10 @@ const versionLine = (edition, shared) => {
   const v = edition.version;
   const what = v.status === 'latest' ? `${esc(v.label)} · last changed ${longDate(v.date)}`
     : `${esc(v.label)} · ${v.status === 'review' ? 'frozen' : 'released'} on ${longDate(v.date)}`;
-  return `<p class="site-footer__version">${what} · built with kit ${esc(KIT_VERSION)} · <a href="${shared}versions/">All versions</a></p>`;
+  return `<p class="site-footer__version">${what} · <a href="${shared}versions/">All versions</a></p>`;
 };
+// The toolkit's line in every footer (template.html), below the book's version line.
+const toolkitMeta = { 'kit-version': KIT_VERSION, 'kit-home': TOOLKIT_HOME, 'kit-changes': TOOLKIT_CHANGES };
 const lcFirst = (s) => s.charAt(0).toLowerCase() + s.slice(1);
 const hypothesis = (edition) => {
   const config = { openSidebar: false };
@@ -271,7 +288,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
       else if (cover) extra.page_image = stillHtml(s);
       const yaml = join(scratch, page.file.replace(/\W/g, '_') + (from ? '.markdown' : '') + '.yaml');
       writeYaml(yaml, edition.menu, extra);
-      return ['--metadata-file', yaml, ...metaArgs({ ...meta, ...frameMeta(edition, s), root: r, shared: s, views: 'true',
+      return ['--metadata-file', yaml, ...metaArgs({ ...meta, ...toolkitMeta, ...frameMeta(edition, s), root: r, shared: s, 'paragraph-rule': edition.rule, 'asset-version': ASSET_VERSION, views: 'true',
         [from ? 'on-markdown' : 'on-page']: 'true', 'view-page': from ? '../' : './', 'view-markdown': from ? './' : 'markdown/',
         'section-page': section && section !== edition.home.file ? section : '', 'section-title': section && section !== edition.home.file ? edition.byFile.get(section).title : '',
         'section-url': section && section !== edition.home.file ? r + urlOf(section) : '',
@@ -302,7 +319,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
 
     page.url = url || './';
     writeFileSync(join(dir, 'page.json'), JSON.stringify({
-      contract: CONTRACT, id: page.file, url: page.url, title: page.title, subtitle: page.subtitle,
+      contract: CONTRACT, paragraphRule: edition.rule, id: page.file, url: page.url, title: page.title, subtitle: page.subtitle,
       version: edition.version, kit: KIT_VERSION,
       markdown: `${url}index.md`,
       headings: list(data.headings).map(({ level, text, id }) => ({ level, text, id })),
@@ -320,7 +337,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
   const home = edition.home;
   const versionsList = [latest, ...editions.slice(1).reverse()].map((e) => ({ ...e.version, url: e === edition ? './' : prefix + e.dir || './' }));
   writeFileSync(join(out, 'publication.json'), JSON.stringify({
-    contract: CONTRACT, title: home.title, subtitle: home.subtitle, ...PUBLICATION, url: siteUrl + edition.dir, markdown: 'publication.md',
+    contract: CONTRACT, paragraphRule: edition.rule, title: home.title, subtitle: home.subtitle, ...PUBLICATION, url: siteUrl + edition.dir, markdown: 'publication.md',
     version: edition.version, kit: KIT_VERSION, versions: versionsList,
     readingOrder: edition.order.map((file) => ({ id: file, url: edition.byFile.get(file).url, title: edition.byFile.get(file).title })),
   }, null, 2) + '\n');
@@ -348,7 +365,9 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     '',
     ...items,
     '',
-    editions.length === 1 ? 'No version has been frozen yet.' : 'A frozen version is built with the current design of the site; its text does not change.',
+    editions.length === 1 ? 'No version has been frozen yet.' : 'A frozen version keeps its text, but it is shown with the current design of the site.',
+    '',
+    `The site’s design, and what its pages do, come from the toolkit that builds it: [every_trick_in_the_book](${TOOLKIT_HOME}){.toolkit-name aria-label="every trick in the book"} ${KIT_VERSION} ([what’s new](${TOOLKIT_CHANGES})). The toolkit’s versions are numbered separately from the book’s.`,
   ].join('\n');
   const dir = join(SITE, 'versions');
   mkdirSync(dir, { recursive: true });
@@ -357,7 +376,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
   writeYaml(yaml, latest.menu, { version_line: versionLine(latest, '../'), ...(cover ? { page_image: stillHtml('../') } : {}) });
   const html = pandoc(['-f', 'markdown', '-t', 'html5', '--wrap=none', '-s', '--template', join(KIT, 'template.html'), '--metadata-file', yaml,
     ...metaArgs({ page: 'versions.md', repo: REPO, manifest: latest.manifest, 'contract-out': join(work, 'versions.json'), lang: PUBLICATION.language, title: 'Versions',
-      ...frameMeta(latest, '../'), root: '../', shared: '../', 'site-title': home.title, 'paragraph-numbers': 'false', noindex: NOINDEX ? 'true' : '' }),
+      ...toolkitMeta, ...frameMeta(latest, '../'), root: '../', shared: '../', 'asset-version': ASSET_VERSION, 'site-title': home.title, 'paragraph-numbers': 'false', noindex: NOINDEX ? 'true' : '' }),
     ...filterArgs(['links', 'paragraphs', 'contract'])], markdown, 'versions page');
   writeFileSync(join(dir, 'index.html'), html);
 }
@@ -378,7 +397,7 @@ const total = size(SITE), imageBytes = size(join(SITE, 'images')), tileBytes = s
 const pageCount = editions.reduce((n, e) => n + e.pages.length, 0);
 console.log(`Built ${pageCount} pages${editions.length > 1 ? ` in ${editions.length} editions` : ''} into _site/ in ${((Date.now() - started) / 1000).toFixed(1)} s: ${mb(total)} ` +
   `(images ${mb(imageBytes)}, tiles ${mb(tileBytes)}, other ${mb(total - imageBytes - tileBytes)}); ` +
-  `${sources} source images, ${tiles} tiles; kit ${KIT_VERSION}, contract ${CONTRACT}${NOINDEX ? '; pages carry noindex' : ''}.`);
+  `${sources} source images, ${tiles} tiles; every_trick_in_the_book ${KIT_VERSION}, contract ${CONTRACT}${NOINDEX ? '; pages carry noindex' : ''}.`);
 for (const edition of editions.slice(1)) {
   console.log(`  ${edition.dir.padEnd(22)} ${edition.version.label} (${edition.version.status}, tag at ${edition.commit.slice(0, 7)}): ${edition.pages.length} pages, ${mb(size(join(SITE, edition.dir)))}` +
     `${edition.annotations === 'hypothesis' ? `, Hypothesis${edition.group ? ` for group ${edition.group}` : ' (no hypothesisGroup set: annotations go to the group each reviewer picks)'}` : ''}`);

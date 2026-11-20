@@ -1,4 +1,4 @@
-# Page data, contract 0.3
+# Page data, contract 0.4
 
 The build writes JSON beside the HTML so that other frontends (the collage index, a Tapestry export) can
 read the book without parsing HTML: `publication.json` at the root of each edition and a `page.json` beside every
@@ -11,12 +11,14 @@ Text values are plain text, not HTML, except the `html` of a reference.
 
 Changes: 0.2 adds `references` to page.json. 0.3 adds paragraph numbers (the rule below, and `paragraphs` in
 page.json), the version stamp (`version` and `kit` in page.json, publication.json and the Markdown view's front
-matter), `versions` in publication.json, and frozen versions, each an edition of its own.
+matter), `versions` in publication.json, and frozen versions, each an edition of its own. 0.4 numbers a whole list as
+one paragraph, and numbers each frozen version by the rule of the contract it was frozen under (`contract` in
+`versions.json`, `paragraphRule` in page.json and publication.json).
 
 ## Editions
 
 The root of the site is the working text, "latest, unreleased". Every version listed in `versions.json` at the
-root of the repository is built as well, from the text of its Git tag but with the current kit, into its own
+root of the repository is built as well, from the text of its Git tag but with the current toolkit, into its own
 folder, `v<id>/` (for example `v0.9-review2/essays/aya_nassar/`). Each such edition has its own
 `publication.json`, `publication.md` and pages. Images, tiles, video, PDF files, the stylesheet and the scripts are
 stored once, at the site's root, and shared by all editions, so inside a frozen version their URLs start with `../`
@@ -30,15 +32,19 @@ unit: today every page is one chapter, and every chapter has its own DOI, so a c
 12)" and the link `/v1/essays/aya_nassar/#p12`. If a chapter is ever split over several pages, or one page holds
 several chapters, numbering follows the chapter and starts again at 1 in each chapter. The number
 depends only on the page's content, as its Markdown view (`index.md`) has it, never on the template or the
-stylesheet. Every version is rebuilt with the current kit, so this rule must not change within contract 0.x:
-changing it would renumber the paragraphs of every frozen version and break every citation of them.
+stylesheet. Every version is rebuilt with the current toolkit, so a frozen version is numbered by the rule of the
+contract it was frozen under (`contract` in its entry in `versions.json`), and a rule never changes within a contract
+version: changing it would renumber the paragraphs of frozen versions and break every citation of them. The rule
+below is contract 0.4's. Contract 0.3, which numbers version 0.1, differs only for lists (see the list item below).
 
-Numbered, wherever they are (at the top level, in block quotes, in list items, in the transcript, in any other
-div that is not listed below):
+Numbered, wherever they are (at the top level, in block quotes, in the transcript, in any other div that is not
+listed below):
 
 - every paragraph of text;
-- the text of a list item: each paragraph of a list item gets its own number, and so does each item of a nested
-  list, in order;
+- a list, as a whole: a bulleted, numbered or definition list, with everything in it (several paragraphs in an
+  item, nested lists), is one paragraph. Its normalised text is the text of its items in order (for a definition
+  list, each term followed by its definitions). Under contract 0.3 each paragraph of a list item got its own
+  number instead, and so did each item of a nested list, in order;
 - a line block (lines starting with `|`) counts as one paragraph.
 
 Not numbered:
@@ -59,7 +65,7 @@ Not numbered:
 
 So a speaker's turn in a transcript (`**AYA NASSAR:** …`) is one paragraph and is numbered, while a stage direction
 or a label on a line of its own is not. A paragraph's number
-in a block quote or a list continues the count of the text around it.
+in a block quote continues the count of the text around it.
 
 The normalised text of a paragraph is its plain text (no markup, link targets or images), in lower case, with
 punctuation (ASCII punctuation, typographic quotes, dashes, the ellipsis, bullets, guillemets, ¶, §, primes),
@@ -73,14 +79,15 @@ In the HTML a numbered paragraph is
 <div id="p12" class="para"><p><a class="para-link" href="#p12" data-n="12" aria-label="Paragraph 12"></a>…</p></div>
 ```
 
-(the text of a list item has no `<p>`). The link has no text: the stylesheet shows `data-n` in the margin and a ¶ on
+and a list is `<div id="p12" class="para para-list"><a class="para-link" …></a><ul>…</ul></div>`, with the link
+before the list (under contract 0.3 each list item's text is numbered, without a `<p>`). The link has no text: the stylesheet shows `data-n` in the margin and a ¶ on
 hover and focus, so that copied text and text fragments (`#p12:~:text=…`) see only the paragraph's words.
 `assets/paragraphs.js` copies the paragraph's address, with the version in it, on a frozen version.
 
 On a frozen version every page starts with a notice, `<aside class="version-notice">`, whose link
 `<a class="version-notice__link" href="…" data-paragraphs='{"p12": "p14", …}'>` goes to the same page in the newer
 text (the latest text, or for an older release the newest release). `data-paragraphs` maps each of the page's
-paragraphs to the matching paragraph there (see `kit/versions.mjs`).
+paragraphs to the matching paragraph there (see `every_trick/versions.mjs`).
 
 ## Poems
 
@@ -101,9 +108,11 @@ Poetry is cited by line, not by paragraph ("ll. 12–14"), so poems have their o
   identifier is the line address (`river-l12`, or a range `river-l12-l14`). Several readings of one poem each have
   their own file, all pointing at the same line addresses. Players and highlighting are a design matter for later.
 
-## Margin notes and their numbers (planned)
+## Margin notes and their numbers
 
-Margin notes are not built yet; this fixes how they will be numbered, so it is settled before any are written.
+A margin note is written directly after its paragraph as `::: {.margin}` … `:::`. Text notes are built; media in
+the margin are not built yet. In the HTML a text note is `<aside id="n1" class="margin" aria-label="Note 1">`, and
+its mark in the text, at the end of the paragraph before it, is `<a class="margin-mark" id="n1-mark" href="#n1">1</a>`.
 
 - Paragraph numbers ignore the margin entirely: adding, moving or removing a margin item never changes them.
 - Text notes in the margin are numbered from 1 in each chapter, in order of their place in the text, as `n1`, `n2`
@@ -117,7 +126,8 @@ Margin notes are not built yet; this fixes how they will be numbered, so it is s
 
 | field | value |
 |---|---|
-| `contract` | `"0.3"` |
+| `contract` | `"0.4"`, the version of this format |
+| `paragraphRule` | the contract whose paragraph rule numbered this edition: `"0.4"` for the latest text, the `contract` of its entry in `versions.json` for a frozen version (`"0.3"` for version 0.1) |
 | `title`, `subtitle` | from the header of the home page (`README.md`) |
 | `creators` | list of names |
 | `publisher` | name |
@@ -125,7 +135,7 @@ Margin notes are not built yet; this fixes how they will be numbered, so it is s
 | `url` | where this edition is published: the `siteUrl` setting in `build.mjs`, followed by `v<id>/` for a frozen version; the Markdown view `publication.md` uses it for its absolute URLs |
 | `markdown` | `"publication.md"` |
 | `version` | this edition: `{ id, label, date, status }`. `status` is `latest` for the working text (`id` `"latest"`, `label` `"Latest text, unreleased"`, `date` the day of its last commit), or `review` or `release` for a frozen version, with the `id`, `label` and `date` (`YYYY-MM-DD`) of its entry in `versions.json` |
-| `kit` | the version of the kit that built the site (`kit/package.json`), e.g. `"0.3.0"` |
+| `kit` | the version of every_trick_in_the_book, the toolkit that built the site (`version` in `every_trick/package.json`; `every_trick/CHANGELOG.md` lists what changed in each), e.g. `"1.0.0"`. It is numbered separately from the book's version, `version` |
 | `versions` | every edition, the latest text first, then the frozen versions, newest first: `{ id, label, date, status, url }`, `url` relative to this edition's root (`"./"` for itself) |
 | `readingOrder` | every page once, as `{ id, url, title }`: the home page; then each page in the home page's menu, followed by the pages its cards lead to (depth first); then any other page, alphabetically |
 
@@ -133,7 +143,7 @@ Margin notes are not built yet; this fixes how they will be numbered, so it is s
 
 | field | value |
 |---|---|
-| `contract` | `"0.3"` |
+| `contract`, `paragraphRule` | as in publication.json |
 | `id` | the page's Markdown file, e.g. `"essays/walk.md"`; `"README.md"` for the home page |
 | `url` | e.g. `"essays/walk/"`; `"./"` for the home page |
 | `title`, `subtitle` | from the page's header; `subtitle` is `null` when there is none |
