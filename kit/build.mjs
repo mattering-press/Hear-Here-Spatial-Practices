@@ -18,7 +18,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { BIBLIOGRAPHY, locate, prepareReferences, report as citationReport } from './citations.mjs';
 import { convert, REPO, REPO_ROOT, repoPath } from './convert.mjs';
-import { makeImages } from './images.mjs';
+import { makeCover, makeImages } from './images.mjs';
 import { checkout, longDate, matchParagraphs, readRegistry } from './versions.mjs';
 
 // ---- Settings ------------------------------------------------------------------------------------------
@@ -29,6 +29,18 @@ const CONTRACT = '0.3';  // version of the page.json / publication.json format, 
 // It becomes 'https://hearhere.matteringpress.org/' when the site moves to its own domain.
 const siteUrl = 'https://hearhere.matteringpress.org/';
 const LATEST_LABEL = 'Latest text, unreleased';
+// What frames every page (template.html): the book's cover beside its title on the home page, and in every footer
+// the publisher's logo (the long one, the icon alone on phones), a credit line and the licence. Paths are files in
+// the repository. The cover may be an animated GIF: the build turns it into an animated WebP, with its first frame
+// as a still for readers who ask their system for less motion.
+const FRAME = {
+  cover: { src: 'media/cover/tea.gif', alt: 'A glass of tea on the boulder font in Coventry Cathedral, in front of the Baptistery window' },
+  credit: 'convened by Nirmal Puwar',
+  publisherUrl: 'https://www.matteringpress.org/',
+  logo: 'media/publisher/mattering-press-logo.svg',
+  icon: 'media/publisher/mattering-press-icon.svg',
+  licence: { name: 'CC BY 4.0', url: 'https://creativecommons.org/licenses/by/4.0/' },
+};
 // ---------------------------------------------------------------------------------------------------------
 
 const KIT = dirname(fileURLToPath(import.meta.url));
@@ -96,6 +108,19 @@ for (const edition of editions) {
   for (const item of edition.home.menu) visit(repoPath(/\]\(([^)\s]+)\)/.exec(item)?.[1] ?? '', edition.home.file).replace(/^\.$/, 'README.md'));
   files.forEach(visit);
   edition.order = order;
+  // Every page shows the home page's menu, its links made root-absolute so that they work from any page.
+  edition.menu = edition.home.menu.map((item) => item.replace(/\]\(([^)\s]+)\)/g, (m, target) =>
+    (/^([a-z][\w+.-]*:|#)/i.test(target) ? m : `](/${repoPath(target, edition.home.file).replace(/^\.$/, '')})`)));
+  // A page's section is the page whose cards lead to it (Podcasts for each podcast), and its lead picture is that
+  // card's picture, else the picture in its own .ve-header. The first card in reading order wins.
+  edition.section = new Map();
+  edition.lead = new Map();
+  for (const file of order) {
+    const page = edition.byFile.get(file);
+    for (const target of page.cards) if (!edition.section.has(target)) edition.section.set(target, file);
+    for (const [target, image] of Object.entries(page.cardImages)) if (!edition.lead.has(target)) edition.lead.set(target, image);
+  }
+  for (const page of edition.pages) if (!edition.lead.has(page.file) && page.header.image) edition.lead.set(page.file, { src: page.header.image, alt: '' });
 }
 
 // 3. Images, zoom tiles, and the repository files that pages embed (data-repo-* in essays/walk.md), made once for
@@ -110,7 +135,17 @@ const sourceOf = (edition, path) => {
 };
 const jobs = editions.flatMap((edition) => edition.pages.flatMap((page) => page.images.map((job) => ({ ...job, root: sourceOf(edition, job.src) }))));
 const { images, tiles, sources } = await makeImages(jobs, REPO_ROOT, SITE);
+// The cover (an animated WebP and a still) and the publisher's logos, shared by all editions like the images.
+for (const path of [FRAME.cover?.src, FRAME.logo, FRAME.icon].filter(Boolean)) {
+  if (!existsSync(join(REPO_ROOT, path))) fail(`FRAME in build.mjs names ${path}, which is not in the repository`);
+}
+const cover = FRAME.cover ? await makeCover(FRAME.cover.src, REPO_ROOT, SITE) : null;
 const copied = new Set();
+for (const path of [FRAME.logo, FRAME.icon].filter(Boolean)) {
+  mkdirSync(dirname(join(SITE, path)), { recursive: true });
+  cpSync(join(REPO_ROOT, path), join(SITE, path));
+  copied.add(path);
+}
 for (const edition of editions) {
   edition.files = [...new Set(edition.pages.flatMap((page) => page.files))];
   for (const path of edition.files) {
@@ -153,6 +188,23 @@ const hypothesis = (edition) => {
     '<script async src="https://hypothes.is/embed.js"></script>';
 };
 const versionMeta = (edition) => ({ 'version-id': edition.version.id, 'version-label': edition.version.label, 'version-date': edition.version.date, 'version-status': edition.version.status, 'kit-version': KIT_VERSION });
+// One folder further from the site's root: from a page to its Markdown view.
+const deeper = (root) => (root === './' ? '../' : root + '../');
+// The parts of the frame that are the same on every page of an edition (template.html); s is the site's root.
+const frameMeta = (edition, s) => ({
+  'book-title': edition.home.title, credit: FRAME.credit, publisher: PUBLICATION.publisher, 'publisher-url': FRAME.publisherUrl,
+  licence: FRAME.licence?.name, 'licence-url': FRAME.licence?.url, logo: FRAME.logo && s + FRAME.logo, icon: FRAME.icon && s + FRAME.icon,
+});
+// The cover on the home page: animated, or its first frame for readers who ask for less motion.
+const coverHtml = (s) => `<picture><source srcset="${esc(s + cover.still)}" media="(prefers-reduced-motion: reduce)">` +
+  `<img src="${esc(s + cover.animated)}" width="${cover.width}" height="${cover.height}" alt="${esc(FRAME.cover.alt)}" fetchpriority="high"></picture>`;
+// A page without a picture of its own (the versions page) shows the cover's still, as decoration.
+const stillHtml = (s) => `<img src="${esc(s + cover.still)}" width="${cover.width}" height="${cover.height}" alt="">`;
+// The metadata file that stage 2 reads: the menu, and values of raw HTML (version notice, footer line, picture).
+const writeYaml = (file, menu, extra) => writeFileSync(file, [
+  menu.length ? `menu:\n${menu.map((item) => `  - ${JSON.stringify(item)}`).join('\n')}\n` : '',
+  ...Object.entries(extra).map(([key, html]) => `${key.replace(/_/g, '-')}: ${rawHtml(html)}\n`),
+].join(''));
 
 const report = { paragraphs: [], matching: [], citations: [] };
 // An edition is built after the one its notice points to, whose paragraphs it is matched against.
@@ -193,31 +245,49 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     writeFileSync(join(dir, 'index.md'), bracedDivs(pandoc([...toMarkdown, '-s', ...metaArgs({ ...meta, ...versionMeta(edition), root })], page.markdown, page.file)));
     page.markdownBody = bracedDivs(pandoc([...toMarkdown, ...metaArgs({ ...meta, root: siteUrl + edition.dir, 'title-heading': 'true' })], page.markdown, page.file)).trim();
 
-    // stage 2: HTML from the Markdown view, with the menu, footer and version notice as metadata
-    const extra = { version_line: versionLine(edition, shared) };
-    if (edition.annotations === 'hypothesis') extra.annotations = hypothesis(edition);
+    // stage 2: HTML from the Markdown view, with the menu, the page's lead picture, the footer and the version
+    // notice as metadata. The same frame, with the page's Markdown as its text, makes the Markdown view's page.
     const there = target && target.paragraphs.get(page.file);   // this page in the edition the notice points to
-    if (target) {
-      // The notice links to the same page there (its home page if the page is gone). paragraphs.js takes the reader
-      // to the passage they are reading, with the map of this page's paragraphs to that page's added below.
-      const href = join2(shared, target.dir + (there ? url : ''));
-      const v = edition.version, when = `${v.status === 'review' ? 'frozen' : 'released'} on ${longDate(v.date)}`;
-      const link = target === latest ? 'Read the latest text' : `Read the newest release, ${lcFirst(target.version.label)}`;
-      const newest = edition === newestRelease ? ', the newest release' : '';
-      extra.version_notice = `<aside class="version-notice" aria-label="About this version"><p>You are reading ${esc(lcFirst(v.label))}, ${when}${newest}. ` +
-        `<a class="version-notice__link" href="${esc(href)}" data-paragraphs="{}">${esc(link)}</a>.</p></aside>`;
-    }
-    const yaml = join(scratch, page.file.replace(/\W/g, '_') + '.yaml');
-    writeFileSync(yaml, [
-      ...['menu', 'footer'].filter((key) => page[key].length).map((key) => `${key}:\n${page[key].map((item) => `  - ${JSON.stringify(item)}`).join('\n')}\n`),
-      ...Object.entries(extra).map(([key, html]) => `${key.replace('_', '-')}: ${rawHtml(html)}\n`),
-    ].join(''));
-    const headerImage = page.header.image && editionImages[`header|${page.header.image}|0`];
-    const headerStyle = headerImage ? `background-image: url('${join2(root, headerImage.url)}')`
-      : page.header.colour ? `background-color: ${page.header.colour.replace(/[^#\w(),.% -]/g, '')}` : '';
-    let html = pandoc(['-f', 'markdown-implicit_figures', '-t', 'html5', '--wrap=none', '-s', '--template', join(KIT, 'template.html'), '--metadata-file', yaml,
-      ...metaArgs({ ...meta, root, shared, views: 'true', citations: references.indexPath, 'header-style': headerStyle, 'site-title': page === edition.home ? '' : edition.home.title, noindex: NOINDEX ? 'true' : '' }),
-      ...filterArgs(FILTERS)], readFileSync(join(dir, 'index.md'), 'utf8'), page.file);
+    const section = edition.section.get(page.file);
+    const lead = page === edition.home ? null : edition.lead.get(page.file);
+    const leadImage = lead && editionImages[`lead|${lead.src}|0`];
+    // the frame of this page as seen from `from`, the page's own folder ('') or its Markdown view ('markdown/')
+    const frame = (from) => {
+      const r = from ? deeper(root) : root, s = join2(r, prefix) || './';
+      const extra = { version_line: versionLine(edition, s) };
+      if (edition.annotations === 'hypothesis') extra.annotations = hypothesis(edition);
+      if (target) {
+        // The notice links to the same page there (its home page if the page is gone). paragraphs.js takes the reader
+        // to the passage they are reading, with the map of this page's paragraphs to that page's added below.
+        const href = join2(s, target.dir + (there ? url : ''));
+        const v = edition.version, when = `${v.status === 'review' ? 'frozen' : 'released'} on ${longDate(v.date)}`;
+        const link = target === latest ? 'Read the latest text' : `Read the newest release, ${lcFirst(target.version.label)}`;
+        const newest = edition === newestRelease ? ', the newest release' : '';
+        extra.version_notice = `<aside class="version-notice" aria-label="About this version"><p>You are reading ${esc(lcFirst(v.label))}, ${when}${newest}. ` +
+          `<a class="version-notice__link" href="${esc(href)}" data-paragraphs="{}">${esc(link)}</a>.</p></aside>`;
+      }
+      if (page === edition.home && cover) extra.page_image = coverHtml(s);
+      else if (leadImage) extra.page_image = `<img src="${esc(join2(r, leadImage.url))}" width="${leadImage.width}" height="${leadImage.height}" alt="${esc(lead.alt)}" fetchpriority="high">`;
+      else if (cover) extra.page_image = stillHtml(s);
+      const yaml = join(scratch, page.file.replace(/\W/g, '_') + (from ? '.markdown' : '') + '.yaml');
+      writeYaml(yaml, edition.menu, extra);
+      return ['--metadata-file', yaml, ...metaArgs({ ...meta, ...frameMeta(edition, s), root: r, shared: s, views: 'true',
+        [from ? 'on-markdown' : 'on-page']: 'true', 'view-page': from ? '../' : './', 'view-markdown': from ? './' : 'markdown/',
+        'section-page': section && section !== edition.home.file ? section : '', 'section-title': section && section !== edition.home.file ? edition.byFile.get(section).title : '',
+        'section-url': section && section !== edition.home.file ? r + urlOf(section) : '',
+        'is-cover': page === edition.home && cover ? 'true' : '', 'site-title': page === edition.home ? '' : edition.home.title, noindex: NOINDEX || from ? 'true' : '' })];
+    };
+    let html = pandoc(['-f', 'markdown-implicit_figures', '-t', 'html5', '--wrap=none', '-s', '--template', join(KIT, 'template.html'),
+      ...frame(''), '-M', `citations=${references.indexPath}`, ...filterArgs(FILTERS)], readFileSync(join(dir, 'index.md'), 'utf8'), page.file);
+    // The Markdown view's page: the page's Markdown, wrapped at a reading width, with a link to the file itself.
+    const source = readFileSync(join(dir, 'index.md'), 'utf8');
+    const fence = '`'.repeat(Math.max(3, ...[...source.matchAll(/`+/g)].map((m) => m[0].length + 1)));
+    const markdownView = `${fence}{=html}\n<div class="markdown-view"><p class="markdown-view__about">The Markdown this page is built from. ` +
+      `<a href="../index.md" download>Download index.md</a> · <a href="${esc(deeper(root))}publication.md">The whole book in Markdown</a></p>\n` +
+      `<pre class="markdown-source"><code>${esc(source)}</code></pre></div>\n${fence}\n`;
+    mkdirSync(join(dir, 'markdown'), { recursive: true });
+    writeFileSync(join(dir, 'markdown', 'index.html'), pandoc(['-f', 'markdown', '-t', 'html5', '--wrap=none', '-s', '--template', join(KIT, 'template.html'),
+      ...frame('markdown/'), ...filterArgs(['links'])], markdownView, `${page.file} (Markdown view)`));
     const data = JSON.parse(readFileSync(contractOut, 'utf8'));
     const paragraphs = list(data.paragraphs);
     if (target) {
@@ -284,13 +354,10 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
   mkdirSync(dir, { recursive: true });
   const yaml = join(work, 'versions.yaml');
   const home = latest.home;
-  writeFileSync(yaml, [
-    ...['menu', 'footer'].filter((key) => home[key].length).map((key) => `${key}:\n${home[key].map((item) => `  - ${JSON.stringify(item)}`).join('\n')}\n`),
-    `version-line: ${rawHtml(versionLine(latest, '../'))}\n`,
-  ].join(''));
+  writeYaml(yaml, latest.menu, { version_line: versionLine(latest, '../'), ...(cover ? { page_image: stillHtml('../') } : {}) });
   const html = pandoc(['-f', 'markdown', '-t', 'html5', '--wrap=none', '-s', '--template', join(KIT, 'template.html'), '--metadata-file', yaml,
     ...metaArgs({ page: 'versions.md', repo: REPO, manifest: latest.manifest, 'contract-out': join(work, 'versions.json'), lang: PUBLICATION.language, title: 'Versions',
-      root: '../', shared: '../', 'site-title': home.title, 'paragraph-numbers': 'false', noindex: NOINDEX ? 'true' : '' }),
+      ...frameMeta(latest, '../'), root: '../', shared: '../', 'site-title': home.title, 'paragraph-numbers': 'false', noindex: NOINDEX ? 'true' : '' }),
     ...filterArgs(['links', 'paragraphs', 'contract'])], markdown, 'versions page');
   writeFileSync(join(dir, 'index.html'), html);
 }

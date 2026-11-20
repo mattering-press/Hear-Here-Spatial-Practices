@@ -13,7 +13,9 @@ function Pandoc(doc)
         Link = function(link)
           local image, title = pandoc.Inlines {}, pandoc.Inlines {}
           for _, el in ipairs(link.content) do
-            if el.t == 'Image' then image:insert(el) elseif not (#title == 0 and el.t == 'Space') then title:insert(el) end
+            -- figures.lua, which runs first, writes an image without alt text as raw HTML
+            local picture = el.t == 'Image' or (el.t == 'RawInline' and el.format == 'html' and el.text:match('^<img%s'))
+            if picture then image:insert(el) elseif not (#title == 0 and el.t == 'Space') then title:insert(el) end
           end
           link.content = image .. pandoc.Inlines { pandoc.Span(title, pandoc.Attr('', { 'card-title' })) }
           return link

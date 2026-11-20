@@ -8,7 +8,7 @@ $if(noindex)$
 $endif$
   <title>$pagetitle$$if(site-title)$ · $site-title$$endif$</title>
   <link rel="stylesheet" href="$shared$assets/site.css">
-$if(views)$
+$if(on-page)$
   <link rel="alternate" type="text/markdown" href="index.md">
   <link rel="alternate" type="application/json" href="page.json">
 $endif$
@@ -27,14 +27,11 @@ $endif$
 $if(version-notice)$
   $version-notice$
 $endif$
-  <header class="site-header"$if(header-style)$ style="$header-style$"$endif$>
-    <div class="site-header__inner">
-      <h1 class="page-title">$title$</h1>
-$if(subtitle)$
-      <p class="page-subtitle">$subtitle$</p>
-$endif$
+  <header class="site-header">
+    <div class="site-bar">
+      <a class="site-title" href="$root$">$book-title$</a>
 $if(menu)$
-      <nav class="site-menu" aria-label="Main">
+      <nav class="site-menu" aria-label="Sections">
         <ul>
 $for(menu)$
           <li>$menu$</li>
@@ -42,34 +39,58 @@ $endfor$
         </ul>
       </nav>
 $endif$
+$if(views)$
+      <nav class="view-switcher" aria-label="Views of this page">
+        <ul>
+          <li><a href="$view-page$"$if(on-page)$ aria-current="page"$endif$>Page</a></li>
+          <li><a href="$view-markdown$"$if(on-markdown)$ aria-current="page"$endif$>Markdown</a></li>
+<!-- Later, site-level views of the whole book, once they exist:
+          <li><a href="$root$collage/">Collage</a></li>
+          <li><a href="$root$list/">List</a></li>
+-->
+        </ul>
+      </nav>
+$endif$
+    </div>
+    <div class="page-opener$if(page-image)$ has-image$endif$$if(is-cover)$ is-cover$endif$">
+      <div class="page-opener__inner">
+        <div class="page-opener__text">
+$if(section-title)$
+          <p class="page-section"><a href="$section-url$">$section-title$</a></p>
+$endif$
+          <h1 class="page-title">$title$</h1>
+$if(subtitle)$
+          <p class="page-subtitle">$subtitle$</p>
+$endif$
+        </div>
+$if(page-image)$
+        <div class="page-opener__image">$page-image$</div>
+$endif$
+      </div>
     </div>
   </header>
-$if(views)$
-  <nav class="view-switcher" aria-label="View of this page">
-    <ul>
-      <li><a href="./" aria-current="page">Page</a></li>
-      <li><a href="index.md">Markdown</a></li>
-<!-- Later, site-level views of the whole book, once they exist:
-      <li><a href="$root$collage/">Collage</a></li>
-      <li><a href="$root$list/">List</a></li>
--->
-    </ul>
-  </nav>
-$endif$
   <main id="main">
 $body$
   </main>
   <div class="copy-status" role="status" aria-live="polite" aria-atomic="true"></div>
   <footer class="site-footer">
-$if(footer)$
-    <ul>
-$for(footer)$
-      <li>$footer$</li>
-$endfor$
-    </ul>
+    <div class="site-footer__inner">
+$if(logo)$
+      <a class="site-footer__logo" href="$publisher-url$">
+        <picture>
+$if(icon)$
+          <source media="(max-width: 40rem)" srcset="$icon$">
 $endif$
-    $version-line$
-    <p class="built-with">built with <span class="toolkit-name" aria-hidden="true">every_trick_in_the_book</span><span class="visually-hidden">every trick in the book</span> by SJMcH, a Mattering toolkit</p>
+          <img src="$logo$" alt="$publisher$">
+        </picture>
+      </a>
+$endif$
+      <div class="site-footer__text">
+        <p class="site-footer__credit"><cite>$book-title$</cite>$if(credit)$, $credit$$endif$. Published by <a href="$publisher-url$">$publisher$</a>$if(licence)$ under <a href="$licence-url$" rel="license">$licence$</a>$endif$.</p>
+        $version-line$
+        <p class="built-with">built with <span class="toolkit-name" aria-hidden="true">every_trick_in_the_book</span><span class="visually-hidden">every trick in the book</span> by SJMcH, a Mattering toolkit</p>
+      </div>
+    </div>
   </footer>
 </body>
 </html>

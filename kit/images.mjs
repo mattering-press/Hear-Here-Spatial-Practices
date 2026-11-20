@@ -1,7 +1,7 @@
 // Resized copies of the book's photographs, and static IIIF tiles for the zoomable ones (uses sharp).
 //   figure, inline  ->  images/<name>-1600.jpg, 1600 px on the long edge
 //   figure          ->  also iiif/<name>/: info.json and 512 px tiles (IIIF Image API 2, level 0)
-//   header          ->  images/<name>-2000.jpg, 2000 px wide
+//   lead            ->  images/<name>-1200.jpg, 1200 px on the long edge: the picture beside a page's title
 //   card, poster    ->  images/<name>-800.jpg, 800 px wide
 // A photo's EXIF orientation is applied, as browsers do. Juncture's rotation=90 instead turns the stored
 // pixels clockwise, as Juncture's image service does (that service ignores the EXIF orientation).
@@ -10,8 +10,8 @@ import { availableParallelism } from 'node:os';
 import { join } from 'node:path';
 import sharp from 'sharp';
 
-const SIZES = { figure: 1600, inline: 1600, header: 2000, card: 800, poster: 800 };
-const LONG_EDGE = new Set(['figure', 'inline']);
+const SIZES = { figure: 1600, inline: 1600, lead: 1200, card: 800, poster: 800 };
+const LONG_EDGE = new Set(['figure', 'inline', 'lead']);
 const TILE = 512;
 const JPEG = { quality: 80, progressive: true, mozjpeg: true };
 const TILE_JPEG = { quality: 80 };
@@ -88,6 +88,21 @@ async function makeGroup({ src, rotation, roles, root }, site) {
     entries[`figure|${src}|${rotation}`].tiles = `iiif/${name}/info.json`;
   }
   return { entries, tiles };
+}
+
+// The book's cover (FRAME.cover in build.mjs). An animated GIF becomes an animated WebP, about a sixth of its size,
+// with its first frame as a JPEG still for readers who ask for less motion; a still image becomes a JPEG used for
+// both. Returns { animated, still, width, height }, URLs relative to the site's root.
+export async function makeCover(src, sourceRoot, site) {
+  const file = join(sourceRoot, src), name = imageName(src);
+  mkdirSync(join(site, 'images'), { recursive: true });
+  const { pages = 1 } = await sharp(file).metadata();
+  const still = `images/${name}-still.jpg`;
+  const info = await sharp(file, { page: 0 }).autoOrient().resize({ width: 1200, height: 1200, fit: 'inside', withoutEnlargement: true }).jpeg(JPEG).toFile(join(site, still));
+  if (pages < 2) return { animated: still, still, width: info.width, height: info.height };
+  const animated = `images/${name}.webp`;
+  await sharp(file, { animated: true }).webp({ quality: 65 }).toFile(join(site, animated));
+  return { animated, still, width: info.width, height: info.height };
 }
 
 // jobs: [{ src, role, rotation, root? }] -> { images: { "role|src|rotation": { url, width, height, tiles? } }, tiles }
