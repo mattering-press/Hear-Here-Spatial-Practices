@@ -182,6 +182,31 @@ At the switch to the static edition, `node scripts/to-citation-keys.mjs` prints 
 citations into Pandoc citations (`[@becker2007, p. 74]`, `[-@fryer1984]` where the author is named in the sentence) and
 replaces each typed list with the list that citeproc generates. It is a dry run: it prints a diff and changes nothing.
 
+## Private previews
+
+Every push to any branch also uploads that branch's build to Cloudflare Pages as a private preview, behind
+Cloudflare Access. Previews are throwaway: they are not versions, never enter `versions.json`, and are deleted with
+their branch.
+
+- **Where:** each branch has a stable address showing its latest push, `https://<branch>.<project>.pages.dev`, and
+  every push also gets its own address that stays as it was until deleted, for comparing iterations side by side.
+  The workflow run's summary on GitHub lists both.
+- **Who can see them:** only the email addresses on the project's Access list. A visitor enters their email and
+  receives a one-time code; no account or password is needed.
+- **Search engines:** previews carry the same `noindex` as every build.
+- **Cleanup:** deleting a branch on GitHub deletes its previews (`.github/workflows/preview-cleanup.yml`). Old
+  previews of a branch that is kept can be deleted by running that workflow by hand.
+- **Setup:** the repository secrets `CLOUDFLARE_API_TOKEN` (an account token with only "Cloudflare Pages: Edit",
+  renewed yearly) and `CLOUDFLARE_ACCOUNT_ID`. The first push creates the project `hearhere-preview`, whose
+  production branch is one that never deploys, so every deployment, `main` included, is a preview covered by
+  Access.
+- **Protecting previews with Access, once:** in the Cloudflare dashboard open Workers & Pages, then the
+  `hearhere-preview` project, then Settings, General, and enable the Access policy for preview deployments. Then in
+  Zero Trust, Access, Applications, edit the application this created and set its policy to allow the email
+  addresses of the people who may see previews.
+- **Confidentiality:** the repository is public, so a branch's Markdown can be read on GitHub. Previews hide the
+  rendered site, not the source; embargoed material needs a separate private repository.
+
 ## Plan: stable links, versions and print companions
 
 Agreed with the publisher on 2026-11-19. The static twin does not implement all of this yet; it is the plan the build must follow.

@@ -2,6 +2,8 @@
 # citation style.
 # On main it also publishes the result on GitHub Pages, but only once Pages is enabled for the repository
 # with "GitHub Actions" as its source; until then the deploy job is skipped.
+# On every push to any branch it also uploads the build as a private preview to Cloudflare Pages, when the
+# CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID secrets are set (see "Private previews" in DEVELOPMENT.md).
 name: Static twin
 
 on:
@@ -50,6 +52,39 @@ jobs:
       - name: Test the house citation style
         working-directory: kit
         run: npm run test:csl
+
+      - name: Private preview on Cloudflare Pages
+        if: github.event_name == 'push'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          PROJECT: hearhere-preview
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "::notice::No Cloudflare secrets, so no private preview."
+            exit 0
+          fi
+          api="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/pages/projects"
+          auth=(-H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" -H "Content-Type: application/json")
+          # Create the project once. Its production branch is one that never deploys, so every deployment is a
+          # preview and the project's Access policy for previews covers all of them, main included.
+          if [ "$(curl -fsS "${auth[@]}" "$api/$PROJECT" -o /dev/null -w '%{http_code}' || true)" != 200 ]; then
+            curl -fsS "${auth[@]}" -X POST "$api" \
+              -d "{\"name\": \"$PROJECT\", \"production_branch\": \"cloudflare-production-unused\"}" > /dev/null
+            echo "Created the Cloudflare Pages project $PROJECT."
+          fi
+          subdomain=$(curl -fsS "${auth[@]}" "$api/$PROJECT" | jq -r .result.subdomain)
+          npx --yes wrangler@4.158.0 pages deploy ../_site --project-name="$PROJECT" --branch="$BRANCH" \
+            --commit-hash="$GITHUB_SHA" --commit-dirty=true | tee "$RUNNER_TEMP/wrangler.log"
+          deployment=$(grep -o 'https://[a-z0-9-]*\.'"$subdomain" "$RUNNER_TEMP/wrangler.log" | head -n 1)
+          alias="https://$(echo "$BRANCH" | tr 'A-Z' 'a-z' | sed 's/[^a-z0-9-]/-/g' | cut -c1-28 | sed 's/-*$//').$subdomain"
+          {
+            echo "### Private preview"
+            echo "- Latest on this branch: $alias"
+            echo "- This push, kept until deleted: $deployment"
+          } >> "$GITHUB_STEP_SUMMARY"
+        working-directory: kit
 
       - name: Is GitHub Pages enabled?
         id: pages
