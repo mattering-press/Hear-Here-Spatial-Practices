@@ -7,7 +7,8 @@
 -- URLs are rewritten to the site's: relative to the page, or (publication.md) absolute, depending on -M root.
 -- The headings of the text start at level 2. With -M title-heading=true (publication.md, which holds every page)
 -- the page starts with its title as a level-1 heading, and its subtitle in italics; index.md has the title in
--- its front matter instead. Heading ids are left out (Pandoc makes them again when it reads the Markdown).
+-- its front matter instead, with the version stamp (version: id, label, date, status; kit). Heading ids are left
+-- out (Pandoc makes them again when it reads the Markdown).
 -- Stage 2 (figures, embeds, cards, transcript and the other filters) turns this Markdown into HTML.
 package.path = pandoc.path.directory(PANDOC_SCRIPT_FILE) .. '/?.lua;' .. package.path
 local lib = require 'lib'
@@ -24,7 +25,7 @@ local function figure(div)
   local img = lib.image('figure', a.src, a.rotation)
   local attrs = { { 'alt', a.alt or '' } }
   if a.width then table.insert(attrs, 1, { 'width', a.width }) end
-  return pandoc.Para { pandoc.Image(lib.words(a.caption), lib.root .. img.url, '', pandoc.Attr('', class_list('zoom', a.side), attrs)) }
+  return pandoc.Para { pandoc.Image(lib.words(a.caption), lib.site_url(img.url), '', pandoc.Attr('', class_list('zoom', a.side), attrs)) }
 end
 
 local function target(a) return (lib.fix_link(a.src)) or a.src end
@@ -40,7 +41,7 @@ local function embed(div, class, default_title)
   end
   local attrs = {}
   for _, key in ipairs { 'width', 'height' } do if a[key] then attrs[#attrs + 1] = { key, a[key] } end end
-  if a.poster then attrs[#attrs + 1] = { 'poster', lib.root .. lib.image('poster', a.poster, 0).url } end
+  if a.poster then attrs[#attrs + 1] = { 'poster', lib.site_url(lib.image('poster', a.poster, 0).url) } end
   return pandoc.Div(blocks, pandoc.Attr('', classes, attrs))
 end
 
@@ -82,7 +83,7 @@ local function cards(blocks)
           local inner = pandoc.Inlines {}
           if img then
             local entry = lib.image('card', lib.resolve(img.src), 0)
-            inner:insert(pandoc.Image(img.caption, lib.root .. entry.url))
+            inner:insert(pandoc.Image(img.caption, lib.site_url(entry.url)))
             inner:insert(pandoc.Space())
           end
           inner:extend(h.content)
@@ -134,10 +135,10 @@ local function scripts(inlines)
 end
 
 local function plain_image(img)
-  if img.classes:includes('zoom') or img.src:sub(1, #lib.root + 7) == lib.root .. 'images/' then return nil end
+  if img.classes:includes('zoom') or lib.generated[img.src] then return nil end
   local path = lib.resolve(img.src)
   if not path then return nil end
-  img.src = lib.root .. lib.image('inline', path, 0).url
+  img.src = lib.site_url(lib.image('inline', path, 0).url)
   return img
 end
 
@@ -200,6 +201,12 @@ function Pandoc(doc)
   doc.blocks = blocks
   local meta = { title = lib.title, lang = lib.lang }
   if lib.subtitle ~= '' then meta.subtitle = lib.subtitle end
+  -- the version stamp (index.md only; publication.md has it once, in its own front matter)
+  local function get(key) return doc.meta[key] and pandoc.utils.stringify(doc.meta[key]) or '' end
+  if get('version-id') ~= '' then
+    meta.version = { id = get('version-id'), label = get('version-label'), date = get('version-date'), status = get('version-status') }
+    meta.kit = get('kit-version')
+  end
   doc.meta = pandoc.Meta(meta)
   return doc
 end

@@ -1,5 +1,6 @@
--- The page's data for page.json (see CONTRACT.md): its headings and links, plus the figures, audio, video and
--- references that the other filters recorded (and the citations and typed references for the build's report).
+-- The page's data for page.json (see CONTRACT.md): its headings and links, plus the figures, audio, video,
+-- references and paragraphs that the other filters recorded (and the citations and typed references for the build's
+-- report).
 -- Written as JSON to the file given with -M contract-out; build.mjs adds the fields it knows itself and writes
 -- page.json. Runs last, so headings have their ids.
 package.path = pandoc.path.directory(PANDOC_SCRIPT_FILE) .. '/?.lua;' .. package.path
@@ -29,7 +30,7 @@ function Pandoc(doc)
       end
     end,
   }
-  for _, key in ipairs { 'figures', 'audio', 'video', 'references', 'citations', 'typed' } do
+  for _, key in ipairs { 'figures', 'audio', 'video', 'references', 'paragraphs', 'citations', 'typed' } do
     data[key] = lib.get(doc, key)
     doc.meta['twin-' .. key] = nil
   end

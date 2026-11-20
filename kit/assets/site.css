@@ -19,6 +19,7 @@
   --colour-caption-text: #fff;
   --colour-transcript: rgb(186 186 186 / 0.17);
   --colour-footer: #eee;
+  --colour-highlight: color-mix(in srgb, var(--colour-accent) 13%, transparent);   /* a paragraph linked to (#p12) */
 
   /* type */
   --font: "Roboto", system-ui, sans-serif;
@@ -37,6 +38,9 @@
   --side-figure-width: 50%;               /* default width of figures floated left or right */
   --radius: 15px;
   --shadow: 0 4px 12px rgb(0 0 0 / 0.08);
+
+  /* paragraph numbers: 1 shows them in the margin; 0 hides them (the ¶ link still appears on hover and focus) */
+  --paragraph-numbers: 1;
 }
 
 /* base */
@@ -75,6 +79,35 @@ main::after { content: ""; display: block; clear: both; }
 main :is(h2, h3, h4, h5, h6) { clear: both; font-weight: var(--weight-heading); text-transform: var(--heading-case); }
 main h2 { margin-top: 2.5rem; padding-left: var(--gap); border-left: 6px solid var(--colour-accent); }
 blockquote { margin: var(--space) 0; padding: 0.5rem 1.25rem; border-left: 4px solid var(--colour-accent); background: var(--colour-surface); }
+
+/* paragraph numbers (filters/paragraphs.lua): the number of each reading paragraph in the margin, and a ¶ link to it
+   on hover and focus (assets/paragraphs.js copies its address). The link has no text of its own, so that copied
+   text and text fragments see only the paragraph's words; its number and ¶ are generated here. */
+main { position: relative; padding-left: var(--column-inset, var(--gap)); }
+.para { scroll-margin-top: var(--space); border-radius: 4px; }
+.para-link { position: absolute; right: calc(100% - var(--column-inset, var(--gap)) + 0.6rem); line-height: calc(var(--font-size) * var(--line-height)); color: var(--colour-caption); font-size: 0.75rem; font-style: normal; font-weight: 400; font-variant-numeric: tabular-nums; text-decoration: none; white-space: nowrap; }
+.para-link::before { content: "¶"; margin-right: 0.3em; opacity: 0; color: var(--colour-accent); font-size: 1.1em; font-weight: var(--weight-strong); }
+.para-link::after { content: attr(data-n); opacity: var(--paragraph-numbers); }
+.para:hover .para-link::before, .para-link:focus-visible::before, .para-link:hover::after, .para-link:focus-visible::after { opacity: 1; }
+.para-link:hover { color: var(--colour-accent); }
+.para:target { animation: para-highlight 3s ease-out; }
+@keyframes para-highlight {
+  from, 40% { background: var(--colour-highlight); box-shadow: 0 0 0 0.4rem var(--colour-highlight); }
+  to { background: transparent; box-shadow: 0 0 0 0.4rem transparent; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .para:target { animation: none; background: var(--colour-highlight); box-shadow: 0 0 0 0.4rem var(--colour-highlight); }
+}
+::target-text { background: color-mix(in srgb, var(--colour-accent) 22%, transparent); color: inherit; }
+/* the status line that says a paragraph's link was copied (an aria-live region, hidden while empty) */
+.copy-status { position: fixed; left: 50%; bottom: 1rem; z-index: 20; max-width: calc(100vw - 2rem); padding: 0.5rem 1rem; transform: translateX(-50%); border-radius: 6px; background: var(--colour-text); color: var(--colour-surface); box-shadow: var(--shadow); font-size: 0.875rem; overflow-wrap: anywhere; }
+.copy-status:not(.is-shown) { width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); }
+
+/* the notice on a frozen version, with a link to the same passage in the newer text */
+.version-notice { padding: 0.6rem var(--gap); border-bottom: 3px solid var(--colour-accent); background: var(--colour-surface); font-size: 0.9375rem; }
+.version-notice p { max-width: var(--wide); margin: 0 auto; }
+.version-notice a { font-weight: var(--weight-strong); }
+.has-annotations .version-notice { padding-right: calc(var(--gap) + 2.5rem); }
 
 /* figures: zoomable images, videos and other embeds */
 figure { margin: var(--space) auto; width: var(--figure-width, 100%); }
@@ -141,6 +174,17 @@ a.citation { text-decoration-thickness: 1px; text-underline-offset: 0.15em; }
 .site-footer { margin-top: 3rem; padding: 1.5rem var(--gap); background: var(--colour-footer); }
 .site-footer ul { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--gap) 2rem; max-width: var(--wide); margin: 0 auto; padding: 0; list-style: none; }
 .site-footer img { height: 2rem; width: auto; vertical-align: middle; }
+
+/* the version, its date and the kit's version, under the footer's logos */
+.site-footer__version { max-width: var(--wide); margin: 0 auto; font-size: 0.875rem; text-align: center; }
+.site-footer ul + .site-footer__version { margin-top: 1.25rem; }
+
+/* where the page has no margin wide enough for the paragraph numbers, the text column makes room for them */
+@media (max-width: 52rem) {
+  main { --column-inset: calc(var(--gap) + var(--paragraph-numbers) * 1.75rem); }
+  /* on a version open for annotation, Hypothesis's toolbar covers the right edge of the window */
+  .has-annotations main { padding-right: calc(var(--gap) + 1.75rem); }
+}
 
 /* narrow screens: figures stop floating */
 @media (max-width: 40rem) {
