@@ -8,6 +8,12 @@
 # https://css-tricks.com/lets-create-a-custom-audio-player/
 */
 
+// THE BOOK HAS MOVED: send every visitor of the Juncture version to the new home page. Only Juncture loads this
+// file; the static edition at hearhere.matteringpress.org does not.
+if (/(^|\.)juncture-digital\.org$/.test(location.hostname)) {
+  location.replace('https://hearhere.matteringpress.org/');
+}
+
 // WRAP TRANSCRIPT SECTIONS OF THE PAGE IN A DIV WITH A SPECIFIC CLASS
 document.addEventListener('DOMContentLoaded', () => {
   const h1s = document.querySelectorAll('h1');
