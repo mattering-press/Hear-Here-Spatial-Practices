@@ -1,7 +1,7 @@
 # Development and deployment workflow
 
 This repository is the only source for the publication. Since version 0.1 (2026-11-20) the public site is the
-static edition built by every-trick-in-the-book in `kit/`; Juncture, which rendered the first version, is
+static edition built by every_trick_in_the_book in `kit/`; Juncture, which rendered the first version, is
 retired and forwards its visitors to the new site.
 
 - Repository: `mattering-press/Hear-Here-Spatial-Practices`

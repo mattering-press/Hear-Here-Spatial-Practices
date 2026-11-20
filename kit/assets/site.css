@@ -195,4 +195,6 @@ a.citation { text-decoration-thickness: 1px; text-underline-offset: 0.15em; }
   main h2 { padding-left: 0.75rem; }
 }
 .built-with { margin: 0.5rem 0 0; font-size: 0.85em; opacity: 0.8; }
-.toolkit-name { white-space: nowrap; }   /* never wrap the name at its hyphens */
+.toolkit-name { white-space: nowrap; }
+/* where the name is a link, drop the underline below the underscores so they stay visible */
+a .toolkit-name, .toolkit-name a { text-underline-offset: 0.35em; text-decoration-thickness: 1px; }
