@@ -101,9 +101,11 @@ Poetry is cited by line, not by paragraph ("ll. 12–14"), so poems have their o
   identifier is the line address (`river-l12`, or a range `river-l12-l14`). Several readings of one poem each have
   their own file, all pointing at the same line addresses. Players and highlighting are a design matter for later.
 
-## Margin notes and their numbers (planned)
+## Margin notes and their numbers
 
-Margin notes are not built yet; this fixes how they will be numbered, so it is settled before any are written.
+A margin note is written directly after its paragraph as `::: {.margin}` … `:::`. Text notes are built; media in
+the margin are not built yet. In the HTML a text note is `<aside id="n1" class="margin" aria-label="Note 1">`, and
+its mark in the text, at the end of the paragraph before it, is `<a class="margin-mark" id="n1-mark" href="#n1">1</a>`.
 
 - Paragraph numbers ignore the margin entirely: adding, moving or removing a margin item never changes them.
 - Text notes in the margin are numbered from 1 in each chapter, in order of their place in the text, as `n1`, `n2`

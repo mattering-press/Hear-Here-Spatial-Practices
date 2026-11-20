@@ -20,6 +20,21 @@
 
 There are many ways to speak of the building of Coventry Cathedral. The migration of ideas, people and materials are very much part of the making of the cathedral. Absence/Presence is an invitation to participate in the process of searching for stories sitting on the side, outside the usual frames of reference.
 
+::: {.margin}
+**Newspaper Stories**
+
+*Archival Materials for Absence Presence Display Labels*
+
+1. Nightwatchman Udham Singh Giny, Coventry Standard 21.12.1967
+2. Look for the story of Cyril Brown, who wrote letters to his family in Jamacia as he worked on the site. Birmingham Post 18.05. 1962.
+3. Coventry Cathedral and the men who made it written’ by Arthur Bryant, May 1962. The list does not include those below the position of Foreman.
+4. Book of Named Persons who worked on the building from Laing with several empty pages.
+5. Look at this photo to dwell on how people from across the globe were part of building the cathedral.
+6. Staff at Welcome Desk 1979, Coventry Cathedral Network Magazine, No.33.
+7. Features on Race Relations in Coventry, written by Rev. Peter Berry, Chaplain for Community Relations, Coventry Cathedral Network Magazine,1968 No.2  & 1970 No.2.
+8. Coventry Cathedral Race Relations in the Festival of Reconciliation, during Remembrance Sunday 10-14 Nov 1967. Coventry Cathedral Relations Conference 16 Nov 1968 Sixth Annual Report 1969, by Peter Berry, Chaplain for Community Relations.
+:::
+
 Whilst Basil Spence, the architect of the cathedral, was born in India due to empire, workers from the empire, as well as refugees and displaced persons from Europe and local people contributed to the building of the cathedral.
 
 We invite you to dwell on imagining what is left unseen and unheard. Take time to pause on the ambivalence of the images, pondering on who was building and making the cathedral in the fifties and sixties. Contribute towards how we try to catch up with this past in the present moment.
@@ -31,7 +46,7 @@ Absence/Presence creates a contact zone for searching stories sitting on the edg
 > **Progress in Letters**
 >
 > From St. Mary’s Jamaica, two years ago came Cyril Brown (now 49) to work as a general labourer. “It has been a happy time for me,” he says. “I was brought up as a Christian and have been proud to play a part in the building of this cathedral.” Mr Brown’s letters to relatives in Jamaica have regularly recorded progress on the cathedral.
-
+>
 > — Special Correspondent, “Men of Many Nationalities All Dedicated to Their Task,” *Coventry Evening Telegraph*
 
 > I was born in India and when I was eight years old my father took me to see the caves of Elephanta, just outside Bombay. This was the first architectural experience of my life and it is still vivid. The vast chambers carved out of solid rock, rich in sculpture and intricate detail, gave a tremendous feeling of the size; the cool temperature inside contrasted with the heat outside, and the dim lighting revealed features of the interior only after the eye had got used to darkness.
@@ -51,20 +66,6 @@ Absence/Presence creates a contact zone for searching stories sitting on the edg
   <figcaption>Panel talk connected to the exhibition Absence/Presence. Source: <a href="https://vimeo.com/reviews/a922274b-44b6-4818-8f89-18aead2953e9/videos/1120434948">Vimeo</a>.</figcaption>
 
 </figure>
-
-
-### **Newspaper Stories**
-
-*Archival Materials for Absence Presence Display Labels*
-
-1. Nightwatchman Udham Singh Giny, Coventry Standard 21.12.1967
-2. Look for the story of Cyril Brown, who wrote letters to his family in Jamacia as he worked on the site. Birmingham Post 18.05. 1962.
-3. Coventry Cathedral and the men who made it written’ by Arthur Bryant, May 1962. The list does not include those below the position of Foreman.
-4. Book of Named Persons who worked on the building from Laing with several empty pages.
-5. Look at this photo to dwell on how people from across the globe were part of building the cathedral.
-6. Staff at Welcome Desk 1979, Coventry Cathedral Network Magazine, No.33.
-7. Features on Race Relations in Coventry, written by Rev. Peter Berry, Chaplain for Community Relations, Coventry Cathedral Network Magazine,1968 No.2  & 1970 No.2.
-8. Coventry Cathedral Race Relations in the Festival of Reconciliation, during Remembrance Sunday 10-14 Nov 1967. Coventry Cathedral Relations Conference 16 Nov 1968 Sixth Annual Report 1969, by Peter Berry, Chaplain for Community Relations.
 
 ## 2. Spotting Colours
 
