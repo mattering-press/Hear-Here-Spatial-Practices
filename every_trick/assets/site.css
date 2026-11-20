@@ -52,6 +52,10 @@
 /* base */
 *, *::before, *::after { box-sizing: border-box; }
 body { margin: 0; background: var(--colour-background); color: var(--colour-text); font: var(--weight-text) var(--font-size) / var(--line-height) var(--font); }
+/* a page with little text still fills the window: the text column takes the spare height, so the footer sits at the
+   bottom of the window instead of halfway up */
+body { display: flex; flex-direction: column; min-height: 100vh; min-height: 100svh; }
+body > main { flex: 1 0 auto; width: 100%; }
 a { color: var(--colour-link); text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
 a:hover { text-decoration-thickness: 2px; }
 b, strong { font-weight: var(--weight-strong); }

@@ -30,6 +30,7 @@ reader sees. How to add a version: ‘Versions of the book and of every_trick’
 - Cards look the same whether or not their picture has alt text. Before, a picture without alt text sat inside the
   title, framed by a red line.
 - On phones the header takes less room and the Markdown view is readable.
+- On a page with little text the footer sits at the bottom of the window, not halfway up.
 
 ## 1.1.0
 
