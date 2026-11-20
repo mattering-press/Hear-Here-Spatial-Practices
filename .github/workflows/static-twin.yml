@@ -1,4 +1,4 @@
-# Builds the static twin of the book (kit/), checks every internal link and local file in it, and tests the house
+# Builds the static twin of the book (every_trick/), checks every internal link and local file in it, and tests the house
 # citation style.
 # On main it also publishes the result on GitHub Pages, but only once Pages is enabled for the repository
 # with "GitHub Actions" as its source; until then the deploy job is skipped.
@@ -32,7 +32,7 @@ jobs:
         with:
           node-version: 24
           cache: npm
-          cache-dependency-path: kit/package-lock.json
+          cache-dependency-path: every_trick/package-lock.json
 
       - name: Install Pandoc 3.8.3
         run: |
@@ -42,17 +42,17 @@ jobs:
           pandoc --version | head -n 1
 
       - name: Build
-        working-directory: kit
+        working-directory: every_trick
         run: |
           npm ci
           npm run build
 
       - name: Check links and files
-        working-directory: kit
+        working-directory: every_trick
         run: npm run check
 
       - name: Test the house citation style
-        working-directory: kit
+        working-directory: every_trick
         run: npm run test:csl
 
       - name: Private preview on Cloudflare Pages
@@ -86,7 +86,7 @@ jobs:
             echo "- Latest on this branch: $alias"
             echo "- This push, kept until deleted: $deployment"
           } >> "$GITHUB_STEP_SUMMARY"
-        working-directory: kit
+        working-directory: every_trick
 
       - name: Is GitHub Pages enabled?
         id: pages

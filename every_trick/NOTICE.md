@@ -2,6 +2,9 @@
 
 every_trick_in_the_book by SJMcH, a Mattering toolkit: every trick in the book for making books.
 
+Its home is https://github.com/every-trick/every_trick_in_the_book. Its versions, and what changed in each, are listed in
+`CHANGELOG.md`.
+
 Copyright © 2026 Studio Julien McHardy (SJMcH). Made for Mattering Press, its first publisher.
 
 The name is written in lower case with underscores, `every_trick_in_the_book`, and `every_trick` for short in running
@@ -13,8 +16,8 @@ text. Web addresses cannot contain underscores, so a domain for it would be `eve
 - **The toolkit** (the build, filters, scripts, template and `every_trick/plain`, the default style in this folder):
   Mozilla Public License 2.0, see `LICENSE`. You may use, change and share it, also commercially; changes to these
   files must be shared under the same licence, and this notice must be kept.
-- **`every_trick/markdown`, `every_trick/conventions` and the documentation** (`CONTRACT.md` and the writing
-  conventions): Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0).
+- **`every_trick/markdown`, `every_trick/conventions` and the documentation** (`CONTRACT.md`, `CHANGELOG.md` and
+  the writing conventions): Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0).
 - **The house citation style** (`csl/mattering-press.csl`): CC BY-SA 3.0, as required by the Citation Style
   Language styles it is adapted from; see the file's header.
 - **`sjmch/styles`** (the designed reading, collage and other styles by Studio Julien McHardy, published
