@@ -98,6 +98,9 @@ main { position: relative; padding-left: var(--column-inset, var(--gap)); }
 @media (prefers-reduced-motion: reduce) {
   .para:target { animation: none; background: var(--colour-highlight); box-shadow: 0 0 0 0.4rem var(--colour-highlight); }
 }
+.poem .line-block, .poem p { white-space: pre-wrap; }   /* keep a poem's spacing */
+.line:target { animation: para-highlight 3s ease-out; }
+@media (prefers-reduced-motion: reduce) { .line:target { animation: none; background: var(--colour-highlight); } }
 ::target-text { background: color-mix(in srgb, var(--colour-accent) 22%, transparent); color: inherit; }
 /* the status line that says a paragraph's link was copied (an aria-live region, hidden while empty) */
 .copy-status { position: fixed; left: 50%; bottom: 1rem; z-index: 20; max-width: calc(100vw - 2rem); padding: 0.5rem 1rem; transform: translateX(-50%); border-radius: 6px; background: var(--colour-text); color: var(--colour-surface); box-shadow: var(--shadow); font-size: 0.875rem; overflow-wrap: anywhere; }
@@ -191,3 +194,7 @@ a.citation { text-decoration-thickness: 1px; text-underline-offset: 0.15em; }
   figure.left, figure.right, main iframe.left, main iframe.right { float: none; width: 100%; margin-left: 0; margin-right: 0; }
   main h2 { padding-left: 0.75rem; }
 }
+.built-with { margin: 0.5rem 0 0; font-size: 0.85em; opacity: 0.8; }
+.toolkit-name { white-space: nowrap; }
+/* where the name is a link, drop the underline below the underscores so they stay visible */
+a .toolkit-name, .toolkit-name a { text-underline-offset: 0.35em; text-decoration-thickness: 1px; }

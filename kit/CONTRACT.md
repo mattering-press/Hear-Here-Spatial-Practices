@@ -82,6 +82,25 @@ On a frozen version every page starts with a notice, `<aside class="version-noti
 text (the latest text, or for an older release the newest release). `data-paragraphs` maps each of the page's
 paragraphs to the matching paragraph there (see `kit/versions.mjs`).
 
+## Poems
+
+Poetry is cited by line, not by paragraph ("ll. 12–14"), so poems have their own block and line numbers.
+
+- A poem is written as a block: `::: {.poem #river}` … `:::`, usually with Pandoc's line syntax (`| ` at the start
+  of each line), which keeps every line break and leading space. Ordinary paragraphs inside the block also work:
+  each of their lines counts.
+- In the chapter's paragraph numbering the whole poem is one paragraph, so editing a poem never shifts the
+  paragraph numbers around it.
+- Inside the poem, every non-empty line is numbered from 1, in order: `<poem id>-l1`, `<poem id>-l2` and so on,
+  for example `#river-l12`. The poem id is the block's own id (`#river`), or `poem1`, `poem2` … in page order when
+  it has none. Give a poem an id when it should keep its line addresses across versions in which other poems are
+  added before it. Empty lines and stanza breaks are not numbered.
+- Each line is `<span class="line" id="river-l12" data-line="12">`. In `page.json` the poem's paragraph entry has
+  `poem` (its id) and `lines` (how many).
+- Sound: a recording of a poem gets a WebVTT file next to its audio, with one cue per line or stanza whose
+  identifier is the line address (`river-l12`, or a range `river-l12-l14`). Several readings of one poem each have
+  their own file, all pointing at the same line addresses. Players and highlighting are a design matter for later.
+
 ## Margin notes and their numbers (planned)
 
 Margin notes are not built yet; this fixes how they will be numbered, so it is settled before any are written.

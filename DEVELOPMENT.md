@@ -1,13 +1,14 @@
 # Development and deployment workflow
 
-This repository is the only source for the publication. Juncture renders it
-directly from GitHub, so there is no build step and no separate staging
-repository.
+This repository is the only source for the publication. Since version 0.1 (2026-11-20) the public site is the
+static edition built by every_trick_in_the_book in `kit/`; Juncture, which rendered the first version, is
+retired and forwards its visitors to the new site.
 
 - Repository: `mattering-press/Hear-Here-Spatial-Practices`
 - Production branch: `main`
-- Production site: `https://juncture-digital.org/mattering-press/Hear-Here-Spatial-Practices`
-- Branch preview: add `?ref=<branch>` to any page URL (see below)
+- Production site: `https://hearhere.matteringpress.org/` (GitHub Pages, built by GitHub Actions from `main`)
+- Frozen versions: `https://hearhere.matteringpress.org/v<id>/`, listed in `versions.json`
+- Branch previews: private, on Cloudflare Pages (see "Private previews")
 
 ## How it fits together
 
@@ -15,16 +16,15 @@ repository.
 Local feature branch
     | git push origin <branch>
     v
-Feature branch on GitHub  ->  Juncture branch preview (?ref=<branch>)
+Feature branch on GitHub  ->  private preview on Cloudflare Pages
     |
     | review the preview, then merge a pull request
     v
-main on GitHub  ->  production site
+main on GitHub  ->  GitHub Actions build  ->  https://hearhere.matteringpress.org/
 ```
 
-`main` is always the published version. Every change reaches it through a pull
-request from a feature branch, and the commit that was previewed is the commit
-that is merged.
+`main` is always the published working text. Every change reaches it through a pull request from a feature
+branch, and the commit that was previewed is the commit that is merged.
 
 ## Starting a piece of work
 
@@ -37,8 +37,7 @@ git switch -c <feature-branch>
 ```
 
 Use a branch name without `/` (for example `walk-page`, not `jules/walk-page`).
-Juncture splits the GitHub URL on slashes to find the branch, so a name with a
-slash cannot be previewed. If a tool creates a branch with a slash, push it
+Preview addresses are made from branch names, so keep them short and flat. If a tool creates a branch with a slash, push it
 under a flat name instead: `git push -u origin HEAD:<flat-name>`.
 
 Longer-running work, such as the collage index on `collage-index`, lives on its
@@ -50,7 +49,10 @@ git fetch origin
 git merge origin/main
 ```
 
-## Previewing a branch
+## Previewing a branch on Juncture (retired)
+
+Until version 0.1 branches were previewed on Juncture as below. Juncture now forwards every page to the new site, so
+use the private previews instead (see "Private previews").
 
 1. Commit on the feature branch and push it: `git push origin <branch>`.
 2. Open the page you changed with `?ref=<branch>`:
