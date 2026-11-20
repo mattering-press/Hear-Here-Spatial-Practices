@@ -35,7 +35,7 @@ const KIT = dirname(fileURLToPath(import.meta.url));
 const KIT_VERSION = JSON.parse(readFileSync(join(KIT, 'package.json'), 'utf8')).version;
 const SITE = join(REPO_ROOT, '_site');
 const PANDOC = process.env.PANDOC || 'pandoc';
-const FILTERS = ['figures', 'embeds', 'cards', 'transcript', 'links', 'citations', 'paragraphs', 'contract'];
+const FILTERS = ['figures', 'embeds', 'cards', 'transcript', 'links', 'citations', 'paragraphs', 'margins', 'contract'];
 const started = Date.now();
 const fail = (message) => { console.error(message); process.exit(1); };
 

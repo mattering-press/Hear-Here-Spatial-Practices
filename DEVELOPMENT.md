@@ -143,12 +143,12 @@ What is in `kit/`:
 - `build.mjs`: the build, with its few settings at the top
 - `versions.mjs`: reads the version registry (`versions.json` at the repository root), takes each version's text from its Git tag, and matches paragraphs between versions
 - `convert.mjs`: turns Juncture's `.ve-*` lines and its raw HTML (audio, iframes, videos) into Pandoc Markdown
-- `filters/`: Lua filters, one job each. `to-markdown.lua` is stage 1 (writes the Markdown view); `figures`, `embeds`, `cards`, `transcript`, `links`, `citations`, `paragraphs` and `contract` are stage 2 (Markdown view to HTML and `page.json`)
+- `filters/`: Lua filters, one job each. `to-markdown.lua` is stage 1 (writes the Markdown view); `figures`, `embeds`, `cards`, `transcript`, `links`, `citations`, `paragraphs`, `margins` and `contract` are stage 2 (Markdown view to HTML and `page.json`)
 - `citations.mjs`: prepares the bibliography for `filters/citations.lua` and writes the build's report on citations
 - `csl/`: `mattering-press.csl`, the house citation style, and its test (`csl/test/`)
 - `scripts/to-citation-keys.mjs`: for the switch, shows how the plain-text citations would become Pandoc citations
 - `template.html`: the HTML around every page
-- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `zoom.js`, `seek.js`, `citations.js`, `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read)
+- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `zoom.js`, `seek.js`, `citations.js`, `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens)
 - `images.mjs`: resized images and the tiles for zooming
 - `check.mjs`, `serve.mjs`: the link check and the local server
 - `CONTRACT.md`: the `page.json` and `publication.json` files that other frontends can read, and the paragraph rule
@@ -173,7 +173,7 @@ site is rebuilt:
 - every paragraph of text gets the next number, including paragraphs in quotations, each item of a list, and each
   turn of speech in a transcript;
 - headings, pictures and their captions, audio and video players, picture galleries, the cards that lead to other
-  pages, the reference list at the end of a chapter, and the header and footer get no number;
+  pages, notes in the margin, the reference list at the end of a chapter, and the header and footer get no number;
 - a paragraph that holds only a timecode such as `[00:10:13]`, or only a picture, gets no number;
 - a short line on its own, such as **Addendum** or `[music]`, is a paragraph like any other and gets a number.
 
@@ -220,13 +220,13 @@ reviewer must be a member of the group to see or post in it.
 
 ### Kit version
 
-`version` in `kit/package.json` (now `0.3.0`) is the version of the kit, shown in every footer. Bump it in the
+`version` in `kit/package.json` (now `0.4.0`) is the version of the kit, shown in every footer. Bump it in the
 same commit as the change, with `npm version <minor|patch> --no-git-tag-version` in `kit/` (it updates
 `package-lock.json` too):
 
 - `0.x.0`, the minor number, when what readers see or what the pages do changes: the template, the stylesheet,
   the scripts, or the HTML the filters write;
-- `0.3.x`, the patch number, for fixes that change nothing a reader sees: the build, its checks, its report;
+- `0.4.x`, the patch number, for fixes that change nothing a reader sees: the build, its checks, its report;
 - `1.0.0` at the switch from Juncture to the static edition.
 
 The format of `page.json` and `publication.json`, and the paragraph rule, have their own version, `CONTRACT` in
@@ -363,11 +363,11 @@ Agreed with the publisher on 2026-11-19. These fix the data; players and viewers
 
 ## Plan: margin notes
 
-Agreed with the publisher on 2026-11-19; not built yet.
+Agreed with the publisher on 2026-11-19. Text notes are built (`kit/filters/margins.lua`, `kit/assets/margins.js`); media in the margin and the print and EPUB forms are not built yet.
 
 - **What:** short notes, links and small media thumbnails in a right-hand margin column. Paragraph numbers keep the left margin.
 - **Where they live in the source:** directly after the paragraph they belong to (`::: {.margin}` … `:::`), or attached to a word (`[given by Germany in 1962]{.margin}`). They are never stored by paragraph number, so they move with their paragraph from version to version. While Juncture still renders the site, write them as `<aside class="margin" markdown="1">…</aside>`, which the build converts.
-- **Layout on wide screens:** notes float in the margin starting level with their paragraph. When the margin is crowded, later notes are pushed down, so the text column never gets gaps. A marker in the text and the same mark on the note highlight together on hover and focus. Long notes show a few lines, then "more".
+- **Layout on wide screens:** notes float in the margin starting level with their paragraph. When the margin is crowded, later notes are pushed down, so the text column never gets gaps. A marker in the text and the same mark on the note highlight together on hover and focus. Notes show in full (the publisher's preset, 2026-11-20). Setting `--margin-note-lines` in `kit/assets/site.css` above 0 makes long notes show that many lines, then "more".
 - **Phones, no JavaScript and screen readers:** a note stays in reading order directly after its paragraph, as a labelled aside.
 - **Print and EPUB:** decided per note: an endnote, a small figure with address and QR code, or web-only.
 - **Numbering:** text notes are numbered per chapter (`n1`, `n2`), matching the endnote numbers they get in print; media in the margin are figures with `Fig. 2.3` numbers and their own item addresses; plain links are not numbered; paragraph numbers ignore the margin. Details in `kit/CONTRACT.md`.
