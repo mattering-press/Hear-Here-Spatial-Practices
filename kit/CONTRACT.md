@@ -25,7 +25,10 @@ site's root lists every edition.
 
 ## Paragraph numbers
 
-The reading paragraphs of each page are numbered from 1, in page order, as `p1`, `p2` and so on. The number
+The reading paragraphs of each page are numbered from 1, in page order, as `p1`, `p2` and so on. The chapter is the
+unit: today every page is one chapter, and every chapter has its own DOI, so a citation reads "(Nassar 2026: para.
+12)" and the link `/v1/essays/aya_nassar/#p12`. If a chapter is ever split over several pages, or one page holds
+several chapters, numbering follows the chapter and starts again at 1 in each chapter. The number
 depends only on the page's content, as its Markdown view (`index.md`) has it, never on the template or the
 stylesheet. Every version is rebuilt with the current kit, so this rule must not change within contract 0.x:
 changing it would renumber the paragraphs of every frozen version and break every citation of them.
@@ -78,6 +81,18 @@ On a frozen version every page starts with a notice, `<aside class="version-noti
 `<a class="version-notice__link" href="…" data-paragraphs='{"p12": "p14", …}'>` goes to the same page in the newer
 text (the latest text, or for an older release the newest release). `data-paragraphs` maps each of the page's
 paragraphs to the matching paragraph there (see `kit/versions.mjs`).
+
+## Margin notes and their numbers (planned)
+
+Margin notes are not built yet; this fixes how they will be numbered, so it is settled before any are written.
+
+- Paragraph numbers ignore the margin entirely: adding, moving or removing a margin item never changes them.
+- Text notes in the margin are numbered from 1 in each chapter, in order of their place in the text, as `n1`, `n2`
+  and so on, with a small matching mark in the text. In print and EPUB a margin note becomes an endnote, and house
+  style numbers endnotes per chapter, so "note 3" means the same note online and in print.
+- Images, audio and video in the margin are figures: they take the chapter's figure numbering (`Fig. 2.3`) and
+  their own item address (`/see/<name>`, `/listen/<name>`, `/watch/<name>`).
+- Plain links in the margin are not numbered.
 
 ## publication.json
 
