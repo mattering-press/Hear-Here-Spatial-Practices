@@ -48,12 +48,48 @@ local function readable(block)
   return words and normalise(pandoc.utils.stringify(block)) ~= ''
 end
 
+-- Short lines that work as labels or stage directions, not as reading paragraphs (CONTRACT.md):
+--   "[music]", "[laughter]"            the whole text is one bracketed note
+--   "Addendum:", "In the archive:"     at most 6 words, ending with a colon
+--   "**Addendum**", "*Interlude*"      at most 6 words, all in bold or italics
+local function words_of(text)
+  local n = 0
+  for _ in text:gmatch('%S+') do n = n + 1 end
+  return n
+end
+local function is_label(block)
+  local text = pandoc.utils.stringify(block):gsub('^%s+', ''):gsub('%s+$', '')
+  if text:match('^%[[^%[%]]+%]$') then return true end
+  if words_of(text) > 6 then return false end
+  if text:match(':$') then return true end
+  local styled, other = 0, 0
+  for _, el in ipairs(block.content) do
+    if el.t == 'Strong' or el.t == 'Emph' then styled = styled + 1
+    elseif el.t ~= 'Space' and el.t ~= 'SoftBreak' and el.t ~= 'LineBreak' then other = other + 1 end
+  end
+  return styled > 0 and other == 0
+end
+
+-- A list before the page's first heading whose every item starts with a bold label ending in a colon is page
+-- metadata ("**Recording date:** 5 April 2025"), not reading text.
+local function is_metadata_list(list)
+  if #list.content == 0 then return false end
+  for _, item in ipairs(list.content) do
+    local first = item[1]
+    if #item ~= 1 or not first or (first.t ~= 'Plain' and first.t ~= 'Para') then return false end
+    local lead = first.content[1]
+    if not lead or lead.t ~= 'Strong' or not pandoc.utils.stringify(lead):match(':%s*$') then return false end
+  end
+  return true
+end
+
 function Pandoc(doc)
   lib.init(doc.meta)
   local setting = doc.meta['paragraph-numbers']   -- -M paragraph-numbers=false arrives as a boolean
   if setting == false or (setting and pandoc.utils.stringify(setting) == 'false') then return nil end
   local paragraphs = {}
   local references_level = nil   -- inside a "References" section: the level of its heading
+  local seen_header = false      -- a metadata list only counts before the first heading
 
   -- block: a Para or Plain; for a line block, text is a Para of its lines and the link goes into its first line
   local function number(block, text_block)
@@ -69,6 +105,7 @@ function Pandoc(doc)
   local walk_blocks
   local function walk_block(b)
     if b.t == 'Header' then
+      seen_header = true
       local text = pandoc.utils.stringify(b.content):lower():gsub('^%s+', ''):gsub('%s+$', '')
       if references_level and b.level <= references_level then references_level = nil end
       if text == 'references' and not references_level then references_level = b.level end
@@ -76,7 +113,7 @@ function Pandoc(doc)
     end
     if references_level then return b end
     if b.t == 'Para' or b.t == 'Plain' then
-      return readable(b) and number(b) or b
+      return (readable(b) and not is_label(b)) and number(b) or b
     elseif b.t == 'LineBlock' then
       -- verse, or an address: one paragraph, its lines kept
       local inlines = pandoc.Inlines {}
@@ -92,6 +129,7 @@ function Pandoc(doc)
       for _, c in ipairs(b.classes) do if SKIP[c] then return b end end
       b.content = walk_blocks(b.content)
     elseif b.t == 'BulletList' or b.t == 'OrderedList' then
+      if not seen_header and is_metadata_list(b) then return b end
       local items = {}
       for i, item in ipairs(b.content) do items[i] = walk_blocks(item) end
       b.content = items

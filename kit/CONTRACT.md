@@ -47,10 +47,15 @@ Not numbered:
   `.gallery` and `.cards` blocks;
 - a paragraph without words: only images, only raw HTML (the smartframe embeds), only a transcript timecode
   such as `[00:10:13]`, or nothing left once normalised (below);
-- tables, code blocks, horizontal rules and raw HTML blocks.
+- tables, code blocks, horizontal rules and raw HTML blocks;
+- page metadata: a list before the page's first heading in which every item starts with a bold label ending in a
+  colon (`- **Recording date:** 5 April 2025`);
+- labels and stage directions on a line of their own: a paragraph whose whole text is one bracketed note
+  (`[music]`, `[laughter]`; timecodes are covered above), or a paragraph of at most six words that ends with a
+  colon (`Addendum:`) or is entirely in bold or italics (`**Addendum**`).
 
-So a speaker's turn in a transcript (`**AYA NASSAR:** …`) is one paragraph; a stage direction on a line of its own
-(`[music]`) and a bold line on its own (`**Addendum**`) are paragraphs too, and are numbered. A paragraph's number
+So a speaker's turn in a transcript (`**AYA NASSAR:** …`) is one paragraph and is numbered, while a stage direction
+or a label on a line of its own is not. A paragraph's number
 in a block quote or a list continues the count of the text around it.
 
 The normalised text of a paragraph is its plain text (no markup, link targets or images), in lower case, with
