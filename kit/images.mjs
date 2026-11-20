@@ -65,9 +65,10 @@ async function writeTiles(full, dir) {
   return count;
 }
 
+// root is the folder that holds the source image: sourceRoot, or the job's own (a file only in a frozen version's tag).
 // All jobs for one source image and rotation. Returns manifest entries keyed "role|src|rotation".
-async function makeGroup({ src, rotation, roles }, sourceRoot, site) {
-  const file = join(sourceRoot, src), name = imageName(src, rotation);
+async function makeGroup({ src, rotation, roles, root }, site) {
+  const file = join(root, src), name = imageName(src, rotation);
   const entries = {}, done = {};
   const full = roles.has('figure') ? await open(file, rotation).raw().toBuffer({ resolveWithObject: true }) : null;
   let tiles = 0;
@@ -89,13 +90,13 @@ async function makeGroup({ src, rotation, roles }, sourceRoot, site) {
   return { entries, tiles };
 }
 
-// jobs: [{ src, role, rotation }] -> { images: { "role|src|rotation": { url, width, height, tiles? } }, tiles }
+// jobs: [{ src, role, rotation, root? }] -> { images: { "role|src|rotation": { url, width, height, tiles? } }, tiles }
 export async function makeImages(jobs, sourceRoot, site) {
   mkdirSync(join(site, 'images'), { recursive: true });
   const groups = new Map(), names = new Map();
-  for (const { src, role, rotation } of jobs) {
+  for (const { src, role, rotation, root } of jobs) {
     const key = `${src}|${rotation}`;
-    if (!groups.has(key)) groups.set(key, { src, rotation, roles: new Set() });
+    if (!groups.has(key)) groups.set(key, { src, rotation, roles: new Set(), root: root || sourceRoot });
     groups.get(key).roles.add(role);
     const name = imageName(src, rotation);
     if (names.has(name) && names.get(name) !== key) throw new Error(`two images would share the name ${name}: ${names.get(name)} and ${key}`);
@@ -105,7 +106,7 @@ export async function makeImages(jobs, sourceRoot, site) {
   let tiles = 0;
   const worker = async () => {
     for (let group; (group = queue.shift());) {
-      const result = await makeGroup(group, sourceRoot, site);
+      const result = await makeGroup(group, site);
       Object.assign(images, result.entries);
       tiles += result.tiles;
     }

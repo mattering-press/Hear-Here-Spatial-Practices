@@ -22,8 +22,8 @@ local function figure(img)
   return pandoc.RawBlock('html', table.concat {
     '<figure class="zoom', side, '"',
     img.attributes.width and (' style="--figure-width: ' .. lib.esc(img.attributes.width) .. '"') or '',
-    ' data-tiles="', lib.root, entry.tiles, '">\n',
-    '<img src="', lib.root, entry.url, '" width="', entry.width, '" height="', entry.height, '" alt="', lib.esc(alt), '" loading="lazy">\n',
+    ' data-tiles="', lib.join(lib.root, entry.tiles), '">\n',
+    '<img src="', lib.join(lib.root, entry.url), '" width="', entry.width, '" height="', entry.height, '" alt="', lib.esc(alt), '" loading="lazy">\n',
     caption ~= '' and ('<figcaption>' .. lib.esc(caption) .. '</figcaption>\n') or '',
     '</figure>' })
 end

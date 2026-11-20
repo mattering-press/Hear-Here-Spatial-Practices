@@ -1,0 +1,13 @@
+{
+  "$comment": "The book's frozen versions, each built from its Git tag into _site/v<id>/. How to add one: 'Freezing a version for review or release' in DEVELOPMENT.md. The build reads only \"versions\"; \"example\" shows the fields.",
+  "example": {
+    "id": "0.9-review2",
+    "tag": "v0.9-review2",
+    "label": "Version 0.9, second peer review",
+    "date": "2026-11-20",
+    "status": "review",
+    "annotations": "hypothesis",
+    "hypothesisGroup": "the group ID from the group's invite link, https://hypothes.is/groups/<ID>/<name>"
+  },
+  "versions": []
+}

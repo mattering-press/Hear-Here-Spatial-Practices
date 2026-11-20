@@ -1,39 +1,127 @@
-# Page data, contract 0.2
+# Page data, contract 0.3
 
 The build writes JSON beside the HTML so that other frontends (the collage index, a Tapestry export) can
-read the book without parsing HTML: `publication.json` at the site root and a `page.json` beside every
-`index.html`. `contract` gives the version of this format. Later 0.x versions may add fields; a field
-will not change its meaning without a new version.
+read the book without parsing HTML: `publication.json` at the root of each edition and a `page.json` beside every
+`index.html`. `contract` gives the version of this format and of the paragraph rule below. Later 0.x versions may
+add fields; a field will not change its meaning without a new version.
 
-URLs that stay inside the site are relative to the site root, the folder that holds `publication.json`
-(resolve them with `new URL(url, siteRoot)`), even inside a `page.json`. Other URLs are absolute.
+URLs that stay inside the site are relative to the edition's root, the folder that holds its `publication.json`
+(resolve them with `new URL(url, editionRoot)`), even inside a `page.json`. Other URLs are absolute.
 Text values are plain text, not HTML, except the `html` of a reference.
 
-Changes: 0.2 adds `references` to page.json.
+Changes: 0.2 adds `references` to page.json. 0.3 adds paragraph numbers (the rule below, and `paragraphs` in
+page.json), the version stamp (`version` and `kit` in page.json, publication.json and the Markdown view's front
+matter), `versions` in publication.json, and frozen versions, each an edition of its own.
+
+## Editions
+
+The root of the site is the working text, "latest, unreleased". Every version listed in `versions.json` at the
+root of the repository is built as well, from the text of its Git tag but with the current kit, into its own
+folder, `v<id>/` (for example `v0.9-review2/essays/aya_nassar/`). Each such edition has its own
+`publication.json`, `publication.md` and pages. Images, tiles, video, PDF files, the stylesheet and the scripts are
+stored once, at the site's root, and shared by all editions, so inside a frozen version their URLs start with `../`
+(`../images/x-1600.jpg`); resolved against the edition's root, they point at the shared copy. `versions/` at the
+site's root lists every edition.
+
+## Paragraph numbers
+
+The reading paragraphs of each page are numbered from 1, in page order, as `p1`, `p2` and so on. The chapter is the
+unit: today every page is one chapter, and every chapter has its own DOI, so a citation reads "(Nassar 2026: para.
+12)" and the link `/v1/essays/aya_nassar/#p12`. If a chapter is ever split over several pages, or one page holds
+several chapters, numbering follows the chapter and starts again at 1 in each chapter. The number
+depends only on the page's content, as its Markdown view (`index.md`) has it, never on the template or the
+stylesheet. Every version is rebuilt with the current kit, so this rule must not change within contract 0.x:
+changing it would renumber the paragraphs of every frozen version and break every citation of them.
+
+Numbered, wherever they are (at the top level, in block quotes, in list items, in the transcript, in any other
+div that is not listed below):
+
+- every paragraph of text;
+- the text of a list item: each paragraph of a list item gets its own number, and so does each item of a nested
+  list, in order;
+- a line block (lines starting with `|`) counts as one paragraph.
+
+Not numbered:
+
+- headings, the page's title and subtitle, its menu and its footer;
+- the reference list: everything after a heading whose text is "References" (any level, any case), up to the
+  next heading of the same or a higher level;
+- media and their captions: a paragraph that is only an image (a figure), and the `.video`, `.embed`, `.audio`,
+  `.gallery` and `.cards` blocks;
+- a paragraph without words: only images, only raw HTML (the smartframe embeds), only a transcript timecode
+  such as `[00:10:13]`, or nothing left once normalised (below);
+- tables, code blocks, horizontal rules and raw HTML blocks;
+- page metadata: a list before the page's first heading in which every item starts with a bold label ending in a
+  colon (`- **Recording date:** 5 April 2025`);
+- labels and stage directions on a line of their own: a paragraph whose whole text is one bracketed note
+  (`[music]`, `[laughter]`; timecodes are covered above), or a paragraph of at most six words that ends with a
+  colon (`Addendum:`) or is entirely in bold or italics (`**Addendum**`).
+
+So a speaker's turn in a transcript (`**AYA NASSAR:** …`) is one paragraph and is numbered, while a stage direction
+or a label on a line of its own is not. A paragraph's number
+in a block quote or a list continues the count of the text around it.
+
+The normalised text of a paragraph is its plain text (no markup, link targets or images), in lower case, with
+punctuation (ASCII punctuation, typographic quotes, dashes, the ellipsis, bullets, guillemets, ¶, §, primes),
+control characters and no-break or thin spaces replaced by spaces, runs of spaces made one, and no space at either
+end: `‘Dust’ – as Aya says…` becomes `dust as aya says`. Its `text_hash` is the first 12 hexadecimal digits of the
+SHA-1 of the normalised text (UTF-8).
+
+In the HTML a numbered paragraph is
+
+```html
+<div id="p12" class="para"><p><a class="para-link" href="#p12" data-n="12" aria-label="Paragraph 12"></a>…</p></div>
+```
+
+(the text of a list item has no `<p>`). The link has no text: the stylesheet shows `data-n` in the margin and a ¶ on
+hover and focus, so that copied text and text fragments (`#p12:~:text=…`) see only the paragraph's words.
+`assets/paragraphs.js` copies the paragraph's address, with the version in it, on a frozen version.
+
+On a frozen version every page starts with a notice, `<aside class="version-notice">`, whose link
+`<a class="version-notice__link" href="…" data-paragraphs='{"p12": "p14", …}'>` goes to the same page in the newer
+text (the latest text, or for an older release the newest release). `data-paragraphs` maps each of the page's
+paragraphs to the matching paragraph there (see `kit/versions.mjs`).
+
+## Margin notes and their numbers (planned)
+
+Margin notes are not built yet; this fixes how they will be numbered, so it is settled before any are written.
+
+- Paragraph numbers ignore the margin entirely: adding, moving or removing a margin item never changes them.
+- Text notes in the margin are numbered from 1 in each chapter, in order of their place in the text, as `n1`, `n2`
+  and so on, with a small matching mark in the text. In print and EPUB a margin note becomes an endnote, and house
+  style numbers endnotes per chapter, so "note 3" means the same note online and in print.
+- Images, audio and video in the margin are figures: they take the chapter's figure numbering (`Fig. 2.3`) and
+  their own item address (`/see/<name>`, `/listen/<name>`, `/watch/<name>`).
+- Plain links in the margin are not numbered.
 
 ## publication.json
 
 | field | value |
 |---|---|
-| `contract` | `"0.2"` |
+| `contract` | `"0.3"` |
 | `title`, `subtitle` | from the header of the home page (`README.md`) |
 | `creators` | list of names |
 | `publisher` | name |
 | `language` | language code, `"en"` |
-| `url` | where the site is published (the `siteUrl` setting in `build.mjs`); the Markdown view `publication.md` uses it for its absolute URLs |
+| `url` | where this edition is published: the `siteUrl` setting in `build.mjs`, followed by `v<id>/` for a frozen version; the Markdown view `publication.md` uses it for its absolute URLs |
 | `markdown` | `"publication.md"` |
+| `version` | this edition: `{ id, label, date, status }`. `status` is `latest` for the working text (`id` `"latest"`, `label` `"Latest text, unreleased"`, `date` the day of its last commit), or `review` or `release` for a frozen version, with the `id`, `label` and `date` (`YYYY-MM-DD`) of its entry in `versions.json` |
+| `kit` | the version of the kit that built the site (`kit/package.json`), e.g. `"0.3.0"` |
+| `versions` | every edition, the latest text first, then the frozen versions, newest first: `{ id, label, date, status, url }`, `url` relative to this edition's root (`"./"` for itself) |
 | `readingOrder` | every page once, as `{ id, url, title }`: the home page; then each page in the home page's menu, followed by the pages its cards lead to (depth first); then any other page, alphabetically |
 
 ## page.json
 
 | field | value |
 |---|---|
-| `contract` | `"0.2"` |
+| `contract` | `"0.3"` |
 | `id` | the page's Markdown file, e.g. `"essays/walk.md"`; `"README.md"` for the home page |
 | `url` | e.g. `"essays/walk/"`; `"./"` for the home page |
 | `title`, `subtitle` | from the page's header; `subtitle` is `null` when there is none |
+| `version`, `kit` | as in publication.json |
 | `markdown` | the page's Markdown view, e.g. `"essays/walk/index.md"` |
 | `headings` | `{ level, text, id }` in page order; `level` is the HTML level (2 to 6), `id` the fragment for `url#id` |
+| `paragraphs` | the numbered paragraphs (see "Paragraph numbers"), `{ id, n, text_hash }` in page order: `id` is the fragment (`"p12"`), `n` the number (12), `text_hash` the hash of its normalised text, the same in every version where the paragraph's text is the same |
 | `figures` | `{ image, width, height, tiles, alt, caption }`: `image` is 1600 px on the long edge, `width` and `height` are its size, `tiles` is a IIIF `info.json` or `null`; `alt` and `caption` are `""` when missing |
 | `audio` | `{ url, title }`; `url` is the MP3 on GitHub, which supports range requests |
 | `video` | `{ url, title, kind }`; `kind` is `youtube`, `vimeo`, `file` (a video file in the site) or `embed` (any other embedded page, such as the Internet Archive or the BBC); `url` is the address given in the Markdown |
@@ -49,9 +137,10 @@ does.
 
 ## Markdown view
 
-Every `index.html` has an `index.md` beside it, and the site root has `publication.md` with all pages in
-reading order. They are written by the build from the book's source, in Pandoc Markdown with a YAML
-front matter (`title`, `subtitle`, `lang`), and contain no Juncture syntax. `index.md` uses URLs relative to
+Every `index.html` has an `index.md` beside it, and the root of each edition has `publication.md` with all
+pages in reading order. They are written by the build from the book's source, in Pandoc Markdown with a YAML
+front matter (`title`, `subtitle`, `lang`, and the version stamp: `version` with `id`, `label`, `date` and `status`,
+and `kit`), and contain no Juncture syntax. `index.md` uses URLs relative to
 itself; `publication.md` uses absolute URLs and starts each page with its title as a level-1 heading.
 Media are written as:
 

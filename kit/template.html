@@ -7,17 +7,26 @@ $if(noindex)$
   <meta name="robots" content="noindex">
 $endif$
   <title>$pagetitle$$if(site-title)$ · $site-title$$endif$</title>
-  <link rel="stylesheet" href="$root$assets/site.css">
+  <link rel="stylesheet" href="$shared$assets/site.css">
+$if(views)$
   <link rel="alternate" type="text/markdown" href="index.md">
   <link rel="alternate" type="application/json" href="page.json">
-  <script src="$root$assets/zoom.js" defer></script>
-  <script src="$root$assets/seek.js" defer></script>
+$endif$
+  <script src="$shared$assets/zoom.js" defer></script>
+  <script src="$shared$assets/seek.js" defer></script>
+  <script src="$shared$assets/paragraphs.js" defer></script>
 $if(has-citations)$
-  <script src="$root$assets/citations.js" defer></script>
+  <script src="$shared$assets/citations.js" defer></script>
+$endif$
+$if(annotations)$
+  $annotations$
 $endif$
 </head>
-<body>
+<body$if(annotations)$ class="has-annotations"$endif$>
   <a class="skip-link" href="#main">Skip to content</a>
+$if(version-notice)$
+  $version-notice$
+$endif$
   <header class="site-header"$if(header-style)$ style="$header-style$"$endif$>
     <div class="site-header__inner">
       <h1 class="page-title">$title$</h1>
@@ -35,6 +44,7 @@ $endfor$
 $endif$
     </div>
   </header>
+$if(views)$
   <nav class="view-switcher" aria-label="View of this page">
     <ul>
       <li><a href="./" aria-current="page">Page</a></li>
@@ -45,17 +55,20 @@ $endif$
 -->
     </ul>
   </nav>
+$endif$
   <main id="main">
 $body$
   </main>
-$if(footer)$
+  <div class="copy-status" role="status" aria-live="polite" aria-atomic="true"></div>
   <footer class="site-footer">
+$if(footer)$
     <ul>
 $for(footer)$
       <li>$footer$</li>
 $endfor$
     </ul>
-  </footer>
 $endif$
+    $version-line$
+  </footer>
 </body>
 </html>
