@@ -9,5 +9,14 @@
     "annotations": "hypothesis",
     "hypothesisGroup": "the group ID from the group's invite link, https://hypothes.is/groups/<ID>/<name>"
   },
-  "versions": []
+  "versions": [
+    {
+      "id": "0.1",
+      "tag": "v0.1",
+      "label": "Version 0.1, first public version",
+      "date": "2026-11-20",
+      "status": "release",
+      "annotations": "none"
+    }
+  ]
 }
