@@ -11,6 +11,24 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of every_trick’ in `DEVELOPMENT.md`.
 
+## 1.2.0
+
+21 November 2026. A first clean-up of how the site looks.
+
+- Every page has the same header: a bar with the book's title, the menu and the Page / Markdown switch, then the
+  page's title over its header picture in a band of the same height on every page, so nothing moves when you go from
+  page to page. A podcast or event page names its section above its title, and the section is marked in the menu.
+- The home page shows the book's cover, which moves (a still for readers who ask for less motion).
+- The Markdown view is a page of its own, with the same header and footer and the Markdown at a reading width; the
+  `index.md` file is still beside every page.
+- The footer shows the publisher's logo (the icon alone on phones), a credit line and the licence, from files in the
+  repository rather than images on other sites.
+- Easier reading: a narrower text column, regular instead of light type, headings as written instead of in lower
+  case, captions as small text under the picture, quieter timecodes and transcripts.
+- Cards look the same whether or not their picture has alt text. Before, a picture without alt text sat inside the
+  title, framed by a red line.
+- On phones the header takes less room and the Markdown view is readable.
+
 ## 1.1.0
 
 20 November 2026

@@ -131,8 +131,24 @@ line. Images without alt text are listed as warnings.
 The Markdown view: next to every page's `index.html` the build writes `index.md`, the page as clean Pandoc
 Markdown with front matter and no Juncture syntax, and `publication.md` at the site root holds the whole
 book in reading order with absolute URLs (from `siteUrl` in `build.mjs`). The HTML is built from that
-Markdown, so the two cannot drift apart. Every page has a "Page / Markdown" switch of plain links. The
-format of the Markdown media blocks is in `every_trick/CONTRACT.md`.
+Markdown, so the two cannot drift apart. Every page has a "Page / Markdown" switch of plain links in its header.
+"Markdown" leads to `markdown/` beside the page: the same header and footer, with `index.md` shown at a reading
+width and a link to download it. The format of the Markdown media blocks is in `every_trick/CONTRACT.md`.
+
+The frame of every page:
+
+- **Header.** A bar that is the same on every page: the book's title (a link to the home page), the menu and the
+  Page / Markdown switch. The menu is the home page's (`README.md`); the menus in the other pages' `.ve-header`
+  lines are ignored. Below the bar, the page's title, over the picture of its own `.ve-header` line, cropped to a
+  band of the same height on every page. A page reached through a card names its section above its title (Podcasts,
+  Events), and that section is marked in the menu. To give a page its own header picture, change the picture in its
+  `.ve-header` line.
+- **Home page.** The book's cover beside its title and author, from `FRAME.cover` at the top of
+  `every_trick/build.mjs` (now `media/cover/tea.gif`, the temporary cover). An animated GIF becomes an animated WebP,
+  with its first frame shown to readers who ask their system for less motion.
+- **Footer.** The publisher's logo (the long one; the icon alone on phones), a credit line with the licence, the
+  book's version line and the toolkit's line. They are set in `FRAME` at the top of `every_trick/build.mjs`, with the
+  logos in `media/publisher/`; the `.ve-footer` lines in the pages are ignored.
 
 What is in `every_trick/`:
 
@@ -145,7 +161,7 @@ What is in `every_trick/`:
 - `scripts/to-citation-keys.mjs`: for the switch, shows how the plain-text citations would become Pandoc citations
 - `template.html`: the HTML around every page. It links the stylesheet and scripts with `?v=` and a hash of their contents, so that browsers fetch them again after every change instead of keeping an old copy
 - `assets/`: `site.css` (colours, fonts and spacing are set at its top), `zoom.js`, `seek.js`, `citations.js`, `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens)
-- `images.mjs`: resized images and the tiles for zooming
+- `images.mjs`: resized images, the tiles for zooming, and the cover
 - `check.mjs`, `serve.mjs`: the link check and the local server
 - `CONTRACT.md`: the `page.json` and `publication.json` files that other frontends can read, and the paragraph rule
 - `package.json`: the toolkit's name and version (see "Versions of the book and of every_trick" below)
