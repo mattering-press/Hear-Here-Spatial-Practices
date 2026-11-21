@@ -11,7 +11,9 @@
 // Cues: the moments of a recording that the transcript marks. A transcript timecode,
 //   <a class="timecode" href="#audio-1" data-seconds="613">[00:10:13]</a>
 // plays the recording from that moment when clicked, and is a cue. Elements with data-cue-for="audio-1" and
-// data-cue-start="613.2" are cues too, and when a recording has any, its timecodes only seek. The cue being heard gets
+// data-cue-start="613.2" (and data-cue-end) are cues too: the transcript paragraphs that filters/cues.lua found in the
+// recording's cue file. Each gets a ▸ on the transcript's rule that plays from it; when a recording has such cues, its
+// timecodes only seek. The cue being heard gets
 // the class is-current. With "Follow text" on, the page scrolls to each new cue. Follow is off until the reader turns it
 // on, and any scrolling of their own (wheel, touch, keys, the scroll bar) turns it off again until they ask for it.
 (function () {
@@ -76,11 +78,11 @@
 
   function cuesFor(id) {
     var list = Array.prototype.slice.call(document.querySelectorAll('[data-cue-for="' + id + '"][data-cue-start]')).map(function (el) {
-      return { start: Number(el.getAttribute('data-cue-start')), el: el };
+      return { start: Number(el.getAttribute('data-cue-start')), end: Number(el.getAttribute('data-cue-end')) || Infinity, el: el, paragraph: true };
     });
     if (!list.length) {
       list = Array.prototype.slice.call(document.querySelectorAll('a.timecode[href="#' + id + '"]')).map(function (a) {
-        return { start: Number(a.getAttribute('data-seconds')), el: a.closest('p') || a };
+        return { start: Number(a.getAttribute('data-seconds')), end: Infinity, el: a.closest('p') || a };
       });
     }
     return list.filter(function (c) { return isFinite(c.start); }).sort(function (a, b) { return a.start - b.start; });
@@ -160,6 +162,15 @@
     audio.removeAttribute('controls');
     outer.classList.add('is-ready');
 
+    // a ▸ on the transcript's rule beside every timed paragraph: plays from its start (focus stays on the ▸)
+    cues.forEach(function (cue) {
+      if (!cue.paragraph) return;
+      var link = cue.el.querySelector('.para-link'), n = link && link.getAttribute('data-n');
+      var b = button('para-play', 'Play from paragraph ' + (n || ''), PLAY);
+      b.addEventListener('click', function () { self.playFrom(cue.start); });
+      cue.el.insertBefore(b, cue.el.firstChild);
+    });
+
     function duration() { return isFinite(audio.duration) && audio.duration > 0 ? audio.duration : length; }
     function showTime() {
       var t = audio.currentTime, d = duration();
@@ -184,10 +195,10 @@
     function cueAt(t) {
       var found = null;
       for (var i = 0; i < cues.length && cues[i].start <= t + 0.25; i++) found = cues[i];
-      return found;
+      return found && t < found.end + 0.25 ? found : null;   // an untimed paragraph leaves a gap: nothing is marked
     }
     function showCue() {
-      var cue = started ? cueAt(audio.currentTime) : null;
+      var cue = started && self === active ? cueAt(audio.currentTime) : null;   // only the recording played last is marked
       if (cue === current) return;
       if (current) current.el.classList.remove('is-current');
       current = cue;
@@ -195,6 +206,11 @@
       nowWhere.textContent = cue ? describe(cue.el) : '';
       if (cue && follow && self === active) self.scrollToCue();
     }
+    self.clearCue = function () {   // another recording is playing: only its passage is marked
+      if (current) current.el.classList.remove('is-current');
+      current = null;
+      nowWhere.textContent = '';
+    };
     self.scrollToCue = function () {
       if (!current) return;
       var el = current.el, tall = el.getBoundingClientRect().height > window.innerHeight * 0.6;
@@ -265,7 +281,7 @@
     seek.addEventListener('change', function () { dragging = false; });
 
     audio.addEventListener('play', function () {
-      all.forEach(function (p) { if (p !== self && !p.audio.paused) p.audio.pause(); });
+      all.forEach(function (p) { if (p !== self) { if (!p.audio.paused) p.audio.pause(); p.clearCue(); } });
       var previous = active;
       active = self;
       started = true;

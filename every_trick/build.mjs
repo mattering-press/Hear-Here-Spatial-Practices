@@ -19,7 +19,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { BIBLIOGRAPHY, locate, prepareReferences, report as citationReport } from './citations.mjs';
 import { convert, REPO, REPO_ROOT, repoPath } from './convert.mjs';
-import { mp3Duration } from './audio.mjs';
+import { mp3Duration, paragraphCues } from './audio.mjs';
 import { makeImages } from './images.mjs';
 import { checkout, longDate, matchParagraphs, readRegistry } from './versions.mjs';
 
@@ -59,7 +59,7 @@ const ASSET_VERSION = (() => {
 })();
 const SITE = join(REPO_ROOT, '_site');
 const PANDOC = process.env.PANDOC || 'pandoc';
-const FILTERS = ['figures', 'embeds', 'cards', 'transcript', 'links', 'citations', 'paragraphs', 'margins', 'contract'];
+const FILTERS = ['figures', 'embeds', 'cards', 'transcript', 'links', 'citations', 'paragraphs', 'cues', 'margins', 'contract'];
 const started = Date.now();
 const fail = (message) => { console.error(message); process.exit(1); };
 
@@ -161,7 +161,8 @@ for (const edition of editions) {
 }
 
 // The length of every MP3 in this repository that a page plays (audio.mjs), so that its player can show it before
-// anything is loaded. Pages play them from GitHub; a link to a file that is not there is reported by convert.mjs.
+// anything is loaded, and its paragraph cues if it has a cue file (filters/cues.lua). Pages play them from GitHub; a link
+// to a file that is not there is reported by convert.mjs.
 const audio = {};
 {
   const repo = REPO.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -170,7 +171,8 @@ const audio = {};
     for (const [, src] of page.markdown.matchAll(/twin-audio src="([^"]+)"/g)) {
       const path = decodeURIComponent(onGitHub.exec(src)?.[1] ?? '');
       if (!/\.mp3$/i.test(path) || path in audio || !edition.has(path)) continue;
-      audio[path] = { duration: mp3Duration(join(sourceOf(edition, path), path)) };
+      const file = join(sourceOf(edition, path), path), cues = paragraphCues(file);
+      audio[path] = { duration: mp3Duration(file), ...(cues ? { cues: cues.cues, cueFile: path.replace(/\.mp3$/i, '.paragraphs.vtt') } : {}) };
     }
   }
 }

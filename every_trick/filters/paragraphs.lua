@@ -15,23 +15,12 @@
 -- numbers a whole list as one paragraph, <div id="p12" class="para para-list"><a class="para-link" …></a><ul>…</ul></div>.
 package.path = pandoc.path.directory(PANDOC_SCRIPT_FILE) .. '/?.lua;' .. package.path
 local lib = require 'lib'
-os.setlocale('C', 'ctype')   -- %p and %c match ASCII only, never a byte inside a UTF-8 character
 
 -- Divs whose contents are never reading paragraphs: media, card lists, margin notes (paragraph numbers ignore the
 -- margin) and what the citation filter added.
 local SKIP = { margin = true, video = true, embed = true, audio = true, gallery = true, cards = true, ['typed-reference'] = true, ['citation-popovers'] = true }
 
--- Punctuation that the normalised text leaves out, besides ASCII punctuation.
-local PUNCT = { '‘', '’', '‚', '‛', '“', '”', '„', '‟', '–', '—', '―', '‐', '‑', '…', '•', '·', '«', '»', '‹', '›', '¶', '§', '′', '″', '\u{00A0}', '\u{2009}', '\u{202F}' }
-
--- The normalised text: lower case, punctuation and markup removed, words separated by single spaces.
--- "‘Dust’ – as Aya says…" -> "dust as aya says"
-local function normalise(text)
-  local s = pandoc.text.lower(text)
-  for _, p in ipairs(PUNCT) do s = s:gsub(p, ' ') end
-  s = s:gsub('[%c%p]', ' ')     -- ASCII control characters and punctuation (C locale, set above)
-  return (s:gsub('%s+', ' '):gsub('^ ', ''):gsub(' $', ''))
-end
+local normalise = lib.normalise
 
 local function is_timecode(el)
   local text = el.t == 'Str' and el.text or el.t == 'Link' and el.classes:includes('timecode') and pandoc.utils.stringify(el.content)

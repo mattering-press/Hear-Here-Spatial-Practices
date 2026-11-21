@@ -298,7 +298,13 @@ audio { display: block; width: 100%; margin: var(--gap) 0; }
 /* the passage being heard: its stretch of the transcript's rule in the accent colour. Transcript paragraphs are
    positioned for that mark, so their numbers are placed from them, where the others are placed from main. */
 .transcript > :is(.para, p) { position: relative; }
-.transcript .para-link { right: calc(100% + 1.25rem + 2px + 0.6rem); }
+.transcript .para-link { right: calc(100% + 1.25rem + 2px + 0.9rem); }   /* clear of the ▸ on the rule */
+/* the ▸ on the rule beside a timed paragraph (assets/player.js), shown on hover and focus, always on touch screens */
+.para-play { position: absolute; z-index: 1; top: calc((var(--font-size) * var(--line-height) - 1.5rem) / 2); left: calc(-1.25rem - 1px - 0.75rem); display: grid; place-items: center; width: 1.5rem; height: 1.5rem; padding: 0; border: 1px solid var(--colour-transcript); border-radius: 999px; background: var(--colour-background); color: var(--colour-accent); cursor: pointer; opacity: 0; }
+.para-play svg { width: 0.55rem; height: 0.55rem; margin-left: 0.1rem; fill: currentColor; }
+.para:hover > .para-play, .para-play:focus-visible, .is-current > .para-play { opacity: 1; }
+.para-play:hover, .is-current > .para-play { border-color: var(--colour-accent); background: var(--colour-accent); color: #fff; }
+@media (hover: none) { .para-play { opacity: 1; } }
 .transcript .is-current::before { content: ""; position: absolute; top: 0; bottom: 0; left: calc(-1.25rem - 3px); width: 4px; border-radius: 2px; background: var(--colour-accent); }
 a.timecode { color: var(--colour-accent); font-size: 0.8125rem; font-weight: var(--weight-strong); font-variant-numeric: tabular-nums; letter-spacing: 0.02em; text-decoration: none; }
 a.timecode::before { content: "▸ "; }

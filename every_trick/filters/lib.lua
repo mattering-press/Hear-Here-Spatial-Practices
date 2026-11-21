@@ -3,6 +3,7 @@
 --   local lib = require 'lib'
 -- and calls lib.init(doc.meta) first, which reads the values build.mjs passes to every page with -M.
 local M = {}
+os.setlocale('C', 'ctype')   -- %p and %c match ASCII only, never a byte inside a UTF-8 character
 
 function M.init(meta)
   local function get(key) return meta[key] and pandoc.utils.stringify(meta[key]) or '' end
@@ -165,6 +166,18 @@ function M.words(s)
     out:insert(pandoc.Str(word))
   end
   return out
+end
+
+-- Punctuation that the normalised text leaves out, besides ASCII punctuation.
+local PUNCT = { '‘', '’', '‚', '‛', '“', '”', '„', '‟', '–', '—', '―', '‐', '‑', '…', '•', '·', '«', '»', '‹', '›', '¶', '§', '′', '″', '\u{00A0}', '\u{2009}', '\u{202F}' }
+
+-- The normalised text: lower case, punctuation and markup removed, words separated by single spaces.
+-- "‘Dust’ – as Aya says…" -> "dust as aya says"
+function M.normalise(text)
+  local s = pandoc.text.lower(text)
+  for _, p in ipairs(PUNCT) do s = s:gsub(p, ' ') end
+  s = s:gsub('[%c%p]', ' ')     -- ASCII control characters and punctuation (C locale, set above)
+  return (s:gsub('%s+', ' '):gsub('^ ', ''):gsub(' $', ''))
 end
 
 return M

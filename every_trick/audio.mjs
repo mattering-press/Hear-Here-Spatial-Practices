@@ -2,7 +2,7 @@
 // (filters/embeds.lua writes it into the page). No decoder is needed: the length comes from the Xing/Info or VBRI
 // header that encoders write into the first frame, or, for a file without one (constant bit rate), from its size
 // and bit rate.
-import { closeSync, fstatSync, openSync, readSync } from 'node:fs';
+import { closeSync, existsSync, fstatSync, openSync, readFileSync, readSync } from 'node:fs';
 
 const BITRATES = {   // kbit/s by bitrate index; MPEG-1 Layer III, and MPEG-2/2.5 Layer III
   1: [0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320],
@@ -54,4 +54,23 @@ export function mp3Duration(file) {
   } finally {
     closeSync(fd);
   }
+}
+
+// The paragraph cues beside a recording (media/audio/<recording>.paragraphs.vtt, made by scripts/align.mjs and corrected
+// by hand): [{ start, end, text }] in seconds, or null if there is no such file. NOTE blocks (such as
+// "NOTE untimed: …") and cue identifiers are skipped. filters/cues.lua finds each cue's paragraph by its text.
+export function paragraphCues(file) {
+  const vtt = file.replace(/\.mp3$/i, '.paragraphs.vtt');
+  if (!existsSync(vtt)) return null;
+  const seconds = (t) => t.split(':').reduce((sum, part) => sum * 60 + Number(part), 0);
+  const cues = [];
+  for (const block of readFileSync(vtt, 'utf8').replace(/\r/g, '').split(/\n{2,}/)) {
+    const lines = block.split('\n').filter((l) => l.trim());
+    if (!lines.length || /^(WEBVTT|NOTE)\b/.test(lines[0])) continue;
+    const at = lines.findIndex((l) => l.includes('-->'));
+    const m = at >= 0 && /^\s*([\d:.]+)\s+-->\s+([\d:.]+)/.exec(lines[at]);
+    if (!m) throw new Error(`${vtt}: a cue without times: ${lines[0]}`);
+    cues.push({ start: seconds(m[1]), end: seconds(m[2]), text: lines.slice(at + 1).join(' ') });
+  }
+  return { file: vtt, cues };
 }

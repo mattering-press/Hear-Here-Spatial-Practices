@@ -11,6 +11,20 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of every_trick’ in `DEVELOPMENT.md`.
 
+## 1.5.0
+
+21 November 2026. Transcripts timed paragraph by paragraph.
+
+- A podcast whose recording has a cue file (`media/audio/<recording>.paragraphs.vtt`) has every transcript paragraph
+  timed. A ▸ on the transcript's rule beside each paragraph plays the recording from there, the paragraph being heard
+  is marked on the rule, and "Follow text" follows paragraph by paragraph. A paragraph left untimed has no ▸ and is not
+  marked. The first page with cues is Aya Nassar's, including its addendum, which plays from its own recording.
+- `scripts/align.mjs` makes the cue files: on your own computer, whisper.cpp transcribes the recording with a time
+  for every word, and those words are matched against the edited transcript. It also writes a report for the editor
+  with each paragraph's start, the written timecodes checked, and the places where text and recording differ.
+- The build finds each cue's paragraph by its words, so cues survive renumbering between versions, and it warns when a
+  cue no longer matches any paragraph.
+
 ## 1.4.0
 
 21 November 2026. A podcast player that stays with you.

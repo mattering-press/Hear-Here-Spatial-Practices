@@ -159,10 +159,11 @@ What is in `every_trick/`:
 - `build.mjs`: the build, with its few settings at the top
 - `versions.mjs`: reads the version registry (`versions.json` at the repository root), takes each version's text from its Git tag, and matches paragraphs between versions
 - `convert.mjs`: turns Juncture's `.ve-*` lines and its raw HTML (audio, iframes, videos) into Pandoc Markdown
-- `filters/`: Lua filters, one job each. `to-markdown.lua` is stage 1 (writes the Markdown view); `figures`, `embeds`, `cards`, `transcript`, `links`, `citations`, `paragraphs`, `margins` and `contract` are stage 2 (Markdown view to HTML and `page.json`)
+- `filters/`: Lua filters, one job each. `to-markdown.lua` is stage 1 (writes the Markdown view); `figures`, `embeds`, `cards`, `transcript`, `links`, `citations`, `paragraphs`, `cues` (marks transcript paragraphs with their times from a recording's cue file), `margins` and `contract` are stage 2 (Markdown view to HTML and `page.json`)
 - `citations.mjs`: prepares the bibliography for `filters/citations.lua` and writes the build's report on citations
 - `csl/`: `mattering-press.csl`, the house citation style, and its test (`csl/test/`)
 - `scripts/to-citation-keys.mjs`: for the switch, shows how the plain-text citations would become Pandoc citations
+- `scripts/align.mjs`: times a podcast transcript's paragraphs against its recordings with whisper.cpp, on the editor's computer, and writes the cue files and a report (see "Plan: podcast player and transcript")
 - `template.html`: the HTML around every page. It links the stylesheet and scripts with `?v=` and a hash of their contents, so that browsers fetch them again after every change instead of keeping an old copy
 - `assets/`: `site.css` (colours, fonts and spacing are set at its top), `zoom.js`, `player.js` (the podcast player and its docked bar; see "Plan: podcast player and transcript"), `citations.js`, `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens)
 - `images.mjs`: resized images and the tiles for zooming; an animated GIF becomes an animated WebP and a still
@@ -407,7 +408,8 @@ Agreed with the publisher on 2026-11-19. These fix the data; players and viewers
 
 Agreed with the publisher on 2026-11-21, after a reviewer's notes on the first proposal. Aya Nassar's episode
 (`essays/aya_nassar.md`) is the test page for editorial accuracy as well as for playback. Players for video and
-documents are planned separately; this plan settles audio. Status: step 1 is built.
+documents are planned separately; this plan settles audio. Status: steps 1 and 2 are built. Aya Nassar's cue file
+is in the repository for the listening check and is not to reach `main` until that check is done.
 
 - **The player stays in the page**, under "Podcast", built on the browser's `<audio>`, so that it plays without
   JavaScript. `filters/embeds.lua` writes it with the recording's length, which the build reads from the MP3 itself

@@ -183,7 +183,10 @@ Media are written as:
   its `tiles` is `null`
 - `::: {.video}` and `::: {.embed}`: a div that starts with an ordinary link to the video or embedded page (a
   video file, a PDF); any text after the link is the caption
-- `::: {.audio}`: a div with a link to the MP3
+- `::: {.audio}`: a div with a link to the MP3. When the MP3 has a cue file beside it, `<recording>.paragraphs.vtt`
+  (WebVTT, one cue per transcript paragraph, holding the paragraph's words), the HTML marks each timed paragraph with
+  `data-cue-for` (the player's id), `data-cue-start` and `data-cue-end` (seconds). Cues are matched to paragraphs by
+  their words, never by number, so they never affect the paragraph rule
 - `::: {.gallery}`: a div of zoomable images; `::: {.cards}`: a list of links, each with a picture and a title
 - transcript timecodes such as `[00:10:13]` stay as plain text
 
