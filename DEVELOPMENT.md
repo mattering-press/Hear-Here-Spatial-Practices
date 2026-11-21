@@ -218,7 +218,7 @@ or rewritten beyond recognition leads to the nearest paragraph before it that wa
 
 Every page's footer shows the book's version and its date, with a link to `/versions/`, which lists every version.
 The line below it names the version of every_trick_in_the_book that built the page (see "Versions of the book and
-of every_trick"). The same stamp, `version` for the book and `kit` for the toolkit, is in `publication.json`, every
+of every_trick"). The same stamp, `version` for the book and `every_trick_in_the_book` for the toolkit, is in `publication.json`, every
 `page.json` and the front matter of the Markdown view.
 
 Each entry in `versions.json` has:
@@ -251,7 +251,7 @@ shows one without saying which it is: the book's version is written with its lab
 | set in | `versions.json`, each version with its Git tag (`v0.1`) | `version` in `every_trick/package.json` |
 | what changed | the text of each frozen version, online at `/v<id>/` | `every_trick/CHANGELOG.md` |
 | on the site | the footer's version line, the version notice, `/versions/` | the footer's credit line, linked to the toolkit's home and to `every_trick/CHANGELOG.md` |
-| in the data | `version` in `page.json`, `publication.json` and the Markdown view | `kit` in the same files |
+| in the data | `version` in `page.json`, `publication.json` and the Markdown view | `every_trick_in_the_book` in the same files |
 
 Every version of the book is built with the current toolkit, so a frozen version keeps its text but takes on the
 current design.

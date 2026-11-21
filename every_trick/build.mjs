@@ -46,14 +46,14 @@ const FRAME = {
 };
 // ---------------------------------------------------------------------------------------------------------
 
-const KIT = dirname(fileURLToPath(import.meta.url));
-const KIT_VERSION = JSON.parse(readFileSync(join(KIT, 'package.json'), 'utf8')).version;
+const TOOLKIT_DIR = dirname(fileURLToPath(import.meta.url));
+const TOOLKIT_VERSION = JSON.parse(readFileSync(join(TOOLKIT_DIR, 'package.json'), 'utf8')).version;
 // A short hash of the stylesheet and scripts in assets/. The template adds it to their addresses (site.css?v=…), so
 // that browsers fetch them again whenever they change: GitHub Pages lets browsers keep a file for ten minutes, and a
 // page could otherwise arrive with an old stylesheet.
 const ASSET_VERSION = (() => {
   const hash = createHash('sha1');
-  for (const name of readdirSync(join(KIT, 'assets')).filter((f) => /\.(css|js)$/.test(f)).sort()) hash.update(name).update(readFileSync(join(KIT, 'assets', name)));
+  for (const name of readdirSync(join(TOOLKIT_DIR, 'assets')).filter((f) => /\.(css|js)$/.test(f)).sort()) hash.update(name).update(readFileSync(join(TOOLKIT_DIR, 'assets', name)));
   return hash.digest('hex').slice(0, 10);
 })();
 const SITE = join(REPO_ROOT, '_site');
@@ -163,7 +163,7 @@ for (const edition of editions) {
 //    URLs for publication.md. Stage 2 turns index.md into HTML (index.html) and page.json.
 const warnings = editions.flatMap((edition) => edition.pages.flatMap((page) => page.warnings.map((w) => `${edition.dir}${w.file}:${w.line}  ${w.text}`)));
 const list = (value) => (Array.isArray(value) ? value : []);
-const filterArgs = (names) => names.flatMap((f) => ['--lua-filter', join(KIT, 'filters', `${f}.lua`)]);
+const filterArgs = (names) => names.flatMap((f) => ['--lua-filter', join(TOOLKIT_DIR, 'filters', `${f}.lua`)]);
 const metaArgs = (meta) => Object.entries(meta).filter(([, v]) => v).flatMap(([k, v]) => ['-M', `${k}=${v}`]);
 // Pandoc writes a div with one class as '::: video'; the Markdown view uses the braces throughout.
 const bracedDivs = (markdown) => markdown.replace(/^(:{3,}) ([\w-]+)$/gm, '$1 {.$2}');
@@ -185,7 +185,7 @@ const versionLine = (edition, shared) => {
   return `<p class="site-footer__version">${what} · <a href="${shared}versions/">All versions</a></p>`;
 };
 // The toolkit's line in every footer (template.html), below the book's version line.
-const toolkitMeta = { 'kit-version': KIT_VERSION, 'kit-home': TOOLKIT_HOME, 'kit-changes': TOOLKIT_CHANGES };
+const toolkitMeta = { 'toolkit-version': TOOLKIT_VERSION, 'toolkit-home': TOOLKIT_HOME, 'toolkit-changes': TOOLKIT_CHANGES };
 const lcFirst = (s) => s.charAt(0).toLowerCase() + s.slice(1);
 const hypothesis = (edition) => {
   const config = { openSidebar: false };
@@ -193,7 +193,7 @@ const hypothesis = (edition) => {
   return `<script type="application/json" class="js-hypothesis-config">${JSON.stringify(config)}</script>` +
     '<script async src="https://hypothes.is/embed.js"></script>';
 };
-const versionMeta = (edition) => ({ 'version-id': edition.version.id, 'version-label': edition.version.label, 'version-date': edition.version.date, 'version-status': edition.version.status, 'kit-version': KIT_VERSION });
+const versionMeta = (edition) => ({ 'version-id': edition.version.id, 'version-label': edition.version.label, 'version-date': edition.version.date, 'version-status': edition.version.status, 'toolkit-version': TOOLKIT_VERSION });
 // Markdown shown as a page (a page's Markdown view, publication/): the text at a reading width under a line about it.
 const wrapMarkdown = (source, about) => {
   const fence = '`'.repeat(Math.max(3, ...[...source.matchAll(/`+/g)].map((m) => m[0].length + 1)));
@@ -281,13 +281,13 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
         'section-url': section && section !== edition.home.file ? r + urlOf(section) : '',
         'site-title': page === edition.home ? '' : edition.home.title, noindex: NOINDEX || from ? 'true' : '' })];
     };
-    let html = pandoc(['-f', 'markdown-implicit_figures', '-t', 'html5', '--wrap=none', '-s', '--template', join(KIT, 'template.html'),
+    let html = pandoc(['-f', 'markdown-implicit_figures', '-t', 'html5', '--wrap=none', '-s', '--template', join(TOOLKIT_DIR, 'template.html'),
       ...frame(''), '-M', `citations=${references.indexPath}`, ...filterArgs(FILTERS)], readFileSync(join(dir, 'index.md'), 'utf8'), page.file);
     // The Markdown view's page: the page's Markdown, wrapped at a reading width, with a link to the file itself.
     const markdownView = wrapMarkdown(readFileSync(join(dir, 'index.md'), 'utf8'), 'The Markdown this page is built from. ' +
       `<a href="../index.md" download>Download index.md</a> · <a href="${esc(deeper(root))}publication/">The whole book in Markdown</a>`);
     mkdirSync(join(dir, 'markdown'), { recursive: true });
-    writeFileSync(join(dir, 'markdown', 'index.html'), pandoc(['-f', 'markdown', '-t', 'html5', '--wrap=none', '-s', '--template', join(KIT, 'template.html'),
+    writeFileSync(join(dir, 'markdown', 'index.html'), pandoc(['-f', 'markdown', '-t', 'html5', '--wrap=none', '-s', '--template', join(TOOLKIT_DIR, 'template.html'),
       ...frame('markdown/'), ...filterArgs(['links'])], markdownView, `${page.file} (Markdown view)`));
     const data = JSON.parse(readFileSync(contractOut, 'utf8'));
     const paragraphs = list(data.paragraphs);
@@ -304,7 +304,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     page.url = url || './';
     writeFileSync(join(dir, 'page.json'), JSON.stringify({
       contract: CONTRACT, paragraphRule: edition.rule, id: page.file, url: page.url, title: page.title, subtitle: page.subtitle,
-      version: edition.version, kit: KIT_VERSION,
+      version: edition.version, every_trick_in_the_book: TOOLKIT_VERSION,
       markdown: `${url}index.md`,
       headings: list(data.headings).map(({ level, text, id }) => ({ level, text, id })),
       paragraphs: paragraphs.map(({ id, n, text_hash }) => ({ id, n, text_hash })),
@@ -322,7 +322,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
   const versionsList = [latest, ...editions.slice(1).reverse()].map((e) => ({ ...e.version, url: e === edition ? './' : prefix + e.dir || './' }));
   writeFileSync(join(out, 'publication.json'), JSON.stringify({
     contract: CONTRACT, paragraphRule: edition.rule, title: home.title, subtitle: home.subtitle, ...PUBLICATION, url: siteUrl + edition.dir, markdown: 'publication.md',
-    version: edition.version, kit: KIT_VERSION, versions: versionsList,
+    version: edition.version, every_trick_in_the_book: TOOLKIT_VERSION, versions: versionsList,
     readingOrder: edition.order.map((file) => ({ id: file, url: edition.byFile.get(file).url, title: edition.byFile.get(file).title })),
   }, null, 2) + '\n');
 
@@ -331,7 +331,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
   const front = ['---', `title: ${JSON.stringify(home.title)}`, `subtitle: ${JSON.stringify(home.subtitle ?? '')}`, 'author:', ...PUBLICATION.creators.map((c) => `  - ${JSON.stringify(c)}`),
     `publisher: ${JSON.stringify(PUBLICATION.publisher)}`, `lang: ${PUBLICATION.language}`,
     'version:', `  id: ${JSON.stringify(v.id)}`, `  label: ${JSON.stringify(v.label)}`, `  date: ${JSON.stringify(v.date)}`, `  status: ${JSON.stringify(v.status)}`,
-    `every_trick_in_the_book: ${JSON.stringify(KIT_VERSION)}`, '---'].join('\n');
+    `every_trick_in_the_book: ${JSON.stringify(TOOLKIT_VERSION)}`, '---'].join('\n');
   const publication = `${front}\n\n${edition.order.map((file) => edition.byFile.get(file).markdownBody).join('\n\n')}\n`;
   writeFileSync(join(out, 'publication.md'), publication);
   // publication/: the same Markdown in the frame of the site, at a reading width, like a page's Markdown view.
@@ -340,7 +340,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     const yaml = join(scratch, 'publication.yaml');
     writeYaml(yaml, edition.menu, { version_line: versionLine(edition, s) });
     mkdirSync(join(out, 'publication'), { recursive: true });
-    writeFileSync(join(out, 'publication', 'index.html'), pandoc(['-f', 'markdown', '-t', 'html5', '--wrap=none', '-s', '--template', join(KIT, 'template.html'), '--metadata-file', yaml,
+    writeFileSync(join(out, 'publication', 'index.html'), pandoc(['-f', 'markdown', '-t', 'html5', '--wrap=none', '-s', '--template', join(TOOLKIT_DIR, 'template.html'), '--metadata-file', yaml,
       ...metaArgs({ page: 'publication.md', repo: REPO, manifest, lang: PUBLICATION.language, title: 'The whole book in Markdown', ...toolkitMeta, ...frameMeta(edition, s),
         root: '../', shared: s, 'asset-version': ASSET_VERSION, 'site-title': home.title, noindex: 'true' }), ...filterArgs(['links'])],
       wrapMarkdown(publication, 'Every page of the book in reading order, in the Markdown it is built from. <a href="../publication.md" download>Download publication.md</a>'),
@@ -364,14 +364,14 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     '',
     editions.length === 1 ? 'No version has been frozen yet.' : 'A frozen version keeps its text, but it is shown with the current design of the site.',
     '',
-    `The site’s design, and what its pages do, come from the toolkit that builds it: [every_trick_in_the_book](${TOOLKIT_HOME}){.toolkit-name aria-label="every trick in the book"} ${KIT_VERSION} ([what’s new](${TOOLKIT_CHANGES})). The toolkit’s versions are numbered separately from the book’s.`,
+    `The site’s design, and what its pages do, come from the toolkit that builds it: [every_trick_in_the_book](${TOOLKIT_HOME}){.toolkit-name aria-label="every trick in the book"} ${TOOLKIT_VERSION} ([what’s new](${TOOLKIT_CHANGES})). The toolkit’s versions are numbered separately from the book’s.`,
   ].join('\n');
   const dir = join(SITE, 'versions');
   mkdirSync(dir, { recursive: true });
   const yaml = join(work, 'versions.yaml');
   const home = latest.home;
   writeYaml(yaml, latest.menu, { version_line: versionLine(latest, '../') });
-  const html = pandoc(['-f', 'markdown', '-t', 'html5', '--wrap=none', '-s', '--template', join(KIT, 'template.html'), '--metadata-file', yaml,
+  const html = pandoc(['-f', 'markdown', '-t', 'html5', '--wrap=none', '-s', '--template', join(TOOLKIT_DIR, 'template.html'), '--metadata-file', yaml,
     ...metaArgs({ page: 'versions.md', repo: REPO, manifest: latest.manifest, 'contract-out': join(work, 'versions.json'), lang: PUBLICATION.language, title: 'Versions',
       ...toolkitMeta, ...frameMeta(latest, '../'), root: '../', shared: '../', 'asset-version': ASSET_VERSION, 'site-title': home.title, 'paragraph-numbers': 'false', noindex: NOINDEX ? 'true' : '' }),
     ...filterArgs(['links', 'paragraphs', 'contract'])], markdown, 'versions page');
@@ -379,8 +379,8 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
 }
 
 // 6. Stylesheet, scripts, the Roboto font and OpenSeadragon (the deep-zoom viewer), shared by all editions.
-const modules = join(KIT, 'node_modules');
-cpSync(join(KIT, 'assets'), join(SITE, 'assets'), { recursive: true });
+const modules = join(TOOLKIT_DIR, 'node_modules');
+cpSync(join(TOOLKIT_DIR, 'assets'), join(SITE, 'assets'), { recursive: true });
 for (const style of ['normal', 'italic']) cpSync(join(modules, `@fontsource-variable/roboto/files/roboto-latin-wght-${style}.woff2`), join(SITE, `assets/fonts/roboto-latin-wght-${style}.woff2`));
 cpSync(join(modules, '@fontsource-variable/roboto/LICENSE'), join(SITE, 'assets/fonts/LICENSE.txt'));
 cpSync(join(modules, 'openseadragon/build/openseadragon/openseadragon.min.js'), join(SITE, 'assets/osd/openseadragon.min.js'));
@@ -394,7 +394,7 @@ const total = size(SITE), imageBytes = size(join(SITE, 'images')), tileBytes = s
 const pageCount = editions.reduce((n, e) => n + e.pages.length, 0);
 console.log(`Built ${pageCount} pages${editions.length > 1 ? ` in ${editions.length} editions` : ''} into _site/ in ${((Date.now() - started) / 1000).toFixed(1)} s: ${mb(total)} ` +
   `(images ${mb(imageBytes)}, tiles ${mb(tileBytes)}, other ${mb(total - imageBytes - tileBytes)}); ` +
-  `${sources} source images, ${tiles} tiles; every_trick_in_the_book ${KIT_VERSION}, contract ${CONTRACT}${NOINDEX ? '; pages carry noindex' : ''}.`);
+  `${sources} source images, ${tiles} tiles; every_trick_in_the_book ${TOOLKIT_VERSION}, contract ${CONTRACT}${NOINDEX ? '; pages carry noindex' : ''}.`);
 for (const edition of editions.slice(1)) {
   console.log(`  ${edition.dir.padEnd(22)} ${edition.version.label} (${edition.version.status}, tag at ${edition.commit.slice(0, 7)}): ${edition.pages.length} pages, ${mb(size(join(SITE, edition.dir)))}` +
     `${edition.annotations === 'hypothesis' ? `, Hypothesis${edition.group ? ` for group ${edition.group}` : ' (no hypothesisGroup set: annotations go to the group each reviewer picks)'}` : ''}`);

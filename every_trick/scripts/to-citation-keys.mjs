@@ -25,7 +25,7 @@ import { fileURLToPath } from 'node:url';
 import { hint, locate, prepareReferences } from '../citations.mjs';
 import { convert, REPO_ROOT } from '../convert.mjs';
 
-const KIT = join(dirname(fileURLToPath(import.meta.url)), '..');
+const TOOLKIT_DIR = join(dirname(fileURLToPath(import.meta.url)), '..');
 const PANDOC = process.env.PANDOC || 'pandoc';
 const all = ['README.md', ...readdirSync(join(REPO_ROOT, 'essays')).filter((f) => f.endsWith('.md')).sort().map((f) => `essays/${f}`)];
 const files = process.argv.length > 2 ? process.argv.slice(2) : all;
@@ -44,7 +44,7 @@ function locator(text) {
 function scan(file, source) {
   const out = join(work, 'page.json');
   const result = spawnSync(PANDOC, ['-f', 'markdown-implicit_figures', '-t', 'html', '-o', join(work, 'page.html'),
-    '--lua-filter', join(KIT, 'filters', 'citations.lua'), '--lua-filter', join(KIT, 'filters', 'contract.lua'),
+    '--lua-filter', join(TOOLKIT_DIR, 'filters', 'citations.lua'), '--lua-filter', join(TOOLKIT_DIR, 'filters', 'contract.lua'),
     '-M', `page=${file}`, '-M', `citations=${indexPath}`, '-M', `contract-out=${out}`, '-M', 'root=./'],
   { input: convert(source, file).markdown, encoding: 'utf8' });
   if (result.status !== 0) throw new Error(`Pandoc failed on ${file}:\n${result.stderr}`);

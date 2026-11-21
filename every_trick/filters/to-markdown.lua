@@ -206,7 +206,7 @@ function Pandoc(doc)
   local function get(key) return doc.meta[key] and pandoc.utils.stringify(doc.meta[key]) or '' end
   if get('version-id') ~= '' then
     meta.version = { id = get('version-id'), label = get('version-label'), date = get('version-date'), status = get('version-status') }
-    meta.every_trick_in_the_book = get('kit-version')
+    meta.every_trick_in_the_book = get('toolkit-version')
   end
   doc.meta = pandoc.Meta(meta)
   return doc
