@@ -133,7 +133,8 @@ Markdown with front matter and no Juncture syntax, and `publication.md` at the s
 book in reading order with absolute URLs (from `siteUrl` in `build.mjs`). The HTML is built from that
 Markdown, so the two cannot drift apart. Every page has a "Page / Markdown" switch of plain links in its header.
 "Markdown" leads to `markdown/` beside the page: the same header and footer, with `index.md` shown at a reading
-width and a link to download it. The format of the Markdown media blocks is in `every_trick/CONTRACT.md`.
+width and a link to download it. `publication/` at the root of each edition does the same for `publication.md`, the
+whole book. The format of the Markdown media blocks is in `every_trick/CONTRACT.md`.
 
 The frame of every page:
 

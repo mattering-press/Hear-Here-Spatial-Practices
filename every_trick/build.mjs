@@ -194,6 +194,12 @@ const hypothesis = (edition) => {
     '<script async src="https://hypothes.is/embed.js"></script>';
 };
 const versionMeta = (edition) => ({ 'version-id': edition.version.id, 'version-label': edition.version.label, 'version-date': edition.version.date, 'version-status': edition.version.status, 'kit-version': KIT_VERSION });
+// Markdown shown as a page (a page's Markdown view, publication/): the text at a reading width under a line about it.
+const wrapMarkdown = (source, about) => {
+  const fence = '`'.repeat(Math.max(3, ...[...source.matchAll(/`+/g)].map((m) => m[0].length + 1)));
+  return `${fence}{=html}\n<div class="markdown-view"><p class="markdown-view__about">${about}</p>\n` +
+    `<pre class="markdown-source"><code>${esc(source)}</code></pre></div>\n${fence}\n`;
+};
 // One folder further from the site's root: from a page to its Markdown view.
 const deeper = (root) => (root === './' ? '../' : root + '../');
 // The parts of the frame that are the same on every page of an edition (template.html); s is the site's root.
@@ -278,11 +284,8 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     let html = pandoc(['-f', 'markdown-implicit_figures', '-t', 'html5', '--wrap=none', '-s', '--template', join(KIT, 'template.html'),
       ...frame(''), '-M', `citations=${references.indexPath}`, ...filterArgs(FILTERS)], readFileSync(join(dir, 'index.md'), 'utf8'), page.file);
     // The Markdown view's page: the page's Markdown, wrapped at a reading width, with a link to the file itself.
-    const source = readFileSync(join(dir, 'index.md'), 'utf8');
-    const fence = '`'.repeat(Math.max(3, ...[...source.matchAll(/`+/g)].map((m) => m[0].length + 1)));
-    const markdownView = `${fence}{=html}\n<div class="markdown-view"><p class="markdown-view__about">The Markdown this page is built from. ` +
-      `<a href="../index.md" download>Download index.md</a> · <a href="${esc(deeper(root))}publication.md">The whole book in Markdown</a></p>\n` +
-      `<pre class="markdown-source"><code>${esc(source)}</code></pre></div>\n${fence}\n`;
+    const markdownView = wrapMarkdown(readFileSync(join(dir, 'index.md'), 'utf8'), 'The Markdown this page is built from. ' +
+      `<a href="../index.md" download>Download index.md</a> · <a href="${esc(deeper(root))}publication/">The whole book in Markdown</a>`);
     mkdirSync(join(dir, 'markdown'), { recursive: true });
     writeFileSync(join(dir, 'markdown', 'index.html'), pandoc(['-f', 'markdown', '-t', 'html5', '--wrap=none', '-s', '--template', join(KIT, 'template.html'),
       ...frame('markdown/'), ...filterArgs(['links'])], markdownView, `${page.file} (Markdown view)`));
@@ -329,7 +332,20 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     `publisher: ${JSON.stringify(PUBLICATION.publisher)}`, `lang: ${PUBLICATION.language}`,
     'version:', `  id: ${JSON.stringify(v.id)}`, `  label: ${JSON.stringify(v.label)}`, `  date: ${JSON.stringify(v.date)}`, `  status: ${JSON.stringify(v.status)}`,
     `kit: ${JSON.stringify(KIT_VERSION)}`, '---'].join('\n');
-  writeFileSync(join(out, 'publication.md'), `${front}\n\n${edition.order.map((file) => edition.byFile.get(file).markdownBody).join('\n\n')}\n`);
+  const publication = `${front}\n\n${edition.order.map((file) => edition.byFile.get(file).markdownBody).join('\n\n')}\n`;
+  writeFileSync(join(out, 'publication.md'), publication);
+  // publication/: the same Markdown in the frame of the site, at a reading width, like a page's Markdown view.
+  {
+    const s = join2('../', prefix) || './';
+    const yaml = join(scratch, 'publication.yaml');
+    writeYaml(yaml, edition.menu, { version_line: versionLine(edition, s) });
+    mkdirSync(join(out, 'publication'), { recursive: true });
+    writeFileSync(join(out, 'publication', 'index.html'), pandoc(['-f', 'markdown', '-t', 'html5', '--wrap=none', '-s', '--template', join(KIT, 'template.html'), '--metadata-file', yaml,
+      ...metaArgs({ page: 'publication.md', repo: REPO, manifest, lang: PUBLICATION.language, title: 'The whole book in Markdown', ...toolkitMeta, ...frameMeta(edition, s),
+        root: '../', shared: s, 'asset-version': ASSET_VERSION, 'site-title': home.title, noindex: 'true' }), ...filterArgs(['links'])],
+      wrapMarkdown(publication, 'Every page of the book in reading order, in the Markdown it is built from. <a href="../publication.md" download>Download publication.md</a>'),
+      `${edition.name}: publication/`));
+  }
 }
 
 // 5. The versions page, /versions/: every edition, newest first, with the working text at the top.

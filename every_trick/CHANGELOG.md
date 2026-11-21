@@ -22,7 +22,8 @@ reader sees. How to add a version: ‘Versions of the book and of every_trick’
   media has no number. An animated GIF plays as a much smaller animated WebP, and stands still for readers who ask
   for less motion.
 - The Markdown view is a page of its own, with the same header and footer and the Markdown at a reading width; the
-  `index.md` file is still beside every page.
+  `index.md` file is still beside every page. The whole book in Markdown has such a page too, `publication/`, beside
+  `publication.md`.
 - The footer shows the publisher's logo (the icon alone on phones), a credit line and the licence, from files in the
   repository rather than images on other sites.
 - Easier reading: a narrower text column, regular instead of light type, headings as written instead of in lower
