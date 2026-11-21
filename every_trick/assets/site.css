@@ -1,43 +1,46 @@
 /* The static twin's only stylesheet. The design decisions are the custom properties in :root; change
-   them to restyle the site. It loosely follows the Juncture site's essays/custom.css. */
+   them to restyle the site. */
 
 @font-face { font-family: "Roboto"; font-style: normal; font-weight: 100 900; font-display: swap; src: url("fonts/roboto-latin-wght-normal.woff2") format("woff2"); }
 @font-face { font-family: "Roboto"; font-style: italic; font-weight: 100 900; font-display: swap; src: url("fonts/roboto-latin-wght-italic.woff2") format("woff2"); }
 
 :root {
   /* colours */
-  --colour-background: #f9f9f9;
-  --colour-surface: #fff;                 /* cards, quotes */
-  --colour-text: #222;
+  --colour-background: #f9f8f5;
+  --colour-surface: #fff;                 /* cards, quotes, the Markdown view */
+  --colour-text: #1d1d1b;                 /* the black of the Mattering Press logo */
+  --colour-muted: #5f5e59;                /* captions, paragraph numbers, the footer */
   --colour-link: #7e2022;
-  --colour-accent: #7e2022;               /* heading rules, timecodes, focus rings, text selection */
-  --colour-rule: #bababa;
-  --colour-header: #111;                  /* header band; pages with a header image show it behind a shade */
+  --colour-accent: #7e2022;               /* heading marks, timecodes, focus rings, text selection */
+  --colour-rule: #d8d5ce;
+  --colour-header: #1d1d1b;               /* the bar and the page's opening */
   --colour-header-text: #fff;
-  --header-shade: rgb(0 0 0 / 0.55);
-  --colour-caption: #585858;              /* caption bar under figures and videos */
-  --colour-caption-text: #fff;
-  --colour-transcript: rgb(186 186 186 / 0.17);
-  --colour-footer: #eee;
+  --colour-header-muted: rgb(255 255 255 / 0.72);
+  --colour-transcript: #b9b5ab;           /* the rule beside a transcript */
+  --colour-footer: #efede8;
   --colour-highlight: color-mix(in srgb, var(--colour-accent) 13%, transparent);   /* a paragraph linked to (#p12) */
 
   /* type */
   --font: "Roboto", system-ui, sans-serif;
-  --font-size: 1.0625rem;
-  --line-height: 1.6;
-  --weight-text: 300;
-  --weight-strong: 500;
-  --weight-heading: 900;
-  --heading-case: lowercase;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-size: 1.125rem;
+  --line-height: 1.65;
+  --weight-text: 400;
+  --weight-strong: 600;
+  --weight-heading: 700;
 
   /* spacing and measure */
-  --measure: 46rem;                       /* width of the text column */
-  --wide: 62rem;                          /* width of the header and footer contents */
+  --measure: 38rem;                       /* width of the text column: about 70 characters a line */
+  --wide: 64rem;                          /* width of the bar, the page's opening and the footer */
   --gap: 1rem;
   --space: 1.5rem;                        /* space around figures and between blocks */
   --side-figure-width: 50%;               /* default width of figures floated left or right */
-  --radius: 15px;
+  --radius: 4px;
   --shadow: 0 4px 12px rgb(0 0 0 / 0.08);
+
+  /* the page's opening: its height, the same on every page, with or without a header picture */
+  --opener-height: 11rem;
+  --band-shade: linear-gradient(rgb(0 0 0 / 0.35), rgb(0 0 0 / 0.65));   /* over the header picture, under the title */
 
   /* paragraph numbers: 1 shows them in the margin; 0 hides them (the ¶ link still appears on hover and focus) */
   --paragraph-numbers: 1;
@@ -46,49 +49,134 @@
   --margin-note-lines: 0;
 }
 
+/* dark colours: when the reader picks Dark, or picks System (the preset) on a device set to dark */
+:root { color-scheme: light; --logo-filter: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --colour-background: #161614;
+    --colour-surface: #22211e;
+    --colour-text: #e8e6e0;
+    --colour-muted: #a8a59d;
+    --colour-link: #eb9a9e;
+    --colour-accent: #e07f85;
+    --colour-rule: #3b3a36;
+    --colour-header: #0b0b0a;
+    --colour-transcript: #57554f;
+    --colour-footer: #1d1c1a;
+    --colour-highlight: color-mix(in srgb, var(--colour-accent) 22%, transparent);
+    --logo-filter: invert(1);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --colour-background: #161614;
+  --colour-surface: #22211e;
+  --colour-text: #e8e6e0;
+  --colour-muted: #a8a59d;
+  --colour-link: #eb9a9e;
+  --colour-accent: #e07f85;
+  --colour-rule: #3b3a36;
+  --colour-header: #0b0b0a;
+  --colour-transcript: #57554f;
+  --colour-footer: #1d1c1a;
+  --colour-highlight: color-mix(in srgb, var(--colour-accent) 22%, transparent);
+  --logo-filter: invert(1);
+  color-scheme: dark;
+}
+
+/* text size: the reader's choice scales the whole page, the text column with it, so lines keep their length */
+:root[data-text-size="small"] { font-size: 90%; }
+:root[data-text-size="large"] { font-size: 115%; }
+:root[data-text-size="largest"] { font-size: 130%; }
+
 /* base */
 *, *::before, *::after { box-sizing: border-box; }
 body { margin: 0; background: var(--colour-background); color: var(--colour-text); font: var(--weight-text) var(--font-size) / var(--line-height) var(--font); }
-a { color: var(--colour-link); }
+/* a page with little text still fills the window: the text column takes the spare height, so the footer sits at the
+   bottom of the window instead of halfway up */
+body { display: flex; flex-direction: column; min-height: 100vh; min-height: 100svh; }
+body > main { flex: 1 0 auto; width: 100%; }
+a { color: var(--colour-link); text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+a:hover { text-decoration-thickness: 2px; }
 b, strong { font-weight: var(--weight-strong); }
 ::selection { background: var(--colour-accent); color: #fff; }
 ::marker { color: var(--colour-accent); }
 :focus-visible { outline: 3px solid var(--colour-accent); outline-offset: 2px; }
-h1, h2, h3, h4, h5, h6 { line-height: 1.2; }
+h1, h2, h3, h4, h5, h6 { line-height: 1.2; text-wrap: balance; }
 img, iframe, video, object { max-width: 100%; }
 .skip-link { position: absolute; left: -100vw; }
 .skip-link:focus { left: var(--gap); top: var(--gap); z-index: 10; padding: 0.5rem 1rem; background: var(--colour-surface); }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
-/* header band: page title, subtitle, menu */
-.site-header { position: relative; padding: 4rem var(--gap) 1.25rem; background: var(--colour-header) center / cover no-repeat; color: var(--colour-header-text); }
-.site-header::before { content: ""; position: absolute; inset: 0; background: var(--header-shade); }
-.site-header__inner { position: relative; max-width: var(--wide); margin: 0 auto; }
-.site-header :focus-visible { outline-color: currentColor; }
-.page-title { margin: 0; font-size: clamp(1.75rem, 5vw, 2.75rem); font-weight: 700; }
-.page-subtitle { margin: 0.5rem 0 0; font-size: clamp(1rem, 2.5vw, 1.4rem); font-style: italic; font-weight: 400; letter-spacing: 0.22em; text-transform: uppercase; }
-.site-menu ul { display: flex; flex-wrap: wrap; gap: 0.25rem 1.5rem; margin: 2rem 0 0; padding: 0; list-style: none; }
-.site-menu a { color: inherit; font-weight: var(--weight-strong); text-transform: lowercase; text-underline-offset: 0.25em; }
-.site-menu a:not(:hover, :focus-visible, [aria-current]) { text-decoration: none; }
+/* moving between pages: the bar stays put while the rest fades across (browsers without this just change page) */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+}
+.site-bar { view-transition-name: site-bar; }
 
-/* view switcher: plain links between the page and its Markdown view */
-.view-switcher { max-width: var(--wide); margin: 0 auto; padding: 0.5rem var(--gap) 0; font-size: 0.875rem; }
-.view-switcher ul { display: flex; justify-content: flex-end; gap: 1rem; margin: 0; padding: 0; list-style: none; }
-.view-switcher a[aria-current] { color: var(--colour-text); font-weight: var(--weight-strong); text-decoration: none; }
+/* the header: the same bar on every page (book title, menu, views of this page), then the page's opening */
+.site-header { background: var(--colour-header); color: var(--colour-header-text); }
+.site-header :focus-visible { outline-color: currentColor; }
+.site-bar { --bar-gap: 2rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem var(--bar-gap); max-width: var(--wide); margin: 0 auto; padding: 0.85rem var(--gap); font-size: 0.9375rem; line-height: 1.3; }
+.site-title { display: inline-flex; align-items: center; min-height: 1.8rem; color: inherit; font-weight: 700; letter-spacing: 0.01em; text-decoration: none; }   /* as tall as the switch, which not every page has */
+.site-title:hover { text-decoration: underline; text-underline-offset: 0.3em; }
+.site-menu ul, .view-switcher ul { display: flex; margin: 0; padding: 0; list-style: none; }
+.site-menu ul { gap: 0.25rem 1.4rem; }
+.site-menu a { color: var(--colour-header-muted); text-decoration: none; text-underline-offset: 0.45em; }
+.site-menu a:hover, .site-menu a[aria-current] { color: var(--colour-header-text); text-decoration: underline; text-decoration-thickness: 2px; }
+/* the views of this page (Page, Markdown; later the Collage), as a switch */
+.view-switcher { margin-left: auto; }
+.view-switcher ul { padding: 2px; border: 1px solid rgb(255 255 255 / 0.3); border-radius: 999px; }
+.view-switcher a { display: block; padding: 0.2rem 0.8rem; border-radius: 999px; color: var(--colour-header-muted); font-size: 0.8125rem; text-decoration: none; }
+.view-switcher a:hover { color: var(--colour-header-text); }
+.view-switcher a[aria-current] { background: var(--colour-header-text); color: var(--colour-header); }
+/* the reader's settings: an "Aa" button beside the switch, opening a small panel (assets/settings.js) */
+.settings-button { margin-left: auto; padding: 0.2rem 0.55rem; border: 1px solid rgb(255 255 255 / 0.3); border-radius: 999px; background: none; color: var(--colour-header-muted); font: inherit; font-size: 0.8125rem; font-weight: var(--weight-strong); line-height: 1.3; cursor: pointer; }
+.view-switcher + .settings-button { margin-left: calc(0.5rem - var(--bar-gap)); }   /* close to the switch, whatever the bar's spacing */
+.settings-button:hover, .settings-button:focus-visible { color: var(--colour-header-text); }
+.settings { position: fixed; inset: auto; margin: 0; width: max-content; max-width: calc(100vw - 16px); padding: 0.9rem 1rem 1rem; border: 1px solid var(--colour-rule); border-radius: 6px; background: var(--colour-surface); color: var(--colour-text); box-shadow: var(--shadow); font-size: 0.875rem; }
+.settings fieldset { margin: 0; padding: 0; border: 0; }
+.settings fieldset + fieldset { margin-top: 0.85rem; }
+.settings legend { margin-bottom: 0.4rem; padding: 0; color: var(--colour-muted); font-size: 0.8125rem; }
+.settings__choices { display: flex; gap: 0.35rem; }
+.settings__choices button { min-width: 2.4rem; padding: 0.3rem 0.7rem; border: 1px solid var(--colour-rule); border-radius: 4px; background: none; color: inherit; font: inherit; cursor: pointer; }
+.settings__choices button:hover { border-color: var(--colour-accent); }
+.settings__choices button[aria-pressed="true"] { border-color: var(--colour-text); background: var(--colour-text); color: var(--colour-surface); }
+.settings__sizes button { line-height: 1; }
+.settings__sizes button:nth-child(1) { font-size: 0.8rem; }
+.settings__sizes button:nth-child(3) { font-size: 1.1rem; }
+.settings__sizes button:nth-child(4) { font-size: 1.3rem; }
+
+/* the page's opening: section, title and subtitle over the page's header picture, cropped to a band of the same
+   height on every page. The title starts where the text column starts. */
+.page-opener { position: relative; border-top: 1px solid rgb(255 255 255 / 0.14); container-type: inline-size; }
+.page-opener__band { position: absolute; inset: 0; overflow: hidden; }
+.page-opener__band::after { content: ""; position: absolute; inset: 0; background: var(--band-shade); }
+.page-opener__band img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.page-opener__inner { position: relative; box-sizing: border-box; min-height: var(--opener-height); display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 1.25rem 2.5rem; max-width: var(--wide); margin: 0 auto; padding: 2rem var(--gap) 2.25rem; }
+.page-opener__text { padding-left: calc(max(0px, (min(100cqw, var(--wide)) - var(--measure)) / 2) + var(--number-room, 0rem)); }
+.page-section { margin: 0 0 0.6rem; font-size: 0.8125rem; font-weight: var(--weight-strong); letter-spacing: 0.12em; text-transform: uppercase; }
+.page-section a { color: var(--colour-header-muted); text-decoration: none; }
+.page-section a:hover { color: var(--colour-header-text); text-decoration: underline; }
+.page-title { margin: 0; font-size: clamp(1.75rem, 1.2rem + 2vw, 2.6rem); font-weight: 700; line-height: 1.12; letter-spacing: -0.01em; }
+.page-subtitle { margin: 0.75rem 0 0; font-size: clamp(0.95rem, 0.8rem + 0.6vw, 1.2rem); font-style: italic; font-weight: 400; letter-spacing: 0.22em; text-transform: uppercase; }
 
 /* text column */
-main { max-width: var(--measure); margin: 0 auto; padding: var(--gap) var(--gap) 3rem; overflow-wrap: break-word; }
+main { max-width: var(--measure); margin: 0 auto; padding: 2.25rem var(--gap) 3rem; overflow-wrap: break-word; }
 main::after { content: ""; display: block; clear: both; }
-main :is(h2, h3, h4, h5, h6) { clear: both; font-weight: var(--weight-heading); text-transform: var(--heading-case); }
-main h2 { margin-top: 2.5rem; padding-left: var(--gap); border-left: 6px solid var(--colour-accent); }
-blockquote { margin: var(--space) 0; padding: 0.5rem 1.25rem; border-left: 4px solid var(--colour-accent); background: var(--colour-surface); }
+main :is(h2, h3, h4, h5, h6) { clear: both; font-weight: var(--weight-heading); }
+main h2 { margin: 2.75rem 0 1rem; font-size: 1.45rem; }
+main h2::before { content: ""; display: block; width: 2.5rem; height: 3px; margin-bottom: 0.9rem; background: var(--colour-accent); }
+main h3 { margin: 2rem 0 0.75rem; font-size: 1.2rem; }
+main > :first-child { margin-top: 0; }
+blockquote { margin: var(--space) 0; padding: 0.25rem 0 0.25rem 1.25rem; border-left: 3px solid var(--colour-accent); }
 
 /* paragraph numbers (filters/paragraphs.lua): the number of each reading paragraph in the margin, and a ¶ link to it
    on hover and focus (assets/paragraphs.js copies its address). The link has no text of its own, so that copied
    text and text fragments see only the paragraph's words; its number and ¶ are generated here. */
 main { position: relative; padding-left: var(--column-inset, var(--gap)); }
 .para { scroll-margin-top: var(--space); border-radius: 4px; }
-.para-link { position: absolute; right: calc(100% - var(--column-inset, var(--gap)) + 0.6rem); line-height: calc(var(--font-size) * var(--line-height)); color: var(--colour-caption); font-size: 0.75rem; font-style: normal; font-weight: 400; font-variant-numeric: tabular-nums; text-decoration: none; white-space: nowrap; }
+.para-link { position: absolute; right: calc(100% - var(--column-inset, var(--gap)) + 0.6rem); line-height: calc(var(--font-size) * var(--line-height)); color: var(--colour-muted); font-size: 0.75rem; font-style: normal; font-weight: 400; font-variant-numeric: tabular-nums; text-decoration: none; white-space: nowrap; }
 .para-link::before { content: "¶"; margin-right: 0.3em; opacity: 0; color: var(--colour-accent); font-size: 1.1em; font-weight: var(--weight-strong); }
 .para-link::after { content: attr(data-n); opacity: var(--paragraph-numbers); }
 .para:hover .para-link::before, .para-link:focus-visible::before, .para-link:hover::after, .para-link:focus-visible::after { opacity: 1; }
@@ -119,6 +207,10 @@ aside.margin :is(p, ol, ul) { margin: 0 0 0.5rem; }
 aside.margin :is(ol, ul) { padding-left: 1.25rem; }
 aside.margin .margin-body > :last-child { margin-bottom: 0; }
 .margin-number { position: absolute; left: 0.75rem; top: 0.6rem; color: var(--colour-accent); font-weight: var(--weight-strong); text-decoration: none; }
+/* media in the margin (a picture, an animated GIF, a video, an audio player): no number, no box, the full width of
+   the margin */
+aside.margin.margin-media { padding: 0; border-left: 0; background: none; }
+aside.margin.margin-media :is(figure, audio) { width: 100%; margin: 0 0 0.75rem; float: none; }
 .margin-more { margin-top: 0.25rem; padding: 0; border: 0; background: none; color: var(--colour-link); font: inherit; font-weight: var(--weight-strong); text-decoration: underline; cursor: pointer; }
 :is(aside.margin, .margin-mark).is-active, aside.margin:target { border-left-color: var(--colour-accent); background: var(--colour-highlight); }
 .margin-mark.is-active { background: var(--colour-highlight); border-radius: 3px; }
@@ -132,13 +224,13 @@ main.has-margin aside.margin.is-long:not(.is-open) .margin-body { max-height: va
 .version-notice a { font-weight: var(--weight-strong); }
 .has-annotations .version-notice { padding-right: calc(var(--gap) + 2.5rem); }
 
-/* figures: zoomable images, videos and other embeds */
+/* figures: zoomable images, videos and other embeds, with the caption as small text below */
 figure { margin: var(--space) auto; width: var(--figure-width, 100%); }
 figure.left, figure.right { width: var(--figure-width, var(--side-figure-width)); margin-top: 0.4rem; }
 figure.left { float: left; margin-right: var(--space); }
 figure.right { float: right; margin-left: var(--space); }
 figure img { display: block; width: 100%; height: auto; }
-figcaption { padding: 0.3rem 0.5rem; background: var(--colour-caption); color: var(--colour-caption-text); font-size: 0.875rem; overflow-wrap: anywhere; }
+figcaption { padding: 0.5rem 0 0; color: var(--colour-muted); font-size: 0.875rem; line-height: 1.45; overflow-wrap: anywhere; }
 figcaption a { color: inherit; }
 figure.zoom { position: relative; }
 .zoom-button { position: absolute; top: 0.5rem; right: 0.5rem; padding: 0.3rem 0.75rem; border: 0; border-radius: 4px; background: rgb(0 0 0 / 0.72); color: #fff; font: inherit; font-size: 0.875rem; font-weight: var(--weight-strong); cursor: zoom-in; }
@@ -171,15 +263,17 @@ smartframe-embed:not(:defined) { aspect-ratio: auto !important; }   /* third-par
 
 /* podcasts: audio player, transcript and its timecodes */
 audio { display: block; width: 100%; margin: var(--gap) 0; }
-.transcript { padding: var(--gap); background: var(--colour-transcript); }
-a.timecode { padding: 0.1rem 0.5rem; border-radius: 4px; background: var(--colour-accent); color: #fff; font-size: 0.875rem; font-weight: var(--weight-strong); text-decoration: none; }
+.transcript { padding-left: 1.25rem; border-left: 2px solid var(--colour-transcript); }
+a.timecode { color: var(--colour-accent); font-size: 0.8125rem; font-weight: var(--weight-strong); font-variant-numeric: tabular-nums; letter-spacing: 0.02em; text-decoration: none; }
+a.timecode::before { content: "▸ "; }
 a.timecode:hover { text-decoration: underline; }
 
 /* cards: lists of pages with a picture */
 .cards ul { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(15rem, 100%), 1fr)); gap: var(--space); margin: var(--space) 0; padding: 0; list-style: none; }
-.cards a { display: block; height: 100%; overflow: hidden; border-radius: var(--radius); background: var(--colour-surface); box-shadow: var(--shadow); color: var(--colour-text); text-decoration: none; }
+.cards a { display: flex; flex-direction: column; height: 100%; overflow: hidden; border: 1px solid var(--colour-rule); border-radius: var(--radius); background: var(--colour-surface); color: var(--colour-text); text-decoration: none; }
 .cards img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
-.card-title { display: block; padding: 0.8rem 1rem 1rem; border-top: 2px solid var(--colour-accent); font-weight: 800; text-transform: var(--heading-case); }
+.card-title { display: block; padding: 0.75rem 1rem 1rem; font-weight: var(--weight-strong); line-height: 1.35; }
+.cards a:is(:hover, :focus-visible) { border-color: var(--colour-accent); }
 .cards a:is(:hover, :focus-visible) .card-title { color: var(--colour-accent); text-decoration: underline; }
 
 /* citations: links to the reference list, and the reference in a popup (assets/citations.js) */
@@ -193,28 +287,60 @@ a.citation { text-decoration-thickness: 1px; text-underline-offset: 0.15em; }
 .citation-popover p { margin: 0; }
 .citation-popover .citation-popover__more { margin-top: 0.5rem; font-size: 0.875rem; }
 
-/* footer */
-.site-footer { margin-top: 3rem; padding: 1.5rem var(--gap); background: var(--colour-footer); }
-.site-footer ul { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--gap) 2rem; max-width: var(--wide); margin: 0 auto; padding: 0; list-style: none; }
-.site-footer img { height: 2rem; width: auto; vertical-align: middle; }
+/* the Markdown view: the page's Markdown at a reading width, lines wrapped */
+.markdown-view__about { margin: 0 0 1.25rem; color: var(--colour-muted); font-size: 0.9375rem; }
+.markdown-source { margin: 0; padding: 1.25rem 1.5rem; border: 1px solid var(--colour-rule); border-radius: var(--radius); background: var(--colour-surface); font: 0.875rem / 1.6 var(--font-mono); white-space: pre-wrap; overflow-wrap: anywhere; tab-size: 4; }
 
-/* the book's version and its date, under the footer's logos; the toolkit's name and version follow in .built-with */
-.site-footer__version { max-width: var(--wide); margin: 0 auto; font-size: 0.875rem; text-align: center; }
-.site-footer ul + .site-footer__version { margin-top: 1.25rem; }
+/* footer: the publisher's logo (the icon alone on phones), the credit line, the version and the toolkit */
+.site-footer { margin-top: 3rem; padding: 2.5rem 0 3rem; border-top: 1px solid var(--colour-rule); background: var(--colour-footer); color: var(--colour-muted); font-size: 0.875rem; line-height: 1.5; }
+.site-footer__inner { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 1.5rem 3rem; max-width: var(--wide); margin: 0 auto; padding: 0 var(--gap); }
+.site-footer__logo { flex: none; }
+.site-footer__logo img { display: block; width: auto; height: 2.75rem; filter: var(--logo-filter); }   /* white in dark mode */
+.site-footer__text { flex: 1 1 22rem; }
+.site-footer__text p { margin: 0 0 0.35rem; }
+.site-footer__credit { color: var(--colour-text); font-size: 0.9375rem; }
+.site-footer a { color: inherit; }
+.site-footer__version { margin: 0; }
+.built-with { opacity: 0.85; }
+.toolkit-name { white-space: nowrap; }
+/* where the name is a link, drop the underline below the underscores so they stay visible (and the version's with it) */
+a.toolkit-name, a .toolkit-name, .toolkit-name a, .built-with a { text-underline-offset: 0.35em; text-decoration-thickness: 1px; }
 
-/* where the page has no margin wide enough for the paragraph numbers, the text column makes room for them */
+/* where the page has no margin wide enough for the paragraph numbers, the text column makes room for them, and the
+   page's title moves with the text */
 @media (max-width: 52rem) {
   main { --column-inset: calc(var(--gap) + var(--paragraph-numbers) * 1.75rem); }
+  .page-opener { --number-room: calc(var(--paragraph-numbers) * 1.75rem); }
   /* on a version open for annotation, Hypothesis's toolbar covers the right edge of the window */
   .has-annotations main { padding-right: calc(var(--gap) + 1.75rem); }
 }
 
-/* narrow screens: figures stop floating */
-@media (max-width: 40rem) {
-  figure.left, figure.right, main iframe.left, main iframe.right { float: none; width: 100%; margin-left: 0; margin-right: 0; }
-  main h2 { padding-left: 0.75rem; }
+/* tablets and phones: the menu takes a row of its own below the title and the views */
+@media (max-width: 56rem) {
+  .site-bar { --bar-gap: 1rem; row-gap: 0.4rem; padding-bottom: 0.75rem; }
+  .site-menu { order: 3; flex-basis: 100%; font-size: 0.875rem; }
+  .site-menu ul { flex-wrap: wrap; gap: 0.2rem 1rem; }
 }
-.built-with { margin: 0.5rem 0 0; font-size: 0.85em; opacity: 0.8; }
-.toolkit-name { white-space: nowrap; }
-/* where the name is a link, drop the underline below the underscores so they stay visible (and the version's with it) */
-a.toolkit-name, a .toolkit-name, .toolkit-name a, .built-with a { text-underline-offset: 0.35em; text-decoration-thickness: 1px; }
+
+/* phones: the title in line with the bar; figures stop floating; the footer shows the
+   publisher's icon */
+@media (max-width: 40rem) {
+  :root { --font-size: 1.0625rem; --opener-height: 9.5rem; }
+  .page-opener { --number-room: 0rem; }
+  .page-opener__inner { grid-template-columns: minmax(0, 1fr); padding: 1.25rem var(--gap) 1.5rem; }
+  figure.left, figure.right, main iframe.left, main iframe.right { float: none; width: 100%; margin-left: 0; margin-right: 0; }
+  .site-footer__logo img { height: 2.5rem; }
+}
+
+/* small phones: a smaller title and switch, so that both still fit on the bar's first row */
+@media (max-width: 28rem) {
+  .site-title { font-size: 0.875rem; }
+  .view-switcher a { padding: 0.15rem 0.5rem; font-size: 0.75rem; }
+  .settings-button { padding: 0.15rem 0.4rem; font-size: 0.75rem; }
+  .site-bar { --bar-gap: 0.6rem; }
+  .view-switcher + .settings-button { margin-left: 0; }
+}
+/* the smallest phones: a smaller title still, so that the first row holds the title, the switch and the settings */
+@media (max-width: 23.5rem) {
+  .site-title { font-size: 0.75rem; letter-spacing: 0; }
+}

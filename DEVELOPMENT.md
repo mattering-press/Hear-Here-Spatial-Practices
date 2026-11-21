@@ -131,8 +131,27 @@ line. Images without alt text are listed as warnings.
 The Markdown view: next to every page's `index.html` the build writes `index.md`, the page as clean Pandoc
 Markdown with front matter and no Juncture syntax, and `publication.md` at the site root holds the whole
 book in reading order with absolute URLs (from `siteUrl` in `build.mjs`). The HTML is built from that
-Markdown, so the two cannot drift apart. Every page has a "Page / Markdown" switch of plain links. The
-format of the Markdown media blocks is in `every_trick/CONTRACT.md`.
+Markdown, so the two cannot drift apart. Every page has a "Page / Markdown" switch of plain links in its header.
+"Markdown" leads to `markdown/` beside the page: the same header and footer, with `index.md` shown at a reading
+width and a link to download it. `publication/` at the root of each edition does the same for `publication.md`, the
+whole book. The format of the Markdown media blocks is in `every_trick/CONTRACT.md`.
+
+The frame of every page:
+
+- **Header.** A bar that is the same on every page: the book's title (a link to the home page), the menu and the
+  Page / Markdown switch. The menu is the home page's (`README.md`); the menus in the other pages' `.ve-header`
+  lines are ignored. Below the bar, the page's title, over the picture of its own `.ve-header` line, cropped to a
+  band of the same height on every page. A page reached through a card names its section above its title (Podcasts,
+  Events), and that section is marked in the menu. To give a page its own header picture, change the picture in its
+  `.ve-header` line.
+- **Settings.** The "Aa" button beside the switch opens the reader's settings (`every_trick/assets/settings.js`):
+  text size in four steps (90, 100, 115 and 130 per cent; the whole page scales, the text column with it) and colours:
+  System (the preset, which follows the reader's device), Light or Dark. The browser keeps the choice
+  (`localStorage`), and a line in the template's `<head>` applies it before the page is drawn. The dark colours are
+  set in `every_trick/assets/site.css`, below the light ones; the publisher's logo turns white in dark mode.
+- **Footer.** The publisher's logo (the long one; the icon alone on phones), a credit line with the licence, the
+  book's version line and the toolkit's line. They are set in `FRAME` at the top of `every_trick/build.mjs`, with the
+  logos in `media/publisher/`; the `.ve-footer` lines in the pages are ignored.
 
 What is in `every_trick/`:
 
@@ -145,7 +164,7 @@ What is in `every_trick/`:
 - `scripts/to-citation-keys.mjs`: for the switch, shows how the plain-text citations would become Pandoc citations
 - `template.html`: the HTML around every page. It links the stylesheet and scripts with `?v=` and a hash of their contents, so that browsers fetch them again after every change instead of keeping an old copy
 - `assets/`: `site.css` (colours, fonts and spacing are set at its top), `zoom.js`, `seek.js`, `citations.js`, `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens)
-- `images.mjs`: resized images and the tiles for zooming
+- `images.mjs`: resized images and the tiles for zooming; an animated GIF becomes an animated WebP and a still
 - `check.mjs`, `serve.mjs`: the link check and the local server
 - `CONTRACT.md`: the `page.json` and `publication.json` files that other frontends can read, and the paragraph rule
 - `package.json`: the toolkit's name and version (see "Versions of the book and of every_trick" below)
@@ -199,7 +218,7 @@ or rewritten beyond recognition leads to the nearest paragraph before it that wa
 
 Every page's footer shows the book's version and its date, with a link to `/versions/`, which lists every version.
 The line below it names the version of every_trick_in_the_book that built the page (see "Versions of the book and
-of every_trick"). The same stamp, `version` for the book and `kit` for the toolkit, is in `publication.json`, every
+of every_trick"). The same stamp, `version` for the book and `every_trick_in_the_book` for the toolkit, is in `publication.json`, every
 `page.json` and the front matter of the Markdown view.
 
 Each entry in `versions.json` has:
@@ -232,7 +251,7 @@ shows one without saying which it is: the book's version is written with its lab
 | set in | `versions.json`, each version with its Git tag (`v0.1`) | `version` in `every_trick/package.json` |
 | what changed | the text of each frozen version, online at `/v<id>/` | `every_trick/CHANGELOG.md` |
 | on the site | the footer's version line, the version notice, `/versions/` | the footer's credit line, linked to the toolkit's home and to `every_trick/CHANGELOG.md` |
-| in the data | `version` in `page.json`, `publication.json` and the Markdown view | `kit` in the same files |
+| in the data | `version` in `page.json`, `publication.json` and the Markdown view | `every_trick_in_the_book` in the same files |
 
 Every version of the book is built with the current toolkit, so a frozen version keeps its text but takes on the
 current design.
@@ -384,7 +403,7 @@ Agreed with the publisher on 2026-11-19. These fix the data; players and viewers
 
 ## Plan: margin notes
 
-Agreed with the publisher on 2026-11-19. Text notes are built (`every_trick/filters/margins.lua`, `every_trick/assets/margins.js`); media in the margin and the print and EPUB forms are not built yet.
+Agreed with the publisher on 2026-11-19. Text notes and media in the margin are built (`every_trick/filters/margins.lua`, `every_trick/assets/margins.js`): a margin note may hold pictures, animated GIFs, video and audio players, and one that holds only media has no number (example: the cover beside para. 1 of the home page). Figure numbers for margin media and the print and EPUB forms are not built yet.
 
 - **What:** short notes, links and small media thumbnails in a right-hand margin column. Paragraph numbers keep the left margin.
 - **Where they live in the source:** directly after the paragraph they belong to (`::: {.margin}` … `:::`), or attached to a word (`[given by Germany in 1962]{.margin}`). They are never stored by paragraph number, so they move with their paragraph from version to version. While Juncture still renders the site, write them as `<aside class="margin" markdown="1">…</aside>`, which the build converts.

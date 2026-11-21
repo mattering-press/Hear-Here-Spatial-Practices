@@ -11,6 +11,33 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of every_trick’ in `DEVELOPMENT.md`.
 
+## 1.2.0
+
+21 November 2026. A first clean-up of how the site looks.
+
+- Every page has the same header: a bar with the book's title, the menu and the Page / Markdown switch, then the
+  page's title over its header picture in a band of the same height on every page, so nothing moves when you go from
+  page to page. A podcast or event page names its section above its title, and the section is marked in the menu.
+- Margin notes can hold pictures, animated GIFs, video and audio players as well as text. A note that holds only
+  media has no number. An animated GIF plays as a much smaller animated WebP, and stands still for readers who ask
+  for less motion.
+- The Markdown view is a page of its own, with the same header and footer and the Markdown at a reading width; the
+  `index.md` file is still beside every page. The whole book in Markdown has such a page too, `publication/`, beside
+  `publication.md`.
+- The footer shows the publisher's logo (the icon alone on phones), a credit line and the licence, from files in the
+  repository rather than images on other sites.
+- Easier reading: a narrower text column, regular instead of light type, headings as written instead of in lower
+  case, captions as small text under the picture, quieter timecodes and transcripts.
+- Cards look the same whether or not their picture has alt text. Before, a picture without alt text sat inside the
+  title, framed by a red line.
+- On phones the header takes less room and the Markdown view is readable.
+- The toolkit's version is called `every_trick_in_the_book` in the data, as in `every_trick_in_the_book: "1.2.0"`: in the
+  front matter of the Markdown files, `page.json` and `publication.json` (it was `kit`).
+- On a page with little text the footer sits at the bottom of the window, not halfway up.
+- Readers can set the text size (four steps) and the colours (System, the preset, which follows their device; Light;
+  Dark) with the "Aa" button in the bar. The browser remembers the choice. Without JavaScript the button is hidden,
+  and browser zoom and the device's own settings still work.
+
 ## 1.1.0
 
 20 November 2026

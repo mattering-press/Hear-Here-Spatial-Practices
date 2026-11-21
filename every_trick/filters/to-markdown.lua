@@ -7,7 +7,7 @@
 -- URLs are rewritten to the site's: relative to the page, or (publication.md) absolute, depending on -M root.
 -- The headings of the text start at level 2. With -M title-heading=true (publication.md, which holds every page)
 -- the page starts with its title as a level-1 heading, and its subtitle in italics; index.md has the title in
--- its front matter instead, with the version stamp (version: id, label, date, status; kit). Heading ids are left
+-- its front matter instead, with the version stamp (version: id, label, date, status; every_trick_in_the_book, the toolkit's version). Heading ids are left
 -- out (Pandoc makes them again when it reads the Markdown).
 -- Stage 2 (figures, embeds, cards, transcript and the other filters) turns this Markdown into HTML.
 package.path = pandoc.path.directory(PANDOC_SCRIPT_FILE) .. '/?.lua;' .. package.path
@@ -19,13 +19,14 @@ local function class_list(...)
   return list
 end
 
--- A zoomable image: its 1600 px copy, with the caption as the image text.
+-- A zoomable image: its 1600 px copy, with the caption as the image text. An animated GIF is an animated WebP
+-- instead, marked .animated, which cannot zoom.
 local function figure(div)
   local a = div.attributes
   local img = lib.image('figure', a.src, a.rotation)
   local attrs = { { 'alt', a.alt or '' } }
   if a.width then table.insert(attrs, 1, { 'width', a.width }) end
-  return pandoc.Para { pandoc.Image(lib.words(a.caption), lib.site_url(img.url), '', pandoc.Attr('', class_list('zoom', a.side), attrs)) }
+  return pandoc.Para { pandoc.Image(lib.words(a.caption), lib.site_url(img.url), '', pandoc.Attr('', class_list(img.animated and 'animated' or 'zoom', a.side), attrs)) }
 end
 
 local function target(a) return (lib.fix_link(a.src)) or a.src end
@@ -205,7 +206,7 @@ function Pandoc(doc)
   local function get(key) return doc.meta[key] and pandoc.utils.stringify(doc.meta[key]) or '' end
   if get('version-id') ~= '' then
     meta.version = { id = get('version-id'), label = get('version-label'), date = get('version-date'), status = get('version-status') }
-    meta.kit = get('kit-version')
+    meta.every_trick_in_the_book = get('toolkit-version')
   end
   doc.meta = pandoc.Meta(meta)
   return doc

@@ -12,7 +12,7 @@ const { values } = parseArgs({ options: { port: { type: 'string', default: '8080
 const SITE = join(REPO_ROOT, '_site');
 const base = `/${values.base}/`.replace(/\/+/g, '/');
 const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.json': 'application/json',
-  '.jpg': 'image/jpeg', '.png': 'image/png', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.txt': 'text/plain; charset=utf-8', '.md': 'text/markdown; charset=utf-8',
+  '.jpg': 'image/jpeg', '.png': 'image/png', '.svg': 'image/svg+xml', '.webp': 'image/webp', '.gif': 'image/gif', '.woff2': 'font/woff2', '.txt': 'text/plain; charset=utf-8', '.md': 'text/markdown; charset=utf-8',
   '.mp4': 'video/mp4', '.mp3': 'audio/mpeg', '.pdf': 'application/pdf' };
 
 createServer((req, res) => {

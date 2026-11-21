@@ -6,6 +6,8 @@
 --     <figcaption>…</figcaption>
 --   </figure>
 -- assets/zoom.js adds a Zoom button that opens the tiles in a dialog. A .gallery div holds such figures.
+-- An animated image, ![caption](images/x.webp){.animated alt="…"}, becomes a figure without zoom, whose picture shows
+-- its first frame (images/x-still.jpg) to readers who ask their system for less motion.
 -- Other images of the site get their size and lazy loading.
 package.path = pandoc.path.directory(PANDOC_SCRIPT_FILE) .. '/?.lua;' .. package.path
 local lib = require 'lib'
@@ -14,16 +16,21 @@ local figures = {}
 
 local function figure(img)
   local entry = lib.image_at(img.src)
-  if not entry or not entry.tiles then error('no zoomable image at ' .. img.src .. ' (' .. lib.page .. ')') end
+  local animated = entry and entry.animated
+  if not entry or not (entry.tiles or animated) then error('no zoomable image at ' .. img.src .. ' (' .. lib.page .. ')') end
   local alt = img.attributes.alt or ''
   local caption = pandoc.utils.stringify(img.caption)
   figures[#figures + 1] = { image = entry.url, width = entry.width, height = entry.height, tiles = entry.tiles, alt = alt, caption = caption }
   local side = img.classes:includes('left') and ' left' or img.classes:includes('right') and ' right' or ''
+  local picture = '<img src="' .. lib.join(lib.root, entry.url) .. '" width="' .. entry.width .. '" height="' .. entry.height .. '" alt="' .. lib.esc(alt) .. '" loading="lazy">'
+  if animated then
+    picture = '<picture><source srcset="' .. lib.join(lib.root, entry.still) .. '" media="(prefers-reduced-motion: reduce)">' .. picture .. '</picture>'
+  end
   return pandoc.RawBlock('html', table.concat {
-    '<figure class="zoom', side, '"',
+    '<figure class="', animated and 'animated' or 'zoom', side, '"',
     img.attributes.width and (' style="--figure-width: ' .. lib.esc(img.attributes.width) .. '"') or '',
-    ' data-tiles="', lib.join(lib.root, entry.tiles), '">\n',
-    '<img src="', lib.join(lib.root, entry.url), '" width="', entry.width, '" height="', entry.height, '" alt="', lib.esc(alt), '" loading="lazy">\n',
+    animated and '' or (' data-tiles="' .. lib.join(lib.root, entry.tiles) .. '"'), '>\n',
+    picture, '\n',
     caption ~= '' and ('<figcaption>' .. lib.esc(caption) .. '</figcaption>\n') or '',
     '</figure>' })
 end
@@ -40,7 +47,7 @@ function Pandoc(doc)
     traverse = 'topdown',
     Para = function(para)
       local img = only_image(para)
-      if img and img.classes:includes('zoom') then return figure(img), false end
+      if img and (img.classes:includes('zoom') or img.classes:includes('animated')) then return figure(img), false end
     end,
   }
   doc.blocks = doc.blocks:walk {

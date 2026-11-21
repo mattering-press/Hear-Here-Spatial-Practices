@@ -10,10 +10,11 @@ URLs that stay inside the site are relative to the edition's root, the folder th
 Text values are plain text, not HTML, except the `html` of a reference.
 
 Changes: 0.2 adds `references` to page.json. 0.3 adds paragraph numbers (the rule below, and `paragraphs` in
-page.json), the version stamp (`version` and `kit` in page.json, publication.json and the Markdown view's front
+page.json), the version stamp (`version` and the toolkit's version in page.json, publication.json and the Markdown view's front
 matter), `versions` in publication.json, and frozen versions, each an edition of its own. 0.4 numbers a whole list as
 one paragraph, and numbers each frozen version by the rule of the contract it was frozen under (`contract` in
-`versions.json`, `paragraphRule` in page.json and publication.json).
+`versions.json`, `paragraphRule` in page.json and publication.json); the toolkit's version is
+`every_trick_in_the_book` in page.json, publication.json and the Markdown view's front matter (it was `kit`).
 
 ## Editions
 
@@ -110,8 +111,10 @@ Poetry is cited by line, not by paragraph ("ll. 12–14"), so poems have their o
 
 ## Margin notes and their numbers
 
-A margin note is written directly after its paragraph as `::: {.margin}` … `:::`. Text notes are built; media in
-the margin are not built yet. In the HTML a text note is `<aside id="n1" class="margin" aria-label="Note 1">`, and
+A margin note is written directly after its paragraph as `::: {.margin}` … `:::`. It may hold text, or media:
+pictures, animated GIFs, galleries, video and audio players, written as anywhere else on the page. A note that holds
+only media is `<aside id="m1" class="margin margin-media">` (`m1`, `m2` … in page order), with no number and no mark
+in the text; figure numbers for them are not built yet. In the HTML a text note is `<aside id="n1" class="margin" aria-label="Note 1">`, and
 its mark in the text, at the end of the paragraph before it, is `<a class="margin-mark" id="n1-mark" href="#n1">1</a>`.
 
 - Paragraph numbers ignore the margin entirely: adding, moving or removing a margin item never changes them.
@@ -135,7 +138,7 @@ its mark in the text, at the end of the paragraph before it, is `<a class="margi
 | `url` | where this edition is published: the `siteUrl` setting in `build.mjs`, followed by `v<id>/` for a frozen version; the Markdown view `publication.md` uses it for its absolute URLs |
 | `markdown` | `"publication.md"` |
 | `version` | this edition: `{ id, label, date, status }`. `status` is `latest` for the working text (`id` `"latest"`, `label` `"Latest text, unreleased"`, `date` the day of its last commit), or `review` or `release` for a frozen version, with the `id`, `label` and `date` (`YYYY-MM-DD`) of its entry in `versions.json` |
-| `kit` | the version of every_trick_in_the_book, the toolkit that built the site (`version` in `every_trick/package.json`; `every_trick/CHANGELOG.md` lists what changed in each), e.g. `"1.0.0"`. It is numbered separately from the book's version, `version` |
+| `every_trick_in_the_book` | the version of every_trick_in_the_book, the toolkit that built the site (`version` in `every_trick/package.json`; `every_trick/CHANGELOG.md` lists what changed in each), e.g. `"1.0.0"`. It is numbered separately from the book's version, `version` |
 | `versions` | every edition, the latest text first, then the frozen versions, newest first: `{ id, label, date, status, url }`, `url` relative to this edition's root (`"./"` for itself) |
 | `readingOrder` | every page once, as `{ id, url, title }`: the home page; then each page in the home page's menu, followed by the pages its cards lead to (depth first); then any other page, alphabetically |
 
@@ -147,7 +150,7 @@ its mark in the text, at the end of the paragraph before it, is `<a class="margi
 | `id` | the page's Markdown file, e.g. `"essays/walk.md"`; `"README.md"` for the home page |
 | `url` | e.g. `"essays/walk/"`; `"./"` for the home page |
 | `title`, `subtitle` | from the page's header; `subtitle` is `null` when there is none |
-| `version`, `kit` | as in publication.json |
+| `version`, `every_trick_in_the_book` | as in publication.json |
 | `markdown` | the page's Markdown view, e.g. `"essays/walk/index.md"` |
 | `headings` | `{ level, text, id }` in page order; `level` is the HTML level (2 to 6), `id` the fragment for `url#id` |
 | `paragraphs` | the numbered paragraphs (see "Paragraph numbers"), `{ id, n, text_hash }` in page order: `id` is the fragment (`"p12"`), `n` the number (12), `text_hash` the hash of its normalised text, the same in every version where the paragraph's text is the same |
@@ -169,11 +172,15 @@ does.
 Every `index.html` has an `index.md` beside it, and the root of each edition has `publication.md` with all
 pages in reading order. They are written by the build from the book's source, in Pandoc Markdown with a YAML
 front matter (`title`, `subtitle`, `lang`, and the version stamp: `version` with `id`, `label`, `date` and `status`,
-and `kit`), and contain no Juncture syntax. `index.md` uses URLs relative to
+and `every_trick_in_the_book`, the toolkit's version), and contain
+no Juncture syntax. `index.md` uses URLs relative to
 itself; `publication.md` uses absolute URLs and starts each page with its title as a level-1 heading.
 Media are written as:
 
 - zoomable images: `![caption](images/x-1600.jpg){.zoom .right width="75%" alt="…"}` (`.left` or `.right` optional)
+- animated images (from an animated GIF): `![caption](images/x.webp){.animated alt="…"}`, an animated WebP that does not
+  zoom; in the HTML its first frame, `images/x-still.jpg`, is shown to readers who ask for less motion. In `page.json`
+  its `tiles` is `null`
 - `::: {.video}` and `::: {.embed}`: a div that starts with an ordinary link to the video or embedded page (a
   video file, a PDF); any text after the link is the caption
 - `::: {.audio}`: a div with a link to the MP3

@@ -15,9 +15,9 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { REPO_ROOT } from './convert.mjs';
 
-const KIT = dirname(fileURLToPath(import.meta.url));
+const TOOLKIT_DIR = dirname(fileURLToPath(import.meta.url));
 export const BIBLIOGRAPHY = join(REPO_ROOT, 'references', 'bibliography.json');
-export const CSL = join(KIT, 'csl', 'mattering-press.csl');
+export const CSL = join(TOOLKIT_DIR, 'csl', 'mattering-press.csl');
 
 const norm = (s) => s.replace(/\s+/g, ' ').trim();
 export const fold = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[‘’]/g, "'").replace(/[“”]/g, '"');

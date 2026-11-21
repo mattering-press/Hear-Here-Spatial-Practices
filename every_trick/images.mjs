@@ -1,8 +1,10 @@
 // Resized copies of the book's photographs, and static IIIF tiles for the zoomable ones (uses sharp).
 //   figure, inline  ->  images/<name>-1600.jpg, 1600 px on the long edge
 //   figure          ->  also iiif/<name>/: info.json and 512 px tiles (IIIF Image API 2, level 0)
-//   header          ->  images/<name>-2000.jpg, 2000 px wide
+//   header          ->  images/<name>-2000.jpg, 2000 px wide: the band behind a page's title
 //   card, poster    ->  images/<name>-800.jpg, 800 px wide
+// An animated GIF becomes images/<name>.webp, animated and about a sixth of the GIF's size, with its first frame as
+// images/<name>-still.jpg for readers who ask for less motion; it gets no tiles, since a zoom viewer cannot animate.
 // A photo's EXIF orientation is applied, as browsers do. Juncture's rotation=90 instead turns the stored
 // pixels clockwise, as Juncture's image service does (that service ignores the EXIF orientation).
 import { mkdirSync, writeFileSync } from 'node:fs';
@@ -70,6 +72,13 @@ async function writeTiles(full, dir) {
 async function makeGroup({ src, rotation, roles, root }, site) {
   const file = join(root, src), name = imageName(src, rotation);
   const entries = {}, done = {};
+  if (/\.gif$/i.test(src) && ((await sharp(file).metadata()).pages || 1) > 1) {
+    const still = `images/${name}-still.jpg`, url = `images/${name}.webp`;
+    const info = await sharp(file, { page: 0 }).jpeg(JPEG).toFile(join(site, still));
+    await sharp(file, { animated: true }).webp({ quality: 65 }).toFile(join(site, url));
+    for (const role of roles) entries[`${role}|${src}|${rotation}`] = { url, still, width: info.width, height: info.height, animated: true };
+    return { entries, tiles: 0 };
+  }
   const full = roles.has('figure') ? await open(file, rotation).raw().toBuffer({ resolveWithObject: true }) : null;
   let tiles = 0;
   for (const role of roles) {
