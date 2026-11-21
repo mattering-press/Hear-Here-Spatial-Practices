@@ -8,6 +8,7 @@ $if(noindex)$
 $endif$
   <title>$pagetitle$$if(site-title)$ · $site-title$$endif$</title>
   <link rel="stylesheet" href="$shared$assets/site.css?v=$asset-version$">
+  <script>/* the reader's text size and colours (assets/settings.js), applied before the page is drawn */try{var s=localStorage,d=document.documentElement;d.dataset.textSize=s.getItem('every-trick-text-size')||'';d.dataset.theme=s.getItem('every-trick-theme')||''}catch(e){}</script>
 $if(on-page)$
   <link rel="alternate" type="text/markdown" href="index.md">
   <link rel="alternate" type="application/json" href="page.json">
@@ -16,6 +17,7 @@ $endif$
   <script src="$shared$assets/seek.js?v=$asset-version$" defer></script>
   <script src="$shared$assets/paragraphs.js?v=$asset-version$" defer></script>
   <script src="$shared$assets/margins.js?v=$asset-version$" defer></script>
+  <script src="$shared$assets/settings.js?v=$asset-version$" defer></script>
 $if(has-citations)$
   <script src="$shared$assets/citations.js?v=$asset-version$" defer></script>
 $endif$
@@ -52,6 +54,26 @@ $if(views)$
         </ul>
       </nav>
 $endif$
+      <button class="settings-button" type="button" popovertarget="settings" aria-label="Text size and colours" hidden><span aria-hidden="true">Aa</span></button>
+      <div class="settings" id="settings" popover role="dialog" aria-label="Text size and colours">
+        <fieldset>
+          <legend>Text size</legend>
+          <div class="settings__choices settings__sizes">
+            <button type="button" data-text-size="small" aria-label="Smaller">A</button>
+            <button type="button" data-text-size="" aria-label="Normal">A</button>
+            <button type="button" data-text-size="large" aria-label="Larger">A</button>
+            <button type="button" data-text-size="largest" aria-label="Largest">A</button>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Colours</legend>
+          <div class="settings__choices">
+            <button type="button" data-theme="">System</button>
+            <button type="button" data-theme="light">Light</button>
+            <button type="button" data-theme="dark">Dark</button>
+          </div>
+        </fieldset>
+      </div>
     </div>
     <div class="page-opener$if(page-band)$ has-band$endif$">
 $if(page-band)$

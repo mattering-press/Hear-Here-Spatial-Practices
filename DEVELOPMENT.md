@@ -143,6 +143,11 @@ The frame of every page:
   band of the same height on every page. A page reached through a card names its section above its title (Podcasts,
   Events), and that section is marked in the menu. To give a page its own header picture, change the picture in its
   `.ve-header` line.
+- **Settings.** The "Aa" button beside the switch opens the reader's settings (`every_trick/assets/settings.js`):
+  text size in four steps (90, 100, 115 and 130 per cent; the whole page scales, the text column with it) and colours:
+  System (the preset, which follows the reader's device), Light or Dark. The browser keeps the choice
+  (`localStorage`), and a line in the template's `<head>` applies it before the page is drawn. The dark colours are
+  set in `every_trick/assets/site.css`, below the light ones; the publisher's logo turns white in dark mode.
 - **Footer.** The publisher's logo (the long one; the icon alone on phones), a credit line with the licence, the
   book's version line and the toolkit's line. They are set in `FRAME` at the top of `every_trick/build.mjs`, with the
   logos in `media/publisher/`; the `.ve-footer` lines in the pages are ignored.
