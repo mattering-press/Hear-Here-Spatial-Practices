@@ -342,7 +342,9 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     mkdirSync(join(out, 'publication'), { recursive: true });
     writeFileSync(join(out, 'publication', 'index.html'), pandoc(['-f', 'markdown', '-t', 'html5', '--wrap=none', '-s', '--template', join(TOOLKIT_DIR, 'template.html'), '--metadata-file', yaml,
       ...metaArgs({ page: 'publication.md', repo: REPO, manifest, lang: PUBLICATION.language, title: 'The whole book in Markdown', ...toolkitMeta, ...frameMeta(edition, s),
-        root: '../', shared: s, 'asset-version': ASSET_VERSION, 'site-title': home.title, noindex: 'true' }), ...filterArgs(['links'])],
+        root: '../', shared: s, 'asset-version': ASSET_VERSION, 'site-title': home.title, noindex: 'true',
+        // the Page / Markdown switch: "Page" leads to the home page, and the template's script points it at the page the reader came from
+        views: 'true', 'on-markdown': 'true', 'whole-book': 'true', 'view-page': '../', 'view-markdown': './' }), ...filterArgs(['links'])],
       wrapMarkdown(publication, 'Every page of the book in reading order, in the Markdown it is built from. <a href="../publication.md" download>Download publication.md</a>'),
       `${edition.name}: publication/`));
   }

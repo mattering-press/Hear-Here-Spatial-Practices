@@ -11,6 +11,13 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of every_trick’ in `DEVELOPMENT.md`.
 
+## 1.3.0
+
+21 November 2026. A way back from the whole book in Markdown.
+
+- The whole book in Markdown (`publication/`) has the Page / Markdown switch too. "Page" leads back to the page you
+  came from, or to the home page if you arrived from somewhere else.
+
 ## 1.2.0
 
 21 November 2026. A first clean-up of how the site looks.
