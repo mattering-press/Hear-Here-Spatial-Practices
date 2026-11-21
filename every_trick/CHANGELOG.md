@@ -11,6 +11,20 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of every_trick’ in `DEVELOPMENT.md`.
 
+## 1.4.0
+
+21 November 2026. A podcast player that stays with you.
+
+- Podcast pages have their own player: play, the time and the length of the recording (shown before anything has
+  loaded), a position bar, back and forward 15 seconds, and speed. Without JavaScript the browser's own player is
+  still there.
+- While a recording plays and you read on, the player waits at the foot of the window as a slim bar, with the title
+  and the speaker and paragraph you are hearing. It does not interrupt playback or move the keyboard focus, and its ×
+  stops the recording and puts the player back. On phones the recording can also be paused from the lock screen.
+- "Follow text" scrolls the transcript along with the recording, from one timecode to the next, and marks the passage
+  being heard on the transcript's rule. It is off until you turn it on, and scrolling the page yourself turns it off
+  again.
+
 ## 1.3.0
 
 21 November 2026. A way back from the whole book in Markdown.

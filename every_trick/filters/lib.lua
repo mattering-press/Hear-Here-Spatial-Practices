@@ -110,6 +110,14 @@ function M.image_at(url)
   return entry
 end
 
+-- What build.mjs found out about an audio file in this repository, by its URL on GitHub: { duration } in seconds,
+-- or nil for audio from elsewhere.
+function M.audio(url)
+  local path = M.github_path(url)
+  local entry = path and load_manifest().audio
+  return entry and entry[path] or nil
+end
+
 -- URL for a repository file that is not an image: the copy in the site if the build copied it (shared by all
 -- versions, so it may start with ../),
 -- otherwise the file on GitHub, as Juncture does. (convert.mjs warns about links to missing files.)

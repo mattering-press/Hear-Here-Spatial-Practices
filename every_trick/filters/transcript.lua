@@ -2,7 +2,7 @@
 --  * the section under a "Transcript" heading is wrapped in <div class="transcript">
 --  * a paragraph that is only a timecode, such as [00:10:13], links to the page's first audio player:
 --    <a class="timecode" href="#audio-1" data-seconds="613">[00:10:13]</a>
---    Without JavaScript the link goes to the player; assets/seek.js makes it play from that moment.
+--    Without JavaScript the link goes to the player; assets/player.js makes it play from that moment.
 package.path = pandoc.path.directory(PANDOC_SCRIPT_FILE) .. '/?.lua;' .. package.path
 local lib = require 'lib'
 
