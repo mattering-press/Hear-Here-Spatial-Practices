@@ -331,7 +331,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
   const front = ['---', `title: ${JSON.stringify(home.title)}`, `subtitle: ${JSON.stringify(home.subtitle ?? '')}`, 'author:', ...PUBLICATION.creators.map((c) => `  - ${JSON.stringify(c)}`),
     `publisher: ${JSON.stringify(PUBLICATION.publisher)}`, `lang: ${PUBLICATION.language}`,
     'version:', `  id: ${JSON.stringify(v.id)}`, `  label: ${JSON.stringify(v.label)}`, `  date: ${JSON.stringify(v.date)}`, `  status: ${JSON.stringify(v.status)}`,
-    `kit: ${JSON.stringify(KIT_VERSION)}`, '---'].join('\n');
+    `every_trick_in_the_book: ${JSON.stringify(KIT_VERSION)}`, '---'].join('\n');
   const publication = `${front}\n\n${edition.order.map((file) => edition.byFile.get(file).markdownBody).join('\n\n')}\n`;
   writeFileSync(join(out, 'publication.md'), publication);
   // publication/: the same Markdown in the frame of the site, at a reading width, like a page's Markdown view.

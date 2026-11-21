@@ -13,7 +13,8 @@ Changes: 0.2 adds `references` to page.json. 0.3 adds paragraph numbers (the rul
 page.json), the version stamp (`version` and `kit` in page.json, publication.json and the Markdown view's front
 matter), `versions` in publication.json, and frozen versions, each an edition of its own. 0.4 numbers a whole list as
 one paragraph, and numbers each frozen version by the rule of the contract it was frozen under (`contract` in
-`versions.json`, `paragraphRule` in page.json and publication.json).
+`versions.json`, `paragraphRule` in page.json and publication.json); in the Markdown view's front matter the toolkit's
+version is `every_trick_in_the_book` (it was `kit`).
 
 ## Editions
 
@@ -171,7 +172,8 @@ does.
 Every `index.html` has an `index.md` beside it, and the root of each edition has `publication.md` with all
 pages in reading order. They are written by the build from the book's source, in Pandoc Markdown with a YAML
 front matter (`title`, `subtitle`, `lang`, and the version stamp: `version` with `id`, `label`, `date` and `status`,
-and `kit`), and contain no Juncture syntax. `index.md` uses URLs relative to
+and `every_trick_in_the_book`, the toolkit's version, which page.json and publication.json call `kit`), and contain
+no Juncture syntax. `index.md` uses URLs relative to
 itself; `publication.md` uses absolute URLs and starts each page with its title as a level-1 heading.
 Media are written as:
 
