@@ -413,6 +413,42 @@ Agreed with the publisher on 2026-11-19. Text notes and media in the margin are 
 - **Print and EPUB:** decided per note: an endnote, a small figure with address and QR code, or web-only.
 - **Numbering:** text notes are numbered per chapter (`n1`, `n2`), matching the endnote numbers they get in print; media in the margin are figures with `Fig. 2.3` numbers and their own item addresses; plain links are not numbered; paragraph numbers ignore the margin. Details in `every_trick/CONTRACT.md`.
 
+## Plan, not yet confirmed: several routes through a book
+
+Discussed with the publisher on 2026-11-21. **Not confirmed and not built.** It waits until the materials that go into the new chapters are known; review it then, settle the open questions below, and only then mark it agreed.
+
+The idea: a book can have more than one table of contents. Each is a route of its own, with its own chapters holding different material, not just the same pages in another order. For this book: route A by kind of material (Podcasts, Events, Experimental index, Conversations, Songs) and route B by object (Acorns, Rocks, and others to come).
+
+- **Three kinds of page.** *Material* (a podcast episode, an event, a conversation, a song, the zine index) has its own address, paragraph numbers, reference list and later DOI, and belongs to no route; it can appear in several. *A chapter* (Podcasts, Acorns) is a page with its own text that gathers material, with cards and, if wanted, extracts and media from material pages. *A route* is a list of chapters in order. `essays/podcasts.md` is already a chapter in this sense; route B adds new chapter pages.
+- **All routes are equal.** One is marked as the route a reader starts on; none is "the" contents with the others as extras.
+- **Declared on the home page.** Each route is a heading with the class `route` followed by the list of its chapters, the starting one with `start=true`:
+
+  ```markdown
+  # Materials {.route start=true}
+
+  - [Podcasts](./essays/podcasts.md)
+  - [Events](./essays/events.md)
+
+  # Objects {.route}
+
+  - [Acorns](./essays/acorns.md)
+  - [Rocks](./essays/rocks.md)
+  ```
+
+- **Books with one table of contents.** A home page without `.route` headings works exactly as now (the menu is the route). A second route is opt-in.
+- **Order and sections per route.** The build works out a reading order, previous and next, and the section label of each page once per route, with today's rule (the chapters in turn, each followed by the pages its cards lead to). A page can be in Podcasts on one route and in Rocks on the other.
+- **What readers see.** The home page shows the book's title, cover and introduction, then every route's contents, the starting route first. The header has a route switch beside the menu ("Materials | Objects"), plain links like the Page / Markdown switch, and the menu shows the chapters of the current route. A chapter page belongs to one route and always shows it. A material page on several routes shows the route the reader came from (with JavaScript; without it, the starting route) and names its places ("In Podcasts · in Rocks"). Switching route on a material page stays on the page if the other route has it, otherwise goes to that route's contents.
+- **Paragraph numbers.** Every page numbers its own text, chapter pages included. Extracts keep their source's numbers ("Nassar, para. 12–18") and link back to it; they do not count in the chapter's series. That is a new rule for extracts only, in a new contract version; the numbering of existing pages does not change.
+- **References.** Stay at the end of each page. An extract brings the references cited in its paragraphs. A citation whose work its page does not list links to the first page that lists it in the starting route's order (until the Pandoc citations make every page list what it cites).
+- **Build and contract.** `publication.json` gets `routes`, each with its own reading order; `readingOrder` stays and means the starting route. Each route gets its own `publication.md`. An extract block (`::: {.extract from="essays/aya_nassar.md#p12-p18"}`) is filled in from the source page. The contract and the toolkit's version go up.
+
+Open questions:
+
+1. The word readers see for a route: "route", "contents", "way through" or another.
+2. Whether chapter pages show extracts and media from material pages, or only cards. Cards alone are the smaller job.
+3. Which pages get DOIs: only the contributions, or also chapter pages with authored text.
+4. File names: `essays/acorn.md` is the Acorn event, so the Acorns chapter needs another name, or the event page is renamed with a redirect.
+
 ## House style for the web edition
 
 A summary of the Mattering Press house style (Formatting & Style Guide, August 2025) as it applies to the build. The guide itself is not kept in this public repository; ask the publisher for it.
