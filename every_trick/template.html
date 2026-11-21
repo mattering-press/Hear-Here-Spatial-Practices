@@ -53,6 +53,9 @@ $if(views)$
 -->
         </ul>
       </nav>
+$if(whole-book)$
+      <script>/* the whole book in Markdown: "Page" leads back to the page the reader came from (without JavaScript, to the home page) */try{var from=new URL(document.referrer),home=new URL('../',location.href),page=from.pathname.replace(/markdown\/(index\.html)?$$/,'');if(from.origin===location.origin&&page.indexOf(home.pathname)===0&&page!==location.pathname)document.querySelector('.view-switcher a').href=page}catch(e){}</script>
+$endif$
 $endif$
       <button class="settings-button" type="button" popovertarget="settings" aria-label="Text size and colours" hidden><span aria-hidden="true">Aa</span></button>
       <div class="settings" id="settings" popover role="dialog" aria-label="Text size and colours">

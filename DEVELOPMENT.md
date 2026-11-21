@@ -134,7 +134,8 @@ book in reading order with absolute URLs (from `siteUrl` in `build.mjs`). The HT
 Markdown, so the two cannot drift apart. Every page has a "Page / Markdown" switch of plain links in its header.
 "Markdown" leads to `markdown/` beside the page: the same header and footer, with `index.md` shown at a reading
 width and a link to download it. `publication/` at the root of each edition does the same for `publication.md`, the
-whole book. The format of the Markdown media blocks is in `every_trick/CONTRACT.md`.
+whole book; its switch stays on "Markdown", and "Page" leads back to the page the reader came from (a line of
+script in the template reads it from the referrer), or to the home page. The format of the Markdown media blocks is in `every_trick/CONTRACT.md`.
 
 The frame of every page:
 
