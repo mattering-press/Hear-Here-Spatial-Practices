@@ -10,6 +10,7 @@
 // with their data as attributes. filters/to-markdown.lua turns these into the clean Markdown of the page's
 // Markdown view, and the other filters turn that Markdown into HTML:
 //   .ve-media gh:…/x.jpg right caption="…"   ->  ::: {.twin-figure src="media/x.jpg" side="right" caption="…"}
+//                                                  (left, right, wide or full)
 //   .ve-media grid + "- gh:… caption=…" list  ->  :::: {.twin-gallery} with one .twin-figure per item
 //   .ve-media https://www.youtube.com/…       ->  ::: {.twin-video src="…"}
 //   .ve-iframe https://…, raw <iframe>         ->  ::: {.twin-embed src="…"}
@@ -58,6 +59,9 @@ const htmlAttr = (tag, name) => new RegExp(`\\s${name}="([^"]*)"`).exec(tag)?.[1
 const hasWord = (tag, name) => new RegExp(`\\s${name}(?=[\\s>=])`).test(tag);
 
 const MEDIA_OPTIONS = ['caption', 'alt', 'width', 'rotation'];
+// Where a picture sits: half the text column on the left or right, the text column (none), as wide as the page's
+// opening (wide) or the whole window (full).
+const PLACES = ['left', 'right', 'wide', 'full'];
 const IMAGE_RE = /!\[([^\]]*)\]\(((?:[^()\s]|\([^()\s]*\))+)(?:\s+"[^"]*")?\)/g;
 
 const inWorkingTree = (path) => existsSync(join(REPO_ROOT, path));
@@ -84,7 +88,7 @@ export function convert(source, file, { exists = inWorkingTree } = {}) {
   // One image of a .ve-media tag or gallery item -> a .twin-figure div.
   const figure = (line, src, args, inGallery) => {
     const opts = Object.fromEntries(args.filter((a) => a.key).map((a) => [a.key, a.value]));
-    const side = args.find((a) => !a.key && (a.value === 'left' || a.value === 'right'))?.value;
+    const side = args.find((a) => !a.key && PLACES.includes(a.value))?.value;
     for (const a of args) {
       if (a.key ? !MEDIA_OPTIONS.includes(a.key) : !(a.value === side || ghPath(a.value))) fail(line, lines[line - 1], `.ve-media option "${a.key ? a.key + '=' : a.value}" is not supported`);
     }

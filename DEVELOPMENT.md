@@ -165,8 +165,8 @@ What is in `every_trick/`:
 - `scripts/to-citation-keys.mjs`: for the switch, shows how the plain-text citations would become Pandoc citations
 - `scripts/align.mjs`: times a podcast transcript's paragraphs against its recordings with whisper.cpp, on the editor's computer, and writes the cue files and a report (see "Plan: podcast player and transcript")
 - `template.html`: the HTML around every page. It links the stylesheet and scripts with `?v=` and a hash of their contents, so that browsers fetch them again after every change instead of keeping an old copy
-- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `zoom.js`, `player.js` (the podcast player and its docked bar; see "Plan: podcast player and transcript"), `citations.js`, `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens)
-- `images.mjs`: resized images and the tiles for zooming; an animated GIF becomes an animated WebP and a still
+- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `zoom.js` (the pictures' Zoom buttons, the zoom viewer and the pause button of animations; see "Plan: image display and the zoom viewer"), `player.js` (the podcast player and its docked bar; see "Plan: podcast player and transcript"), `citations.js`, `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens)
+- `images.mjs`: resized images (each zoomable picture in several widths for `srcset`) and the tiles for zooming; an animated GIF becomes an animated WebP and a still
 - `audio.mjs`: reads the length of an MP3 from the file, for the podcast players
 - `check.mjs`, `serve.mjs`: the link check and the local server
 - `CONTRACT.md`: the `page.json` and `publication.json` files that other frontends can read, and the paragraph rule
@@ -490,19 +490,22 @@ Agreed with the publisher on 2026-11-19. Text notes and media in the margin are 
 ## Plan: image display and the zoom viewer
 
 Agreed with the publisher on 2026-11-22. It settles how pictures sit in the page and how they are viewed; the data
-stays as "Plan: media data decisions" fixes it. Not built yet.
+stays as "Plan: media data decisions" fixes it. Built in every_trick_in_the_book 1.9.0 (22 November 2026), except the
+`.compare` class, which is for later.
 
 - **In the page a picture is a plain image**: an `<img>` with `srcset` in 800, 1200, 1600 and 2400 px (JPEG at about
   quality 82, as "Images online" in the house style says) and a `sizes` value that matches the width it is shown at.
   It works without JavaScript, prints and archives. IIIF tiles and OpenSeadragon are only for the zoom viewer.
 - **Widths.** `.left` and `.right`: half the text column, as before (`width=` still sets another share). No class:
-  the text column. `.wide`: 64rem, the width of the page's opening and its footer. `.full`: the whole window, used
+  the text column. `.wide`: 64rem, the width of the page's opening and its footer (less their side margins, so the
+  picture lines up with the title in the bar and the logo in the footer). `.full`: the whole window, used
   sparingly. Captions of wide and full pictures keep the text column's width. A margin note beside a wide or full
   picture moves below it. On phones every picture is as wide as the text column. In the legacy `.ve-media` lines,
   `wide` and `full` are written like `left` and `right`.
-- **Nothing covers the picture.** "⤢ Zoom" sits at the right end of the caption line. Clicking the picture also opens
-  the viewer (with a zoom cursor); the button is the figure's only keyboard stop. Without JavaScript the picture links
-  to its largest image, and to its item page once item pages exist.
+- **Nothing covers the picture.** "⤢ Zoom" sits at the right end of the caption line (in a gallery whose pictures are
+  too narrow for a caption and the button side by side, it has the line below each picture to itself). Clicking the
+  picture also opens the viewer (with a zoom cursor); the button is the figure's only keyboard stop. Without JavaScript
+  the picture links to its largest image, and to its item page once item pages exist.
 - **Tall pictures** are never taller than about 80% of the window. The build writes each picture's proportions into
   the page, so the stylesheet sizes the picture and its caption without JavaScript.
 - **Galleries** are justified rows: every picture keeps its proportions, its share of the row follows its shape, and

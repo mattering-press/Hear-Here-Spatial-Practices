@@ -1,7 +1,8 @@
 // Margin notes (filters/margins.lua; the plan is in DEVELOPMENT.md, "Plan: margin notes").
 //  * Without JavaScript, on phones and for screen readers a note stays in reading order after its paragraph, as a
 //    labelled aside. On wide screens this script sets each note in the right-hand margin, level with its paragraph;
-//    when the margin is crowded, later notes are pushed down, so the text column never gets gaps.
+//    when the margin is crowded, later notes are pushed down, so the text column never gets gaps. A note that would
+//    sit beside a wide or full picture (figure.wide, figure.full), which reaches into the margin, moves below it.
 //  * The mark in the text and the same number on the note highlight together on hover and focus.
 //  * In the margin a note shows in full (the preset). With --margin-note-lines set in site.css, a long note shows
 //    that many lines, then "more".
@@ -54,6 +55,13 @@
     var bottom = -Infinity;
     var mainTop = main.getBoundingClientRect().top;
     var limit = on ? noteLines() : 0;
+    // the wide and full pictures of the text, from top to bottom, in the same coordinates as the notes
+    var pictures = !on ? [] : Array.prototype.filter.call(main.querySelectorAll('figure.wide > .figure-picture, figure.full > .figure-picture'), function (el) {
+      return !el.closest('aside.margin');
+    }).map(function (el) {
+      var box = el.getBoundingClientRect();
+      return { top: box.top - mainTop, bottom: box.bottom - mainTop };
+    });
     notes.forEach(function (note) {
       var more = note.querySelector('.margin-more');
       note.style.top = '';
@@ -67,6 +75,8 @@
       var anchor = note.previousElementSibling;
       var top = anchor ? anchor.getBoundingClientRect().top - mainTop : 0;
       top = Math.max(top, bottom + GAP);
+      var height = note.offsetHeight;
+      pictures.forEach(function (p) { if (top < p.bottom + GAP && top + height > p.top - GAP) top = p.bottom + GAP; });
       note.style.top = top + 'px';
       bottom = top + note.offsetHeight;
     });
