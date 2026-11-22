@@ -22,6 +22,7 @@ reader sees. How to add a version: ‘Versions of the book and of every_trick’
   follows the recording paragraph by paragraph.
 - `scripts/align.mjs` now starts its report with what needs a person to listen: untimed paragraphs, starts it is
   unsure of, cues too fast or too slow for speech, talk left out of the text, and written timecodes that disagree.
+- The build's check of paragraph numbers also counts paragraphs that carry cue times; before, it skipped them.
 
 ## 1.5.0
 
