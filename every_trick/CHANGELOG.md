@@ -23,6 +23,8 @@ reader sees. How to add a version: ‘Versions of the book and of every_trick’
 - `scripts/align.mjs` now starts its report with what needs a person to listen: untimed paragraphs, starts it is
   unsure of, cues too fast or too slow for speech, talk left out of the text, and written timecodes that disagree.
 - The build's check of paragraph numbers also counts paragraphs that carry cue times; before, it skipped them.
+- A paragraph's cue now starts after the pause between it and the paragraph before, not on the edited last words of
+  the paragraph before, which is where several cues started on Monica Brown's and Catherine Hahn's pages.
 
 ## 1.5.0
 

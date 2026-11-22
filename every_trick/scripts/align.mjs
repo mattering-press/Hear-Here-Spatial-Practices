@@ -179,6 +179,8 @@ paras.forEach((p, i) => {
   if (first === undefined || p.match < 0.3) { p.untimed = true; return; }
   p.rec = A[heardAs[first].a].rec;
   p.startA = heardAs[first].a;
+  const firstSame = idx.slice(0, 8).find((k) => heardAs[k]?.op === 'same');
+  p.firstSameA = firstSame === undefined ? p.startA : heardAs[firstSame].a;
   p.start = A[p.startA].start;
   const lastSame = same.at(-1) ?? last;   // the boundary with the next paragraph: its last word heard as written
   p.lastA = heardAs[lastSame].a;
@@ -186,17 +188,27 @@ paras.forEach((p, i) => {
 });
 players.forEach((pl, rec) => {
   const timed = paras.filter((p) => !p.untimed && p.rec === rec);
-  // Words heard between two paragraphs that the text does not have (a lead-in edited out, a sentence moved) belong to
-  // the paragraph after them, so a paragraph starts with the first word heard after the one before it ends: on Aya
-  // Nassar's para. 16 the recording opens with "So, Aya, having read your work…", which the text moved further in.
+  // Between the last word of one paragraph heard as written and the first of the next lie words the text has
+  // changed or does not have: the end of one speaker's sentence, edited, or the next one's lead-in, edited out. The
+  // paragraph starts after the longest pause among them (a later pause wins unless an earlier one is clearly longer).
+  // On Aya Nassar's para. 16 that is "So, Aya, having read your work…", which the text moves further in; on her
+  // para. 68 it is "There's nothing here", after the edited end of para. 67.
   timed.forEach((p, i) => {
     const before = timed[i - 1];
-    if (!before || before.lastA + 1 >= p.startA) return;
-    const lead = A[before.lastA + 1];
-    if (lead.rec === rec && p.start - lead.start < 30) {
-      p.lead = { seconds: p.start - lead.start, words: A.slice(before.lastA + 1, p.startA).map((w) => w.word) };
-      p.start = lead.start;
+    const lo = before ? before.lastA + 1 : p.startA, hi = Math.max(p.firstSameA, p.startA);
+    if (!before || hi <= lo || A[hi].rec !== rec || A[hi].start - A[lo].start > 30) return;
+    let best = hi, bestGap = A[hi].start - A[hi - 1].end;
+    for (let k = hi - 1; k >= lo; k--) {
+      const gap = A[k].start - A[k - 1].end;
+      if (gap > bestGap + 0.15) { best = k; bestGap = gap; }
     }
+    const firstWritten = A[p.startA].start;
+    // talk between the two paragraphs that the text changed or left out, kept with the paragraph before: it may be
+    // this paragraph's opening, condensed
+    if (best > lo && A[best].start - A[lo].start > 5.5) p.late = { seconds: A[best].start - A[lo].start, words: A.slice(lo, best).map((w) => w.word) };
+    p.startA = best;
+    p.start = A[best].start;
+    if (firstWritten - p.start > 0.5) p.lead = { seconds: firstWritten - p.start, words: A.slice(best, hi).map((w) => w.word) };
   });
   timed.forEach((p, i) => { p.end = i + 1 < timed.length ? timed[i + 1].start : p.lastWord; });
   pl.paras = timed;
@@ -214,6 +226,7 @@ const flag = (p, why, at) => attention.push({ n: p ? p.n : null, rec: p && !p.un
 for (const p of paras) {
   if (p.untimed) { flag(p, 'untimed: too few of its words were heard. Time it by hand, or leave it untimed.'); continue; }
   if (p.lead && p.lead.seconds > 5) flag(p, `starts ${p.lead.seconds.toFixed(0)} s before its first written words, with words the text does not have there (${quote(p.lead.words)}): check the start.`);
+  if (p.late) flag(p, `the ${p.late.seconds.toFixed(0)} s of talk before this cue (${quote(p.late.words)}) are not in the text as heard; they are counted as the end of the paragraph before, but may be this one's opening, condensed: check the start.`);
   if (p.match < 0.6) flag(p, `only ${Math.round(p.match * 100)}% of its words were heard as written: the start may be off.`);
   const words = p.words.length, seconds = p.end - p.start;
   if (words >= 12 && words / seconds > 4.5) flag(p, `${words} words in ${seconds.toFixed(0)} s, too fast for speech: the cue is probably too short.`);
@@ -222,7 +235,7 @@ for (const p of paras) {
 players.forEach((pl, rec) => {
   pl.paras.forEach((p, i) => {
     // heard words inside the cue that the text does not have: the paragraph stays marked while they play
-    const to = i + 1 < pl.paras.length ? pl.paras[i + 1].startA - (pl.paras[i + 1].lead ? pl.paras[i + 1].lead.words.length : 0) : A.findLastIndex((w) => w.rec === rec) + 1;
+    const to = i + 1 < pl.paras.length ? pl.paras[i + 1].startA : A.findLastIndex((w) => w.rec === rec) + 1;
     // the longest unbroken stretch of words heard here that the text does not have (filler words do not break it)
     let run = [], longest = [];
     for (let k = p.startA; k < to; k++) {

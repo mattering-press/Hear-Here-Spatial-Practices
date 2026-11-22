@@ -439,9 +439,11 @@ to listen.
 - **Making the cues** (`every_trick/scripts/align.mjs`, run once on the editor's computer, not in the build):
   whisper.cpp transcribes the recording offline with a time for every word, and those words are matched against the
   edited transcript. Speaker labels, bracketed directions, timecodes and unnumbered lines are not matched. Words heard
-  between two paragraphs that the text does not have belong to the paragraph after them. The script writes the cue
+  between two paragraphs that the text changed or does not have (one speaker's edited ending, the next one's
+  lead-in) are split at the longest pause among them, and the paragraph starts after it. The script writes the cue
   file (never over one that exists, which is the editor's) and a report: first what needs attention (untimed
-  paragraphs, a start moved more than 5 seconds by words the text does not have, paragraphs heard less than 60% as
+  paragraphs, a start moved more than 5 seconds by words the text does not have, more than 5.5 seconds of such talk
+  kept with the paragraph before, paragraphs heard less than 60% as
   written, cues too fast or too slow for speech, 10 seconds or more of talk inside a cue that the text leaves out,
   talk before the first or after the last paragraph, written timecodes more than 3 seconds off), then when each
   paragraph starts, the written timecodes checked, and the places where text and recording differ, grouped as words
