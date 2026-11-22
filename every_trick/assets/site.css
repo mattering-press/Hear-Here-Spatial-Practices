@@ -288,7 +288,7 @@ audio { display: block; width: 100%; margin: var(--gap) 0; }
 .player__where { flex: none; }
 .player__where:not(:empty)::before { content: "· "; }
 .player__dock.is-docked .player__close { display: inline-flex; }
-@container (max-width: 34rem) {
+@container (max-width: 31rem) {
   .player__controls { flex-wrap: nowrap; gap: 0.25rem; }
   .player__time { min-width: 0; font-size: 0.8125rem; }
   .player__seek { flex: 1 1 auto; min-width: 3rem; }

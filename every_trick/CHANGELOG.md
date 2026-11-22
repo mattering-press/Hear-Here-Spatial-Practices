@@ -11,6 +11,14 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of every_trick’ in `DEVELOPMENT.md`.
 
+## 1.8.0
+
+22 November 2026. A player inside a transcript keeps all its controls.
+
+- The player switches to its one-line form with the ⋯ button only when it is really narrow, as on a phone or in the
+  margin. A player placed inside a transcript, such as the addendum on Aya Nassar's page, now shows all its controls
+  on a wide screen, like the player above it.
+
 ## 1.7.0
 
 22 November 2026. No more timecode lines in timed transcripts.
