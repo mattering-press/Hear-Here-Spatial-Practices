@@ -18,7 +18,7 @@
 
 # Introduction
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/AN_(4-3)_004.jpg right caption="Aya Nasser reading in the archives" alt="Aya Nasser reading in the archives"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/AN_(4-3)_004.jpg right caption="Aya Nassar reading in the archives" alt="Aya Nassar reading in the archives"
 
 Aya approaches the archive as an index of relations, full of absence, presence, promise, relaying all the relations that bring the archive into being. She situates the conversation within an expanded notion of the materiality of archives, cities and index; mentioning Sinan Antun’s novel _Fihris_, which means Index in Arabic and published in English as _Book of Collateral Damage_ (2019). Our podcast conversation begins in the cathedral ruins, before moving to the Chapel of Industry, followed by the archives under the nave, before and finishing with a brief addendum on the wooden naval panel.
 
@@ -52,7 +52,7 @@ Aya Nassar is an interdisciplinary scholar situated between politics, urban and 
 
 # Transcript
 
-**NIRMAL PUWAR:** Welcome to another episode of the podcast _Hear Here_. My guest today is Dr Aya Nasser, who's travelled from Durham University, where she's an Assistant Professor in geography and has published widely on the materiality of cities, global cities, and cities in between. Right now, we're standing in the vast area of the ruins of Coventry Cathedral. As we stand here, we can feel and even sometimes smell the dust on these walls.
+**NIRMAL PUWAR:** Welcome to another episode of the podcast _Hear Here_. My guest today is Dr Aya Nassar, who's travelled from Durham University, where she's an Assistant Professor in geography and has published widely on the materiality of cities, global cities, and cities in between. Right now, we're standing in the vast area of the ruins of Coventry Cathedral. As we stand here, we can feel and even sometimes smell the dust on these walls.
 
 Aya, you've worked and published on dust and the materiality of geographies for so much of your scholarship. How did you come to this perspective in your research?
 

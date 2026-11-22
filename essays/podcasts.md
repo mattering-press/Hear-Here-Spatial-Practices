@@ -39,7 +39,7 @@ Spaces and archives are opened up, connected and enlivened through a variety of 
 
 ## #05: Aya Nassar {href=./aya_nassar.md}
 
-![Aya Nasser & Nirmal Puwar in the archives](/media/podcasts/AN_(4-3)_001.jpg)
+![Aya Nassar & Nirmal Puwar in the archives](/media/podcasts/AN_(4-3)_001.jpg)
 
 ## #06: Catherine Hahn {href=./catherine_hahn.md}
 
