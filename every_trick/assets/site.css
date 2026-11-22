@@ -406,6 +406,9 @@ a.toolkit-name, a .toolkit-name, .toolkit-name a, .built-with a { text-underline
 
 /* the search page (assets/search.js): the box (results follow the typing, so it has no button; Enter also searches),
    then each page found with up to three of its paragraphs */
+/* the close button (×) at the top right of the search page's opening, like the header's buttons */
+.search-close { position: absolute; top: 1rem; right: var(--gap); display: grid; place-items: center; width: 2.25rem; height: 2.25rem; border: 1px solid rgb(255 255 255 / 0.3); border-radius: 999px; color: var(--colour-header-muted); }
+.search-close:hover, .search-close:focus-visible { border-color: var(--colour-header-text); color: var(--colour-header-text); }
 .search__label { display: block; margin-bottom: 0.4rem; color: var(--colour-muted); font-size: 0.9375rem; }
 .search__input { box-sizing: border-box; width: 100%; padding: 0.5rem 1rem; border: 1px solid var(--colour-muted); border-radius: 999px; background: var(--colour-surface); color: var(--colour-text); font: inherit; }
 .search__input:focus-visible { outline: 2px solid var(--colour-accent); outline-offset: 1px; }

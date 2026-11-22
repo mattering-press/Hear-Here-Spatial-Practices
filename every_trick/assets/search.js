@@ -5,6 +5,11 @@
 //    reached again with the back button.
 //  * Pagefind is loaded only on this page, when the reader starts typing or arrives with ?q=.
 //  * On a frozen version the notice's link, "Search the latest text", carries the same words.
+//  * The close button (×, a.search-close) leads back to the page the reader opened search from, at the place they
+//    were reading (where they last stopped below its header, noted by assets/place.js), also after following a result
+//    and coming back. Straight after opening search it goes back in the browser's history, so that the history stays
+//    as it was; otherwise it opens the page by address. Escape does the same when the field is empty.
+//    Without JavaScript, or when search was opened from elsewhere, the × leads to the home page.
 //  * Without JavaScript the page says so and points to the whole book in Markdown (the build writes that text).
 (function () {
   var root = document.querySelector('.search');
@@ -126,6 +131,40 @@
   input.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(function () { search(input.value.trim()); }, 250); });
   input.addEventListener('focus', function () { load(); }, { once: true });
   more.addEventListener('click', function () { showMore(run); });
+
+  // The page search was opened from: this visit's referrer when it is another page of the site, else the one noted
+  // when search was opened earlier in this tab (the reader has come back from a result).
+  var close = document.querySelector('a.search-close');
+  if (close) {
+    var FROM = 'every-trick-search-from', PLACE = 'every-trick-place';
+    var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+    var opened = !nav || nav.type === 'navigate';
+    var from = null, direct = false;
+    try {
+      var ref = document.referrer ? new URL(document.referrer) : null;
+      if (opened && ref && ref.origin === location.origin && !/\/search\/(index\.html)?$/.test(ref.pathname)) {
+        from = ref.pathname + ref.search;
+        direct = history.length > 1;
+        sessionStorage.setItem(FROM, from);
+      } else from = sessionStorage.getItem(FROM);
+    } catch (e) { /* no storage: the × keeps its link to the home page */ }
+    if (from) {
+      close.href = from;
+      close.addEventListener('click', function (event) {
+        if (event.button || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;   // a new tab or window
+        event.preventDefault();
+        try {
+          var places = JSON.parse(sessionStorage.getItem(PLACE) || '{}') || {};
+          places.restore = from;
+          sessionStorage.setItem(PLACE, JSON.stringify(places));
+        } catch (e) { /* the page opens where the browser puts it */ }
+        if (direct) history.back(); else location.href = from;
+      });
+    }
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && !input.value && !event.defaultPrevented && !document.querySelector(':popover-open')) close.click();
+    });
+  }
 
   var asked = new URLSearchParams(location.search).get('q');
   if (asked) { input.value = asked; search(asked.trim()); } else input.focus();

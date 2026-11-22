@@ -166,7 +166,7 @@ What is in `every_trick/`:
 - `scripts/to-citation-keys.mjs`: for the switch, shows how the plain-text citations would become Pandoc citations
 - `scripts/align.mjs`: times a podcast transcript's paragraphs against its recordings with whisper.cpp, on the editor's computer, and writes the cue files and a report (see "Plan: podcast player and transcript")
 - `template.html`: the HTML around every page. It links the stylesheet and scripts with `?v=` and a hash of their contents, so that browsers fetch them again after every change instead of keeping an old copy
-- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `search.js` (the search page; see "Plan: search"), `zoom.js`, `player.js` (the podcast player and its docked bar; see "Plan: podcast player and transcript"), `citations.js`, `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens)
+- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `search.js` (the search page; see "Plan: search"), `place.js` (keeps the reader's place for the search page's ×), `zoom.js`, `player.js` (the podcast player and its docked bar; see "Plan: podcast player and transcript"), `citations.js`, `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens)
 - `images.mjs`: resized images and the tiles for zooming; an animated GIF becomes an animated WebP and a still
 - `audio.mjs`: reads the length of an MP3 from the file, for the podcast players
 - `check.mjs`, `serve.mjs`: the link check and the local server
@@ -488,6 +488,12 @@ dependency of `every_trick/`; MIT licence).
 - **A search page, not a pop-up.** Every page has a magnifier in its header that leads to `search/`. A search has an
   address (`search/?q=dust`) that can be shared and works with the back button, and Pagefind loads only on that page.
   A pop-up over the current page could be added later on top of the page.
+- **Closing search.** A × at the top right of the search page leads back to the page search was opened from, at the
+  place the reader last stopped scrolling below its header (`every_trick/assets/place.js`, on every page, keeps it
+  for the tab in `sessionStorage`), because the browser's Back button is not evident to every reader and the
+  magnifier makes readers scroll to the top. It works after following a result and coming back too; Escape does the
+  same when the field is empty. Without JavaScript the × leads to the home page. Asked for by the publisher on
+  2026-11-22.
 - **Results lead to paragraphs.** Our own small script (`every_trick/assets/search.js`), not Pagefind's ready-made
   box, lists each page found with up to three of its paragraphs: number (para. 12), the words around the ones
   found, marked, and a link to `#p12`. It uses the site's stylesheet, so it follows the reader's text size and

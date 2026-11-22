@@ -19,6 +19,10 @@ reader sees. How to add a version: ‘Versions of the book and of every_trick’
   are found on, best first, and on each page up to three paragraphs with their number (para. 12) and the words
   around the ones found, marked. Each links straight to its paragraph. Results follow the typing, so the search
   field, a pill like the header's buttons, has no Search button.
+- A × at the top right of the search page closes it: it leads back to the page search was opened from, at the
+  place the reader last stopped to read (not the top of the page they scrolled up to for the magnifier), also after
+  following a result and coming back. Escape does the same when the search field is empty. Without JavaScript, or
+  when search was opened from outside the book, the × leads to the home page.
 - The words searched for are kept in the page's address (`search/?q=dust`), so a search can be shared or bookmarked.
 - Each frozen version searches its own text, at its own address (`/v0.1/search/`), so results lead to that
   version's paragraph numbers. Its search page has a link that searches the latest text for the same words.
