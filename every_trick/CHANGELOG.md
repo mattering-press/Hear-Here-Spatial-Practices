@@ -11,7 +11,7 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of every_trick’ in `DEVELOPMENT.md`.
 
-## 1.7.0
+## 1.9.0
 
 22 November 2026. Search.
 
@@ -34,6 +34,25 @@ reader sees. How to add a version: ‘Versions of the book and of every_trick’
   cards). The check confirms that every edition has its search page and index.
 - On small phones the header's items sit a little closer together, so that the title, the Page / Markdown switch,
   search and "Aa" still fit on one row (from 360 pixels wide).
+
+## 1.8.0
+
+22 November 2026. A player inside a transcript keeps all its controls.
+
+- The player switches to its one-line form with the ⋯ button only when it is really narrow, as on a phone or in the
+  margin. A player placed inside a transcript, such as the addendum on Aya Nassar's page, now shows all its controls
+  on a wide screen, like the player above it.
+- A small link below a player can lead to another one further down the page: on Aya Nassar's page, "Listen to
+  Addendum" goes to the addendum's player. In the Markdown it is a short line in italics, `*[Listen to Addendum](#addendum){.listen-link}*`,
+  which, like other short labels, gets no paragraph number.
+
+## 1.7.0
+
+22 November 2026. No more timecode lines in timed transcripts.
+
+- A transcript whose recording is timed paragraph by paragraph no longer shows the written timecodes, such as
+  [00:16:32], between its paragraphs: the ▸ beside every paragraph does their job. They stay in the Markdown, and in
+  transcripts that are not timed yet they still play the recording from that moment.
 
 ## 1.6.0
 

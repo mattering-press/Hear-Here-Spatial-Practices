@@ -436,7 +436,10 @@ to listen.
   to (the addendum needs no markup). The page marks each timed paragraph (`data-cue-for`, `data-cue-start`,
   `data-cue-end` on its `div.para`) rather than loading a separate track: simpler, and the player reads it directly.
   The paragraph being heard is marked on the transcript's rule in the accent colour, and a ▸ on the rule plays from it.
-  Until a recording has cues, its written timecodes (`[00:05:35]`) are its cues; they stay in the text either way.
+  Until a recording has cues, its written timecodes (`[00:05:35]`) are its cues and show as links that play from
+  that moment. Once it has cues, the timecode lines are left out of the page, because every paragraph has its own ▸
+  (the publisher, 2026-11-22). They stay in the Markdown and in the Markdown view, as the editors' record, and
+  `scripts/align.mjs` checks its timings against them when it first times a recording.
 - **Making the cues** (`every_trick/scripts/align.mjs`, run once on the editor's computer, not in the build):
   whisper.cpp transcribes the recording offline with a time for every word, and those words are matched against the
   edited transcript. Speaker labels, bracketed directions, timecodes and unnumbered lines are not matched. Words heard
@@ -482,7 +485,7 @@ Agreed with the publisher on 2026-11-19. Text notes and media in the margin are 
 
 ## Plan: search
 
-Agreed with the publisher on 2026-11-22 and built in every_trick_in_the_book 1.7.0, with Pagefind 1.6.0 (a pinned
+Agreed with the publisher on 2026-11-22 and built in every_trick_in_the_book 1.9.0, with Pagefind 1.6.0 (a pinned
 dependency of `every_trick/`; MIT licence).
 
 - **A search page, not a pop-up.** Every page has a magnifier in its header that leads to `search/`. A search has an
