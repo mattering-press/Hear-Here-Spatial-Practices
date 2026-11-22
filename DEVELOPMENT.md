@@ -145,6 +145,7 @@ The frame of every page:
   band of the same height on every page. A page reached through a card names its section above its title (Podcasts,
   Events), and that section is marked in the menu. To give a page its own header picture, change the picture in its
   `.ve-header` line.
+- **Search.** A magnifier beside "Aa" leads to the edition's search page, `search/` (see "Plan: search").
 - **Settings.** The "Aa" button beside the switch opens the reader's settings (`every_trick/assets/settings.js`):
   text size in four steps (90, 100, 115 and 130 per cent; the whole page scales, the text column with it) and colours:
   System (the preset, which follows the reader's device), Light or Dark. The browser keeps the choice
@@ -165,7 +166,7 @@ What is in `every_trick/`:
 - `scripts/to-citation-keys.mjs`: for the switch, shows how the plain-text citations would become Pandoc citations
 - `scripts/align.mjs`: times a podcast transcript's paragraphs against its recordings with whisper.cpp, on the editor's computer, and writes the cue files and a report (see "Plan: podcast player and transcript")
 - `template.html`: the HTML around every page. It links the stylesheet and scripts with `?v=` and a hash of their contents, so that browsers fetch them again after every change instead of keeping an old copy
-- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `zoom.js`, `player.js` (the podcast player and its docked bar; see "Plan: podcast player and transcript"), `citations.js`, `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens)
+- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `search.js` (the search page; see "Plan: search"), `zoom.js`, `player.js` (the podcast player and its docked bar; see "Plan: podcast player and transcript"), `citations.js`, `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens)
 - `images.mjs`: resized images and the tiles for zooming; an animated GIF becomes an animated WebP and a still
 - `audio.mjs`: reads the length of an MP3 from the file, for the podcast players
 - `check.mjs`, `serve.mjs`: the link check and the local server
@@ -393,7 +394,7 @@ Agreed with the publisher on 2026-11-19 after reviewing Entreluma, a static succ
 
 - **Links that drive the media.** A link in the text can zoom an image to a detail or move audio and video to a moment. These are real links to the media item pages, using the standard media-fragment addresses `#xywh=x,y,w,h` (an image region) and `#t=12:40` (a time), for example `/see/plumbline#xywh=1200,800,600,400` and `/listen/boulder#t=12:40`. With JavaScript they act in place on the current page; without it, in print (as QR codes) and in archives they open the item page at that region or moment. Transcript timecodes use the same mechanism.
 - **Retiring old addresses.** At the switch the site gets a "page not found" page that looks the requested address up in a redirect map and forwards the reader, so old Juncture links and any later renamed page still reach the right place.
-- **Search.** Full-text search across the book with Pagefind, which builds its index at build time and needs no server.
+- **Search.** Full-text search across the book with Pagefind, which builds its index at build time and needs no server. Built as agreed in "Plan: search".
 - **Checks before publishing.** The build reports problems in plain language for authors and editors: missing alt text, unmatched citations, broken links, oversized images and a size limit for image tiles. During the parallel run these are warnings; from release 1.0, errors that stop a release.
 
 ## Plan: media data decisions
@@ -478,6 +479,32 @@ Agreed with the publisher on 2026-11-19. Text notes and media in the margin are 
 - **Phones, no JavaScript and screen readers:** a note stays in reading order directly after its paragraph, as a labelled aside.
 - **Print and EPUB:** decided per note: an endnote, a small figure with address and QR code, or web-only.
 - **Numbering:** text notes are numbered per chapter (`n1`, `n2`), matching the endnote numbers they get in print; media in the margin are figures with `Fig. 2.3` numbers and their own item addresses; plain links are not numbered; paragraph numbers ignore the margin. Details in `every_trick/CONTRACT.md`.
+
+## Plan: search
+
+Agreed with the publisher on 2026-11-22 and built in every_trick_in_the_book 1.7.0, with Pagefind 1.6.0 (a pinned
+dependency of `every_trick/`; MIT licence).
+
+- **A search page, not a pop-up.** Every page has a magnifier in its header that leads to `search/`. A search has an
+  address (`search/?q=dust`) that can be shared and works with the back button, and Pagefind loads only on that page.
+  A pop-up over the current page could be added later on top of the page.
+- **Results lead to paragraphs.** Our own small script (`every_trick/assets/search.js`), not Pagefind's ready-made
+  box, lists each page found with up to three of its paragraphs: number (para. 12), the words around the ones
+  found, marked, and a link to `#p12`. It uses the site's stylesheet, so it follows the reader's text size and
+  colours.
+- **Only the reading text.** The template marks `<main>` of real pages for indexing (`data-pagefind-body`) and the
+  page's title as the result's title. The Markdown views, `publication/`, `versions/` and `search/` are not indexed.
+  Cards are left out (`data-pagefind-ignore`, set by `filters/cards.lua`), so the words in a card are found on the
+  page it leads to; a page with only cards (Events) has nothing to find. Transcripts, captions and alt text are in.
+- **Each edition searches itself.** The latest text and every frozen version get their own index (`pagefind/`) and
+  search page (`/v0.1/search/`), so results in a frozen version lead to its permanent paragraph numbers. A frozen
+  version's search page has a link that searches the latest text for the same words. Each index adds about 0.6 MB.
+- **Without JavaScript** the search page says so and points to the whole book in Markdown, where the browser's own
+  Find in page works.
+- **Build and check.** `build.mjs` makes the indexes as its last step, so GitHub Actions and the previews need no
+  change, and reports how many pages each holds. `check.mjs` confirms every edition has its search page and index.
+- **Later.** Media item pages and WebVTT captions join the index when they exist; filters (by section, or by route
+  once "several routes" is settled) can be added with `data-pagefind-filter`.
 
 ## Plan, not yet confirmed: several routes through a book
 

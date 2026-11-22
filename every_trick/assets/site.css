@@ -134,6 +134,13 @@ img, iframe, video, object { max-width: 100%; }
 .settings-button { margin-left: auto; padding: 0.2rem 0.55rem; border: 1px solid rgb(255 255 255 / 0.3); border-radius: 999px; background: none; color: var(--colour-header-muted); font: inherit; font-size: 0.8125rem; font-weight: var(--weight-strong); line-height: 1.3; cursor: pointer; }
 .view-switcher + .settings-button { margin-left: calc(0.5rem - var(--bar-gap)); }   /* close to the switch, whatever the bar's spacing */
 .settings-button:hover, .settings-button:focus-visible { color: var(--colour-header-text); }
+/* the search page's link before the settings: a magnifier, its name "Search" for screen readers and as a tooltip */
+.search-link { display: inline-flex; align-items: center; margin-left: auto; padding: 0.2rem 0.5rem; border: 1px solid rgb(255 255 255 / 0.3); border-radius: 999px; color: var(--colour-header-muted); font-size: 0.8125rem; line-height: 1.3; text-decoration: none; }
+.view-switcher + .search-link, .search-link + .settings-button { margin-left: calc(0.3rem - var(--bar-gap)); }   /* the switch, search and settings as one group */
+.search-link:hover, .search-link:focus-visible { color: var(--colour-header-text); }
+.search-link[aria-current] { background: var(--colour-header-text); color: var(--colour-header); }
+.search-link svg { flex: none; margin: 0.12rem 0; }
+.search-link__text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .settings { position: fixed; inset: auto; margin: 0; width: max-content; max-width: calc(100vw - 16px); padding: 0.9rem 1rem 1rem; border: 1px solid var(--colour-rule); border-radius: 6px; background: var(--colour-surface); color: var(--colour-text); box-shadow: var(--shadow); font-size: 0.875rem; }
 .settings fieldset { margin: 0; padding: 0; border: 0; }
 .settings fieldset + fieldset { margin-top: 0.85rem; }
@@ -381,15 +388,40 @@ a.toolkit-name, a .toolkit-name, .toolkit-name a, .built-with a { text-underline
   .site-footer__logo img { height: 2.5rem; }
 }
 
-/* small phones: a smaller title and switch, so that both still fit on the bar's first row */
-@media (max-width: 28rem) {
+/* small phones: a smaller title and switch, so that the title, switch, search and settings still fit on the bar's first row */
+@media (max-width: 30rem) {
   .site-title { font-size: 0.875rem; }
   .view-switcher a { padding: 0.15rem 0.5rem; font-size: 0.75rem; }
   .settings-button { padding: 0.15rem 0.4rem; font-size: 0.75rem; }
   .site-bar { --bar-gap: 0.6rem; }
   .view-switcher + .settings-button { margin-left: 0; }
+  .search-link { padding: 0.15rem 0.38rem; }
 }
-/* the smallest phones: a smaller title still, so that the first row holds the title, the switch and the settings */
+/* the smallest phones: a smaller title and switch still, so that the first row holds the title, the switch, search and the settings */
 @media (max-width: 23.5rem) {
   .site-title { font-size: 0.75rem; letter-spacing: 0; }
+  .view-switcher a { padding: 0.15rem 0.3rem; font-size: 0.6875rem; }
+  .view-switcher + .search-link, .search-link + .settings-button { margin-left: calc(0.2rem - var(--bar-gap)); }
 }
+
+/* the search page (assets/search.js): the box, then each page found with up to three of its paragraphs */
+.search__label { display: block; margin-bottom: 0.4rem; color: var(--colour-muted); font-size: 0.9375rem; }
+.search__row { display: flex; gap: 0.5rem; }
+.search__input { flex: 1; min-width: 0; padding: 0.5rem 0.7rem; border: 1px solid var(--colour-muted); border-radius: var(--radius); background: var(--colour-surface); color: var(--colour-text); font: inherit; }
+.search__input:focus-visible { outline: 2px solid var(--colour-accent); outline-offset: 1px; }
+.search__button, .search__more { padding: 0.5rem 1rem; border: 1px solid var(--colour-text); border-radius: var(--radius); background: var(--colour-text); color: var(--colour-surface); font: inherit; font-size: 0.9375rem; font-weight: var(--weight-strong); cursor: pointer; }
+.search__more { margin-top: var(--space); border-color: var(--colour-rule); background: none; color: var(--colour-text); }
+.search__more:hover { border-color: var(--colour-accent); }
+.search__status { min-height: 1.65em; margin: 1rem 0 0; color: var(--colour-muted); font-size: 0.9375rem; }
+.search__results { margin: 0; padding: 0; list-style: none; }
+.search-result { padding: 1.25rem 0; border-top: 1px solid var(--colour-rule); }
+.search-result:first-child { margin-top: 1rem; }
+main h2.search-result__title { margin: 0 0 0.6rem; font-size: 1.15rem; }
+main h2.search-result__title::before { content: none; }
+.search-result__title a { color: inherit; text-decoration: none; }
+.search-result__title a:hover { text-decoration: underline; }
+.search-result__passages { margin: 0; padding: 0; list-style: none; font-size: 0.9375rem; }
+.search-result__passages li + li { margin-top: 0.5rem; }
+.search-result__where { margin-right: 0.35rem; font-weight: var(--weight-strong); white-space: nowrap; }
+.search-result__excerpt mark { padding: 0 0.1em; border-radius: 2px; background: var(--colour-highlight); color: inherit; font-weight: var(--weight-strong); }
+.search-result__more { margin: 0.5rem 0 0; color: var(--colour-muted); font-size: 0.875rem; }

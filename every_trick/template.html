@@ -21,6 +21,9 @@ $endif$
 $if(has-citations)$
   <script src="$shared$assets/citations.js?v=$asset-version$" defer></script>
 $endif$
+$if(search-page)$
+  <script src="$shared$assets/search.js?v=$asset-version$" defer></script>
+$endif$
 $if(annotations)$
   $annotations$
 $endif$
@@ -57,6 +60,7 @@ $if(whole-book)$
       <script>/* the whole book in Markdown: "Page" leads back to the page the reader came from (without JavaScript, to the home page) */try{var from=new URL(document.referrer),home=new URL('../',location.href),page=from.pathname.replace(/markdown\/(index\.html)?$$/,'');if(from.origin===location.origin&&page.indexOf(home.pathname)===0&&page!==location.pathname)document.querySelector('.view-switcher a').href=page}catch(e){}</script>
 $endif$
 $endif$
+      <a class="search-link" href="$root$search/" title="Search"$if(search-page)$ aria-current="page"$endif$><svg aria-hidden="true" viewBox="0 0 16 16" width="14" height="14"><circle cx="6.5" cy="6.5" r="5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m10.3 10.3 4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span class="search-link__text">Search</span></a>
       <button class="settings-button" type="button" popovertarget="settings" aria-label="Text size and colours" hidden><span aria-hidden="true">Aa</span></button>
       <div class="settings" id="settings" popover role="dialog" aria-label="Text size and colours">
         <fieldset>
@@ -87,7 +91,7 @@ $endif$
 $if(section-title)$
           <p class="page-section"><a href="$section-url$">$section-title$</a></p>
 $endif$
-          <h1 class="page-title">$title$</h1>
+          <h1 class="page-title"$if(searchable)$ data-pagefind-meta="title"$endif$>$title$</h1>
 $if(subtitle)$
           <p class="page-subtitle">$subtitle$</p>
 $endif$
@@ -95,7 +99,7 @@ $endif$
       </div>
     </div>
   </header>
-  <main id="main">
+  <main id="main"$if(searchable)$ data-pagefind-body$endif$>
 $body$
   </main>
   <div class="copy-status" role="status" aria-live="polite" aria-atomic="true"></div>

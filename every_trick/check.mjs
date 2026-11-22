@@ -2,6 +2,7 @@
 // stylesheet or a JSON file refers to must exist in _site/, and links to #fragments must find their id.
 // Root-absolute URLs ("/essays/…") are errors too, because the site must also work under a sub-path.
 // Frozen versions (v<id>/, each with its own publication.json) are checked too, with the media they share.
+// Every edition must also have its search page and search index (search/, pagefind/), with at least one page in it.
 //   npm run check     (after npm run build)
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
@@ -68,6 +69,12 @@ for (const file of all) {
       return value;
     });
   }
+}
+for (const root of new Set(all.filter((f) => f.endsWith('/publication.json')).map(dirname))) {
+  const where = relative(SITE, root) || 'the site root';
+  for (const path of ['search/index.html', 'pagefind/pagefind.js', 'pagefind/pagefind-entry.json']) if (!existsSync(join(root, path))) problems.push(`${where}: no ${path}`);
+  const entry = join(root, 'pagefind/pagefind-entry.json');
+  if (existsSync(entry) && !Object.values(JSON.parse(readFileSync(entry, 'utf8')).languages || {}).some((l) => l.page_count > 0)) problems.push(`${where}: the search index has no pages`);
 }
 for (const info of files(join(SITE, 'iiif')).filter((f) => f.endsWith('info.json'))) {
   const { width, height } = JSON.parse(readFileSync(info, 'utf8'));
