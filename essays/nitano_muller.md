@@ -118,7 +118,7 @@ So, my family church—St. Francis—was where my grandparents and great-grandpa
 
 So, annually, we would go back to St. Francis on the last Sunday in January as a family. Again, of course, lots of eyebrows raised because what are these people doing back here again? So, we are still dealing with the implications of the apartheid ideology and racist thinking, but my family was determined to go to St. Francis to make this pilgrimage annually. It was on a particular Sunday in the late 1990s when my own consciousness was beginning to develop.
 
-I think it was 1998. A black priest was invited to preach that Sunday morning from a local community called Massipumilele, which is not too far from where we lived. He preached and presided at the eucharist that Sunday morning, and I sat there with my jaw on the ground because in my mind, clergy were only white.
+I think it was 1998. A black priest was invited to preach that Sunday morning from a local community called Masiphumelele, which is not too far from where we lived. He preached and presided at the eucharist that Sunday morning, and I sat there with my jaw on the ground because in my mind, clergy were only white.
 
 I see this young man—bless him, he still works in the ministry today, but much older now, of course—and I've built a friendship with him over the years. He was instrumental in helping me understand that my calling to ministry was valid and that my place in the church was valid. That experience was poignant. He’s been phenomenal; he was a part of my formation as a young priest in the church and in my own realisation of who I was. Twenty years later, I was ordained in 2018 as a priest, and so again, the power of representation was important even in the early years of my life.
 
@@ -138,7 +138,7 @@ But I know that people like me have contributions to make on a global scale. I d
 
 \[00:19:44\]
 
-**NITANO MULLER:** Again, I owe a lot of that to the archbishop because he planted those seeds. My own formation was influenced by black theologians, some of whom have become prominent bishops in the Anglican church. In fact, one of them, the Bishop of St. Shekhabe, was the first black woman to preach at the Lambeth Conference, a once-every-decade gathering of bishops and primates from around the world.
+**NITANO MULLER:** Again, I owe a lot of that to the archbishop because he planted those seeds. My own formation was influenced by black theologians, some of whom have become prominent bishops in the Anglican church. In fact, one of them, Bishop Vicentia Kgabe, was the first black woman to preach at the Lambeth Conference, a once-every-decade gathering of bishops and primates from around the world.
 
 It has almost always been the Archbishop of Canterbury who spoke at that particular event, and for the first time, a couple of years ago —two or three years ago —she was chosen as the preacher at that service. I was sitting where I was, watching her speak from the pulpit at Canterbury Cathedral, here at Lambeth; it was a poignant moment for me. And, not just a black person but a young black woman. That inspired me in many ways long before I even came here.
 
@@ -192,7 +192,7 @@ And so, I think where we find ourselves now, those stories need to be made even 
 
 **NIRMAL PUWAR:** It's a post-war history or inter-war history. What do you think an archive could become? Given your vision and liberation justice values, what do you think an archive could become in this context?
 
-**NITANO MULLER:** So, the archive at the moment sits within my orbit as a Canon for Worship and Welcome. How welcoming a space is depends on how well it tells its story, and I think that the archive is the framework for that work to happen.
+**NITANO MULLER:** So, the archive at the moment sits within my ambit as a Canon for Worship and Welcome. How welcoming a space is depends on how well it tells its story, and I think that the archive is the framework for that work to happen.
 
 It gives us the resources through which we can tell those stories because, at the moment—of course, as is the case with all archives—we have shelves and shelves of information. However, it is the interpretation of that information that truly matters and how those stories are told and retold. This particular space is really special; this is the heart of the Cathedral. Should we lose this, we might as well just close our doors.
 

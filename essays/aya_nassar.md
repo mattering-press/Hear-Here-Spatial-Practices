@@ -64,9 +64,9 @@ So, it's something that is a nuisance. You complain about it. You live with it. 
 
 I came to it because I was interested in a particular episode of the city, that is, the city post-independence in the 1950s and 1960s. It's also an interesting time in Coventry, where there was a lot of ambition and a desire to build anew. So, there was a lot of architectural desire to put in plans for a new city that would come after formal independence. And at the same time, I was acutely aware that people were talking about the city during the period I was conducting my research, with a strong sense of disappointment that these plans and promises never came to be, that Cairo is this concrete, dusty jungle.
 
-So, I went to the archives, and in the archives, you deal with materials that are always covered with dust. What is really interesting when you're working with archival material is that architects never really account for dust. They build in plants, they build in maquettes. These maquettes are usually white. They never really factored in; what are we going to do with the dust? The dust accumulates over maquettes and also builds up on the ruined buildings outside — buildings that were built and are now deteriorating or being demolished, or buildings that never really ever came to be.
+So, I went to the archives, and in the archives, you deal with materials that are always covered with dust. What is really interesting when you're working with archival material is that architects never really account for dust. They build in plans, they build in maquettes. These maquettes are usually white. They never really factored in; what are we going to do with the dust? The dust accumulates over maquettes and also builds up on the ruined buildings outside — buildings that were built and are now deteriorating or being demolished, or buildings that never really ever came to be.
 
-For me, to think about dust, especially in relationship to Cairo and maybe probably for Coventry as well, is to think about that interplay between the desire to build and to keep and to preserve and almost the inevitability that things will materially wither away. Whether in a violent event like the destruction of the Cathedral that we're in, or the slow accumulation of dust, actually. If we decide to sit or touch, we’ll see the residue of last week's suits, dust, pollution, and the people who have been here, sat, and left behind sheds of their hair or clothes. It's that accumulation and weaving in, of all the heterogeneous human and non-human and ecological, but also historical, accumulations of material.
+For me, to think about dust, especially in relationship to Cairo and maybe probably for Coventry as well, is to think about that interplay between the desire to build and to keep and to preserve and almost the inevitability that things will materially wither away. Whether in a violent event like the destruction of the Cathedral that we're in, or the slow accumulation of dust, actually. If we decide to sit or touch, we’ll see the residue of last week's soot, dust, pollution, and the people who have been here, sat, and left behind sheds of their hair or clothes. It's that accumulation and weaving in, of all the heterogeneous human and non-human and ecological, but also historical, accumulations of material.
 
 So, this is why I was drawn to dust. I think dust is an interesting material to think with, through the monumental, eventful destruction, such as the one that created the space that we're in today. But also the very slow accumulation of processes, of people leaving traces, of people wearing away, of bodies and matters rubbing against each other.
 
@@ -80,7 +80,7 @@ _\[organ playing in the background\]_ We've just walked through the nave to the 
 
 **AYA NASSAR:** So, concrete is really interesting in relation to dust. It almost serves as the opposite of dust because concrete in the way that is used in modern architecture—and even cement broadly, in the way it’s used in modern city planning, the way it goes into everywhere, like how we create spaces, plans, architectures—what it promises is an element of endurance, unlike dust.
 
-So, the material itself made loads of promises about how we can build higher, taller, for longer. In the context of the Cathedral itself, it promises something of durability that would stand against the rumination next door, I think.
+So, the material itself made loads of promises about how we can build higher, taller, for longer. In the context of the Cathedral itself, it promises something of durability that would stand against the ruination next door, I think.
 
 Concrete is often something that people hate, and I knew that from my research in Egypt. People often term Cairo as the concrete jungle. I think it's a well-known thing that when the plans were put in for the modern Cathedral as opposed to the old one, it was critiqued as a concrete monstrosity. Often, not referring to the exact materials used in assembling a cathedral—such as stones, glass, and other elements—but rather to the sense of something monumental, grey, and not colourful, which may suck in light.
 
@@ -100,7 +100,7 @@ As we look on the city today, it's a different moment. We can see new towers tha
 
 There's an interesting thing that goes back to the Second World War that happened in Cairo. I was working on an archive of an architect, an urban planner. He published a paper—sort of a magazine article—after the Second World War, which reflected his disappointment that Cairo wasn't destroyed in the war.
 
-For him, as an urban planner, this represents a very particular historical moment. But, for him, if Cairo was destroyed in the war like many of the other European cities, it would have given it an empty blanket, on which architects and designers could fix the problems of the city. Of course, the total opposite happened here in the UK, especially in Coventry, where the bombing of Coventry literally paved the way for total structuring and planning, not only of the Cathedral, but also of the wider city.
+For him, as an urban planner, this represents a very particular historical moment. But, for him, if Cairo was destroyed in the war like many of the other European cities, it would have given it an empty blanket, on which architects and designers could fix the problems of the city. Of course, the total opposite happened here in the UK, especially in Coventry, where the bombing of Coventry literally paved the way for total replanning, not only of the Cathedral, but also of the wider city.
 
 Planning and designing always invite a lot of hope about progress, modernity, and desires about the future through futuristic design _\[organ playing in the background\]_. From the tiniest bits like the construction of the space that we're in, to thinking about the primacy of cars or pedestrians or what kind of shopping people would do and how they would flow across the city and throughout the world.
 
@@ -218,7 +218,7 @@ So, yeah, and I assume Coventry is like Cairo in this respect, of course—clear
 
 **AYA NASSAR:** I mean, walking in, you see several dates, and Egypt is very prominent on the top of the second list. The year next to it is 1801, and that would be the year when the British occupation of Egypt started. So here, it just appears as one year among many—there’s 1704 before it, 1805 after it, 1840 next to Syria—but 1801 is a pivotal moment in Egyptian history. That occupation lasted until 1954.
 
-So yeah, it feels odd to have that date and place smudged between the list of other dates and places, whereas it's really an eventful conjunction in Egyptian history.
+So yeah, it feels odd to have that date and place smudged between the list of other dates and places, whereas it's really an eventful conjuncture in Egyptian history.
 
 **NIRMAL PUWAR:** It does bring in a lot of connections and indexicalities to global geopolitical histories, connected to the armed forces. I think we'll need another day to dwell on that.
 
@@ -226,7 +226,7 @@ So yeah, it feels odd to have that date and place smudged between the list of ot
 
 Brentnall, Margaret (1987) _John Hutton: Artist and Glass Engraver_, Philadelphia Art Alliance Press.
 
-British Military Headquarters in Cairo: [https://www.britishmilitaryhistory.co.uk/docs-middle-east-1930-1947-british-troops-egypt-1930-45/](https://www.britishmilitaryhistory.co.uk/docs-middle-east-1930-1947-british-troops-egypt-1930-45/) So we are all good, then 🙂. It is not Nasr City, but close by.
+British Military Headquarters in Cairo: [https://www.britishmilitaryhistory.co.uk/docs-middle-east-1930-1947-british-troops-egypt-1930-45/](https://www.britishmilitaryhistory.co.uk/docs-middle-east-1930-1947-british-troops-egypt-1930-45/)
 
 The Art et Liberte group: [https://www.royalacademy.org.uk/article/magazine-tate-liverpool-egypt-surrealism-anna-wallace-thompson](https://www.royalacademy.org.uk/article/magazine-tate-liverpool-egypt-surrealism-anna-wallace-thompson) and this [https://sulfur-surrealist-jungle.com/2020/05/30/destabilizing-modernity-kamel-telmisanys-surrealist-unrest-by-may-telmissany/](https://sulfur-surrealist-jungle.com/2020/05/30/destabilizing-modernity-kamel-telmisanys-surrealist-unrest-by-may-telmissany/)
 
