@@ -387,7 +387,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     const body = '```{=html}\n<div class="search" data-pagefind="../pagefind/">\n' +
       '<form class="search__form" role="search" action="./" method="get">\n' +
       '<label class="search__label" for="search-input">Words to find in the book</label>\n' +
-      '<div class="search__row"><input class="search__input" id="search-input" type="search" name="q" autocomplete="off" spellcheck="false"> <button class="search__button" type="submit">Search</button></div>\n' +
+      '<input class="search__input" id="search-input" type="search" name="q" autocomplete="off" spellcheck="false">\n' +
       '</form>\n<p class="search__status" role="status" aria-live="polite"></p>\n<ol class="search__results"></ol>\n' +
       '<button class="search__more" type="button" hidden>More pages</button>\n' +
       '<noscript><p class="search__noscript">Search needs JavaScript. Without it, open <a href="../publication/">the whole book in Markdown</a> and use your browser’s Find in page.</p></noscript>\n' +

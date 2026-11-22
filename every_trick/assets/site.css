@@ -404,13 +404,12 @@ a.toolkit-name, a .toolkit-name, .toolkit-name a, .built-with a { text-underline
   .view-switcher + .search-link, .search-link + .settings-button { margin-left: calc(0.2rem - var(--bar-gap)); }
 }
 
-/* the search page (assets/search.js): the box, then each page found with up to three of its paragraphs */
+/* the search page (assets/search.js): the box (results follow the typing, so it has no button; Enter also searches),
+   then each page found with up to three of its paragraphs */
 .search__label { display: block; margin-bottom: 0.4rem; color: var(--colour-muted); font-size: 0.9375rem; }
-.search__row { display: flex; gap: 0.5rem; }
-.search__input { flex: 1; min-width: 0; padding: 0.5rem 0.7rem; border: 1px solid var(--colour-muted); border-radius: var(--radius); background: var(--colour-surface); color: var(--colour-text); font: inherit; }
+.search__input { box-sizing: border-box; width: 100%; padding: 0.5rem 1rem; border: 1px solid var(--colour-muted); border-radius: 999px; background: var(--colour-surface); color: var(--colour-text); font: inherit; }
 .search__input:focus-visible { outline: 2px solid var(--colour-accent); outline-offset: 1px; }
-.search__button, .search__more { padding: 0.5rem 1rem; border: 1px solid var(--colour-text); border-radius: var(--radius); background: var(--colour-text); color: var(--colour-surface); font: inherit; font-size: 0.9375rem; font-weight: var(--weight-strong); cursor: pointer; }
-.search__more { margin-top: var(--space); border-color: var(--colour-rule); background: none; color: var(--colour-text); }
+.search__more { margin-top: var(--space); padding: 0.4rem 1.1rem; border: 1px solid var(--colour-rule); border-radius: 999px; background: none; color: var(--colour-text); font: inherit; font-size: 0.9375rem; font-weight: var(--weight-strong); cursor: pointer; }
 .search__more:hover { border-color: var(--colour-accent); }
 .search__status { min-height: 1.65em; margin: 1rem 0 0; color: var(--colour-muted); font-size: 0.9375rem; }
 .search__results { margin: 0; padding: 0; list-style: none; }

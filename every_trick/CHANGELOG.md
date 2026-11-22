@@ -17,7 +17,8 @@ reader sees. How to add a version: ‘Versions of the book and of every_trick’
 
 - Every page has a magnifier in its header, beside "Aa", that leads to the search page. It lists the pages the words
   are found on, best first, and on each page up to three paragraphs with their number (para. 12) and the words
-  around the ones found, marked. Each links straight to its paragraph.
+  around the ones found, marked. Each links straight to its paragraph. Results follow the typing, so the search
+  field, a pill like the header's buttons, has no Search button.
 - The words searched for are kept in the page's address (`search/?q=dust`), so a search can be shared or bookmarked.
 - Each frozen version searches its own text, at its own address (`/v0.1/search/`), so results lead to that
   version's paragraph numbers. Its search page has a link that searches the latest text for the same words.
