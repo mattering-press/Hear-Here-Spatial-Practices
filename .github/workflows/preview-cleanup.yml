@@ -1,6 +1,6 @@
-# Deletes a branch's private previews on Cloudflare Pages when the branch is deleted on GitHub, and can be run by
-# hand for any branch name (Actions -> "Delete private previews" -> Run workflow).
-name: Delete private previews
+# Deletes a branch's previews on Cloudflare Pages (open or private) when the branch is deleted on GitHub, and can be run by
+# hand for any branch name (Actions -> "Delete previews" -> Run workflow).
+name: Delete previews
 
 on:
   delete:
@@ -20,7 +20,6 @@ jobs:
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-      PROJECT: hearhere-preview
       BRANCH: ${{ github.event.inputs.branch || github.event.ref }}
     steps:
       - name: Delete the branch's deployments
@@ -29,8 +28,13 @@ jobs:
             echo "::notice::No Cloudflare secrets, nothing to delete."
             exit 0
           fi
+          case "$BRANCH" in private-*) PROJECT=hearhere-private ;; *) PROJECT=hearhere-preview ;; esac
           api="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/pages/projects/$PROJECT/deployments"
           auth=(-H "Authorization: Bearer $CLOUDFLARE_API_TOKEN")
+          if [ "$(curl -sS "${auth[@]}" "${api%/deployments}" -o /dev/null -w '%{http_code}' || true)" != 200 ]; then
+            echo "::notice::There is no Cloudflare Pages project $PROJECT, nothing to delete."
+            exit 0
+          fi
           page=1; deleted=0
           while :; do
             ids=$(curl -fsS "${auth[@]}" "$api?env=preview&page=$page&per_page=25" \
