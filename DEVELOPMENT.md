@@ -406,7 +406,7 @@ Agreed with the publisher on 2026-11-19 after reviewing Entreluma, a static succ
 Agreed with the publisher on 2026-11-19. These fix the data; players and viewers are chosen later, in the design phase, and stay swappable because they read only these files. The audio player is settled in "Plan: podcast player and transcript".
 
 - **Timings in WebVTT.** Transcript and word timings for audio and video live in standard WebVTT files next to each media file, never in the Markdown. Paragraph timecodes in the transcripts stay as they are. Word-level timings, when wanted, come from a one-off forced alignment of the existing, edited transcript against the audio. The same files serve as captions and as searchable text in archives.
-- **`/read/<name>` for documents.** PDFs and other documents get item pages at `/read/<name>`, alongside `/see`, `/listen` and `/watch`. Page links use `#page=3`. At build time each document's pages are also rendered as images, so pages can be zoomed and linked like any image, with a download of the original file.
+- **`/read/<name>` for documents.** PDFs and other documents get item pages at `/read/<name>`, alongside `/see`, `/listen` and `/watch`. Page links use `#page=3`. At build time each document's pages are also rendered as images, so pages can be zoomed and linked like any image, with a download of the original file. The viewer and the text are settled in "Plan: documents and zines".
 - **IIIF manifests for all images.** The build writes a IIIF Presentation 3 manifest for every image, image set and document, next to the static tiles. Any IIIF viewer (OpenSeadragon, Clover, Mirador, storytelling viewers), Tapestry and other projects can then show the book's images without changes.
 
 ## Plan: podcast player and transcript
@@ -485,7 +485,131 @@ Agreed with the publisher on 2026-11-19. Text notes and media in the margin are 
 - **Layout on wide screens:** notes float in the margin starting level with their paragraph. When the margin is crowded, later notes are pushed down, so the text column never gets gaps. A marker in the text and the same mark on the note highlight together on hover and focus. Notes show in full (the publisher's preset, 2026-11-20). Setting `--margin-note-lines` in `every_trick/assets/site.css` above 0 makes long notes show that many lines, then "more".
 - **Phones, no JavaScript and screen readers:** a note stays in reading order directly after its paragraph, as a labelled aside.
 - **Print and EPUB:** decided per note: an endnote, a small figure with address and QR code, or web-only.
-- **Numbering:** text notes are numbered per chapter (`n1`, `n2`), matching the endnote numbers they get in print; media in the margin are figures with `Fig. 2.3` numbers and their own item addresses; plain links are not numbered; paragraph numbers ignore the margin. Details in `every_trick/CONTRACT.md`.
+- **Numbering:** text notes are numbered per chapter (`n1`, `n2`), matching the endnote numbers they get in print; media in the margin are media items like any other, with their own numbers and item addresses (see "Plan: media register, item pages and the Media Index"; the publisher, 2026-11-22, replacing `Fig. 2.3` numbers); plain links are not numbered; paragraph numbers ignore the margin. Details in `every_trick/CONTRACT.md`.
+
+## Plan: image display and the zoom viewer
+
+Agreed with the publisher on 2026-11-22. It settles how pictures sit in the page and how they are viewed; the data
+stays as "Plan: media data decisions" fixes it. Not built yet.
+
+- **In the page a picture is a plain image**: an `<img>` with `srcset` in 800, 1200, 1600 and 2400 px (JPEG at about
+  quality 82, as "Images online" in the house style says) and a `sizes` value that matches the width it is shown at.
+  It works without JavaScript, prints and archives. IIIF tiles and OpenSeadragon are only for the zoom viewer.
+- **Widths.** `.left` and `.right`: half the text column, as before (`width=` still sets another share). No class:
+  the text column. `.wide`: 64rem, the width of the page's opening and its footer. `.full`: the whole window, used
+  sparingly. Captions of wide and full pictures keep the text column's width. A margin note beside a wide or full
+  picture moves below it. On phones every picture is as wide as the text column. In the legacy `.ve-media` lines,
+  `wide` and `full` are written like `left` and `right`.
+- **Nothing covers the picture.** "⤢ Zoom" sits at the right end of the caption line. Clicking the picture also opens
+  the viewer (with a zoom cursor); the button is the figure's only keyboard stop. Without JavaScript the picture links
+  to its largest image, and to its item page once item pages exist.
+- **Tall pictures** are never taller than about 80% of the window. The build writes each picture's proportions into
+  the page, so the stylesheet sizes the picture and its caption without JavaScript.
+- **Galleries** are justified rows: every picture keeps its proportions, its share of the row follows its shape, and
+  nothing is cropped. A gallery of two pictures is two pictures side by side.
+- **Animations** get a pause button, which swaps the animation for its first frame (the still the build already
+  makes). Readers who ask for less motion see the still, as before. Animations do not zoom.
+- **The viewer** is a full-window dialog on a dark ground, its controls in the shape of the podcast player's.
+  - Top bar: the picture's place in the sequence ("3 / 12"), its caption and credit on one line (tap to read all), and
+    Close. Bottom bar: zoom out, zoom in, fit; full screen; previous and next.
+  - All zoomable pictures of a page are one sequence in page order (OpenSeadragon's sequence mode); a gallery is a run
+    within it.
+  - Keyboard: ← and → for previous and next, + and − to zoom, Escape to close. Focus goes back to the picture's Zoom
+    button.
+  - Phones: when the whole picture is in view, a sideways swipe goes to the next or previous picture; when zoomed in,
+    it moves the picture (the publisher, 2026-11-22). The ‹ › buttons always work.
+  - The picture already loaded in the page shows at once, and the tiles sharpen it as they arrive. For readers who
+    ask for less motion, zooming jumps instead of gliding.
+  - Not used: OpenSeadragon's reference strip and collection mode. Later, a `.compare` class may show two pictures side
+    by side in one viewer, zooming together (OpenSeadragon's multi-image).
+
+## Plan: documents and zines
+
+Agreed with the publisher on 2026-11-22 (option A of three: page images with the text beside them, rather than
+PDF.js or the browser's own PDF reader). It builds the `/read/<name>` item pages of "Plan: media data decisions".
+Not built yet.
+
+- **Pages in the zoom viewer.** A document's pages are page images with zoom tiles, shown in the image viewer as
+  two-page spreads on wide screens (the cover alone, then 2–3, 4–5 …) and one page at a time on phones, with a thin bar:
+  ‹ 4–5 / 21 ›, Zoom, Full screen, Text, Download. Keyboard and swipe work as for pictures.
+- **The text** of a document is plain HTML on its `/read/` page, below the viewer, one section per page headed
+  "Page 3" (anchor `#page-3`; links that open the viewer at a page use `#page=3`), so that it can be searched, read
+  aloud, translated and copied. In the viewer, Text swaps the pages on screen for their text. A PDF made on a computer
+  gives clean text; a scan or a flattened zine does not (archive.org's text recognition of the zine index is
+  unusable), so it shows its caption, and later a description written by an editor.
+- **On an essay page** a document is a figure: its cover with the caption, and on the caption line Open (the viewer,
+  in place), Text (its text on the `/read/` page) and the download with its size.
+- **Without JavaScript** the `/read/` page shows the pages as plain images in a row you can scroll, then the text.
+- **The walk booklet** (`media/events/walking_sitting_sketching.pdf`, 21 A5 pages) is rendered at build time with
+  poppler (`pdftoppm`, `pdftotext`; GitHub Actions installs it). The original PDF is the download.
+- **The two zines on archive.org** (the Experimental Zine Index and House of Hope) are copied in once: a script fetches
+  each item's page images and stores them as JPEGs in `media/zines/<archive.org identifier>/`, and the build makes our
+  own tiles from them. archive.org stays the source and the archived copy, and the download links to it. To correct a
+  zine, correct it on archive.org and run the script again. Readers never wait on archive.org's image service, which
+  failed for the zine index when tested on 2026-11-22.
+
+## Plan: media register, item pages and the Media Index
+
+Agreed with the publisher on 2026-11-22. Every media item has one permanent number, kept in a register, and every
+number a reader sees is made from it. It replaces chapter-based figure numbers (`Fig. 2.3`) on the web; print keeps
+them, worked out for the printed route. Not built yet.
+
+- **The register** is one table in the repository with a line per item: its number, its kind (`see`, `listen`,
+  `watch` or `read`, the words of its address), its name, its file or address, the version it entered with, its
+  credit, and its former names and files. Nothing else is stored: captions, sizes and where an item appears are read
+  from the pages at every build. A title is stored only for an item whose pages give it none.
+- **Numbers** are given when a version is frozen, to the items of that version that have none, in its reading order.
+  A number never changes and is never reused, also when its item is withdrawn. Version 0.1's 70 items are numbered
+  1–70 in its reading order. An item not yet in a frozen version shows "new" where its number will be. The register
+  is not versioned: text is versioned, media items are objects with permanent addresses.
+- **One item, one number.** The same file or address on another page is the same item and shows the same number.
+  A replaced file is added to its item's line, so older versions still find it.
+- **Names** are the readable part of an item's address (`/see/boulder-font`), drafted from the captions and edited by
+  the publisher. A name can change: the old one is kept as a former name and keeps forwarding.
+- **Short addresses.** `/37/` forwards to item 37's page. It is the address printed with an item, short enough to type
+  from paper (the publisher, 2026-11-22).
+- **What readers see.** Every caption starts with the item's number, a small pill that links to its item page. In the
+  viewer the number stands before the caption, and "3 / 12" is only the picture's place in the sequence. Authors link
+  to an item by its name (`[the boulder from Bethlehem](/see/boulder-font)`), never by its number, so no typed number
+  can go stale. An item can be cited like a paragraph: "(Hahn 2026: item 37)".
+- **Item pages** at `/see/<name>/`, `/listen/<name>/`, `/watch/<name>/` and `/read/<name>/` show the item (the
+  zoomable picture, the player or the document), its number, its caption or captions, its credit, every place it
+  appears, the version it entered with, where it is stored and where it is served from.
+- **Credit** is the item's own field in the register (the publisher, 2026-11-22), shown after its caption wherever it
+  appears and on its item page.
+- **The Media Index** (`/media-index/`) is a page of the book that lists every item by number, with a thumbnail, its
+  title, kind and address, where it appears (links to the item in its page), the version it entered with, where it
+  is stored and where it is served from. It can be filtered by kind and by where items are served from; without
+  JavaScript it is a plain list. It is the "List" view of "Plan: stable links", and the footer links to it.
+- **The editing view** (`/media-index/edit/`) is built on previews only, never on the public site. It is the same list
+  with fields for the name, the credit, the caption and alt text of each appearance, and a comment, and checks beside
+  each item: no alt text, alt text that repeats the caption, no credit, used on no page. Edits stay in the browser;
+  "Hand over changes" gives a change sheet that lists only what changed, which someone applies on a branch. Later,
+  perhaps: saving straight to GitHub, and lasting comments through a private Hypothesis group. The repository is
+  public, so permission letters and contact details stay out of it.
+- **Print** (one route, fixed): figures are numbered `Fig. 6.4` when the route is exported (the chapter's place in that
+  route, then the item's place in the chapter), never stored. Links to items in the text become "(Fig. 6.4)", the
+  item's short address and a QR code are printed with it, and the list of illustrations gives both numbers. Not built
+  until the print edition.
+- **Checks.** The build stops when a registered item's file or address has changed or gone, and when an item of a
+  frozen version has no number. **Freezing** gains a step: number the version's new items and commit the register with
+  the version's entry in `versions.json`.
+
+## Plan: the References page
+
+Agreed with the publisher on 2026-11-22. The bibliography already works as a register for works: each is entered once,
+with a permanent key. Not built yet.
+
+- **One page for the whole book**, `/references/`, lists every work in the bibliography once, formatted in the house
+  style, each with an anchor made from its key (`/references/#hall2001`). Under each work: every passage that cites it
+  (page and paragraph) and every page whose reference list includes it. The footer links to it.
+- **Citations** link to the work in their page's own reference list when the page lists it, and otherwise to its entry
+  on the References page, no longer to the first page in reading order that lists it. The popups stay.
+- **Year letters** (Stengers 2005a and 2005b) are fixed for the whole book, also once reference lists are generated
+  page by page.
+- **Later, perhaps** (the publisher, 2026-11-22: "keep it for later"): references edited in a Zotero group library and
+  handed over to `references/bibliography.json` on a branch, and downloads of the bibliography as BibTeX, RIS and
+  CSL-JSON.
 
 ## Plan, not yet confirmed: several routes through a book
 
@@ -512,8 +636,10 @@ The idea: a book can have more than one table of contents. Each is a route of it
 - **Books with one table of contents.** A home page without `.route` headings works exactly as now (the menu is the route). A second route is opt-in.
 - **Order and sections per route.** The build works out a reading order, previous and next, and the section label of each page once per route, with today's rule (the chapters in turn, each followed by the pages its cards lead to). A page can be in Podcasts on one route and in Rocks on the other.
 - **What readers see.** The home page shows the book's title, cover and introduction, then every route's contents, the starting route first. The header has a route switch beside the menu ("Materials | Objects"), plain links like the Page / Markdown switch, and the menu shows the chapters of the current route. A chapter page belongs to one route and always shows it. A material page on several routes shows the route the reader came from (with JavaScript; without it, the starting route) and names its places ("In Podcasts · in Rocks"). Switching route on a material page stays on the page if the other route has it, otherwise goes to that route's contents.
-- **Paragraph numbers.** Every page numbers its own text, chapter pages included. Extracts keep their source's numbers ("Nassar, para. 12–18") and link back to it; they do not count in the chapter's series. That is a new rule for extracts only, in a new contract version; the numbering of existing pages does not change.
-- **References.** Stay at the end of each page. An extract brings the references cited in its paragraphs. A citation whose work its page does not list links to the first page that lists it in the starting route's order (until the Pandoc citations make every page list what it cites).
+- **Paragraph numbers.** Every page numbers its own text, chapter pages included. Extracts keep their source's numbers ("Nassar, para. 12–18") and link back to it; they do not count in the chapter's series. That is a new rule for extracts only, in a new contract version; the numbering of existing pages does not change. Routes reorder pages, not paragraphs, so a paragraph's number is the same on every route.
+- **Extracts are named, not numbered** (note added 2026-11-22). An extract should point at its passage by a name given to that passage in its source page, not by paragraph numbers (`#p12-p18`), because those move when the source changes above the passage, and the chapter would then silently show other paragraphs. The build works out the numbers for the extract's label ("Nassar, paras 12–18") at every build. This matters only if chapters show extracts (open question 2).
+- **References.** Stay at the end of each page. An extract brings the references cited in its paragraphs. A citation whose work its page does not list links to its entry on the References page (see "Plan: the References page").
+- **Media.** Every media item keeps its one number from the media register on every route; lists of media follow the route's order (see "Plan: media register, item pages and the Media Index").
 - **Build and contract.** `publication.json` gets `routes`, each with its own reading order; `readingOrder` stays and means the starting route. Each route gets its own `publication.md`. An extract block (`::: {.extract from="essays/aya_nassar.md#p12-p18"}`) is filled in from the source page. The contract and the toolkit's version go up.
 
 Open questions:
@@ -528,6 +654,6 @@ Open questions:
 A summary of the Mattering Press house style (Formatting & Style Guide, August 2025) as it applies to the build. The guide itself is not kept in this public repository; ask the publisher for it.
 
 - **Citation:** MHRA-based author-date. In the text: `(Nassar 2026: para. 12)`, with paragraph numbers used where there are no pages. Reference list in MHRA bibliography form: single quotation marks, chapter titles in sentence case, book titles in italics, online sources as `<URL> [accessed 19 November 2026]`. No stock CSL style matches exactly, so the build will carry its own, tested against the guide's examples.
-- **Figures:** numbered `Fig. 2.3` (chapter, then image), with the photographer or source in the caption. Item pages show the figure number beside their word-based address.
+- **Figures:** on the web every media item shows its own number from the media register, and its item page gives it beside its word-based address. In print, figures are numbered `Fig. 6.4` (chapter, then image) for the printed route when it is exported, with the item's short address and QR code (the publisher, 2026-11-22, replacing `Fig. 2.3` everywhere; see "Plan: media register, item pages and the Media Index"). The photographer or source goes in the caption: the item's credit.
 - **Text:** British spelling (-ise), single quotation marks with double ones for quotes inside quotes, en dashes with spaces for parenthetical clauses. This also applies to the site's own interface text.
 - **Images online:** our own rule, not the guide's. Each image is published in several widths (800, 1200, 1600 and 2400 px), JPEG at about quality 82, chosen by the browser through `srcset`, with deep zoom from the full-resolution original.
