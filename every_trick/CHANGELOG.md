@@ -11,6 +11,18 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of every_trick’ in `DEVELOPMENT.md`.
 
+## 1.6.0
+
+22 November 2026. One line on phones, and every podcast timed.
+
+- On a phone the player is a single line: play, time, position, a ⋯ button and, at the foot of the window, ×. Back,
+  forward, speed and "Follow text" are in the small panel the ⋯ button opens, which also says what is playing. Wider
+  screens keep every control in the line.
+- Every podcast transcript is timed paragraph by paragraph, so each page has the ▸ on the transcript's rule and
+  follows the recording paragraph by paragraph.
+- `scripts/align.mjs` now starts its report with what needs a person to listen: untimed paragraphs, starts it is
+  unsure of, cues too fast or too slow for speech, talk left out of the text, and written timecodes that disagree.
+
 ## 1.5.0
 
 21 November 2026. Transcripts timed paragraph by paragraph.

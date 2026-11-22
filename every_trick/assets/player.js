@@ -145,15 +145,43 @@
     var message = document.createElement('p');
     message.className = 'player__message';
     message.hidden = true;
-    [play, time, seek, back, forward, speed].forEach(function (el) { controls.appendChild(el); });
+    // On a narrow player (a phone) the controls are one line: play, time, position, "More" and, when docked, ×. The
+    // others (back, forward, speed, Follow text) wait in a small panel that "More" opens. On a wide player they sit in
+    // the line itself and "More" is hidden. Both are the same buttons, so nothing moves when the player docks.
+    var moreButton = button('player__more-toggle', 'More controls', '<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="3" cy="8" r="1.4"/><circle cx="8" cy="8" r="1.4"/><circle cx="13" cy="8" r="1.4"/></svg>');
+    var more = document.createElement('div');
+    more.className = 'player__more';
+    more.id = audio.id + '-more';
+    moreButton.setAttribute('aria-expanded', 'false');
+    moreButton.setAttribute('aria-controls', more.id);
+    var moreNow = document.createElement('p');   // the panel says what is playing, which the one-line bar has no room for
+    moreNow.className = 'player__more-now';
+    var moreTitle = document.createElement('span');
+    moreTitle.className = 'player__title';
+    moreTitle.textContent = title;
+    var moreWhere = document.createElement('span');
+    moreWhere.className = 'player__where';
+    moreNow.appendChild(moreTitle);
+    moreNow.appendChild(moreWhere);
+    more.appendChild(moreNow);
+    [play, time, seek, moreButton, more].forEach(function (el) { controls.appendChild(el); });
+    [back, forward, speed].forEach(function (el) { more.appendChild(el); });
     if (cues.length) {
-      self.followButton = button('player__follow', '', 'Follow<span class="player__wide">&nbsp;text</span>');
-      self.followButton.setAttribute('aria-label', 'Follow text');
+      self.followButton = button('player__follow', '', 'Follow text');
       self.followButton.setAttribute('aria-pressed', follow ? 'true' : 'false');
       self.followButton.addEventListener('click', function () { setFollow(!follow); });
-      controls.appendChild(self.followButton);
+      more.appendChild(self.followButton);
     }
     controls.appendChild(close);
+    function setMore(open) {
+      moreButton.setAttribute('aria-expanded', open ? 'true' : 'false');
+      dock.classList.toggle('is-more-open', open);
+    }
+    moreButton.addEventListener('click', function () { setMore(moreButton.getAttribute('aria-expanded') !== 'true'); });
+    dock.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && dock.classList.contains('is-more-open')) { setMore(false); moreButton.focus(); }
+    });
+    document.addEventListener('click', function (e) { if (!controls.contains(e.target)) setMore(false); });
     outer.insertBefore(dock, audio);
     dock.appendChild(now);
     dock.appendChild(controls);
@@ -203,13 +231,13 @@
       if (current) current.el.classList.remove('is-current');
       current = cue;
       if (cue) cue.el.classList.add('is-current');
-      nowWhere.textContent = cue ? describe(cue.el) : '';
+      nowWhere.textContent = moreWhere.textContent = cue ? describe(cue.el) : '';
       if (cue && follow && self === active) self.scrollToCue();
     }
     self.clearCue = function () {   // another recording is playing: only its passage is marked
       if (current) current.el.classList.remove('is-current');
       current = null;
-      nowWhere.textContent = '';
+      nowWhere.textContent = moreWhere.textContent = '';
     };
     self.scrollToCue = function () {
       if (!current) return;

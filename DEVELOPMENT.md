@@ -408,13 +408,17 @@ Agreed with the publisher on 2026-11-19. These fix the data; players and viewers
 
 Agreed with the publisher on 2026-11-21, after a reviewer's notes on the first proposal. Aya Nassar's episode
 (`essays/aya_nassar.md`) is the test page for editorial accuracy as well as for playback. Players for video and
-documents are planned separately; this plan settles audio. Status: steps 1 and 2 are built. Aya Nassar's cue file
-is in the repository for the listening check and is not to reach `main` until that check is done.
+documents are planned separately; this plan settles audio. Status: steps 1 to 3 are built; on 2026-11-22 the publisher
+made paragraph timing the standard for every podcast page, with the alignment report saying which cues need a person
+to listen.
 
 - **The player stays in the page**, under "Podcast", built on the browser's `<audio>`, so that it plays without
   JavaScript. `filters/embeds.lua` writes it with the recording's length, which the build reads from the MP3 itself
   (`every_trick/audio.mjs`); `assets/player.js` adds the controls: play, time and length, position, back and forward
-  15 seconds, speed, and "Follow text" where the transcript has cues.
+  15 seconds, speed, and "Follow text" where the transcript has cues. On a narrow player (a phone; the publisher,
+  2026-11-22) the controls are one line, play, time, position, "More" (⋯) and, when docked, ×; back, forward, speed
+  and Follow text wait in a small panel that "More" opens, which also says what is playing. They are the same
+  buttons in both layouts, so nothing moves when the player docks.
 - **Docked bar.** While a recording plays, or is paused part-way, and its player is out of view, the player sits as a
   bar at the foot of the window, with the title and the speaker and paragraph being heard ("Aya Nassar · para. 17").
   Docking is a class on the player: the `<audio>` element and the buttons never move in the page, so playback
@@ -436,9 +440,13 @@ is in the repository for the listening check and is not to reach `main` until th
   whisper.cpp transcribes the recording offline with a time for every word, and those words are matched against the
   edited transcript. Speaker labels, bracketed directions, timecodes and unnumbered lines are not matched. Words heard
   between two paragraphs that the text does not have belong to the paragraph after them. The script writes the cue
-  file (never over one that exists, which is the editor's) and a report: when each paragraph starts, the written
-  timecodes checked against those times, and the places where text and recording differ, grouped as words that look
-  or sound alike (check these first), heard but not in the text, in the text but not heard, and rephrased.
+  file (never over one that exists, which is the editor's) and a report: first what needs attention (untimed
+  paragraphs, a start moved more than 5 seconds by words the text does not have, paragraphs heard less than 60% as
+  written, cues too fast or too slow for speech, 10 seconds or more of talk inside a cue that the text leaves out,
+  talk before the first or after the last paragraph, written timecodes more than 3 seconds off), then when each
+  paragraph starts, the written timecodes checked, and the places where text and recording differ, grouped as words
+  that look or sound alike, heard but not in the text, in the text but not heard, and rephrased. `--json <file>` writes
+  the same findings for scripts.
 - **Correcting a cue:** change its start time in the `.vtt` file. **Leaving a passage untimed:** delete its cue and
   write `NOTE untimed: <its first words>` in its place. An untimed paragraph has no ▸, and nothing is marked while it
   plays. When the text changes, the build warns about cues that no longer match a paragraph.

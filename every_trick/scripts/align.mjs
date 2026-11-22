@@ -34,6 +34,7 @@ const FILLERS = new Set(['um', 'uh', 'er', 'erm', 'ah', 'eh', 'mm', 'hmm', 'mhm'
 const args = process.argv.slice(2);
 const page = args.find((a) => !a.startsWith('--'));
 const reportPath = args.includes('--report') ? args[args.indexOf('--report') + 1] : null;
+const jsonPath = args.includes('--json') ? args[args.indexOf('--json') + 1] : null;   // the same findings, for scripts
 if (!page) { console.error('usage: node scripts/align.mjs essays/<page>.md [--report <file>]'); process.exit(1); }
 const html = join(REPO_ROOT, '_site', page.replace(/\.md$/, ''), 'index.html');
 if (!existsSync(html)) { console.error(`${html} is missing: run npm run build first`); process.exit(1); }
@@ -68,7 +69,7 @@ const end = source.indexOf('<h2', start);
 const section = source.slice(start, end < 0 ? undefined : end);
 const blocks = [];   // { kind: 'para' | 'timecode' | 'other', n, text, speaker, words: [...] }
 let speaker = '';
-for (const m of section.matchAll(/<div id="p(\d+)" class="para[^"]*">([\s\S]*?)<\/div>|<p>([\s\S]*?)<\/p>|<figure[\s\S]*?<\/figure>|<aside[\s\S]*?<\/aside>/g)) {
+for (const m of section.matchAll(/<div id="p(\d+)" class="para[^"]*"[^>]*>([\s\S]*?)<\/div>|<p>([\s\S]*?)<\/p>|<figure[\s\S]*?<\/figure>|<aside[\s\S]*?<\/aside>/g)) {
   if (m[1]) {
     const text = plain(m[2]);
     const label = SPEAKER.exec(text);
@@ -192,11 +193,61 @@ players.forEach((pl, rec) => {
     const before = timed[i - 1];
     if (!before || before.lastA + 1 >= p.startA) return;
     const lead = A[before.lastA + 1];
-    if (lead.rec === rec && p.start - lead.start < 30) p.start = lead.start;
+    if (lead.rec === rec && p.start - lead.start < 30) {
+      p.lead = { seconds: p.start - lead.start, words: A.slice(before.lastA + 1, p.startA).map((w) => w.word) };
+      p.start = lead.start;
+    }
   });
   timed.forEach((p, i) => { p.end = i + 1 < timed.length ? timed[i + 1].start : p.lastWord; });
   pl.paras = timed;
 });
+
+// ---- what needs a person's attention ------------------------------------------------------------------------
+// Signs that a cue may be wrong, or that a stretch of the recording is not in the text, to check by ear first.
+const short = (s, n = 9) => { const w = s.split(' '); return w.slice(0, n).join(' ') + (w.length > n ? ' …' : ''); };
+const quote = (words, n = 12) => `“${short(words.join(' '), n)}”`;
+const opOfA = new Array(A.length).fill(null);
+for (const o of ops) if (o.a !== null) opOfA[o.a] = o.op;
+const attention = [];
+const flag = (p, why, at) => attention.push({ n: p ? p.n : null, rec: p && !p.untimed ? p.rec : at?.rec ?? null, at: at ? at.start : p && !p.untimed ? p.start : null,
+  first: p ? short(p.text.replace(SPEAKER, ''), 8) : '', why });
+for (const p of paras) {
+  if (p.untimed) { flag(p, 'untimed: too few of its words were heard. Time it by hand, or leave it untimed.'); continue; }
+  if (p.lead && p.lead.seconds > 5) flag(p, `starts ${p.lead.seconds.toFixed(0)} s before its first written words, with words the text does not have there (${quote(p.lead.words)}): check the start.`);
+  if (p.match < 0.6) flag(p, `only ${Math.round(p.match * 100)}% of its words were heard as written: the start may be off.`);
+  const words = p.words.length, seconds = p.end - p.start;
+  if (words >= 12 && words / seconds > 4.5) flag(p, `${words} words in ${seconds.toFixed(0)} s, too fast for speech: the cue is probably too short.`);
+  if (seconds > 20 && words / seconds < 1) flag(p, `${words} words in ${seconds.toFixed(0)} s, too slow for speech: the cue probably runs on over something else.`);
+}
+players.forEach((pl, rec) => {
+  pl.paras.forEach((p, i) => {
+    // heard words inside the cue that the text does not have: the paragraph stays marked while they play
+    const to = i + 1 < pl.paras.length ? pl.paras[i + 1].startA - (pl.paras[i + 1].lead ? pl.paras[i + 1].lead.words.length : 0) : A.findLastIndex((w) => w.rec === rec) + 1;
+    // the longest unbroken stretch of words heard here that the text does not have (filler words do not break it)
+    let run = [], longest = [];
+    for (let k = p.startA; k < to; k++) {
+      if (opOfA[k] === 'unwritten') { if (!FILLERS.has(A[k].key)) run.push(A[k]); }
+      else run = [];
+      if (run.length > longest.length) longest = run.slice();
+    }
+    const runSeconds = longest.length ? longest.at(-1).end - longest[0].start : 0;
+    if (longest.length >= 20 || runSeconds >= 10) {
+      flag(p, `${runSeconds.toFixed(0)} s of talk in this cue that the text leaves out (${quote(longest.map((w) => w.word))}): the paragraph stays marked while it plays. Fine if it was cut on purpose.`, longest[0]);
+    }
+    if (i && p.start <= pl.paras[i - 1].start) flag(p, 'starts before the paragraph above it: the cues are out of order.');
+  });
+  const mine = A.filter((w) => w.rec === rec);
+  const first = pl.paras[0], last = pl.paras.at(-1);
+  if (first && first.start > 15) flag(null, `the recording plays ${first.start.toFixed(0)} s before its first timed paragraph (para. ${first.n}).`, { start: 0, rec });
+  const tail = last ? mine.filter((w) => w.start > last.lastWord && !FILLERS.has(w.key)) : [];
+  if (tail.length >= 15) flag(null, `the recording goes on for ${(mine.at(-1).end - last.lastWord).toFixed(0)} s after its last timed paragraph (para. ${last.n}), with words not in the text (${quote(tail.map((w) => w.word))}).`, { start: last.lastWord, rec });
+});
+blocks.forEach((b, i) => {
+  if (b.kind !== 'timecode') return;
+  const next = blocks.slice(i + 1).find((x) => x.kind === 'para');
+  if (next && !next.untimed && Math.abs(next.start - b.seconds) > 3) flag(next, `the written timecode ${b.text} is ${(next.start - b.seconds).toFixed(0)} s from this paragraph's start: one of them is off.`);
+});
+attention.sort((a, b) => (a.rec ?? 0) - (b.rec ?? 0) || (a.at ?? 0) - (b.at ?? 0));
 
 // ---- the cue files ----------------------------------------------------------------------------------------
 const today = new Date().toISOString().slice(0, 10);
@@ -217,7 +268,6 @@ for (const pl of players) {
 
 // ---- the report -------------------------------------------------------------------------------------------
 const lines = [];
-const short = (s, n = 9) => { const w = s.split(' '); return w.slice(0, n).join(' ') + (w.length > n ? ' …' : ''); };
 lines.push(`# Timing report: ${page}`, '', `Made by every_trick/scripts/align.mjs on ${today}, with whisper.cpp (${basename(MODEL)}).`, '');
 lines.push('## Recordings', '');
 for (const { pl, out, kept } of written) {
@@ -226,6 +276,8 @@ for (const { pl, out, kept } of written) {
 }
 const untimed = paras.filter((p) => p.untimed);
 lines.push('', `Paragraphs left untimed (too few of their words were heard): ${untimed.length ? untimed.map((p) => `para. ${p.n} (“${short(p.text, 6)}”)`).join(', ') : 'none'}.`);
+lines.push('', '## Needs attention', '', 'Cues that may be wrong, and stretches of the recording that are not in the text. Listen at the time given.', '',
+  ...(attention.length ? attention.map((f) => `- ${f.at !== null ? `${players[f.rec].id} ${clock(f.at, false)}` : 'untimed'}${f.n ? `, para. ${f.n} (“${f.first}”)` : ''}: ${f.why}`) : ['Nothing.']));
 
 lines.push('', '## The written timecodes, checked', '', 'A timecode is taken to mark the paragraph after it.', '', '| timecode | paragraph after it | that paragraph starts at | difference |', '|---|---|---|---|');
 blocks.forEach((b, i) => {
@@ -315,6 +367,18 @@ lines.push('### Rephrased', '', 'Other places where the words differ: mostly the
 const listed = groups.alike.length + groups.words.length + groups.unwritten.length + groups.unheard.length;
 const report = lines.join('\n');
 if (reportPath) writeFileSync(reportPath, report);
+if (jsonPath) {
+  writeFileSync(jsonPath, JSON.stringify({
+    page, recordings: players.map((pl) => ({ id: pl.id, title: pl.title, path: pl.path, cues: pl.paras.length })),
+    paragraphs: paras.length, untimed: untimed.map((p) => p.n), attention,
+    timecodes: blocks.flatMap((b, i) => {
+      if (b.kind !== 'timecode') return [];
+      const next = blocks.slice(i + 1).find((x) => x.kind === 'para');
+      return [{ timecode: b.text, seconds: b.seconds, para: next?.n ?? null, start: next && !next.untimed ? next.start : null }];
+    }),
+    differ: { alike: groups.alike.length, unwritten: groups.unwritten.length, unheard: groups.unheard.length, rephrased: groups.words.length, alikeLines: groups.alike },
+  }, null, 2));
+}
 else console.log(report);
-console.log(`\n${paras.length} paragraphs, ${paras.length - untimed.length} timed; ${listed} passages where text and recording differ.` + (reportPath ? ` Report: ${reportPath}` : ''));
+console.log(`\n${paras.length} paragraphs, ${paras.length - untimed.length} timed; ${attention.length} things need attention; ${listed} passages where text and recording differ.` + (reportPath ? ` Report: ${reportPath}` : ''));
 for (const { out } of written) console.log(`cues: ${out}`);
