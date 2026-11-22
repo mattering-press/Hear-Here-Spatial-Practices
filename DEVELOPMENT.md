@@ -8,7 +8,7 @@ retired and forwards its visitors to the new site.
 - Production branch: `main`
 - Production site: `https://hearhere.matteringpress.org/` (GitHub Pages, built by GitHub Actions from `main`)
 - Frozen versions: `https://hearhere.matteringpress.org/v<id>/`, listed in `versions.json`
-- Branch previews: private, on Cloudflare Pages (see "Private previews")
+- Branch previews: open (unlisted) on Cloudflare Pages, or private for a `private-` branch (see "Previews")
 
 ## How it fits together
 
@@ -16,7 +16,7 @@ retired and forwards its visitors to the new site.
 Local feature branch
     | git push origin <branch>
     v
-Feature branch on GitHub  ->  private preview on Cloudflare Pages
+Feature branch on GitHub  ->  preview on Cloudflare Pages
     |
     | review the preview, then merge a pull request
     v
@@ -52,7 +52,7 @@ git merge origin/main
 ## Previewing a branch on Juncture (retired)
 
 Until version 0.1 branches were previewed on Juncture as below. Juncture now forwards every page to the new site, so
-use the private previews instead (see "Private previews").
+use the previews instead (see "Previews").
 
 1. Commit on the feature branch and push it: `git push origin <branch>`.
 2. Open the page you changed with `?ref=<branch>`:
@@ -89,7 +89,7 @@ that should not be seen.
 
 ## Publishing to production
 
-1. Review the pushed branch in its private preview (see "Private previews"), on desktop and on a phone. The
+1. Review the pushed branch in its preview (see "Previews"), on desktop and on a phone. The
    publisher may waive the preview for a change; the pull request is still needed.
 2. Open a pull request from the feature branch to `main`.
 3. Merge it once the preview has been approved, or waived, and the checks on the pull request have passed.
@@ -104,7 +104,7 @@ pull request is the record of what was published.
 
 `npm run build` and `npm run serve` in `every_trick/` (see "Static twin" below) show the site at `http://localhost:8080/`,
 made by the same build as the previews and the public site. Check the pages you changed there before pushing, at
-desktop and phone widths. The private preview adds only the real hosting.
+desktop and phone widths. The preview adds only the real hosting.
 
 ## Static twin
 
@@ -172,7 +172,7 @@ What is in `every_trick/`:
 - `CHANGELOG.md`: every version of the toolkit and what changed in it
 
 GitHub Actions (`.github/workflows/static-twin.yml`) builds and checks the twin on every push and pull
-request, and uploads every pushed branch as a private preview (see "Private previews"). It fetches the whole
+request, and uploads every pushed branch as a preview (see "Previews"). It fetches the whole
 history with its tags, so that it can build the frozen versions. On `main` it also deploys `_site/` to GitHub
 Pages, which serves it at `https://hearhere.matteringpress.org/` (the deploy is skipped if Pages is not enabled
 with "GitHub Actions" as its source). `_site/` is never committed.
@@ -346,31 +346,36 @@ At the switch to the static edition, `node scripts/to-citation-keys.mjs` prints 
 citations into Pandoc citations (`[@becker2007, p. 74]`, `[-@fryer1984]` where the author is named in the sentence) and
 replaces each typed list with the list that citeproc generates. It is a dry run: it prints a diff and changes nothing.
 
-## Private previews
+## Previews
 
-Every push to any branch also uploads that branch's build to Cloudflare Pages as a private preview, behind
-Cloudflare Access. Previews are throwaway: they are not versions, never enter `versions.json`, and are deleted with
-their branch.
+Every push to any branch also uploads that branch's build to Cloudflare Pages as a preview. Previews are open: anyone
+with the address can look, without signing in, as anyone can read the branch's Markdown on GitHub. A branch whose name
+starts with `private-` gets a private preview instead, behind Cloudflare Access, for the rare case that needs one.
+Previews are throwaway: they are not versions, never enter `versions.json`, and are deleted with their branch.
 
-- **Where:** each branch has a stable address showing its latest push, `https://<branch>.<project>.pages.dev`, and
-  every push also gets its own address that stays as it was until deleted, for comparing iterations side by side.
-  The workflow run's summary on GitHub lists both.
-- **Who can see them:** only the email addresses on the project's Access list. A visitor enters their email and
-  receives a one-time code; no account or password is needed.
-- **Search engines:** they cannot reach previews, which are behind Access. (Builds no longer carry `noindex`
-  since version 0.1.)
+- **Where:** each branch has a stable address showing its latest push, `https://<branch>.hearhere-preview.pages.dev`
+  (`hearhere-private` for a private branch), and every push also gets its own address that stays as it was until
+  deleted, for comparing iterations side by side. The workflow run's summary on GitHub lists both.
+- **Who can see them:** an open preview, anyone with its address. Addresses are made from branch names, which are
+  public on GitHub, so an open preview is unlisted, not hidden. A private preview, only the email addresses on that
+  project's Access list: a visitor enters their email and receives a one-time code; no account or password is needed.
+- **Search engines:** every preview is sent with `X-Robots-Tag: noindex, nofollow` (a `_headers` file uploaded with
+  it, never with the public site), so search engines leave previews out even if a link to one is posted somewhere.
 - **Cleanup:** deleting a branch on GitHub deletes its previews (`.github/workflows/preview-cleanup.yml`). Old
   previews of a branch that is kept can be deleted by running that workflow by hand.
 - **Setup:** the repository secrets `CLOUDFLARE_API_TOKEN` (an account token with only "Cloudflare Pages: Edit",
-  renewed yearly) and `CLOUDFLARE_ACCOUNT_ID`. The first push creates the project `hearhere-preview`, whose
-  production branch is one that never deploys, so every deployment, `main` included, is a preview covered by
-  Access.
-- **Protecting previews with Access, once:** in the Cloudflare dashboard open Workers & Pages, then the
-  `hearhere-preview` project, then Settings, General, and enable the Access policy for preview deployments. Then in
-  Zero Trust, Access, Applications, edit the application this created and set its policy to allow the email
-  addresses of the people who may see previews.
-- **Confidentiality:** the repository is public, so a branch's Markdown can be read on GitHub. Previews hide the
-  rendered site, not the source; embargoed material needs a separate private repository.
+  renewed yearly) and `CLOUDFLARE_ACCOUNT_ID`. The first push creates the open project `hearhere-preview`, whose
+  production branch is one that never deploys, so every deployment, `main` included, is a preview. Its Access policy
+  for preview deployments is off (Workers & Pages, `hearhere-preview`, Settings, General).
+- **Private previews, set up once before the first `private-` branch:** in the Cloudflare dashboard, Workers & Pages,
+  create a project named `hearhere-private` (Direct Upload) with production branch `cloudflare-production-unused`;
+  then in its Settings, General, enable the Access policy for preview deployments, and in Zero Trust, Access,
+  Applications, set the policy of the application this created to allow the email addresses of the people who may
+  see it. The workflow never creates this project: a `private-` branch is not previewed until it exists, and a
+  private preview that opens without signing in is deleted at once and the run fails.
+- **Confidentiality:** the repository is public, so a branch's Markdown can be read on GitHub, `private-` branches
+  included. A private preview hides the rendered site, not the source; embargoed material needs a separate private
+  repository.
 
 ## Plan: stable links, versions and print companions
 
