@@ -19,6 +19,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { BIBLIOGRAPHY, locate, prepareReferences, report as citationReport } from './citations.mjs';
 import { convert, REPO, REPO_ROOT, repoPath } from './convert.mjs';
+import { mp3Duration, paragraphCues } from './audio.mjs';
 import { makeImages } from './images.mjs';
 import { checkout, longDate, matchParagraphs, readRegistry } from './versions.mjs';
 
@@ -58,7 +59,7 @@ const ASSET_VERSION = (() => {
 })();
 const SITE = join(REPO_ROOT, '_site');
 const PANDOC = process.env.PANDOC || 'pandoc';
-const FILTERS = ['figures', 'embeds', 'cards', 'transcript', 'links', 'citations', 'paragraphs', 'margins', 'contract'];
+const FILTERS = ['figures', 'embeds', 'cards', 'transcript', 'links', 'citations', 'paragraphs', 'cues', 'margins', 'contract'];
 const started = Date.now();
 const fail = (message) => { console.error(message); process.exit(1); };
 
@@ -159,6 +160,23 @@ for (const edition of editions) {
   }
 }
 
+// The length of every MP3 in this repository that a page plays (audio.mjs), so that its player can show it before
+// anything is loaded, and its paragraph cues if it has a cue file (filters/cues.lua). Pages play them from GitHub; a link
+// to a file that is not there is reported by convert.mjs.
+const audio = {};
+{
+  const repo = REPO.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const onGitHub = new RegExp(`^https://(?:github\\.com/${repo}/raw|raw\\.githubusercontent\\.com/${repo})/(?:refs/heads/)?main/([^?#]+)$`);
+  for (const edition of editions) for (const page of edition.pages) {
+    for (const [, src] of page.markdown.matchAll(/twin-audio src="([^"]+)"/g)) {
+      const path = decodeURIComponent(onGitHub.exec(src)?.[1] ?? '');
+      if (!/\.mp3$/i.test(path) || path in audio || !edition.has(path)) continue;
+      const file = join(sourceOf(edition, path), path), cues = paragraphCues(file);
+      audio[path] = { duration: mp3Duration(file), ...(cues ? { cues: cues.cues, cueFile: path.replace(/\.mp3$/i, '.paragraphs.vtt') } : {}) };
+    }
+  }
+}
+
 // 4. Pandoc, twice per page. Stage 1 writes the page's Markdown view (index.md), and once more with absolute
 //    URLs for publication.md. Stage 2 turns index.md into HTML (index.html) and page.json.
 const warnings = editions.flatMap((edition) => edition.pages.flatMap((page) => page.warnings.map((w) => `${edition.dir}${w.file}:${w.line}  ${w.text}`)));
@@ -226,7 +244,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
   const scratch = join(work, edition.dir || 'latest');
   mkdirSync(scratch, { recursive: true });
   const manifest = join(scratch, 'manifest.json');
-  writeFileSync(manifest, JSON.stringify({ images: editionImages, by_url: byUrl, files: Object.fromEntries(edition.files.map((path) => [path, prefix + path])) }));
+  writeFileSync(manifest, JSON.stringify({ images: editionImages, by_url: byUrl, audio, files: Object.fromEntries(edition.files.map((path) => [path, prefix + path])) }));
   edition.manifest = manifest;
   // The bibliography, formatted once in the house style; citations.lua links each page's citations to it.
   let bibliography = join(edition.contentRoot, 'references', 'bibliography.json');

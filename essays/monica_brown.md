@@ -57,7 +57,7 @@ In November 2013, Monica was selected for a Callaloo Writing Fellowship at Golds
 
 But my mother hadn't signed up to be married to my father to return to Jamaica without doing her nursing training. So, when I was about four and a half, I returned to the UK. By the time I was five, I'd clocked several thousand air miles _\[laughs\]._
 
-We lived in Leamington between 1964 and 1972. My father insisted that he was going to use his skills and experience gained in the UK for nation-building back home, so we returned to Jamaica by ship. My mother, my brothers and I took a three-week journey from the UK to Jamaica via Vigo, Coruña, Tenerife, the Canary Islands, across the wicked Atlantic and then to La Guara in Venezuela, then to Trinidad and finally the last 1,000 miles to Jamaica. A tugboat covered that last stretch, and I saw the land emerging in the morning, and it made me gasp. It made me understand, with my European eyes, why the Caribbean was the reason Europeans shed blood over that region.
+We lived in Leamington between 1964 and 1972. My father insisted that he was going to use his skills and experience gained in the UK for nation-building back home, so we returned to Jamaica by ship. My mother, my brothers and I took a three-week journey from the UK to Jamaica via Vigo, Coruña, Tenerife, the Canary Islands, across the wicked Atlantic and then to La Guaira in Venezuela, then to Trinidad and finally the last 1,000 miles to Jamaica. A tugboat covered that last stretch, and I saw the land emerging in the morning, and it made me gasp. It made me understand, with my European eyes, why the Caribbean was the reason Europeans shed blood over that region.
 
 I'd had the opportunity in Leamington Spa to learn French. In the 1960s, my Head teacher, David Gay, insisted that his state school and his state students learn French. We were the only school in the country in the 1960s to teach French, and the passion for the language remained with me.
 
@@ -111,11 +111,11 @@ When he came here to the UK, he gave leadership to the Caribbean community in Le
 
 \[00:15:55\]
 
-**MONICA BRWON:** We're different in that we are very clear about ourselves. We have courage; we are not afraid to challenge. We are also interested in our African origin. As a result of returning to the UK, I've had the opportunity to explore my African heritage in a way that I would not have had, had I stayed in Jamaica.
+**MONICA BROWN:** We're different in that we are very clear about ourselves. We have courage; we are not afraid to challenge. We are also interested in our African origin. As a result of returning to the UK, I've had the opportunity to explore my African heritage in a way that I would not have had, had I stayed in Jamaica.
 
 The BBC had a program in 2007 on the 200th anniversary of the end of the slave trade, and they chose six people across the UK with connections to the Caribbean. They had people sending in their stories, and they chose mine. I have a recording I made with my late grandmother—who was born in 1903—recounting the great earthquake in Jamaica in 1907. In the recording, she described what she saw and how she felt. I sent this recording to the BBC and they chose me. They flew me to Jamaica and featured me on a radio program about my life and Chinese heritage. My mother's great-great-grandfather is Mr. Lee.
 
-We have a Chinese population in Jamaica, along with populations from Lebanon, Syria, Germany, and India. There's a town outside of Montego Bay called Sifah Town, where, if you go into the graveyards, you will see these German names: Hocker and Kamika. Then, there are people with my skin colour, this deep mahogany with blue eyes _\[laughs\]._ So, Jamaica is fascinating. We don't have to be taught diversity because we have lived it. It is in our history.
+We have a Chinese population in Jamaica, along with populations from Lebanon, Syria, Germany, and India. There's a town outside of Montego Bay called Seaford Town, where, if you go into the graveyards, you will see these German names: Hocker and Kamika. Then, there are people with my skin colour, this deep mahogany with blue eyes _\[laughs\]._ So, Jamaica is fascinating. We don't have to be taught diversity because we have lived it. It is in our history.
 
 My father is a man with a mission, a man who knew himself and a man who inspired us to know ourselves, to make a contribution. Wherever you are, you are a change maker. So, here we are in the UK now, and I can say that each one of us is a change maker in our chosen fields.
 
@@ -127,9 +127,9 @@ I remember coming home to my late father with these stories: “Dad, why do they
 
 **NIRMAL PUWAR:** Yeah, he wanted to make sure you didn't take on that inferiority complex they're trying to give you.
 
-**MONICA BROWN:** Absolutely! When we were eight, we didn't understand why it was like that. My brothers were in fights almost every day. My younger brother was so terrorised by a racist white boy that he wanted to throw himself off the Victoria Bridge.
+**MONICA BROWN:** Absolutely! Even when we were eight and we didn't understand why it was like that… My brothers were in fights almost every day. My younger brother was so terrorised by a racist white boy that he wanted to throw himself off the Victoria Bridge.
 
-Those who never had the opportunity to leave, to live in a country where their teachers, all the professionals—the stockbrokers, scientists, police officers, bank managers, and leaders—looked like them, didn’t have that kind of empowering experience. So, there's a lot of trauma work that needs to be undone and healed in our community so that we can be whole, organised and forward-thinking.
+We had never heard that story before. So if you multiply that misery throughout our community, that trauma throughout our community, and see people who never had the opportunity to leave, to live in a country where their teachers, all the professionals—the stockbrokers, scientists, police officers, bank managers, and leaders—looked like them, didn’t have that kind of empowering experience. So, there's a lot of trauma work that needs to be undone and healed in our community so that we can be whole, organised and forward-thinking.
 
 **NIRMAL PUWAR:** So, your father stayed there, and you came back.
 
@@ -159,7 +159,7 @@ So, my mum was present, but we recognise her sacrifice. To be very honest, it is
 
 **MONICA BROWN**: Yes, there is an exhibition at the Leamington Spa Art Gallery and Museum called _Unravelling History_. It combines the work of many textile artists from across the county. Annabelle Rainbow made contact with several Windrush Generation individuals, including Benjamin Zephaniah. The intriguing thing about them is that it's not just a painting and a quilt, but each installation is surrounded by the story of the person in their own words. So, this is an opportunity for the person to tell their own story.
 
-**NIRMAL PUWAR:** What do you remember from your mom's story?
+**NIRMAL PUWAR:** What do you remember from your mum's story?
 
 \[00:25:55\]
 
@@ -172,6 +172,10 @@ We had to organise correspondence back and forth with our MP, the Minister of St
 So, we had to fight guerrilla tech tactics. How many Caribbean families have the stamina and the skills to engage with authority in that way? We had the strength and the stamina because we are a united family. We have an active faith in God. We're Christians, and Jamaica taught us to be strong. You cannot live in Jamaica without learning to be strong.
 
 In many ways, you have to learn to respect nature. Jamaica has hurricane season every year, and I have lived through many hurricanes. I remember hurricane Gilbert in 2012, when winds of 150 or 60 miles tore off the roof of my house like tin foil. I became a refugee. You watch these refugees on television with nothing, and suddenly that’s you. Everything you have—your designer clothing, your belongings—I was working in television at the time, and I was a bit of a fashionista, but I have seen my shoes, and all my things reduced to mush.
+
+::: {.margin}
+Hurricane Gilbert struck Jamaica on 12 September 1988; Hurricane Sandy struck Jamaica on 24 October 2012.
+:::
 
 We were taken in as refugees for a week because our house was torn apart. When you live in that environment, you learn to humble yourself to nature. If you have faith, you learn to pray in the same way that Covid made many people who didn't pray engage with their faith. Something happens to you when you live in an environment that reminds you how small you are. In fact, you realise that you're nothing.
 

@@ -11,6 +11,49 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of every_trick’ in `DEVELOPMENT.md`.
 
+## 1.6.0
+
+22 November 2026. One line on phones, and every podcast timed.
+
+- On a phone the player is a single line: play, time, position, a ⋯ button and, at the foot of the window, ×. Back,
+  forward, speed and "Follow text" are in the small panel the ⋯ button opens, which also says what is playing. Wider
+  screens keep every control in the line.
+- Every podcast transcript is timed paragraph by paragraph, so each page has the ▸ on the transcript's rule and
+  follows the recording paragraph by paragraph.
+- `scripts/align.mjs` now starts its report with what needs a person to listen: untimed paragraphs, starts it is
+  unsure of, cues too fast or too slow for speech, talk left out of the text, and written timecodes that disagree.
+- The build's check of paragraph numbers also counts paragraphs that carry cue times; before, it skipped them.
+- A paragraph's cue now starts after the pause between it and the paragraph before, not on the edited last words of
+  the paragraph before, which is where several cues started on Monica Brown's and Catherine Hahn's pages.
+
+## 1.5.0
+
+21 November 2026. Transcripts timed paragraph by paragraph.
+
+- A podcast whose recording has a cue file (`media/audio/<recording>.paragraphs.vtt`) has every transcript paragraph
+  timed. A ▸ on the transcript's rule beside each paragraph plays the recording from there, the paragraph being heard
+  is marked on the rule, and "Follow text" follows paragraph by paragraph. A paragraph left untimed has no ▸ and is not
+  marked. The first page with cues is Aya Nassar's, including its addendum, which plays from its own recording.
+- `scripts/align.mjs` makes the cue files: on your own computer, whisper.cpp transcribes the recording with a time
+  for every word, and those words are matched against the edited transcript. It also writes a report for the editor
+  with each paragraph's start, the written timecodes checked, and the places where text and recording differ.
+- The build finds each cue's paragraph by its words, so cues survive renumbering between versions, and it warns when a
+  cue no longer matches any paragraph.
+
+## 1.4.0
+
+21 November 2026. A podcast player that stays with you.
+
+- Podcast pages have their own player: play, the time and the length of the recording (shown before anything has
+  loaded), a position bar, back and forward 15 seconds, and speed. Without JavaScript the browser's own player is
+  still there.
+- While a recording plays and you read on, the player waits at the foot of the window as a slim bar, with the title
+  and the speaker and paragraph you are hearing. It does not interrupt playback or move the keyboard focus, and its ×
+  stops the recording and puts the player back. On phones the recording can also be paused from the lock screen.
+- "Follow text" scrolls the transcript along with the recording, from one timecode to the next, and marks the passage
+  being heard on the transcript's rule. It is off until you turn it on, and scrolling the page yourself turns it off
+  again.
+
 ## 1.3.0
 
 21 November 2026. A way back from the whole book in Markdown.

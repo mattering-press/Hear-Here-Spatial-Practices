@@ -1,0 +1,19 @@
+WEBVTT
+
+NOTE
+Paragraph cues for “Hear Here Podcast: Aya Nassar – Addendum” (essays/aya_nassar.md), one cue per paragraph of the transcript,
+made by every_trick/scripts/align.mjs on 2026-11-22 and then checked by ear. The build finds each cue's paragraph by its
+words. To correct a cue, change its start time. To leave a paragraph untimed, delete its cue and write a line
+"NOTE untimed: <its first words>" in its place.
+
+00:00:00.120 --> 00:00:33.060
+NIRMAL PUWAR: We’ve walked along the rather curvy corridor from the archives to the Navy Room, and in prominence here is this very big wooden panel with gold lettering of place names and dates. What do you notice here, Aya?
+
+00:00:33.060 --> 00:01:10.080
+AYA NASSAR: I mean, walking in, you see several dates, and Egypt is very prominent on the top of the second list. The year next to it is 1801, and that would be the year when the British occupation of Egypt started. So here, it just appears as one year among many—there’s 1704 before it, 1805 after it, 1840 next to Syria—but 1801 is a pivotal moment in Egyptian history. That occupation lasted until 1954.
+
+00:01:10.080 --> 00:01:29.310
+So yeah, it feels odd to have that date and place smudged between the list of other dates and places, whereas it’s really an eventful conjuncture in Egyptian history.
+
+00:01:29.310 --> 00:01:46.680
+NIRMAL PUWAR: It does bring in a lot of connections and indexicalities to global geopolitical histories, connected to the armed forces. I think we’ll need another day to dwell on that.

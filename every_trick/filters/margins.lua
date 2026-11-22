@@ -16,7 +16,7 @@
 local count, media_count = 0, 0
 
 local function is_media(b)
-  if b.t == 'RawBlock' and b.format == 'html' then return b.text:match('^%s*<figure') or b.text:match('^%s*<audio') end
+  if b.t == 'RawBlock' and b.format == 'html' then return b.text:match('^%s*<figure') or b.text:match('^%s*<audio') or b.text:match('^%s*<div class="player"') end
   return b.t == 'Div' and b.classes:includes('gallery')
 end
 

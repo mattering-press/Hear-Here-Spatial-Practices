@@ -210,7 +210,7 @@ aside.margin .margin-body > :last-child { margin-bottom: 0; }
 /* media in the margin (a picture, an animated GIF, a video, an audio player): no number, no box, the full width of
    the margin */
 aside.margin.margin-media { padding: 0; border-left: 0; background: none; }
-aside.margin.margin-media :is(figure, audio) { width: 100%; margin: 0 0 0.75rem; float: none; }
+aside.margin.margin-media :is(figure, audio, .player) { width: 100%; margin: 0 0 0.75rem; float: none; }
 .margin-more { margin-top: 0.25rem; padding: 0; border: 0; background: none; color: var(--colour-link); font: inherit; font-weight: var(--weight-strong); text-decoration: underline; cursor: pointer; }
 :is(aside.margin, .margin-mark).is-active, aside.margin:target { border-left-color: var(--colour-accent); background: var(--colour-highlight); }
 .margin-mark.is-active { background: var(--colour-highlight); border-radius: 3px; }
@@ -261,9 +261,58 @@ smartframe-embed:not(:defined) { aspect-ratio: auto !important; }   /* third-par
 .zoom-dialog :focus-visible { outline-color: #fff; }
 .zoom-dialog__viewer { flex: 1; min-height: 0; }
 
-/* podcasts: audio player, transcript and its timecodes */
+/* podcasts: the player (assets/player.js; without JavaScript, the browser's own), the bar it becomes at the foot of
+   the window while playing out of view, the transcript and its timecodes */
 audio { display: block; width: 100%; margin: var(--gap) 0; }
+.player { margin: var(--gap) 0; }
+.player audio { margin: 0; }
+.player__dock { container-type: inline-size; padding: 0.3rem 0.9rem 0.3rem 0.3rem; border: 1px solid var(--colour-rule); border-radius: 999px; background: var(--colour-surface); }
+.player__controls { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem 0.4rem; }
+.player__dock button { display: inline-flex; flex: none; align-items: center; justify-content: center; min-width: 2.5rem; min-height: 2.5rem; padding: 0 0.5rem; border: 0; border-radius: var(--radius); background: none; color: var(--colour-text); font: inherit; font-size: 0.875rem; font-weight: var(--weight-strong); font-variant-numeric: tabular-nums; white-space: nowrap; cursor: pointer; }
+.player__dock button:hover { background: var(--colour-highlight); color: var(--colour-accent); }
+.player__dock svg { width: 1rem; height: 1rem; fill: currentColor; }
+.player__dock .player__play { border-radius: 999px; background: var(--colour-accent); color: #fff; }
+.player__dock .player__play:hover { background: var(--colour-text); color: var(--colour-surface); }
+.player__dock .player__follow[aria-pressed="true"], .player__dock .player__more-toggle[aria-expanded="true"] { background: var(--colour-text); color: var(--colour-surface); }
+.player__close svg { fill: none; stroke: currentColor; stroke-width: 1.75; }
+.player__time { flex: none; min-width: 7.5em; color: var(--colour-muted); font-size: 0.875rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.player__seek { flex: 1 1 8rem; min-width: 6rem; margin: 0; accent-color: var(--colour-accent); }
+/* back, forward, speed and Follow text: in the line on a wide player; on a narrow one, in the panel that "More" opens */
+.player__more { display: contents; }
+.player__now, .player__more-now, .player__dock .player__close, .player__dock .player__more-toggle { display: none; }
+.player__message { margin: 0.25rem 0.5rem; font-size: 0.875rem; }
+.player__dock.is-docked { position: fixed; z-index: 30; left: 0; right: 0; bottom: 0; padding: 0.35rem max(var(--gap), env(safe-area-inset-right)) calc(0.35rem + env(safe-area-inset-bottom)) max(var(--gap), env(safe-area-inset-left)); border: 0; border-top: 1px solid var(--colour-rule); border-radius: 0; box-shadow: 0 -4px 12px rgb(0 0 0 / 0.08); }
+.player__dock.is-docked > * { max-width: var(--wide); margin-left: auto; margin-right: auto; }
+.player__dock.is-docked .player__now { display: flex; gap: 0.4em; margin-top: 0.15rem; margin-bottom: 0; overflow: hidden; color: var(--colour-muted); font-size: 0.8125rem; white-space: nowrap; }
+.player__title { overflow: hidden; color: var(--colour-text); font-weight: var(--weight-strong); text-overflow: ellipsis; }
+.player__where { flex: none; }
+.player__where:not(:empty)::before { content: "· "; }
+.player__dock.is-docked .player__close { display: inline-flex; }
+@container (max-width: 34rem) {
+  .player__controls { flex-wrap: nowrap; gap: 0.25rem; }
+  .player__time { min-width: 0; font-size: 0.8125rem; }
+  .player__seek { flex: 1 1 auto; min-width: 3rem; }
+  .player__dock .player__more-toggle { display: inline-flex; }
+  .player__more { position: absolute; z-index: 2; top: calc(100% + 0.5rem); right: 0; display: none; flex-wrap: wrap; align-items: center; gap: 0.25rem; width: max-content; max-width: min(20rem, 100cqw); padding: 0.4rem; border: 1px solid var(--colour-rule); border-radius: var(--radius); background: var(--colour-surface); box-shadow: var(--shadow); }
+  .player__dock.is-more-open .player__more { display: flex; }
+  .player__dock.is-docked .player__more { top: auto; bottom: calc(100% + 0.6rem); }
+  .player__more-now { display: flex; flex-basis: 100%; gap: 0.4em; margin: 0 0.4rem 0.2rem; overflow: hidden; color: var(--colour-muted); font-size: 0.8125rem; white-space: nowrap; }
+  .player__dock.is-docked .player__now { display: none; }   /* one line: what is playing is said in the panel */
+}
+.has-docked-player { scroll-padding-bottom: var(--docked-player-height, 5rem); }
+.has-docked-player body { padding-bottom: var(--docked-player-height, 5rem); }
 .transcript { padding-left: 1.25rem; border-left: 2px solid var(--colour-transcript); }
+/* the passage being heard: its stretch of the transcript's rule in the accent colour. Transcript paragraphs are
+   positioned for that mark, so their numbers are placed from them, where the others are placed from main. */
+.transcript > :is(.para, p) { position: relative; }
+.transcript .para-link { right: calc(100% + 1.25rem + 2px + 0.9rem); }   /* clear of the ▸ on the rule */
+/* the ▸ on the rule beside a timed paragraph (assets/player.js), shown on hover and focus, always on touch screens */
+.para-play { position: absolute; z-index: 1; top: calc((var(--font-size) * var(--line-height) - 1.5rem) / 2); left: calc(-1.25rem - 1px - 0.75rem); display: grid; place-items: center; width: 1.5rem; height: 1.5rem; padding: 0; border: 1px solid var(--colour-transcript); border-radius: 999px; background: var(--colour-background); color: var(--colour-accent); cursor: pointer; opacity: 0; }
+.para-play svg { width: 0.55rem; height: 0.55rem; margin-left: 0.1rem; fill: currentColor; }
+.para:hover > .para-play, .para-play:focus-visible, .is-current > .para-play { opacity: 1; }
+.para-play:hover, .is-current > .para-play { border-color: var(--colour-accent); background: var(--colour-accent); color: #fff; }
+@media (hover: none) { .para-play { opacity: 1; } }
+.transcript .is-current::before { content: ""; position: absolute; top: 0; bottom: 0; left: calc(-1.25rem - 3px); width: 4px; border-radius: 2px; background: var(--colour-accent); }
 a.timecode { color: var(--colour-accent); font-size: 0.8125rem; font-weight: var(--weight-strong); font-variant-numeric: tabular-nums; letter-spacing: 0.02em; text-decoration: none; }
 a.timecode::before { content: "▸ "; }
 a.timecode:hover { text-decoration: underline; }

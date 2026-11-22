@@ -49,16 +49,22 @@ local function player(link)
   return url
 end
 
+-- A podcast player: the browser's own <audio> with its controls, in a <div class="player"> that assets/player.js
+-- turns into the site's player (and the bar that docks at the foot of the window). data-duration, in seconds, is the
+-- recording's length, read from the file by build.mjs, so that the player can show it before anything is loaded.
 local function audio_player(div)
   local link = first_link(div)
   local title = pandoc.utils.stringify(link.content)
   local id = 'audio-' .. (#audio + 1)
+  local info = lib.audio(link.target)
+  local duration = info and tonumber(info.duration)
   audio[#audio + 1] = { url = link.target, title = title, element = id }
   local url = lib.esc(link.target)
   return pandoc.RawBlock('html', table.concat {
+    '<div class="player" data-for="', id, '"', duration and string.format(' data-duration="%.1f"', duration) or '', '>\n',
     '<audio id="', id, '" controls preload="none" aria-label="', lib.esc(title), '">\n',
     '<source src="', url, '" type="audio/mpeg">\n',
-    '<p>Your browser does not support HTML5 audio. <a href="', url, '">Download the audio</a>.</p>\n</audio>' })
+    '<p>Your browser does not support HTML5 audio. <a href="', url, '">Download the audio</a>.</p>\n</audio>\n</div>' })
 end
 
 local function figure(div, class)

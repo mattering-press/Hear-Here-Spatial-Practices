@@ -159,13 +159,15 @@ What is in `every_trick/`:
 - `build.mjs`: the build, with its few settings at the top
 - `versions.mjs`: reads the version registry (`versions.json` at the repository root), takes each version's text from its Git tag, and matches paragraphs between versions
 - `convert.mjs`: turns Juncture's `.ve-*` lines and its raw HTML (audio, iframes, videos) into Pandoc Markdown
-- `filters/`: Lua filters, one job each. `to-markdown.lua` is stage 1 (writes the Markdown view); `figures`, `embeds`, `cards`, `transcript`, `links`, `citations`, `paragraphs`, `margins` and `contract` are stage 2 (Markdown view to HTML and `page.json`)
+- `filters/`: Lua filters, one job each. `to-markdown.lua` is stage 1 (writes the Markdown view); `figures`, `embeds`, `cards`, `transcript`, `links`, `citations`, `paragraphs`, `cues` (marks transcript paragraphs with their times from a recording's cue file), `margins` and `contract` are stage 2 (Markdown view to HTML and `page.json`)
 - `citations.mjs`: prepares the bibliography for `filters/citations.lua` and writes the build's report on citations
 - `csl/`: `mattering-press.csl`, the house citation style, and its test (`csl/test/`)
 - `scripts/to-citation-keys.mjs`: for the switch, shows how the plain-text citations would become Pandoc citations
+- `scripts/align.mjs`: times a podcast transcript's paragraphs against its recordings with whisper.cpp, on the editor's computer, and writes the cue files and a report (see "Plan: podcast player and transcript")
 - `template.html`: the HTML around every page. It links the stylesheet and scripts with `?v=` and a hash of their contents, so that browsers fetch them again after every change instead of keeping an old copy
-- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `zoom.js`, `seek.js`, `citations.js`, `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens)
+- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `zoom.js`, `player.js` (the podcast player and its docked bar; see "Plan: podcast player and transcript"), `citations.js`, `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens)
 - `images.mjs`: resized images and the tiles for zooming; an animated GIF becomes an animated WebP and a still
+- `audio.mjs`: reads the length of an MP3 from the file, for the podcast players
 - `check.mjs`, `serve.mjs`: the link check and the local server
 - `CONTRACT.md`: the `page.json` and `publication.json` files that other frontends can read, and the paragraph rule
 - `package.json`: the toolkit's name and version (see "Versions of the book and of every_trick" below)
@@ -396,11 +398,75 @@ Agreed with the publisher on 2026-11-19 after reviewing Entreluma, a static succ
 
 ## Plan: media data decisions
 
-Agreed with the publisher on 2026-11-19. These fix the data; players and viewers are chosen later, in the design phase, and stay swappable because they read only these files.
+Agreed with the publisher on 2026-11-19. These fix the data; players and viewers are chosen later, in the design phase, and stay swappable because they read only these files. The audio player is settled in "Plan: podcast player and transcript".
 
 - **Timings in WebVTT.** Transcript and word timings for audio and video live in standard WebVTT files next to each media file, never in the Markdown. Paragraph timecodes in the transcripts stay as they are. Word-level timings, when wanted, come from a one-off forced alignment of the existing, edited transcript against the audio. The same files serve as captions and as searchable text in archives.
 - **`/read/<name>` for documents.** PDFs and other documents get item pages at `/read/<name>`, alongside `/see`, `/listen` and `/watch`. Page links use `#page=3`. At build time each document's pages are also rendered as images, so pages can be zoomed and linked like any image, with a download of the original file.
 - **IIIF manifests for all images.** The build writes a IIIF Presentation 3 manifest for every image, image set and document, next to the static tiles. Any IIIF viewer (OpenSeadragon, Clover, Mirador, storytelling viewers), Tapestry and other projects can then show the book's images without changes.
+
+## Plan: podcast player and transcript
+
+Agreed with the publisher on 2026-11-21, after a reviewer's notes on the first proposal. Aya Nassar's episode
+(`essays/aya_nassar.md`) is the test page for editorial accuracy as well as for playback. Players for video and
+documents are planned separately; this plan settles audio. Status: steps 1 to 3 are built; on 2026-11-22 the publisher
+made paragraph timing the standard for every podcast page, with the alignment report saying which cues need a person
+to listen.
+
+- **The player stays in the page**, under "Podcast", built on the browser's `<audio>`, so that it plays without
+  JavaScript. `filters/embeds.lua` writes it with the recording's length, which the build reads from the MP3 itself
+  (`every_trick/audio.mjs`); `assets/player.js` adds the controls: play, time and length, position, back and forward
+  15 seconds, speed, and "Follow text" where the transcript has cues. On a narrow player (a phone; the publisher,
+  2026-11-22) the controls are one line, play, time, position, "More" (⋯) and, when docked, ×; back, forward, speed
+  and Follow text wait in a small panel that "More" opens, which also says what is playing. They are the same
+  buttons in both layouts, so nothing moves when the player docks.
+- **Docked bar.** While a recording plays, or is paused part-way, and its player is out of view, the player sits as a
+  bar at the foot of the window, with the title and the speaker and paragraph being heard ("Aya Nassar · para. 17").
+  Docking is a class on the player: the `<audio>` element and the buttons never move in the page, so playback
+  continues and keyboard focus stays on the button that had it; the player keeps its space, so the page does not
+  jump. The bar's × stops playback and puts the player back. Phones get lock-screen controls (Media Session).
+- **Follow text** is off until the reader turns it on. Then the page scrolls to each new cue (it jumps instead when
+  the reader asks for less motion). Any scrolling of the reader's own (wheel, touch, keys, the scroll bar, a link
+  within the page) turns it off until they press it again; the page's own scrolling never does. No global keyboard
+  shortcuts, and the cue being heard is not announced to screen readers.
+- **Cues: paragraph by paragraph.** Each recording may have a cue file beside it,
+  `media/audio/<recording>.paragraphs.vtt` (WebVTT), with one cue per transcript paragraph. Cues hold the paragraph's
+  words, not its number, because numbers change from release to release while media files are shared by every
+  version; the build finds each cue's paragraph by its words, which also tells it which recording a paragraph belongs
+  to (the addendum needs no markup). The page marks each timed paragraph (`data-cue-for`, `data-cue-start`,
+  `data-cue-end` on its `div.para`) rather than loading a separate track: simpler, and the player reads it directly.
+  The paragraph being heard is marked on the transcript's rule in the accent colour, and a ▸ on the rule plays from it.
+  Until a recording has cues, its written timecodes (`[00:05:35]`) are its cues; they stay in the text either way.
+- **Making the cues** (`every_trick/scripts/align.mjs`, run once on the editor's computer, not in the build):
+  whisper.cpp transcribes the recording offline with a time for every word, and those words are matched against the
+  edited transcript. Speaker labels, bracketed directions, timecodes and unnumbered lines are not matched. Words heard
+  between two paragraphs that the text changed or does not have (one speaker's edited ending, the next one's
+  lead-in) are split at the longest pause among them, and the paragraph starts after it. The script writes the cue
+  file (never over one that exists, which is the editor's) and a report: first what needs attention (untimed
+  paragraphs, a start moved more than 5 seconds by words the text does not have, more than 5.5 seconds of such talk
+  kept with the paragraph before, paragraphs heard less than 60% as
+  written, cues too fast or too slow for speech, 10 seconds or more of talk inside a cue that the text leaves out,
+  talk before the first or after the last paragraph, written timecodes more than 3 seconds off), then when each
+  paragraph starts, the written timecodes checked, and the places where text and recording differ, grouped as words
+  that look or sound alike, heard but not in the text, in the text but not heard, and rephrased. `--json <file>` writes
+  the same findings for scripts.
+- **Correcting a cue:** change its start time in the `.vtt` file. **Leaving a passage untimed:** delete its cue and
+  write `NOTE untimed: <its first words>` in its place. An untimed paragraph has no ▸, and nothing is marked while it
+  plays. When the text changes, the build warns about cues that no longer match a paragraph.
+- **Captions** come from the same word times in a second file, `<recording>.captions.vtt`, cut at sentence and clause
+  breaks, naming the speaker on every cue and keeping sound directions. The build checks them for readability: at most
+  two lines of about 42 characters, 1–7 seconds a cue, at most about 20 characters a second. For an audio-only podcast
+  the transcript meets the accessibility requirement (WCAG 1.2.1); captions serve archives, podcast apps and video.
+- **Test protocol on Aya Nassar's page:** the first and last passage of each recording (para. 6 and 75; para. 76 and
+  79 for the addendum, which must play from its own file); a speaker's turn over several paragraphs (paras. 8–14,
+  and 61–69 across `[00:31:44]`); the organ direction beside the first timecode (para. 16, its direction inside
+  para. 28, and the unnumbered "[organ continues…]" line, which stays untimed); the seven written timecodes within
+  about 2 seconds; and the docked bar (playback continues as it docks, focus stays put, scrolling turns Follow off
+  until asked, on a phone and with the keyboard alone).
+- **Order of work:** 1. player and docked bar, with the written timecodes as cues; 2. the alignment script, and Aya
+  Nassar's cue file once it has been checked by ear against the protocol; 3. cue files for every podcast page, with
+  the build's warnings; 4. captions with the readability check; 5. if editing `.vtt` files by hand proves awkward, a
+  timing mode on the preview (`?timing`) to set a paragraph's start while listening. Where the audio is hosted is
+  unchanged and still to be decided.
 
 ## Plan: margin notes
 
