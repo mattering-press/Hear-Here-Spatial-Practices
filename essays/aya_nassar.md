@@ -70,7 +70,7 @@ _\[organ playing in the background\]_ We've just walked through the nave to the 
 
 \[00:05:35\]
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD05_ChapelOfIndustry(16-9).jpg caption="A view looking upwards to show architectural details of the interior of the Chapel of Industry" alt="A view looking upwards to show architectural details of the interior of the Chapel of Industry"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD05_ChapelOfIndustry(16-9).jpg full caption="A view looking upwards to show architectural details of the interior of the Chapel of Industry" alt="A view looking upwards to show architectural details of the interior of the Chapel of Industry"
 
 **AYA NASSAR:** So, concrete is really interesting in relation to dust. It almost serves as the opposite of dust because concrete in the way that is used in modern architecture—and even cement broadly, in the way it’s used in modern city planning, the way it goes into everywhere, like how we create spaces, plans, architectures—what it promises is an element of endurance, unlike dust.
 
