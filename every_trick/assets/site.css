@@ -301,6 +301,10 @@ audio { display: block; width: 100%; margin: var(--gap) 0; }
 }
 .has-docked-player { scroll-padding-bottom: var(--docked-player-height, 5rem); }
 .has-docked-player body { padding-bottom: var(--docked-player-height, 5rem); }
+/* a small link to another player on the page, such as "Listen to Addendum" below the main one; whatever a link within
+   the page leads to stops a little below the top of the window */
+.listen-link { font-size: 0.875rem; }
+main [id] { scroll-margin-top: var(--space); }
 .transcript { padding-left: 1.25rem; border-left: 2px solid var(--colour-transcript); }
 /* the passage being heard: its stretch of the transcript's rule in the accent colour. Transcript paragraphs are
    positioned for that mark, so their numbers are placed from them, where the others are placed from main. */

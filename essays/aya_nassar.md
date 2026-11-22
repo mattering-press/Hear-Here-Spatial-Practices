@@ -42,6 +42,8 @@ Aya Nassar is an interdisciplinary scholar situated between politics, urban and 
     Your browser doesn't support HTML5 audio. Here is a <a href="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/audio/POD%2305_Aya%20Nassar_-16LUFs_FINALCUT.mp3">link to download the audio</a> instead.
 </audio>
 
+*[Listen to Addendum](#addendum){.listen-link}*
+
 # Transcript
 
 **NIRMAL PUWAR:** Welcome to another episode of the podcast _Hear Here_. My guest today is Dr Aya Nassar, who's travelled from Durham University, where she's an Assistant Professor in geography and has published widely on the materiality of cities, global cities, and cities in between. Right now, we're standing in the vast area of the ruins of Coventry Cathedral. As we stand here, we can feel and even sometimes smell the dust on these walls.
@@ -202,6 +204,7 @@ So, yeah, and I assume Coventry is like Cairo in this respect, of course—clear
 
 **NIRMAL PUWAR:** Your work enables us to offer an approach for de-layering and re-layering in many ways. And, your work takes us in so many directions. You've just ignited our imagination here in the archives, and as we've walked through different parts of the Cathedral. I'd like to say thank you for bringing yourself, your expertise into our conversation. I'm actually looking forward to it continuing.
 
+::: {#addendum}
 **Addendum:**
 
 <audio class="podcast-player">
@@ -209,6 +212,7 @@ So, yeah, and I assume Coventry is like Cairo in this respect, of course—clear
     <!-- fallback -->
     Your browser doesn't support HTML5 audio. Here is a <a href="https://github.com/mattering-press/Hear-Here-Spatial-Practices/raw/refs/heads/main/media/audio/POD%2305_Aya%20Nassar - Addendum_01.mp3">link to download the audio</a> instead.
 </audio>
+:::
 
 .ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD05_Navy_Room_panel.jpg right caption="Detail of a wooden panel displayed in the basement of Coventry Cathedral" alt="Detail of a wooden panel displayed in the basement of Coventry Cathedral"
 

@@ -18,6 +18,9 @@ reader sees. How to add a version: ‘Versions of the book and of every_trick’
 - The player switches to its one-line form with the ⋯ button only when it is really narrow, as on a phone or in the
   margin. A player placed inside a transcript, such as the addendum on Aya Nassar's page, now shows all its controls
   on a wide screen, like the player above it.
+- A small link below a player can lead to another one further down the page: on Aya Nassar's page, "Listen to
+  Addendum" goes to the addendum's player. In the Markdown it is a short line in italics, `*[Listen to Addendum](#addendum){.listen-link}*`,
+  which, like other short labels, gets no paragraph number.
 
 ## 1.7.0
 
