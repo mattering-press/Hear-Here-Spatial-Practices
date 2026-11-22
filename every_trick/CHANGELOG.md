@@ -11,6 +11,14 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of every_trick’ in `DEVELOPMENT.md`.
 
+## 1.7.0
+
+22 November 2026. No more timecode lines in timed transcripts.
+
+- A transcript whose recording is timed paragraph by paragraph no longer shows the written timecodes, such as
+  [00:16:32], between its paragraphs: the ▸ beside every paragraph does their job. They stay in the Markdown, and in
+  transcripts that are not timed yet they still play the recording from that moment.
+
 ## 1.6.0
 
 22 November 2026. One line on phones, and every podcast timed.
