@@ -906,7 +906,10 @@ item pages and the Media Index") and the house style's `(Nassar 2026: para. 12)`
   was copied. Nothing is added to the left margin, which already holds the number, the ¶ and, in transcripts, the ▸.
 - **Who wrote a page.** Each page names its authors in its front matter, in Pandoc's `author:` field, and its
   interviewers in `interviewer:` (the role CSL and MHRA 7.11 give the person who conducts a published interview), so a
-  podcast credits both the person interviewed and the interviewer (the publisher, 2026-11-23). `convert.mjs` keeps a
+  podcast credits both the person interviewed and the interviewer (the publisher, 2026-11-23). Everyone who made a
+  page is named in its citation (the publisher, 2026-11-23): the podcasts' producer in `producer:` (a CSL role) and
+  their transcription editor in `transcript-editor:`, which the house style renders as "transcript ed. by", a role
+  CSL lacks; `npm run test:csl` checks both. `convert.mjs` keeps a
   front-matter block at the top of a legacy page. The names go into `page.json` (a new contract version; the paragraph
   rule does not change) and later to Thoth. The book's own data (editor, publisher, year, licence) stay in `build.mjs`.
   The build warns about a page that has numbered paragraphs but no author.
