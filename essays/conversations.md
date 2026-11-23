@@ -4,7 +4,7 @@
 .ve-header 'Conversations' gh:mattering-press/Hear-Here-Spatial-Practices/media/generic/Chair_CU.jpg
     - [home](/)
     - [introduction](/essays/introduction.md)
-    - [contributors](/back-matter/contributors.md)
+    - [contributors](/about/contributors.md)
     - [podcasts](/essays/podcasts.md)
     - [events](/essays/events.md)
     - [experimental index](/essays/index.md)

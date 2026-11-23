@@ -37,15 +37,18 @@ renames the toolkit's version `everytrickinthebook` in page.json, publication.js
 formatted.json and the Markdown view's front matter, with the toolkit's new name (everytrickinthebook 1.15.0); it
 changes nothing else, and its paragraph rule is 0.6's, unchanged. 0.8 (everytrickinthebook 1.16.0) adds the back
 matter (see "Back matter"): `part` in page.json and in each entry of publication.json's `readingOrder`, which the back
-matter's pages close, and `backmatter` in publication.json; a page may give its title in a YAML front matter; its
-paragraph rule is 0.6's, unchanged.
+matter's pages close, and `backmatter` in publication.json; the References page and the Media Index become one page,
+References and media (`about/references-and-media/`), so a reference's `url` in page.json, like a citation's link,
+points at `about/references-and-media/#<key>` where it pointed at `references/#<key>`; a page may give its title in a
+YAML front matter; its paragraph rule is 0.6's, unchanged.
 
 ## Editions
 
 The root of the site is the working text, "latest, unreleased". Every version listed in `versions.json` at the
 root of the repository is built as well, from the text of its Git tag but with the current toolkit, into its own
 folder, `v<id>/` (for example `v0.9-review2/essays/aya_nassar/`). Each such edition has its own
-`publication.json`, `publication.md`, References page (`references/`, with the bibliography to download) and pages.
+`publication.json`, `publication.md`, About this book (`about/`, with References and media, and `references/` with the
+bibliography to download) and pages.
 Images, tiles, video, PDF files, the documents' data, the stylesheet and the scripts are stored once, at the site's
 root, and shared by all editions, so inside a frozen version
 their URLs start with `../` (`../images/x-1600.jpg`); resolved against the edition's root, they point at the shared
@@ -155,17 +158,21 @@ its mark in the text, at the end of the paragraph before it, is `<a class="margi
 
 ## Back matter
 
-The back matter (EPUB's `backmatter`, JATS's `<back>`; British usage calls it end matter) follows the book's text in
-every edition and closes every reading order: Contributors and Acknowledgements (pages of the book's source in
-`back-matter/`, at `back-matter/contributors/` and `back-matter/acknowledgements/`), the References page, the Media
-Index and "About this book" (`about/`). Its contents page, `back-matter/`, lists them, one line each. Contributors,
-Acknowledgements and the publisher's statement that opens "About this book" (`back-matter/about.md`) are reading text:
-they have page.json, a Markdown view and paragraph numbers, are in the edition's search index and in `publication.md`.
-What the build writes after the statement, the book's licence, the colophon and the versions and data, is not reading
-text: it is not numbered, not indexed and not in the Markdown view; nor is the contents page. A version frozen before
-a back matter page existed has none, except "About this book", whose statement it takes from the latest text. A page
-that moved into the back matter keeps its old file and address in the versions that had it there (version 0.1 has
-`essays/contributors.md`); in the latest text its old address forwards to the new one.
+The back matter (EPUB's `backmatter`, JATS's `<back>`; British usage calls it end matter), which readers know as
+"About this book", follows the book's text in every edition and closes every reading order. Its overview, `about/`,
+leads to its three parts: Contributors & acknowledgements (`about/contributors/`, from `about/contributors.md`, with the
+author's thanks from `about/acknowledgements.md` added under the heading "Acknowledgements" when that file holds any),
+the Colophon (`about/colophon/`, from `about/colophon.md`) and References and media (`about/references-and-media/`, see
+"Citations in the HTML" and "Media items"). Contributors & acknowledgements and the Colophon's own text (Making this
+book and the publisher's statement) are reading text: they have page.json, a Markdown view and paragraph numbers, and
+are in the edition's search index and in `publication.md`. What the build writes after the Colophon's text, the book's
+licence and the versions and kit (`<div class="colophon__built" data-pagefind-ignore>`), is not reading text: it is not
+numbered, not indexed and not in the Markdown view; nor is the overview. A version frozen before the Colophon existed
+takes it from the latest text. A page that moved into the back matter keeps its old file and address in the versions
+that had it there (version 0.1 has `essays/contributors.md`); in the latest text its old address forwards to the new
+one. The addresses used before contract 0.8, `references/` (in each edition) and `media-index/`, forward to References
+and media, keeping the fragment (`references/#hall2001` to `about/references-and-media/#hall2001`, `media-index/` to
+`#media`); the bibliography's downloads stay in `references/`.
 
 ## publication.json
 
@@ -183,7 +190,7 @@ that moved into the back matter keeps its old file and address in the versions t
 | `everytrickinthebook` | the version of everytrickinthebook, the toolkit that built the site (`version` in `everytrick/package.json`; `everytrick/CHANGELOG.md` lists what changed in each), e.g. `"1.0.0"`. It is numbered separately from the book's version, `version` |
 | `versions` | every edition, the latest text first, then the frozen versions, newest first: `{ id, label, date, status, url }`, `url` relative to this edition's root (`"./"` for itself) |
 | `readingOrder` | every page once, as `{ id, url, title, part }`: the home page; then each page in the home page's menu, followed by the pages its cards lead to (depth first); then any other page, alphabetically; and last the pages of the back matter, in its order. `part` is `"backmatter"` for those, `"body"` for the others |
-| `backmatter` | the back matter (see "Back matter"): `{ title, url, sections }`, `url` its contents page (`"back-matter/"`), `sections` each section in order as `{ id, title, url }`: a back matter page by its `id` in `readingOrder`, `"references"` for the References page, `"media-index"` for the Media Index (shared, so `"../media-index/"` in a frozen version), and "About this book" by its source, `"back-matter/about.md"` |
+| `backmatter` | the back matter (see "Back matter"): `{ title, url, sections }`: `title` is `"About this book"`, `url` its overview (`"about/"`), `sections` its parts in order as `{ id, title, url }`: a back matter page by its `id` in `readingOrder` (`"about/contributors.md"`, `"about/colophon.md"`), and `"references-and-media"` for References and media |
 
 ## page.json
 
@@ -191,7 +198,7 @@ that moved into the back matter keeps its old file and address in the versions t
 |---|---|
 | `contract`, `paragraphRule` | as in publication.json |
 | `id` | the page's Markdown file, e.g. `"essays/walk.md"`; `"README.md"` for the home page |
-| `url` | e.g. `"essays/walk/"`; `"./"` for the home page; `"about/"` for "About this book", whose source is `back-matter/about.md` |
+| `url` | e.g. `"essays/walk/"`; `"./"` for the home page |
 | `title`, `subtitle` | from the page's header (its `.ve-header` line, or `title` and `subtitle` in a YAML front matter at the start of its Markdown); `subtitle` is `null` when there is none |
 | `part` | `"backmatter"` for a page of the back matter, `"body"` for the others |
 | `version`, `everytrickinthebook` | as in publication.json |
@@ -203,7 +210,7 @@ that moved into the back matter keeps its old file and address in the versions t
 | `audio` | `{ url, title }`; `url` is the MP3 on GitHub, which supports range requests |
 | `video` | `{ url, title, kind }`; `kind` is `youtube`, `vimeo`, `file` (a video file in the site) or `embed` (any other embedded page, such as the Internet Archive or the BBC); `url` is the address given in the Markdown. A document whose pages the build shows (see "Documents") is not listed: `items` has it, with `kind` `read` |
 | `links` | links in the page's text (not its menu or footer) to other pages, as `{ id, url, text }`, each target once, in order of first appearance; citation links are not included |
-| `references` | works from the book's bibliography (`references/bibliography.json`) that the page cites or lists, as `{ key, html, url, citations }`: first those cited, in order of first citation, then the rest of the page's typed reference list. `key` is the entry's id in the bibliography (`hall2001`); `html` is the reference formatted in the house style, as an HTML fragment (`<em>`, `<span>`, `<a>`); `url` is the entry in this page's typed reference list if the list has it (`essays/introduction/#ref-hall2001`), otherwise the work's entry on the edition's References page (`references/#hall2001`); `citations` are the ids of the citation links in this page's text that point to it (`cite-hall2001-1`), `[]` when the page only lists it |
+| `references` | works from the book's bibliography (`references/bibliography.json`) that the page cites or lists, as `{ key, html, url, citations }`: first those cited, in order of first citation, then the rest of the page's typed reference list. `key` is the entry's id in the bibliography (`hall2001`); `html` is the reference formatted in the house style, as an HTML fragment (`<em>`, `<span>`, `<a>`); `url` is the entry in this page's typed reference list if the list has it (`essays/introduction/#ref-hall2001`), otherwise the work's entry on the edition's References and media (`about/references-and-media/#hall2001`); `citations` are the ids of the citation links in this page's text that point to it (`cite-hall2001-1`), `[]` when the page only lists it |
 
 ## Media items
 
@@ -235,7 +242,8 @@ version has no number.
 Item pages are at the root of the site, shared by every edition: `/<kind>/<name>/` (`/see/boulder-font/`). Every
 numbered item has a short address, `/<number>/` (`/37/`), and every former name keeps its address,
 `/<kind>/<former name>/`: small pages that forward to the item's page (a `<meta http-equiv="refresh">`, a canonical
-link, `noindex` and a visible link). `/media-index/` lists every item.
+link, `noindex` and a visible link). The Media Index, the second part of `about/references-and-media/` (`#media`) in
+every edition, lists every item, each as `<li id="item-37" class="media-entry">`.
 
 In the HTML of a page, an item's figure, or its player's `<div class="player">`, has the item's anchor as its id:
 `item-<number>` (`item-37`), or `item-<name>` while it has no number; the same item a second time on a page is
@@ -392,29 +400,30 @@ During the parallel run the Markdown keeps its plain-text citations and typed re
 
 - a citation is `<a class="citation" id="cite-<key>-<n>" href="#ref-<key>" data-popover="ref-popover-<key>"
   aria-describedby="ref-text-<key>">` around the text inside its brackets, as typed (`Hall, 2001`, `2017:147`), when
-  the page's own typed list has the work, and has `href="<the edition's root>references/#<key>"` when it does not;
+  the page's own typed list has the work, and has `href="<the edition's root>about/references-and-media/#<key>"` when it does not;
 - an entry of a typed reference list that is in the bibliography is `<div id="ref-<key>" class="typed-reference">`;
   a paragraph holding two entries has an empty `<span id="ref-<key>">` for the second;
 - the references the page cites are at the end of `<main>`, each in
   `<div id="ref-popover-<key>" class="citation-popover" popover="manual">` with the formatted reference in
   `<p id="ref-text-<key>">`; `assets/citations.js` shows them.
 
-The References page, `references/` at the root of each edition (`v0.1/references/` for version 0.1), lists every work
+The References, the first part of References and media, `about/references-and-media/` in each edition
+(`v0.1/about/references-and-media/` for version 0.1), list every work
 of that edition's bibliography once, formatted in the house style without the dash for a repeated author, in the order
 of the house style's reference list (by author, then year, then key, so that `stengers2005a` comes before
 `stengers2005b`). Each work is `<li id="<key>" class="reference">` in `<ul class="reference-list">`, so that
-`references/#hall2001` finds it, with the reference in `<p class="reference__text">` and, in
+`about/references-and-media/#hall2001` finds it, with the reference in `<p class="reference__text">` and, in
 `<dl class="reference__where">`, "Cited in": a link to each passage of the edition that cites it, named by page title
 and paragraph (`Introduction, para. 12`; a citation outside the numbered paragraphs is named by the margin note it is
 in, `Introduction, note 3`, or else by the paragraph before it, `Introduction, after para. 11`), pointing at the
-citation (`../essays/introduction/#cite-hall2001-1`; a paragraph that cites the work twice is named once), and
-"Listed in": a link to the work in each typed reference list that has it (`../essays/podcasts/#ref-hall2001`), both in
+citation (`../../essays/introduction/#cite-hall2001-1`; a paragraph that cites the work twice is named once), and
+"Listed in": a link to the work in each typed reference list that has it (`../../essays/podcasts/#ref-hall2001`), both in
 reading order. A row is left out when it would be empty. All the references of an edition are formatted in one
 citeproc run over its whole bibliography, so their year letters (`2005a`, `2005b`) are the same on every page and on
 the References page.
 
-Beside the References page, in the same folder, are the edition's bibliography and the texts of its Copy menus, every
-work in the page's order:
+In `references/` at the root of each edition (where the References page was until contract 0.8; its `index.html` now
+forwards) are the edition's bibliography and the texts of its Copy menus, every work in the page's order:
 
 - `bibliography.json`: the bibliography in CSL-JSON, as `references/bibliography.json` in the repository (or in the
   version's tag) has it, without `custom`, which records for the build where each entry is typed in the pages;
@@ -429,6 +438,6 @@ work in the page's order:
   formatted on its own, without year letters or dashes for a repeated author, as a reference manager copies it), and
   `bibtex` and `ris` (the entry as in the files above, with `\n` line ends).
 
-The list of the References page, `<div class="references">`, names `formatted.json` in `data-copy` and the forms of the
+The list of the References, `<div class="references">`, names `formatted.json` in `data-copy` (`../../references/formatted.json`) and the forms of the
 menu in `data-copy-styles` (JSON); `assets/references.js` makes the Copy buttons from them, so they are not part of
 the page's HTML.

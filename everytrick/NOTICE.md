@@ -42,7 +42,7 @@ and `sjmch/styles` (the designed styles).
 - **Roboto**, the typeface the site serves (`assets/fonts/`, from the Fontsource package), is under the SIL Open Font
   License 1.1; its licence is copied next to it.
 
-The colophon on each edition's "About this book" names these, with their versions and licences.
+The colophon of each edition (about/colophon/) names these, with their versions and licences.
 
 ## Contributing
 

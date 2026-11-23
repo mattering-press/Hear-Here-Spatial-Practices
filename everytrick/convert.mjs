@@ -286,18 +286,22 @@ export function convert(source, file, { exists = inWorkingTree } = {}) {
 // The pages of one edition of the book, converted, and their reading order (readingOrder in CONTRACT.md): the home page
 // (README.md), every essay and the pages of the back matter; test.md is a scratch page and stays out. root is the
 // folder that holds them (the repository, or a frozen version's text from its tag).
-//   readBook(root, { exists, backmatter, borrowed }) -> { pages, home, byFile, order, backmatter }
+//   readBook(root, { exists, backmatter, borrowed, extend }) -> { pages, home, byFile, order, backmatter }
 // backmatter: the repository paths of the back matter's pages, in their order (a page the edition does not have is left
 // out); borrowed: { path: folder } for a back matter page that this edition takes from another folder because it has
-// none of its own (the publisher's statement, for a version frozen before it existed).
+// none of its own (the colophon, for a version frozen before it existed); extend(file, source, folder): a page's
+// Markdown with what the build adds to it (the author's acknowledgements, after the contributors).
 // order: the home page, then the pages of its menu in order, each followed by the pages its cards lead to (depth
 // first), then any page not reached that way, alphabetically, and last the back matter, which closes every reading
 // order: a card or the menu that leads to a back matter page does not move it.
-export function readBook(root, { exists = inWorkingTree, backmatter = [], borrowed = {} } = {}) {
+export function readBook(root, { exists = inWorkingTree, backmatter = [], borrowed = {}, extend = (file, source) => source } = {}) {
   const folderOf = (file) => (existsSync(join(root, file)) ? root : borrowed[file]);
   const late = backmatter.filter((file) => folderOf(file));
   const files = ['README.md', ...readdirSync(join(root, 'essays')).filter((f) => f.endsWith('.md')).sort().map((f) => `essays/${f}`).filter((f) => !late.includes(f)), ...late];
-  const pages = files.map((file) => ({ file, ...convert(readFileSync(join(folderOf(file) ?? root, file), 'utf8'), file, { exists }) }));
+  const pages = files.map((file) => {
+    const folder = folderOf(file) ?? root;
+    return { file, ...convert(extend(file, readFileSync(join(folder, file), 'utf8'), folder), file, { exists }) };
+  });
   const home = pages[0];
   const byFile = new Map(pages.map((page) => [page.file, page]));
   const order = [];

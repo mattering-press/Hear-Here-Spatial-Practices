@@ -537,7 +537,7 @@ a.citation:target { border-radius: 2px; background: var(--colour-highlight); box
 .para:has(a.citation:target) { animation: para-highlight 3s ease-out; }
 @media (prefers-reduced-motion: reduce) { .para:has(a.citation:target) { animation: none; } }
 
-/* the References page (references/ in each edition): every work of the bibliography once, in the house style, with
+/* the References (the first part of about/references-and-media/ in each edition): every work of the bibliography once, in the house style, with
    the passages that cite it and the pages whose reference lists include it (referencesHtml in citations.mjs) */
 .references__intro { margin-top: 0; color: var(--colour-muted); font-size: 0.9375rem; }
 .reference-list { margin: var(--space) 0 0; padding: 0; border-top: 1px solid var(--colour-rule); list-style: none; }
@@ -572,7 +572,7 @@ a.citation:target { border-radius: 2px; background: var(--colour-highlight); box
 .item-facts li + li { margin-top: 0.2rem; }
 .item-facts__where { color: var(--colour-muted); }
 
-/* the Media Index (/media-index/) and its editing view: every item by number, with its pill, a thumbnail, its title
+/* the Media Index (the second part of about/references-and-media/) and its editing view: every item by number, with its pill, a thumbnail, its title
    and address and where it is; chips filter the list (assets/media-index.js) */
 .media-index__intro { margin-top: 0; color: var(--colour-muted); font-size: 0.9375rem; }
 .media-index__preview { padding: 0.6rem 0.9rem; border-left: 3px solid var(--colour-accent); background: var(--colour-surface); font-size: 0.9375rem; }
@@ -592,8 +592,8 @@ a.citation:target { border-radius: 2px; background: var(--colour-highlight); box
 .media-entry__thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .media-entry__box { display: grid; place-content: center; color: var(--colour-muted); font-size: 0.75rem; font-variant-numeric: tabular-nums; line-height: 1.25; text-align: center; }
 .media-entry__icon { font-size: 1rem; }
-main h2.media-entry__title { margin: 0; font-size: 1rem; line-height: 1.35; }
-main h2.media-entry__title::before { content: none; }
+main :is(h2, h3).media-entry__title { margin: 0; font-size: 1rem; line-height: 1.35; }
+main :is(h2, h3).media-entry__title::before { content: none; }
 .media-entry__title a { color: var(--colour-text); text-decoration: none; }
 .media-entry__title a:hover { color: var(--colour-accent); text-decoration: underline; }
 .media-entry__address { margin: 0.15rem 0 0; color: var(--colour-muted); font-size: 0.8125rem; overflow-wrap: anywhere; }
@@ -629,13 +629,20 @@ main .media-sheet h2::before { content: none; }
 .media-sheet__text { max-height: 55vh; margin: 0; padding: 0.9rem 1rem; overflow: auto; border: 1px solid var(--colour-rule); border-radius: var(--radius); background: var(--colour-surface); font: 0.8125rem / 1.55 var(--font-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
 .media-sheet__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-top: 0.75rem; }
 .media-sheet__status { color: var(--colour-muted); font-size: 0.875rem; }
-/* the back matter's contents page (back-matter/): one line for each section, each a link */
-.backmatter-contents { margin: 0; padding: 0; border-top: 1px solid var(--colour-rule); list-style: none; }
-.backmatter-contents li { border-bottom: 1px solid var(--colour-rule); }
-.backmatter-contents a { display: block; padding: 0.8rem 0; font-size: 1.15rem; font-weight: var(--weight-strong); text-decoration: none; }
-.backmatter-contents a:hover { text-decoration: underline; }
-/* "About this book": what the build writes after the publisher's statement (the licence, the colophon, versions and data) */
-.about__data li + li { margin-top: 0.35rem; }
+/* About this book (about/), the overview of the back matter: a short paragraph, then each part with its link and a line */
+.about-intro { margin-top: 0; }
+.about-parts { margin: var(--space) 0 0; padding: 0; border-top: 1px solid var(--colour-rule); list-style: none; }
+.about-parts li { padding: 0.9rem 0 1rem; border-bottom: 1px solid var(--colour-rule); }
+.about-parts__title { font-size: 1.15rem; font-weight: var(--weight-strong); text-decoration: none; }
+.about-parts__title:hover { text-decoration: underline; }
+.about-parts p { margin: 0.2rem 0 0; color: var(--colour-muted); font-size: 0.9375rem; }
+/* the colophon: what the build writes after Making this book and the publisher's statement */
+.colophon__data li + li { margin-top: 0.35rem; }
+/* References and media (about/references-and-media/): a switch to its two parts, References and Media */
+.part-switch { display: inline-flex; margin: 0 0 0.5rem; padding: 2px; border: 1px solid var(--colour-rule); border-radius: 999px; background: var(--colour-surface); font-size: 0.875rem; font-weight: var(--weight-strong); }
+.part-switch a { padding: 0.3rem 0.95rem; border-radius: 999px; color: var(--colour-text); text-decoration: none; }
+.part-switch a:hover { background: var(--colour-highlight); color: var(--colour-accent); }
+.part > h2 { scroll-margin-top: var(--space); }
 /* a page that forwards an old or short address to an item's page */
 main.forward { padding-top: 3rem; }
 

@@ -3,7 +3,7 @@
 // release" in DEVELOPMENT.md.
 //
 //   readRegistry()                 the registry's versions, checked, oldest first
-//   checkout(version, dir)         the version's README.md, essays/, back-matter/ and references/ from its tag, in dir; files the
+//   checkout(version, dir)         the version's README.md, essays/, about/ and references/ from its tag, in dir; files the
 //                                  build needs besides (media no longer in the working tree) are taken on request
 //   matchParagraphs(older, newer)  for each paragraph of a page in an older version, the same passage in a newer one
 //   longDate('2026-11-20')         '20 November 2026'
@@ -62,7 +62,7 @@ export function checkout(version, dir) {
   const listing = git(['ls-tree', '-r', '-z', '--name-only', commit]);
   if (!listing.ok) throw new Error(`cannot list the files of ${version.tag}: ${listing.err}`);
   const files = new Set(listing.out.split('\0').filter(Boolean));
-  const wanted = ['README.md', 'essays', 'back-matter', 'references'].filter((p) => files.has(p) || [...files].some((f) => f.startsWith(`${p}/`)));
+  const wanted = ['README.md', 'essays', 'about', 'references'].filter((p) => files.has(p) || [...files].some((f) => f.startsWith(`${p}/`)));
   if (!files.has('README.md') || !wanted.includes('essays')) throw new Error(`${version.tag} has no README.md or essays/: is it a tag of this book?`);
   mkdirSync(dir, { recursive: true });
   const archive = git(['archive', '--format=tar', commit, '--', ...wanted], { binary: true });

@@ -63,12 +63,9 @@ function M.resolve(url)
   return table.concat(parts, '/'), rest
 end
 
--- Site URL of a page, relative to the site root: README.md -> "", essays/walk.md -> "essays/walk/", or the address
--- the build gives a page in its manifest (addresses: back-matter/about.md -> "about/").
+-- Site URL of a page, relative to the site root: README.md -> "", essays/walk.md -> "essays/walk/".
 function M.page_url(path)
   if path == '' or path == 'README.md' then return '' end
-  local address = M.address_of(path)
-  if address then return address end
   return M.pct((path:gsub('%.md$', ''))) .. '/'
 end
 
@@ -95,13 +92,6 @@ local function load_manifest()
     f:close()
   end
   return manifest
-end
-
--- The address the build gives a page whose address is not made from its path (the manifest's addresses), or nil.
-function M.address_of(path)
-  if M.manifest_path == nil or M.manifest_path == '' then return nil end
-  local addresses = load_manifest().addresses
-  return addresses and addresses[path] or nil
 end
 
 -- The resized copy of an image: { url, width, height, tiles } (URLs relative to the site root).
