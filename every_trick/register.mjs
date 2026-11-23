@@ -286,12 +286,13 @@ export const RIGHTS = {
 const githubFile = (path) => `https://github.com/${REPO}/blob/main/${path.split('/').map(encodeURIComponent).join('/')}`;
 const host = (url) => /^https?:\/\/(?:www\.)?([^/:?#]+)/.exec(url)?.[1] ?? url;
 
-// Where the item lives: { id, label, detail, url }; id is one word, for the Media Index's filters.
-export function storedAt(it) {
+// Where the item lives: { id, label, detail, url, copy }; id is one word, for the Media Index's filters. copy: for a zine
+// whose pages are copied from archive.org into this repository (documents.mjs), the folder and the day they were fetched.
+export function storedAt(it, copy = null) {
   const s = it.source;
   if (!isAddress(s)) return { id: 'repository', label: 'this repository', detail: s, url: githubFile(s) };
   const archive = /^https:\/\/archive\.org\/details\/(.+)$/.exec(s);
-  if (archive) return { id: 'archive', label: 'Internet Archive', detail: archive[1], url: s };
+  if (archive) return { id: 'archive', label: 'Internet Archive', detail: archive[1], url: s, ...(copy ? { copy: { ...copy, url: `https://github.com/${REPO}/tree/main/${copy.folder}` } } : {}) };
   if (/youtube\.com\//.test(s)) return { id: 'youtube', label: 'YouTube', detail: '', url: s };
   if (/vimeo\.com\//.test(s)) return { id: 'vimeo', label: 'Vimeo', detail: '', url: s };
   if (/bbc\.co\.uk\//.test(s)) return { id: 'bbc', label: 'BBC', detail: '', url: s };
@@ -300,9 +301,10 @@ export function storedAt(it) {
 
 // Where readers' browsers get it from: { id, label, chip } (chip: the short label of the Media Index's filter).
 // Pictures, video files and documents of this repository are copied into the site; its recordings are played from
-// GitHub, as raw files (filters/embeds.lua).
-export function servedFrom(it) {
+// GitHub, as raw files (filters/embeds.lua). A zine whose pages are copied from archive.org (copy) is shown from them.
+export function servedFrom(it, copy = null) {
   const s = it.source;
+  if (copy) return { id: 'site', label: 'our own site', chip: 'our own site' };
   if (!isAddress(s)) {
     const src = it.appearances[0]?.found.src || (it.kind === 'listen' ? 'https://github.com/' : '');
     return /^https:\/\/(?:github\.com|raw\.githubusercontent\.com)\//.test(src) ? { id: 'github', label: 'GitHub, as a raw file', chip: 'GitHub' }

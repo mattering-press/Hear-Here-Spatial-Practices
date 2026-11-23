@@ -2,9 +2,9 @@
 
 The build writes JSON beside the HTML so that other frontends (the collage index, a Tapestry export) can
 read the book without parsing HTML: `publication.json` at the root of each edition, a `page.json` beside every
-`index.html`, and `media.json` at the root of the site, with every media item. `contract` gives the version of this
-format and of the paragraph rule below. Later 0.x versions may add fields; a field will not change its meaning
-without a new version.
+`index.html`, `media.json` at the root of the site, with every media item, and a `document.json` for every document
+whose pages the build shows. `contract` gives the version of this format and of the paragraph rule below. Later 0.x
+versions may add fields; a field will not change its meaning without a new version.
 
 URLs that stay inside the site are relative to the edition's root, the folder that holds its `publication.json`
 (resolve them with `new URL(url, editionRoot)`), even inside a `page.json`. Other URLs are absolute.
@@ -25,16 +25,20 @@ each edition a References page, `references/`, which lists every work of the bib
 HTML"): a reference's `url` in page.json, like the citation's link, points at the work's entry there
 (`references/#hall2001`) when the page's own typed list lacks the work, where it pointed at the first page in reading
 order whose list has it, and puts beside it the edition's bibliography to download, as CSL-JSON, BibTeX and RIS, and
-`formatted.json`, every work in the styles of the page's Copy menus (every_trick_in_the_book 1.12.0). The paragraph
-rule of 0.5 is 0.4's, unchanged.
+`formatted.json`, every work in the styles of the page's Copy menus (every_trick_in_the_book 1.12.0). 0.5 also adds
+documents (every_trick_in_the_book 1.13.0; see "Documents"): a PDF of the repository, or a zine copied from
+archive.org, is shown as its pages, each with zoom tiles, and has `read/<name>/document.json`; media.json gains `pages`
+and `document`; and a document is no longer listed in page.json's `video`, where an archive.org reader was an `embed`.
+The paragraph rule of 0.5 is 0.4's, unchanged.
 
 ## Editions
 
 The root of the site is the working text, "latest, unreleased". Every version listed in `versions.json` at the
 root of the repository is built as well, from the text of its Git tag but with the current toolkit, into its own
 folder, `v<id>/` (for example `v0.9-review2/essays/aya_nassar/`). Each such edition has its own
-`publication.json`, `publication.md`, References page (`references/`, with the bibliography to download) and pages. Images, tiles, video, PDF files, the
-stylesheet and the scripts are stored once, at the site's root, and shared by all editions, so inside a frozen version
+`publication.json`, `publication.md`, References page (`references/`, with the bibliography to download) and pages.
+Images, tiles, video, PDF files, the documents' data, the stylesheet and the scripts are stored once, at the site's
+root, and shared by all editions, so inside a frozen version
 their URLs start with `../` (`../images/x-1600.jpg`); resolved against the edition's root, they point at the shared
 copy. `versions/` at the site's root lists every edition.
 
@@ -170,7 +174,7 @@ its mark in the text, at the end of the paragraph before it, is `<a class="margi
 | `items` | the media items on the page (see "Media items"), `{ number, kind, name, url, anchor, after }` in page order: `number` is the item's number (37), or `null` for an item not numbered yet; `kind` is `see`, `listen`, `watch` or `read`; `name` the readable part of its address; `url` its item page, relative to the edition's root (`"see/boulder-font/"`, `"../see/boulder-font/"` in a frozen version); `anchor` the fragment of the item on this page (`"item-37"`, for `url#anchor`); `after` the numbered paragraph before it (`"p76"`), or `null`. An item's credit, rights and source are in `media.json` |
 | `figures` | `{ image, width, height, tiles, alt, caption }`: `image` is 1600 px on the long edge, `width` and `height` are its size, `tiles` is a IIIF `info.json` or `null`; `alt` and `caption` are `""` when missing |
 | `audio` | `{ url, title }`; `url` is the MP3 on GitHub, which supports range requests |
-| `video` | `{ url, title, kind }`; `kind` is `youtube`, `vimeo`, `file` (a video file in the site) or `embed` (any other embedded page, such as the Internet Archive or the BBC); `url` is the address given in the Markdown |
+| `video` | `{ url, title, kind }`; `kind` is `youtube`, `vimeo`, `file` (a video file in the site) or `embed` (any other embedded page, such as the Internet Archive or the BBC); `url` is the address given in the Markdown. A document whose pages the build shows (see "Documents") is not listed: `items` has it, with `kind` `read` |
 | `links` | links in the page's text (not its menu or footer) to other pages, as `{ id, url, text }`, each target once, in order of first appearance; citation links are not included |
 | `references` | works from the book's bibliography (`references/bibliography.json`) that the page cites or lists, as `{ key, html, url, citations }`: first those cited, in order of first citation, then the rest of the page's typed reference list. `key` is the entry's id in the bibliography (`hall2001`); `html` is the reference formatted in the house style, as an HTML fragment (`<em>`, `<span>`, `<a>`); `url` is the entry in this page's typed reference list if the list has it (`essays/introduction/#ref-hall2001`), otherwise the work's entry on the edition's References page (`references/#hall2001`); `citations` are the ids of the citation links in this page's text that point to it (`cite-hall2001-1`), `[]` when the page only lists it |
 
@@ -230,7 +234,7 @@ At the root of the site, every media item, for other frontends. Its URLs are rel
 |---|---|
 | `contract`, `every_trick_in_the_book` | as in publication.json |
 | `title`, `url` | the book's title, and where the site is published |
-| `items` | every item, the numbered ones by number, then the new ones in order of first appearance: `{ number, kind, name, source, since, credit, rights, rights_label, rights_note, cite_as, title, url, short, caption, former_names, former_sources, stored, served, appearances }` |
+| `items` | every item, the numbered ones by number, then the new ones in order of first appearance: `{ number, kind, name, source, since, credit, rights, rights_label, rights_note, cite_as, title, url, short, caption, former_names, former_sources, stored, served, pages, document, appearances }` |
 
 - `number`, `kind`, `name`, `source`, `since`, `credit`, `rights`, `rights_note`, `cite_as`, `title`, `former_names`,
   `former_sources`: as in the register (`number` and `since` are `null` for a new item, `credit`, `rights`,
@@ -241,11 +245,44 @@ At the root of the site, every media item, for other frontends. Its URLs are rel
 - `caption`: its caption where it is shown (in the latest text, or else in the newest frozen version that has it), plain
   text
 - `stored`, `served`: where it is kept and where readers' browsers get it from, for people: `"this repository"`,
-  `"Internet Archive"`, `"YouTube"` …; `"our own site"`, `"GitHub, as a raw file"`, `"archive.org"` …
+  `"Internet Archive"`, `"YouTube"` …; `"our own site"`, `"GitHub, as a raw file"`, `"archive.org"` … (a zine copied from
+  archive.org is stored on the Internet Archive and served from our own site)
+- `pages`, `document`: for a document whose pages the build shows, how many pages it has and its data
+  (`"read/walking-sitting-sketching/document.json"`, see "Documents"); `null` for any other item
 - `appearances`: every place it appears, in every edition, `{ edition, page, url, anchor, after, caption, alt }`:
   `edition` is `"latest"` or a version's id, `page` the page's Markdown file, `url` the page with the item's anchor
   (`"v0.1/essays/catherine_hahn/#item-37"`), `after` the numbered paragraph before it, `caption` and `alt` as that page
   has them
+
+## Documents
+
+A document is a media item of kind `read` whose pages the build shows: a PDF of the repository, whose pages it renders
+and whose text it reads, page by page, or a zine on archive.org whose page images have been copied into the repository
+(`media/zines/<identifier>/`). Each has its data at the root of the site, beside its item page:
+`read/<name>/document.json` (`read/walking-sitting-sketching/document.json`). Its URLs are relative to the site's root,
+like media.json's.
+
+| field | value |
+|---|---|
+| `contract`, `every_trick_in_the_book` | as in publication.json |
+| `number`, `name`, `title`, `source` | the item's number (`null` until it has one), name and source, as in media.json, and its title: the register's, or else the title its page gives it |
+| `url` | its item page, `"read/<name>/"`; the site's root is as many folders up from `document.json` as `url` has |
+| `download` | `{ url, label, size }`: the original. For a PDF its file in the site (`"media/events/walking_sitting_sketching.pdf"`), `label` `"PDF"` and `size` in bytes; for a zine the item on archive.org, `label` `"archive.org"` and `size` `null` |
+| `copy` | for a zine, `{ folder, fetched }`: the folder in the repository that holds the copied pages and the day they were fetched (`YYYY-MM-DD`); `null` for a PDF |
+| `text` | `true` when the pages have text (a PDF), `false` when they have none that can be shown (a zine) |
+| `pages` | every page in order, `{ n, width, height, tiles, info, image, thumb, text }`: `n` from 1; `width` and `height` the size of its tiles' full image; `tiles` its zoom tiles' `info.json` (see "Zoom tiles") and `info` the same `info.json`, so that a viewer need not fetch it; `image` and `thumb` the page 800 and 400 px wide (JPEG); `text` the page's text as a list of paragraphs, plain text (`[]` for a page without text), or `null` for a document without text |
+
+In the HTML of a page, a document is
+`<figure id="item-64" class="document" data-document="../../read/walking-sitting-sketching/document.json">` with its
+cover (`<a class="figure-picture document__cover" href="…/read/walking-sitting-sketching/">`) and its caption line, which
+ends with `<span class="document__actions">`: Text, a link to its text on its page (`…/read/walking-sitting-sketching/#text`),
+and the download; `assets/zoom.js` puts Open first. On its item page, the figure (`class="document is-page"`) holds
+`<div class="document-viewer" data-document="…">` with the row of its pages, `<ol class="document-strip">`, each page a
+`<li id="page=3">`, so that `#page=3` finds the page without JavaScript; with JavaScript the viewer takes its place and
+opens at that page. Below it, the text: `<section id="text">`, holding, in `<div class="document-pages"
+data-pagefind-body>`, `<section class="document-page" id="page-3" data-pagefind-meta="entry-page-3:page 3">` for each
+page of a PDF, headed `Page 3`; then `<section id="download">`. Only that `div` of the page is in the latest text's
+search index, each page a result's place labelled `page 3`.
 
 ## Zoom tiles
 
@@ -272,7 +309,9 @@ Media are written as:
   zoom; in the HTML its first frame, `images/x-still.jpg`, is shown to readers who ask for less motion, and to anyone
   who presses its Pause button. In `page.json` its `tiles` is `null`
 - `::: {.video}` and `::: {.embed}`: a div that starts with an ordinary link to the video or embedded page (a
-  video file, a PDF); any text after the link is the caption
+  video file, a PDF); any text after the link is the caption. An `.embed` whose link is a document whose pages the build
+  shows (a PDF of the repository, or archive.org's reader of a zine whose pages are copied into the repository; see
+  "Documents") is shown as that document, with its cover and its viewer; its Markdown is the same
 - `::: {.audio}`: a div with a link to the MP3. When the MP3 has a cue file beside it, `<recording>.paragraphs.vtt`
   (WebVTT, one cue per transcript paragraph, holding the paragraph's words), the HTML marks each timed paragraph with
   `data-cue-for` (the player's id), `data-cue-start` and `data-cue-end` (seconds). Cues are matched to paragraphs by

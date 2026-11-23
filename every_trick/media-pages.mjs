@@ -1,11 +1,16 @@
-// The HTML of the media items' own pages (the facts below the item), the Media Index (/media-index/), its editing view
-// (/media-index/edit/, built for previews only) and the small pages that forward a short address (/37/) or a former
-// name to an item's page. build.mjs prepares the items (see itemView there) and puts this HTML into the site's
-// template; assets/media-index.js adds the filters, and the editing view's fields, checks and change sheet.
+// The HTML of the media items' own pages (the facts below the item, and below a document's viewer its text and its
+// download), the Media Index (/media-index/), its editing view (/media-index/edit/, built for previews only) and the small
+// pages that forward a short address (/37/) or a former name to an item's page. build.mjs prepares the items (see
+// itemView there) and puts this HTML into the site's template; assets/media-index.js adds the filters, and the editing
+// view's fields, checks and change sheet.
 // Every URL an item carries is relative to the site's root; root is the way from the page being written to it.
+import { longDate } from './versions.mjs';
 
 export const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const href = (root, url) => esc(root + url);
+
+// The size of a file, for people: "0.9 MB", "64 KB".
+export const sizeText = (bytes) => (bytes >= 1e5 ? `${(bytes / 1e6).toFixed(1)} MB` : `${Math.max(1, Math.round(bytes / 1e3))} KB`);
 
 // What each kind is, for people: the word of the address and what it names.
 export const KIND_NAMES = { see: 'a picture', listen: 'a recording', watch: 'a video', read: 'a document' };
@@ -46,10 +51,45 @@ const since = (it, root, long = false) => (it.since
   : (long ? 'Not in a frozen version yet' : 'new, not in a frozen version yet'));
 
 const stored = (it) => `${esc(it.stored.label)}${it.stored.detail ? `, <a href="${esc(it.stored.url)}">${esc(it.stored.detail)}</a>` : it.stored.url ? ` (<a href="${esc(it.stored.url)}">its page there</a>)` : ''}`;
+// on an item's page, a zine whose pages are copied from archive.org says so
+const storedInFull = (it) => stored(it) + (it.stored.copy
+  ? `, which keeps the original. The pages shown here are a copy of the item’s page images, fetched on ${esc(longDate(it.stored.copy.fetched))} into this repository: <a href="${esc(it.stored.copy.url)}">${esc(it.stored.copy.folder)}/</a>`
+  : '');
 
-// Plain text with its web addresses as links (a rights note). Punctuation after an address is not part of it.
+// Plain text with its web addresses as links (a rights note, a document's text). Punctuation after an address is not
+// part of it.
 const linked = (text) => String(text ?? '').split(/(https?:\/\/[^\s<>"'‘’“”]*[^\s<>"'‘’“”.,;:!?)\]])/)
   .map((part, i) => (i % 2 ? `<a href="${esc(part)}">${esc(part)}</a>` : esc(part))).join('');
+
+// ---- A document's page: below the viewer, its text page by page, and its download -------------------------------
+
+// The text of a document's pages is searched, in the latest text's index (build.mjs, step 7): only the pages' text, in
+// <div class="document-pages" data-pagefind-body>, each page a place of its own in the results, "page 3", leading to
+// #page-3 (its data-pagefind-meta, as the References page's works and the Media Index's items; assets/search.js). The
+// headings "Page 3", the line said for a page without text, and everything else on the page are left out.
+export function documentText(it, { root }) {
+  const doc = it.doc;
+  const sections = [];
+  if (doc.text) {
+    sections.push(`<section class="document-text" id="text" aria-labelledby="text-heading">\n<h2 id="text-heading">Text</h2>\n` +
+      `<p class="document-text__about">The text of each page, as it is read from the PDF. The pictures of the pages are above.</p>\n` +
+      '<div class="document-pages" data-pagefind-body>\n' +
+      doc.pages.map((p) => `<section class="document-page" id="page-${p.n}" aria-labelledby="page-${p.n}-heading" data-pagefind-meta="entry-page-${p.n}:page ${p.n}">` +
+        `<h3 id="page-${p.n}-heading" data-pagefind-ignore>Page ${p.n}</h3>\n` +
+        (p.text.length ? p.text.map((para) => `<p>${linked(para)}</p>`).join('\n') : '<p class="document-page__empty" data-pagefind-ignore>No text on this page.</p>') + '\n</section>').join('\n') +
+      '\n</div>\n</section>');
+  } else {
+    const caption = it.shown[0]?.caption || doc.title;
+    sections.push(`<section class="document-text" id="text" aria-labelledby="text-heading">\n<h2 id="text-heading">Text</h2>\n` +
+      `<p class="document-text__title">${esc(caption)}</p>\n` +
+      '<p class="document-text__about">The pages of this zine are pictures, and the text that can be recognised in them is not reliable enough to show here. A description of each page will follow.</p>\n</section>');
+  }
+  const download = doc.kind === 'pdf'
+    ? `<p>The original PDF: <a href="${href(root, doc.download.url)}" download>${esc(doc.download.url.split('/').pop())}</a> (${esc(sizeText(doc.download.size))}, ${doc.pages.length} pages).</p>`
+    : `<p>The original is kept on the Internet Archive: <a href="${esc(doc.download.url)}">${esc(doc.title)}</a>. The pages above are a copy of its page images.</p>`;
+  sections.push(`<section class="document-download" id="download" aria-labelledby="download-heading">\n<h2 id="download-heading">${doc.kind === 'pdf' ? 'Download' : 'The original'}</h2>\n${download}\n</section>`);
+  return `<div class="document-about">\n${sections.join('\n')}\n</div>`;
+}
 
 // An item's rights, which public pages show only when they are filled in: the label of its statement or licence linked
 // to its address ("In Copyright", "CC BY 4.0"), and with note, its rights note after it.
@@ -68,6 +108,7 @@ export function itemFacts(it, { root, siteUrl }) {
     : 'A new item: it gets its number when the next version of the book is frozen');
   row('Address', `<a href="${href(root, it.url)}">/${esc(it.url)}</a> · ${it.kind}, ${KIND_NAMES[it.kind]}`);
   if (!it.block) row('Item', 'This item is on no page of the book.');
+  if (it.doc) row('Pages', `${it.doc.pages.length}${it.doc.text ? `, with <a href="#text">their text</a>` : ''}`);
   // the captions of an item captioned differently on different pages (a page that gives it none is not listed)
   const captions = it.captions.filter((c) => c.text);
   if (it.captions.length > 1 && captions.length) row('Captions', `<ul>${captions.map((c) => `<li>${esc(c.text)} <span class="item-facts__where">(${c.pages.map(esc).join(', ')})</span></li>`).join('')}</ul>`);
@@ -77,7 +118,7 @@ export function itemFacts(it, { root, siteUrl }) {
   row('Appears in', places(it, root, { after: true }));
   if (it.alsoIn.length) row('Also in', it.alsoIn.map((v) => `${esc(v.label)}: ${v.places.map((a) => `<a href="${href(root, a.link)}">${esc(a.pageTitle)}</a>`).join(', ')}`).join('; '));
   row('Since', since(it, root, true));
-  row('Stored', stored(it));
+  row('Stored', storedInFull(it));
   row('Served from', esc(it.served.label));
   if (it.files.length) row('Files', `<ul>${it.files.map((f) => `<li><a href="${f.external ? esc(f.url) : href(root, f.url)}"${f.download ? ' download' : ''}>${esc(f.label)}</a>${f.note ? ` <span class="item-facts__where">${esc(f.note)}</span>` : ''}</li>`).join('')}</ul>`);
   if (it.formerNames.length) row('Former addresses', it.formerNames.map((n) => `/${esc(it.kind)}/${esc(n)}/`).join(', ') + ', which lead here');

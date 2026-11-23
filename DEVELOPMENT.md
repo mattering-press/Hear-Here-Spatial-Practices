@@ -113,7 +113,8 @@ so that the book does not depend on Juncture alone. Since version 0.1 (2026-11-2
 open to search engines (the `NOINDEX` setting at the top of `every_trick/build.mjs` is off). Existing pages keep
 Juncture's syntax, which the build reads; new content may use the Pandoc conventions in `every_trick/CONTRACT.md`.
 
-To build and preview it locally you need Node.js 20.11 or later and Pandoc 3.8:
+To build and preview it locally you need Node.js 20.11 or later, Pandoc 3.8 and poppler, which renders the book's PDF
+documents (`brew install poppler` on a Mac, `poppler-utils` on Debian and Ubuntu; see "Documents and zines"):
 
 ```sh
 cd every_trick
@@ -176,8 +177,9 @@ What is in `every_trick/`:
 - `versions.mjs`: reads the version registry (`versions.json` at the repository root), takes each version's text from its Git tag, and matches paragraphs between versions
 - `convert.mjs`: turns Juncture's `.ve-*` lines and its raw HTML (audio, iframes, videos) into Pandoc Markdown, and works out each edition's reading order
 - `register.mjs`: reads and writes the media register (`media/register.csv`), matches every item on the pages to its line, drafts names for new items, names each item's rights ("In Copyright") and makes the build's checks of the register (see "The media register")
-- `media-pages.mjs`: the HTML of the item pages' facts, the Media Index, its editing view and the pages that forward short and former addresses
-- `filters/`: Lua filters, one job each. `items.lua` and `to-markdown.lua` are stage 1 (`items` lists the page's media items for the register; `to-markdown` writes the Markdown view); `figures`, `embeds`, `cards`, `transcript`, `links`, `citations`, `paragraphs`, `cues` (marks transcript paragraphs with their times from a recording's cue file), `margins` and `contract` are stage 2 (Markdown view to HTML and `page.json`)
+- `documents.mjs`: where a document's pages come from (a PDF of the repository, rendered with poppler, or a zine copied into `media/zines/`), and the text of a PDF, page by page (see "Documents and zines")
+- `media-pages.mjs`: the HTML of the item pages' facts, a document's text and download on its page, the Media Index, its editing view and the pages that forward short and former addresses
+- `filters/`: Lua filters, one job each. `items.lua` and `to-markdown.lua` are stage 1 (`items` lists the page's media items for the register; `to-markdown` writes the Markdown view); `figures`, `embeds` (players, videos, embeds, and documents: a cover on an essay page, the row of pages on the document's own page), `cards`, `transcript`, `links`, `citations`, `paragraphs`, `cues` (marks transcript paragraphs with their times from a recording's cue file), `margins` and `contract` are stage 2 (Markdown view to HTML and `page.json`)
 - `citations.mjs`: prepares the bibliography for `filters/citations.lua`, writes the build's report on citations, the
   HTML of the References page, its downloads and the texts of its Copy menus (see "References and citations")
 - `ris.mjs`: turns a CSL-JSON entry into RIS, which Pandoc cannot write, for the References page
@@ -189,19 +191,21 @@ What is in `every_trick/`:
 - `scripts/to-citation-keys.mjs`: for the switch, shows how the plain-text citations would become Pandoc citations
 - `scripts/align.mjs`: times a podcast transcript's paragraphs against its recordings with whisper.cpp, on the editor's computer, and writes the cue files and a report (see "Plan: podcast player and transcript")
 - `scripts/number-media.mjs` (`npm run number-media -- <version>`): numbers the media items of a frozen version that have no number yet, in its reading order, and writes the register (see "Freezing a version for review or release")
+- `scripts/fetch-zine.mjs` (`npm run fetch-zine -- <identifier>`): copies a zine's page images from archive.org into `media/zines/<identifier>/`, once, on the editor's computer (see "Documents and zines")
 - `template.html`: the HTML around every page. It links the stylesheet and scripts with `?v=` and a hash of their contents, so that browsers fetch them again after every change instead of keeping an old copy
-- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `search.js` (the search page; see "Plan: search"), `place.js` (keeps the reader's place for the search page's ×), `zoom.js` (the pictures' Zoom buttons, the zoom viewer and the pause button of animations; see "Plan: image display and the zoom viewer"), `player.js` (the podcast player and its docked bar; see "Plan: podcast player and transcript"), `citations.js`, `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens), `media-index.js` (the Media Index's filters, and the editing view's fields, checks and change sheet), `menu.js` (the header's menu button), `references.js` (the References page's Copy buttons and their menu)
-- `images.mjs`: resized images (each zoomable picture in several widths for `srcset`) and the tiles for zooming; an animated GIF becomes an animated WebP and a still
+- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `search.js` (the search page; see "Plan: search"), `place.js` (keeps the reader's place for the search page's ×), `zoom.js` (the pictures' Zoom buttons, the zoom viewer and the pause button of animations, and the documents' Open buttons and their viewer, in a dialog or on the document's own page; see "Plan: image display and the zoom viewer" and "Documents and zines"), `player.js` (the podcast player and its docked bar; see "Plan: podcast player and transcript"), `citations.js`, `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens), `media-index.js` (the Media Index's filters, and the editing view's fields, checks and change sheet), `menu.js` (the header's menu button), `references.js` (the References page's Copy buttons and their menu)
+- `images.mjs`: resized images (each zoomable picture in several widths for `srcset`) and the tiles for zooming; an animated GIF becomes an animated WebP and a still; each page of a document gets tiles and two widths (400 and 800 px)
 - `audio.mjs`: reads the length of an MP3 from the file, for the podcast players
-- `check.mjs`, `serve.mjs`: the link check (it also confirms that every edition has its search index, and its References
-  page with the downloads and the Copy menus' texts, each with every work) and the local server
+- `check.mjs`, `serve.mjs`: the link check (including every page of every document; it also confirms that every
+  edition has its search index, and its References page with the downloads and the Copy menus' texts, each with every
+  work) and the local server
 - `CONTRACT.md`: the `page.json`, `publication.json` and `media.json` files that other frontends can read, the paragraph rule and the media items
 - `package.json`: the toolkit's name and version (see "Versions of the book and of every_trick" below)
 - `CHANGELOG.md`: every version of the toolkit and what changed in it
 
 GitHub Actions (`.github/workflows/static-twin.yml`) builds and checks the twin on every push and pull
-request, and uploads every pushed branch as a preview (see "Previews"). It fetches the whole
-history with its tags, so that it can build the frozen versions. On `main` it also deploys `_site/` to GitHub
+request, and uploads every pushed branch as a preview (see "Previews"). It installs Pandoc and poppler, and fetches the
+whole history with its tags, so that it can build the frozen versions. On `main` it also deploys `_site/` to GitHub
 Pages, which serves it at `https://hearhere.matteringpress.org/` (the deploy is skipped if Pages is not enabled
 with "GitHub Actions" as its source). `_site/` is never committed. On every branch but `main` its build step sets
 `EVERY_TRICK_PREVIEW=true`, which adds the Media Index's editing view (`/media-index/edit/`, see "The media
@@ -273,6 +277,41 @@ nothing is saved anywhere else. When you are done, "Hand over changes" opens a s
 by item ("caption on Hear Here Podcast: Catherine Hahn (essays/catherine_hahn.md): “…” → “…”", "rights: (empty) →
 “http://rightsstatements.org/vocab/InC/1.0/” (In Copyright)", and the comments), with Copy and Download (.md); someone
 applies it on a branch. "Clear all edits" puts every field back as the pages and the register have it.
+
+### Documents and zines
+
+A document is a media item of kind `read` whose pages the build shows as pictures, in the zoom viewer (the plan:
+"Plan: documents and zines"; the data: "Documents" in `every_trick/CONTRACT.md`). There are two kinds:
+
+- **A PDF in the repository**, such as the walk's booklet (`media/events/walking_sitting_sketching.pdf`), linked from an
+  `::: {.embed}` block (or, in Juncture's syntax, a `<figure class="pdf-embed" data-repo-pdf=…>`). At every build poppler
+  renders its pages at 250 dpi (`pdftoppm`) and reads its text page by page (`pdftotext`): each block of text on a page is
+  a paragraph, or several where a short line ends a sentence (a line of dialogue); a hyphen at the end of a line is kept
+  (`non-visible`); the page's number at its foot is left out. To change the booklet, replace the PDF (keeping its name, or
+  as "Replace a file or an address" says in "The media register" above) and build. The PDF itself is the download.
+- **A zine on archive.org**, such as the Experimental Zine Index, embedded with archive.org's reader
+  (`https://archive.org/details/<identifier>/mode/2up`), whose pages have been copied into `media/zines/<identifier>/`
+  (`page-001.jpg` …, and `zine.json`, which says where they came from and when). The register's source stays the
+  archive.org address: the item is archive.org's, which keeps the original, and the download leads there. Its text is
+  not shown, because archive.org's text recognition cannot read a flattened zine reliably; it shows its caption or
+  title, and later a description written by an editor.
+
+A `read` item that is neither (another site's reader) stays an embed, as before.
+
+**Fetching or refreshing a zine.** On your own computer, in `every_trick/`, run `npm run fetch-zine -- <identifier>`,
+the part of the zine's archive.org address after `/details/` (`npm run fetch-zine -- trauma-body-and-home`; add
+`--dry-run` to see what it would fetch). It downloads the item's "Single Page Processed JP2 ZIP" (about 12 MB), checks it
+against the MD5 that archive.org lists, leaves out any page that archive.org's scandata marks as not part of the book,
+and writes each page as a JPEG at full size and quality 85, replacing the pages that were there. On a Mac it needs only
+what macOS has (`sips` reads the JPEG 2000 pages), and OpenJPEG for the pages `sips` cannot read, such as blank pages
+stored as palette images (`brew install openjpeg`); elsewhere it needs OpenJPEG and unzip (`sudo apt-get install
+libopenjp2-tools unzip` on Debian and Ubuntu). Commit `media/zines/<identifier>/` on a branch and build: the build makes
+the tiles and the smaller images. To correct a zine, correct it on archive.org and run the script again. The build never
+fetches anything from archive.org.
+
+**Adding a document.** Put the PDF in `media/` and link it from a page in an `::: {.embed}` block (the link first, then
+the caption), or, for a zine on archive.org, embed its reader and fetch its pages as above. It gets its number when the
+next version is frozen, like any other item.
 
 ### Paragraph numbers
 
@@ -664,14 +703,26 @@ stays as "Plan: media data decisions" fixes it. Built in every_trick_in_the_book
 
 Agreed with the publisher on 2026-11-22 (option A of three: page images with the text beside them, rather than
 PDF.js or the browser's own PDF reader). It builds the `/read/<name>` item pages of "Plan: media data decisions".
-Not built yet.
+Built in every_trick_in_the_book 1.13.0 (23 November 2026); how editors use it is in "Documents and zines" above. Settled
+while building, where the plan was silent: spreads are shown where the viewer is at least 600 px wide and wider than it
+is tall (a phone, or a tablet held upright, shows one page at a time); the viewer on a document's own page sits in the
+page, as wide as the page's opening, where the mouse wheel and a vertical swipe scroll the page until the pages are zoomed
+in; the address follows the pages as the reader turns them (`#page=6`); Home and End go to the first and last pages; on
+an essay page the cover is at most 20rem wide; the walk booklet's caption loses its closing "Open the booklet (PDF)" link,
+which the download replaces. Changed by the publisher on 2026-11-23: the two pages of a spread meet without a gap, and a
+soft shadow on each page towards the spine, with a one-pixel hairline at the spine, shows that they are two (an
+OpenSeadragon overlay in the viewport's coordinates, `div.viewer__spine`, so that it zooms and moves with the pages and
+stays in full screen; a single page and the cover alone have none; its look is in `every_trick/assets/site.css`); and
+the text of a document is searched (below).
 
 - **Pages in the zoom viewer.** A document's pages are page images with zoom tiles, shown in the image viewer as
   two-page spreads on wide screens (the cover alone, then 2–3, 4–5 …) and one page at a time on phones, with a thin bar:
   ‹ 4–5 / 21 ›, Zoom, Full screen, Text, Download. Keyboard and swipe work as for pictures.
 - **The text** of a document is plain HTML on its `/read/` page, below the viewer, one section per page headed
   "Page 3" (anchor `#page-3`; links that open the viewer at a page use `#page=3`), so that it can be searched, read
-  aloud, translated and copied. In the viewer, Text swaps the pages on screen for their text. A PDF made on a computer
+  aloud, translated and copied. Search (the publisher, 2026-11-23): only the pages' text of a document's `/read/` page,
+  not its facts or buttons, is in the latest text's search index, each page labelled "page 3" where an essay's
+  paragraphs are "para. 12", and a result leads to `#page-3` (see "Plan: search"). The zines have no text to find. In the viewer, Text swaps the pages on screen for their text. A PDF made on a computer
   gives clean text; a scan or a flattened zine does not (archive.org's text recognition of the zine index is
   unusable), so it shows its caption, and later a description written by an editor.
 - **On an essay page** a document is a figure: its cover with the caption, and on the caption line Open (the viewer,
@@ -739,9 +790,9 @@ waits for the print edition; how editors use it is in "The media register" above
 - **Search** finds the items of the Media Index (the publisher, 2026-11-23): each entry's title and address are in
   the latest text's search index, and a result leads to the entry (`/media-index/#item-37`), labelled "item 37" where
   a page shows "para. 12" (see "Plan: search"). Its other facts (where it appears, its version, where it is stored
-  and served from) are left out, and so are the item pages, whose words the Media Index holds, the short and former
-  addresses and the editing view. The Media Index is shared by every version, so a frozen version's search does not
-  have it.
+  and served from) are left out, and so are the item pages, whose words the Media Index holds (except the text of a
+  document's pages, see "Plan: documents and zines"), the short and former addresses and the editing view. The Media
+  Index and the item pages are shared by every version, so a frozen version's search does not have them.
 - **The editing view** (`/media-index/edit/`) is built on previews only, never on the public site. It is the same list
   with fields for the name, the credit, the rights (a choice of the common rightsstatements.org statements and Creative
   Commons licences, plus any other address typed in) and their note, how to cite the source, the caption and alt text
@@ -822,7 +873,10 @@ dependency of `every_trick/`; MIT licence).
   Each edition's References page is in its index, and the Media Index in the latest text's; the media items' own
   pages, their short and former addresses and the editing view are in none (see "Plan: media register, item pages
   and the Media Index" and "Plan: the References page"). The References page's Copy buttons are interface, made by its
-  script, so no index has them; the header, the menu panel included, is outside `<main>`.
+  script, so no index has them; the header, the menu panel included, is outside `<main>`. The text of a document's
+  pages is in the latest text's index too, from its `/read/` page: only the text (`<div class="document-pages"
+  data-pagefind-body>`), each page a place of its own labelled "page 3" (`entry-page-3`) with a link to `#page-3`;
+  the page's facts, buttons and "Page 3" headings are left out (see "Plan: documents and zines").
 - **Each edition searches itself.** The latest text and every frozen version get their own index (`pagefind/`) and
   search page (`/v0.1/search/`), so results in a frozen version lead to its permanent paragraph numbers. A frozen
   version's search page has a link that searches the latest text for the same words. Each index adds about 0.6 MB.

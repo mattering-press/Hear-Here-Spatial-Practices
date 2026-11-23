@@ -16,6 +16,8 @@
 // register.mjs), with its permanent number and its name. Each gets its own page at the site's root, shared by all
 // editions (/see/<name>/, /listen/, /watch/, /read/), a short address (/37/), and a place in the Media Index
 // (/media-index/, media.json); captions start with the item's number (filters/figures.lua, filters/embeds.lua).
+// Documents (documents.mjs): a PDF of the repository, rendered with poppler, or a zine copied from archive.org into
+// media/zines/, is shown as page images with zoom tiles in the viewer (assets/zoom.js), with its text on its own page.
 //   npm run build            needs Pandoc 3.8 on the PATH (or its path in the PANDOC environment variable)
 //   npm run build:preview    the same, with the Media Index's editing view (/media-index/edit/), which only previews
 //                            have: the workflow sets EVERY_TRICK_PREVIEW=true on every branch but main
@@ -29,8 +31,9 @@ import { fileURLToPath } from 'node:url';
 import { BIBLIOGRAPHY, COPY_DATA, COPY_STYLES, CSL_COMMIT, DOWNLOADS, formatReferences, locate, prepareReferences, referencesHtml, report as citationReport } from './citations.mjs';
 import { readBook, REPO, REPO_ROOT, repoPath } from './convert.mjs';
 import { mp3Duration, paragraphCues } from './audio.mjs';
-import { makeImages } from './images.mjs';
-import { forwardHtml, itemFacts, mediaEditHtml, mediaIndexHtml } from './media-pages.mjs';
+import { pagesOf, pdfText, renderPdf, requirePoppler, zinePages } from './documents.mjs';
+import { imageName, makeImages, makePages } from './images.mjs';
+import { documentText, forwardHtml, itemFacts, mediaEditHtml, mediaIndexHtml, sizeText } from './media-pages.mjs';
 import * as pagefind from 'pagefind';
 import { readRegister, resolveItems, RIGHTS, servedFrom, storedAt } from './register.mjs';
 import { checkout, longDate, matchParagraphs, readRegistry } from './versions.mjs';
@@ -310,8 +313,72 @@ const itemUrl = (it) => `${it.kind}/${it.name}/`;
 // (an item not numbered yet has no label: JSON's null would reach the filters as a value that is not nil)
 const itemsFor = (prefix) => Object.fromEntries([...media.bySource].map(([source, it]) => [source,
   { ...(it.label ? { label: it.label } : {}), kind: it.kind, name: it.name, url: prefix + itemUrl(it), credit: it.credit || '', title: it.title || '' }]));
+// 4b'. Documents (documents.mjs; "Plan: documents and zines" in DEVELOPMENT.md): every read item whose pages the build can
+//     show gets them as images (zoom tiles, and two widths for the row of pages and the cover: images.mjs, makePages),
+//     its text page by page, and its data, read/<name>/document.json at the site's root (CONTRACT.md, "Documents").
+//     A PDF of this repository is rendered with poppler; a zine on archive.org shows the pages that scripts/fetch-zine.mjs
+//     copied into media/zines/<identifier>/ (a flattened zine has no text that can be read reliably). Any other read item
+//     stays an embed. The manifests get the documents, for the filters (filters/embeds.lua).
+const documents = new Map();   // item name -> its document
+const documentReport = { pages: 0, tiles: 0 };
+{
+  const jobs = [];
+  for (const it of media.items.filter((i) => i.kind === 'read' && i.appearances.length)) {
+    const from = pagesOf(it.source);
+    if (!from) continue;
+    const first = it.appearances[0];
+    const title = it.title || first.found.title || first.found.caption || it.name;
+    if (from.kind === 'pdf') {
+      const missing = requirePoppler();
+      if (missing) fail(missing);
+      const file = join(sourceOf(first.edition.edition, from.path), from.path);
+      let rendered, text;
+      try { rendered = renderPdf(file, join(work, 'documents', it.name)); text = pdfText(file); } catch (e) { fail(e.message); }
+      if (text.length !== rendered.length) fail(`${from.path}: pdftoppm found ${rendered.length} pages and pdftotext ${text.length}`);
+      jobs.push({ it, title, kind: 'pdf', text, pages: rendered.map((p) => ({ n: p.n, file: p.file, name: `${imageName(from.path)}-page-${String(p.n).padStart(3, '0')}` })),
+        download: { url: from.path, label: 'PDF', size: statSync(file).size } });
+      // the PDF is the download, so it is in the site (a page in Juncture's syntax has had it copied already)
+      if (!copied.has(from.path)) {
+        mkdirSync(dirname(join(SITE, from.path)), { recursive: true });
+        cpSync(file, join(SITE, from.path));
+        copied.add(from.path);
+      }
+    } else {
+      let zine;
+      try { zine = zinePages(from.id); } catch (e) { fail(e.message); }
+      jobs.push({ it, title, kind: 'zine', text: null, pages: zine.pages.map((p) => ({ n: p.n, file: p.file, name: imageName(p.path) })),
+        download: { url: it.source, label: 'archive.org', external: true }, copy: { folder: from.folder, fetched: zine.record.fetched } });
+    }
+  }
+  const made = await makePages(jobs.flatMap((j) => j.pages), SITE);
+  documentReport.tiles = made.tiles;
+  let k = 0;
+  for (const j of jobs) {
+    const it = j.it, url = itemUrl(it);
+    const pages = j.pages.map((p) => ({ n: p.n, ...made.pages[k++], ...(j.text ? { text: j.text[p.n - 1] } : {}) }));
+    documentReport.pages += pages.length;
+    const doc = { name: it.name, kind: j.kind, title: j.title, url, json: `${url}document.json`, text: !!j.text, download: j.download, copy: j.copy || null, pages };
+    documents.set(it.name, doc);
+    mkdirSync(join(SITE, url), { recursive: true });
+    writeFileSync(join(SITE, doc.json), JSON.stringify({
+      contract: CONTRACT, every_trick_in_the_book: TOOLKIT_VERSION, number: it.number, name: it.name, title: doc.title, url, source: it.source,
+      download: { url: doc.download.url, label: doc.download.label, size: doc.download.size ?? null },
+      copy: doc.copy ? { folder: doc.copy.folder, fetched: doc.copy.fetched } : null,
+      text: doc.text,
+      pages: pages.map((p) => ({ n: p.n, width: p.width, height: p.height, tiles: p.tiles, info: p.info, image: p.srcset.at(-1).url, thumb: p.srcset[0].url,
+        text: p.text ?? null })),
+    }, null, 1) + '\n');
+  }
+}
+// what the filters need of each document, with URLs from an edition's root (prefix: from there to the site's root)
+const documentsFor = (prefix) => Object.fromEntries([...documents.values()].map((d) => [d.name, {
+  title: d.title, kind: d.kind, text: d.text, json: prefix + d.json, page: prefix + d.url,
+  download: { url: d.download.external ? d.download.url : prefix + d.download.url, label: d.download.label, size: d.download.size ? sizeText(d.download.size) : '', external: !!d.download.external },
+  pages: d.pages.map((p) => ({ width: p.width, height: p.height, srcset: p.srcset.map((c) => ({ url: prefix + c.url, width: c.width })) })),
+}]));
 for (const edition of editions) {
   edition.manifestData.items = itemsFor(edition.prefix);
+  edition.manifestData.documents = documentsFor(edition.prefix);
   writeFileSync(edition.manifest, JSON.stringify(edition.manifestData));
 }
 
@@ -609,7 +676,17 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
     }
     let thumb = null, files = [], duration = null, docType = '';
     const source = first?.found.source || it.source;
-    if (it.kind === 'see' && first) {
+    const doc = documents.get(it.name) || null;
+    if (doc) {
+      // a document: its cover, the original (our PDF, or the item on archive.org), and its data
+      const cover = doc.pages[0].srcset[0];
+      thumb = { url: cover.url, width: cover.width, height: cover.height };
+      files = doc.kind === 'pdf'
+        ? [{ label: 'The document (PDF)', url: doc.download.url, note: `(${sizeText(doc.download.size)}, ${doc.pages.length} pages)`, download: true }]
+        : [{ label: 'The original, on archive.org', url: it.source, external: true }];
+      files.push({ label: `Its pages${doc.text ? ' and their text' : ''} as data: document.json`, url: doc.json });
+      docType = doc.kind === 'pdf' ? 'PDF' : 'zine';
+    } else if (it.kind === 'see' && first) {
       const entry = image('figure', source, first.found.rotation);
       if (entry?.animated) {
         thumb = { url: entry.still, width: entry.width, height: entry.height };
@@ -650,7 +727,7 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
       heading: it.title || first?.caption || first?.found.title || apps[0]?.caption || it.name,
       alsoIn: frozenWith.filter((e) => !(first && first.edition === e)).map((e) => ({ label: e.version.label, places: apps.filter((a) => a.edition === e) })),
       sinceLabel: since ? since.version.label : it.since ? `Version ${it.since}` : '', sinceUrl: since ? since.dir : null,
-      stored: storedAt(it), served: servedFrom(it), thumb, files, duration, docType,
+      stored: storedAt(it, doc?.copy), served: servedFrom(it, doc?.copy), thumb, files, duration, docType, doc,
       block: first?.found.block || null, blockPage: first?.file || 'README.md',
     };
   };
@@ -660,7 +737,7 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
   // items.lua recorded it), then the facts below it.
   const allFiles = [...new Set(editions.flatMap((e) => e.files))];
   const itemManifest = join(work, 'items-manifest.json');
-  writeFileSync(itemManifest, JSON.stringify({ ...manifestOf('', allFiles), items: itemsFor('') }));
+  writeFileSync(itemManifest, JSON.stringify({ ...manifestOf('', allFiles), items: itemsFor(''), documents: documentsFor('') }));
   const pageFrame = (root, extra = {}) => {
     const yaml = join(work, `frame-${root.length}.yaml`);
     if (!existsSync(yaml)) writeYaml(yaml, latest.menu, { version_line: versionLine(latest, root, root) });
@@ -668,6 +745,7 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
       ...metaArgs({ repo: REPO, lang: PUBLICATION.language, ...toolkitMeta, ...frameMeta(latest, root), root, shared: root, 'asset-version': ASSET_VERSION,
         'site-title': latest.home.title, ...extra })];
   };
+  const documentsSearched = [];   // the pages of the documents that have text, for the latest text's search index
   await inParallel(views, async (it) => {
     const name = `${it.url} (the page of ${it.label ? `item ${it.label}` : 'a new item'})`;
     const meta = { page: it.blockPage, manifest: itemManifest, title: it.heading };
@@ -675,14 +753,24 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
     if (it.block) {
       body = bracedDivs(await pandocAsync([...toMarkdown(['to-markdown']), ...metaArgs({ ...meta, repo: REPO, lang: PUBLICATION.language, root: '../../' })], it.block, name));
     }
+    // a document: below the viewer (filters/embeds.lua), its text page by page and its download. The text of a document
+    // that has one is searched, in the latest text's index (step 7): the page's title names the result, and only the
+    // pages' text is indexed (documentText).
+    const searched = !!it.doc?.text;
+    if (it.doc) body += `\n${rawBlock(documentText(it, { root: '../../' }))}`;
     body += `\n${rawBlock(itemFacts(it, { root: '../../', siteUrl }))}`;
     const html = await pandocAsync([...pageFrame('../../', { ...meta, pagetitle: `${it.label ? `Item ${it.label}` : 'New item'}: ${it.heading}`, 'item-page': 'true',
-      'section-title': it.label ? `Item ${it.label}` : 'New item', 'section-url': `../../media-index/#${it.anchor}`, 'in-media-index': 'true', noindex: NOINDEX ? 'true' : '' }),
+      'section-title': it.label ? `Item ${it.label}` : 'New item', 'section-url': `../../media-index/#${it.anchor}`, 'in-media-index': 'true', noindex: NOINDEX ? 'true' : '',
+      'search-title': searched ? 'true' : '' }),
       ...filterArgs(['figures', 'embeds', 'links'])], body, name);
     mkdirSync(join(SITE, it.url), { recursive: true });
     writeFileSync(join(SITE, it.url, 'index.html'), html);
+    if (searched) documentsSearched.push({ url: `/${it.url}`, content: html });
     mediaReport.pages++;
   });
+  // in the order of the Media Index, whichever page Pandoc finished first
+  documentsSearched.sort((a, b) => views.findIndex((it) => `/${it.url}` === a.url) - views.findIndex((it) => `/${it.url}` === b.url));
+  latest.searchable.push(...documentsSearched);
 
   // Short addresses, /37/, and the former names' addresses: small pages that forward to the item's page.
   const forward = (dir, it, text) => {
@@ -698,7 +786,8 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
 
   // The Media Index, and on a preview its editing view. The Media Index is searched, in the latest text's index only
   // (step 7), each entry a place of its own in the results ("item 37"; mediaIndexHtml). The item pages, which hold the
-  // same words, the short and former addresses and the editing view are in no index.
+  // same words, the short and former addresses and the editing view are in no index; only the text of a document's pages
+  // is, on its page (above).
   const indexHtml = mediaIndexHtml(views, { root: '../', script: `../assets/media-index.js?v=${ASSET_VERSION}`, preview: PREVIEW });
   const indexPage = pandoc([...pageFrame('../', { page: 'media-index', title: 'Media Index', noindex: NOINDEX ? 'true' : '', searchable: 'true', 'on-media-index': 'true' }),
     ...filterArgs(['links'])], rawBlock(indexHtml), 'the Media Index');
@@ -721,6 +810,7 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
       rights: it.rights || '', rights_label: it.rightsLabel || '', rights_note: it.rightsNote || '', cite_as: it.citeAs || '', title: it.title || '',
       url: it.url, short: it.short, caption: it.shown[0]?.caption ?? '', former_names: it.formerNames, former_sources: it.formerSources,
       stored: it.stored.label, served: it.served.label,
+      pages: it.doc ? it.doc.pages.length : null, document: it.doc ? it.doc.json : null,
       appearances: it.apps.map((a) => ({ edition: a.edition.version.id, page: a.file, url: /^#|^$/.test(a.link) ? `./${a.link}` : a.link, anchor: a.anchor || null,
         after: a.after || null, caption: a.caption, alt: a.alt })),
     })),
@@ -730,8 +820,8 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
 // 7. Search: one Pagefind index for each edition, of its pages' reading text only (<main>, marked data-pagefind-body by
 //    the template; cards are left out by filters/cards.lua). The Markdown views, publication/, versions/ and search/
 //    are not in it. Each edition's index also holds its References page (step 4c), and the latest text's the Media
-//    Index, which all editions share (step 6); the item pages, their short and former addresses and the editing view
-//    are in no index.
+//    Index and the text of the documents' pages (/read/<name>/, only the text), which all editions share (step 6); the
+//    other item pages, their short and former addresses and the editing view are in no index.
 //    Result addresses are root-absolute here (/essays/aya_nassar/); search.js makes them relative.
 //    Pagefind's own search boxes are not used, so their files are removed; its licence goes with the index.
 //    A page whose reading text is only cards (Events) has nothing to index; the report lists such pages.
@@ -778,6 +868,11 @@ console.log(`Built ${pageCount} pages${editions.length > 1 ? ` in ${editions.len
   const numbered = media.items.filter((it) => it.number !== null), fresh = media.items.filter((it) => it.number === null);
   console.log(`  Media items: ${media.items.length}, ${numbered.length} with a number (${counted(numbered)})${fresh.length ? `, ${fresh.length} new, not numbered yet (${fresh.map((it) => it.name).join(', ')})` : ''}; ` +
     `${mediaReport.pages} item pages, ${mediaReport.short} short addresses, ${mediaReport.forwards} former name${mediaReport.forwards === 1 ? '' : 's'} forwarded. The editing view ${PREVIEW ? 'is built: a preview build' : 'is not built: it is for previews only'}.`);
+  const docs = [...documents.values()];
+  if (docs.length) {
+    console.log(`  Documents: ${docs.map((d) => `${d.name} (${d.kind === 'pdf' ? 'PDF' : `zine, copied on ${longDate(d.copy.fetched)}`}, ${d.pages.length} pages${d.text ? `, ${d.pages.reduce((n, p) => n + p.text.join(' ').split(/\s+/).filter(Boolean).length, 0)} words of text` : ''})`).join(', ')}; ` +
+      `${documentReport.pages} pages, ${documentReport.tiles} tiles.`);
+  }
 }
 // the References pages: how many citations lead to their page's own list, and how many to the References page
 for (const r of report.references) {

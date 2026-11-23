@@ -173,6 +173,22 @@ function M.item(source)
   return item
 end
 
+-- A document whose pages the build shows (documents.mjs), by its item's name, as build.mjs hands it over:
+--   { title, kind ("pdf" or "zine"), text (true when its pages have text), json (its document.json), page (its item
+--     page), download = { url, label, size, external }, pages = { { width, height, srcset = { { url, width } } } } }
+-- with URLs from the edition's root; nil for any other item.
+function M.document(name)
+  local docs = name and load_manifest().documents
+  local doc = docs and docs[name] or nil
+  if doc then
+    for _, p in ipairs(doc.pages) do
+      p.width, p.height = math.floor(p.width), math.floor(p.height)
+      for _, c in ipairs(p.srcset) do c.width = math.floor(c.width) end
+    end
+  end
+  return doc
+end
+
 -- Every item on a page gets a stable anchor: by its number (item-37), or by its name until it has one; the same item a
 -- second time on the page gets item-37-2.
 local anchors = {}

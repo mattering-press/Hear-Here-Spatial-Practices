@@ -1,7 +1,8 @@
 // Checks the built site without a browser: every internal link and every local file that a page (including every
-// width in a picture's srcset), the stylesheet or a JSON file (page.json, publication.json, media.json) refers to must
-// exist in _site/, and links to #fragments must find their id. The links of the media items (their pages, short
-// addresses and anchors) are checked with the rest.
+// width in a picture's srcset), the stylesheet or a JSON file (page.json, publication.json, media.json, a document's
+// document.json) refers to must exist in _site/, and links to #fragments must find their id. The links of the media
+// items (their pages, short addresses and anchors) are checked with the rest, and so is every page of every document
+// (its images and its tiles' info.json).
 // Root-absolute URLs ("/essays/…") are errors too, because the site must also work under a sub-path.
 // Frozen versions (v<id>/, each with its own publication.json) are checked too, with the media they share.
 // Every edition must also have its search page and search index (search/, pagefind/), with at least one page in it, and
@@ -45,7 +46,7 @@ for (const file of all) {
   const from = relative(SITE, file), base = dirname(file), text = readFileSync(file, 'utf8');
   if (file.endsWith('.html')) {
     const html = text.replace(/<!--.*?-->/gs, '');
-    for (const m of html.matchAll(/\s(?:href|src|poster|data|data-tiles|data-largest|data-copy)="([^"]*)"/g)) check(m[1].replace(/&amp;/g, '&'), from, base);
+    for (const m of html.matchAll(/\s(?:href|src|poster|data|data-tiles|data-largest|data-document|data-copy)="([^"]*)"/g)) check(m[1].replace(/&amp;/g, '&'), from, base);
     // every width of a picture: srcset="images/x-w800.jpg 800w, images/x-1600.jpg 1600w, …"
     for (const m of html.matchAll(/\ssrcset="([^"]*)"/g)) for (const candidate of m[1].split(',')) check(candidate.trim().split(/\s+/)[0].replace(/&amp;/g, '&'), from, base);
     for (const m of html.matchAll(/url\(['"]?([^'")]+)['"]?\)/g)) check(m[1], from, base);
@@ -66,12 +67,14 @@ for (const file of all) {
     }
   } else if (file.endsWith('.css')) {
     for (const m of text.matchAll(/url\(['"]?([^'")]+)['"]?\)/g)) check(m[1], from, base);
-  } else if (file.endsWith('page.json') || file.endsWith('publication.json') || from === 'media.json') {
+  } else if (file.endsWith('page.json') || file.endsWith('publication.json') || from === 'media.json' || file.endsWith('/document.json')) {
     // URLs in page.json and publication.json are relative to the edition's root (see CONTRACT.md), except the
-    // published address of publication.json itself; in media.json, to the site's root (its own address, url, aside).
-    const root = from === 'media.json' ? SITE : editionRoot(file), data = JSON.parse(text);
+    // published address of publication.json itself; in media.json and a document.json, to the site's root (media.json's
+    // own address, url, aside).
+    const siteWide = from === 'media.json' || file.endsWith('/document.json');
+    const root = siteWide ? SITE : editionRoot(file), data = JSON.parse(text);
     JSON.stringify(data, (key, value) => {
-      if (['url', 'image', 'tiles', 'markdown', 'short'].includes(key) && typeof value === 'string' && !((from.endsWith('publication.json') || from === 'media.json') && value === data.url)) check(value, from, root);
+      if (['url', 'image', 'tiles', 'markdown', 'short', 'thumb', 'document'].includes(key) && typeof value === 'string' && !((from.endsWith('publication.json') || from === 'media.json') && value === data.url)) check(value, from, root);
       return value;
     });
   }
