@@ -1,3 +1,11 @@
+---
+# Who made this page, for its citations. A draft, to be confirmed with Nirmal Puwar (23 November 2026).
+author:
+  - Puwar, Nirmal
+  - Chambers, Pete
+  - Wood, Paul
+  - Gray, Ros
+---
 .ve-style ./custom.css
 .ve-script ./custom.js
 

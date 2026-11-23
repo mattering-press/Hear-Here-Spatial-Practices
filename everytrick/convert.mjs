@@ -2,7 +2,7 @@
 // images to resize, files to copy, warnings, and anything it could not handle. No dependencies.
 //
 //   convert(source, file, { exists }) -> { markdown, title, subtitle, header, menu, footer, cards, images, files,
-//                              handled, warnings, unhandled, exceptions }
+//                              credits, handled, warnings, unhandled, exceptions }
 //   exists(path) says whether a repository file is there (default: in the working tree; for a frozen version, in its tag)
 //   node convert.mjs essays/walk.md      prints the converted Markdown (paths are relative to the repository)
 //
@@ -19,6 +19,18 @@
 //   raw <figure data-repo-pdf>                 ->  ::: {.twin-embed …} with the caption inside, less a closing link to
 //                                                  the PDF itself (a document's caption line has its download)
 // .ve-header and .ve-footer become page data (title, menu, footer); .ve-style and .ve-script are dropped.
+//
+// A page may start with a front matter: its title and subtitle, for a page written in Pandoc's conventions (in place of
+// a .ve-header line), and its credits, who made it, for its citations ("Plan: copying citations" in DEVELOPMENT.md;
+// "Credits" in CONTRACT.md). It is read here and left out of the Markdown, its lines left empty, so that line numbers
+// in warnings stay the file's:
+//   ---
+//   title: Acknowledgements
+//   author:
+//     - Nassar, Aya
+//   interviewer: Puwar, Nirmal
+//   ---
+// Each name is written "Family, Given"; a name without a comma (a group) is kept as it is written.
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { dirname, join, posix } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -67,29 +79,58 @@ const IMAGE_RE = /!\[([^\]]*)\]\(((?:[^()\s]|\([^()\s]*\))+)(?:\s+"[^"]*")?\)/g;
 
 const inWorkingTree = (path) => existsSync(join(REPO_ROOT, path));
 
-export function convert(source, file, { exists = inWorkingTree } = {}) {
-  const page = { title: null, subtitle: null, header: {}, menu: [], footer: [], cards: [], images: [], files: [] };
-  // A page written in Pandoc's conventions may give its title (and subtitle) in a YAML front matter instead of a
-  // .ve-header line: '---', 'title: Acknowledgements', '---' at its very start. The block is taken off the text, and
-  // its blank lines kept, so that line numbers in warnings stay the file's.
-  const front = /^---\r?\n((?:.*\r?\n)*?)---\r?\n/.exec(source);
-  if (front) {
-    const value = (key) => {
-      const m = new RegExp(`^${key}:[ \\t]*(.*)$`, 'm').exec(front[1]);
-      const v = m?.[1].trim() ?? '';
-      return (/^(["']).*\1$/.test(v) ? v.slice(1, -1) : v) || null;
-    };
-    page.title = value('title');
-    page.subtitle = value('subtitle');
-    source = '\n'.repeat(front[0].split('\n').length - 1) + source.slice(front[0].length);
+// The roles a page's credits may name, in the order its citations name them.
+export const CREDIT_ROLES = ['author', 'interviewer', 'producer', 'transcript-editor'];
+
+// The front matter at the top of a page (lines[0] is ---), as { title, subtitle, credits, end }: end is the index of
+// its closing line. A name "Family, Given" -> { family, given }; a name without a comma -> { literal }.
+const FRONT_TEXTS = ['title', 'subtitle'];
+function readCredits(lines, file, fail) {
+  const end = lines.findIndex((l, i) => i > 0 && /^(---|\.\.\.)\s*$/.test(l));
+  if (end < 0) { fail(1, lines[0], 'the front matter at the top of the page has no closing ---'); return { credits: null, end: -1 }; }
+  const credits = {}, texts = {};
+  let key = null;
+  const name = (text) => {
+    const value = text.trim().replace(/^(["'])(.*)\1$/, '$2');
+    const comma = value.indexOf(',');
+    return comma < 0 ? { literal: value } : { family: value.slice(0, comma).trim(), given: value.slice(comma + 1).trim() };
+  };
+  for (let i = 1; i < end; i++) {
+    const line = lines[i];
+    if (!line.trim() || /^\s*#/.test(line)) continue;
+    const entry = /^([\w-]+):\s*(.*)$/.exec(line), item = /^\s+-\s+(.+)$/.exec(line);
+    if (entry && FRONT_TEXTS.includes(entry[1])) {
+      texts[entry[1]] = entry[2].trim().replace(/^(["'])(.*)\1$/, '$2') || null;
+      key = null;
+    } else if (entry) {
+      key = entry[1];
+      if (!CREDIT_ROLES.includes(key)) { fail(i + 1, line, `a front matter can give ${[...FRONT_TEXTS, ...CREDIT_ROLES].join(', ')}, not "${key}"`); key = null; continue; }
+      credits[key] = entry[2].trim() ? [name(entry[2])] : [];
+    } else if (item && key) {
+      credits[key].push(name(item[1]));
+    } else {
+      fail(i + 1, line, 'a line of the front matter that is neither "key: value", "role:" nor "  - Family, Given"');
+    }
   }
+  for (const [role, names] of Object.entries(credits)) if (!names.length) delete credits[role];
+  return { title: texts.title || null, subtitle: texts.subtitle || null, credits: Object.keys(credits).length ? credits : null, end };
+}
+
+export function convert(source, file, { exists = inWorkingTree } = {}) {
   const lines = source.split(/\r?\n/);
+  const page = { title: null, subtitle: null, header: {}, menu: [], footer: [], cards: [], images: [], files: [], credits: null };
   const handled = [], warnings = [], unhandled = [];
   const out = [];
   let fence = false, cardLevel = 0;
 
   const warn = (line, text) => warnings.push({ file, line, text });
   const fail = (line, text, why) => unhandled.push({ file, line, text: text.trim(), why });
+  // the front matter is read and its lines left empty, so that every other line keeps its number
+  if (/^---\s*$/.test(lines[0] || '')) {
+    const { title, subtitle, credits, end } = readCredits(lines, file, fail);
+    Object.assign(page, { title, subtitle, credits });
+    for (let i = 0; i <= end; i++) lines[i] = '';
+  }
   const needFile = (line, path, what) => { if (!exists(path)) fail(line, path, `${what} not found in the repository`); };
   const addImage = (line, src, role, rotation = 0) => { needFile(line, src, 'image'); page.images.push({ src, role, rotation, file, line }); };
 
