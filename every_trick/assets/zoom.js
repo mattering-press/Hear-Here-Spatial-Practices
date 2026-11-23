@@ -2,14 +2,16 @@
 //
 // A zoomable picture, <figure data-tiles="…/info.json">, gets "⤢ Zoom" at the right end of its caption line, which
 // opens the zoom viewer; clicking the picture opens it too. The button is the figure's only keyboard stop: the
-// picture's link to its largest image, which is what readers without JavaScript get, is taken out.
+// picture's link (to its item page, or to its largest image, data-largest), which is what readers without JavaScript
+// get, is taken out.
 //
 // The viewer is a full-window <dialog> on a dark ground, with controls in the shape of the podcast player's. It shows
 // the picture's static IIIF tiles with OpenSeadragon (assets/osd/, loaded when the viewer is first opened), and all
 // the zoomable pictures of the page are one sequence in page order (OpenSeadragon's sequence mode), so a gallery is a
 // run within it.
-//  * Top bar: the picture's place in the sequence ("3 / 12"), its caption on one line (click or tap it to read it all),
-//    and Close. Bottom bar: zoom out, zoom in, fit; full screen; previous and next.
+//  * Top bar: the picture's place in the sequence ("3 / 12"), its item number (the pill of its caption line, a link to
+//    its item page), its caption and credit on one line (click or tap it to read it all), and Close. Bottom bar: zoom
+//    out, zoom in, fit; full screen; previous and next.
 //  * Keys: ← and → previous and next, + and − zoom, Escape closes. On closing, the focus goes to the Zoom button of the
 //    picture shown last, scrolled into view.
 //  * Touch: while the whole picture is in view, a sideways swipe goes to the next or previous picture; once it is zoomed
@@ -68,13 +70,29 @@
   var figures = Array.prototype.slice.call(document.querySelectorAll('figure[data-tiles]'));
   if (!figures.length || typeof HTMLDialogElement !== 'function') return;
   var assets = new URL('./', script.src);
+  // A caption line holds the item's number pill, the caption and the item's credit: the viewer shows each in its place.
+  function captionText(caption) {
+    if (!caption) return '';
+    var copy = caption.cloneNode(true);
+    Array.prototype.forEach.call(copy.querySelectorAll('.item-number, .item-credit'), function (el) { el.parentNode.removeChild(el); });
+    return copy.textContent.replace(/\s+/g, ' ').trim();
+  }
+  function numberOf(caption) {
+    var pill = caption && caption.querySelector('.item-number');
+    if (!pill) return null;
+    var isNew = pill.classList.contains('is-new'), text = isNew ? 'new' : pill.textContent.replace(/\D+/g, '');
+    return { text: text, isNew: isNew, href: pill.getAttribute('href'), label: pill.getAttribute('aria-label') || (isNew ? 'New item, not yet numbered' : 'Item ' + text) };
+  }
   var items = figures.map(function (figure, index) {
     var link = figure.querySelector('.figure-picture');
     var img = figure.querySelector('img');
     var caption = figure.querySelector('figcaption');
+    var credit = caption && caption.querySelector('.item-credit');
     var item = {
-      figure: figure, img: img, caption: caption ? caption.textContent.trim() : '', alt: img ? img.alt : '',
-      tiles: figure.getAttribute('data-tiles'), largest: (link && link.getAttribute('href')) || (img && img.getAttribute('src')),
+      figure: figure, img: img, caption: captionText(caption), alt: img ? img.alt : '', number: numberOf(caption),
+      credit: credit ? credit.textContent.replace(/^\s*·\s*/, '').trim() : '',
+      tiles: figure.getAttribute('data-tiles'),
+      largest: (link && (link.getAttribute('data-largest') || link.getAttribute('href'))) || (img && img.getAttribute('src')),
     };
     var button = document.createElement('button');
     button.type = 'button';
@@ -93,7 +111,7 @@
   });
 
   // ---- The viewer --------------------------------------------------------------------------------------------------
-  var dialog, frame, count, captionButton, stage, canvas, preview, message, live, buttons = {};
+  var dialog, frame, count, numberLink, captionButton, stage, canvas, preview, message, live, buttons = {};
   var viewer = null, current = 0, expanded = false, loading = null, sources = null, previewTimer = 0, swipe = null, lastTap = 0;
 
   function loadViewer() {
@@ -149,16 +167,20 @@
   function makeDialog() {
     dialog = document.createElement('dialog');
     dialog.className = 'viewer';
-    dialog.setAttribute('aria-labelledby', 'viewer-count viewer-caption');
+    dialog.setAttribute('aria-labelledby', 'viewer-count viewer-number viewer-caption');
     frame = document.createElement('div');   // what goes full screen (a dialog itself cannot)
     frame.className = 'viewer__frame';
-    // top bar: "3 / 12", the caption, Close
+    // top bar: "3 / 12", the item's number, the caption, Close
     var top = document.createElement('div');
     top.className = 'viewer__bar viewer__top';
     count = document.createElement('p');
     count.className = 'viewer__count';
     count.id = 'viewer-count';
     count.innerHTML = '<span aria-hidden="true"></span><span class="visually-hidden"></span>';
+    numberLink = document.createElement('a');   // the pill of the picture's caption line: a link to its item page
+    numberLink.className = 'viewer__number';
+    numberLink.id = 'viewer-number';
+    numberLink.hidden = true;
     captionButton = document.createElement('button');
     captionButton.type = 'button';
     captionButton.className = 'viewer__caption';
@@ -168,6 +190,7 @@
     close.autofocus = true;
     close.addEventListener('click', function () { dialog.close(); });
     top.appendChild(count);
+    top.appendChild(numberLink);
     top.appendChild(captionButton);
     top.appendChild(group('', [close]));
     // the picture: OpenSeadragon's canvas, and the picture from the page over it until the tiles have arrived
@@ -251,7 +274,14 @@
     var item = items[index], n = items.length;
     count.firstChild.textContent = (index + 1) + ' / ' + n;
     count.lastChild.textContent = 'Picture ' + (index + 1) + ' of ' + n;
+    var number = item.number;
+    numberLink.hidden = !number;
+    numberLink.textContent = number ? number.text : '';
+    numberLink.classList.toggle('is-new', !!(number && number.isNew));
+    if (number && number.href) numberLink.href = number.href; else numberLink.removeAttribute('href');
+    if (number) numberLink.setAttribute('aria-label', number.label); else numberLink.removeAttribute('aria-label');
     var text = item.caption || item.alt;
+    if (item.credit) text = text ? text + ' · ' + item.credit : item.credit;
     captionButton.textContent = text;
     captionButton.hidden = !text;
     expanded = false;
@@ -260,7 +290,7 @@
     setDisabled(buttons.previous, index === 0);
     setDisabled(buttons.next, index === n - 1);
     showPreview(item);
-    if (announce) live.textContent = 'Picture ' + (index + 1) + ' of ' + n + (text ? ': ' + text : '');
+    if (announce) live.textContent = 'Picture ' + (index + 1) + ' of ' + n + (number ? ', ' + number.label.toLowerCase() : '') + (text ? ': ' + text : '');
   }
 
   // OpenSeadragon's canvas, which takes the focus for moving the picture with ↑ ↓ and W A S D, is named by the alt text

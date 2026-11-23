@@ -16,6 +16,7 @@ function M.init(meta)
   M.title_heading = get('title-heading') ~= ''
   M.manifest_path = get('manifest')   -- JSON file written by build.mjs: resized images and copied files
   M.contract_path = get('contract-out')
+  M.item_page = get('item-page') ~= ''   -- an item's own page (/see/<name>/): its number is not a link to itself
 end
 
 -- root .. url, for a url relative to the site root. In a frozen version (v<id>/) the media shared by all versions
@@ -126,6 +127,83 @@ function M.file_url(path)
   local copy = load_manifest().files[path]
   if copy then return M.join(M.root, M.pct(copy)) end
   return 'https://raw.githubusercontent.com/' .. M.repo .. '/main/' .. M.pct(path)
+end
+
+-- ---- Media items (the media register, media/register.csv; see register.mjs) -------------------------------------
+
+-- What the register calls a media item: the repository path of a file of this repository, or a normalised address
+-- for an item elsewhere, so that the same item has the same source on every page and in every form of its address:
+--   https://www.youtube.com/watch?v=<id>       (also for youtu.be, /embed/ and youtube-nocookie.com addresses)
+--   https://vimeo.com/<id>/<hash> or /<id>     (also for player.vimeo.com/video/<id>?h=<hash>)
+--   https://archive.org/details/<identifier>   (for its /details/ and /embed/ addresses, any mode)
+--   any other address as given
+-- url is a link target as the Markdown has it. where = 'repo': relative to the page in the repository, or
+-- root-absolute (the converted page, before stage 1); where = 'site': relative to the page in the site (stage 2), where
+-- shared media of a frozen version start with ../ (see M.join).
+function M.media_source(url, where)
+  local path = M.github_path(url)
+  if path then return path end
+  local yt = url:match('^https?://[%w.]*youtube%.com/watch%?v=([%w_-]+)') or url:match('^https?://youtu%.be/([%w_-]+)')
+    or url:match('^https?://[%w.]*youtube[%w-]*%.com/embed/([%w_-]+)')
+  if yt then return 'https://www.youtube.com/watch?v=' .. yt end
+  local vimeo, hash = url:match('^https?://player%.vimeo%.com/video/(%d+)%?h=(%w+)')
+  if not vimeo then vimeo, hash = url:match('^https?://vimeo%.com/(%d+)/(%w+)') end
+  vimeo = vimeo or url:match('^https?://vimeo%.com/(%d+)') or url:match('^https?://player%.vimeo%.com/video/(%d+)')
+  if vimeo then return 'https://vimeo.com/' .. vimeo .. (hash and ('/' .. hash) or '') end
+  local archive = url:match('^https?://[%w.]*archive%.org/%a+/([^/?#]+)')
+  if archive then return 'https://archive.org/details/' .. archive end
+  if url:match('^[%a][%w+.-]*:') or url:sub(1, 2) == '//' then return url end
+  if where == 'site' then
+    local path = url:match('^([^?#]*)')
+    if M.root ~= './' and path:sub(1, #M.root) == M.root then path = path:sub(#M.root + 1) end
+    if path:sub(1, 2) == './' then path = path:sub(3) end
+    while path:sub(1, 3) == '../' do path = path:sub(4) end   -- media shared by all versions, seen from a frozen one
+    return M.unpct(path)
+  end
+  return (M.resolve(url))
+end
+
+-- The register's item for a source, as build.mjs hands it over in the manifest:
+--   { label = "37" (nil for an item not yet numbered), kind, name, url (its item page, from the edition's root),
+--     credit, title }
+function M.item(source)
+  local items = source and load_manifest().items
+  local item = items and items[source] or nil
+  if item and type(item.label) ~= 'string' then item.label = nil end   -- JSON's null is not nil
+  return item
+end
+
+-- Every item on a page gets a stable anchor: by its number (item-37), or by its name until it has one; the same item a
+-- second time on the page gets item-37-2.
+local anchors = {}
+function M.anchor(item)
+  local base = 'item-' .. (item.label or item.name)
+  anchors[base] = (anchors[base] or 0) + 1
+  return anchors[base] == 1 and base or (base .. '-' .. anchors[base])
+end
+
+-- The number pill that starts an item's caption line, a link to its item page:
+--   <a class="item-number" href="../../see/boulder-font/" aria-label="Item 37">37</a>
+-- (dashed, "new", for an item not yet numbered). On the item's own page it is not a link.
+function M.pill(item)
+  local new = not item.label
+  local class = 'item-number' .. (new and ' is-new' or '')
+  local text = new and 'new' or item.label
+  local label = new and 'New item, not yet numbered' or ('Item ' .. item.label)
+  if M.item_page then
+    if new then return '<span class="' .. class .. '"><span aria-hidden="true">new</span><span class="visually-hidden">' .. label .. '</span></span>' end
+    return '<span class="' .. class .. '"><span class="visually-hidden">Item </span>' .. text .. '</span>'
+  end
+  return '<a class="' .. class .. '" href="' .. M.esc(M.join(M.root, item.url)) .. '" aria-label="' .. label .. '">' .. text .. '</a>'
+end
+
+-- The inside of an item's caption line: its number pill, the caption (HTML) and the item's credit from the register,
+-- exactly as stored ("Photo: …"), after a middle dot. Without an item, the caption alone.
+function M.caption_line(item, caption)
+  if not item then return caption end
+  local credit = item.credit or ''
+  if credit ~= '' then credit = '<span class="item-credit">' .. (caption ~= '' and ' · ' or '') .. M.esc(credit) .. '</span>' end
+  return M.pill(item) .. (caption ~= '' and (' ' .. caption) or '') .. credit
 end
 
 -- Filters hand data for page.json to contract.lua through the document's metadata, as JSON text.

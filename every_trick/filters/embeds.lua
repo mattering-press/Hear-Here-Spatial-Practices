@@ -9,10 +9,27 @@
 -- the link itself, which still works when the embed is blocked. MP3s are not copied into the site: their
 -- links point at raw.githubusercontent.com, which answers range requests, so the player can seek.
 -- Raw HTML that is left (smartframe script embeds) passes through unchanged.
+-- Each player, video and embed is a media item (register.mjs): its anchor (item-37, or item-<name> before it has a
+-- number) is the id of its figure or player, and its caption line starts with its number pill and ends with its credit
+-- (lib.caption_line). A video or embed whose page gives it no caption shows the register's title, where it has one, as
+-- the link's text and the iframe's title. An audio player has a small caption line of its own below it, with the pill
+-- and the recording's title:
+--   <p class="media-caption"><a class="item-number" href="../../listen/podcast-aya-nassar/" aria-label="Item 29">29</a> Hear Here Podcast: Aya Nassar</p>
 package.path = pandoc.path.directory(PANDOC_SCRIPT_FILE) .. '/?.lua;' .. package.path
 local lib = require 'lib'
 
-local audio, video = {}, {}
+local audio, video, items = {}, {}, {}
+
+-- the media item a link is, its anchor on this page, and its entry for page.json
+local function item_of(url)
+  local source = lib.media_source(url, 'site')
+  local item = lib.item(source)
+  if not item then return nil, nil end
+  local anchor = lib.anchor(item)
+  items[#items + 1] = { anchor = anchor, source = source, label = item.label, kind = item.kind, name = item.name, url = item.url }
+  return item, anchor
+end
+local function id_attr(anchor) return anchor and (' id="' .. anchor .. '"') or '' end
 
 local function html(blocks)  -- blocks -> HTML, with paragraphs as plain text
   local plain = {}
@@ -59,12 +76,14 @@ local function audio_player(div)
   local info = lib.audio(link.target)
   local duration = info and tonumber(info.duration)
   audio[#audio + 1] = { url = link.target, title = title, element = id }
+  local item, anchor = item_of(link.target)
   local url = lib.esc(link.target)
   return pandoc.RawBlock('html', table.concat {
-    '<div class="player" data-for="', id, '"', duration and string.format(' data-duration="%.1f"', duration) or '', '>\n',
+    '<div class="player"', id_attr(anchor), ' data-for="', id, '"', duration and string.format(' data-duration="%.1f"', duration) or '', '>\n',
     '<audio id="', id, '" controls preload="none" aria-label="', lib.esc(title), '">\n',
     '<source src="', url, '" type="audio/mpeg">\n',
-    '<p>Your browser does not support HTML5 audio. <a href="', url, '">Download the audio</a>.</p>\n</audio>\n</div>' })
+    '<p>Your browser does not support HTML5 audio. <a href="', url, '">Download the audio</a>.</p>\n</audio>\n</div>',
+    item and ('\n<p class="media-caption">' .. lib.caption_line(item, lib.esc(title)) .. '</p>') or '' })
 end
 
 local function figure(div, class)
@@ -73,7 +92,10 @@ local function figure(div, class)
   local title = pandoc.utils.stringify(link.content)
   local url, style = link.target, {}
   local k = class == 'video' and kind(url) or (url:match('%.pdf$') and 'pdf' or 'embed')
-  local caption = #rest > 0 and html(rest) or ('<a href="' .. lib.esc(link.target) .. '">' .. html { pandoc.Plain(link.content) } .. '</a>')
+  local item, anchor = item_of(url)
+  local named = #rest == 0 and item and (item.title or '') ~= ''   -- no caption on the page: the register's title
+  if named then title = item.title end
+  local caption = #rest > 0 and html(rest) or ('<a href="' .. lib.esc(link.target) .. '">' .. (named and lib.esc(title) or html { pandoc.Plain(link.content) }) .. '</a>')
   if a.width and not a.height then style[#style + 1] = '--figure-width: ' .. a.width end
   local figure_class = (class == 'video' and 'video-embed' or k == 'pdf' and 'pdf-embed' or 'embed')
   for _, c in ipairs(div.classes) do
@@ -96,8 +118,8 @@ local function figure(div, class)
   end
   if k ~= 'pdf' then video[#video + 1] = { url = site_relative(url), title = title, kind = k } end
   return pandoc.RawBlock('html', table.concat {
-    '<figure class="', figure_class, '"', #style > 0 and (' style="' .. lib.esc(table.concat(style, '; ')) .. '"') or '', '>\n',
-    inner, '\n<figcaption>', caption, '</figcaption>\n</figure>' })
+    '<figure', id_attr(anchor), ' class="', figure_class, '"', #style > 0 and (' style="' .. lib.esc(table.concat(style, '; ')) .. '"') or '', '>\n',
+    inner, '\n<figcaption>', lib.caption_line(item, caption), '</figcaption>\n</figure>' })
 end
 
 function Pandoc(doc)
@@ -113,5 +135,6 @@ function Pandoc(doc)
   }
   lib.add(doc, 'audio', audio)
   lib.add(doc, 'video', video)
+  lib.add(doc, 'items', items)
   return doc
 end

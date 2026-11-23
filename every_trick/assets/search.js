@@ -1,6 +1,8 @@
 // Search, on the search page of each edition (/search/, /v0.1/search/). It asks that edition's Pagefind index
 // (pagefind/, made by the build) and lists every page the words are found on, best first, each with up to three of its
 // paragraphs: their number, a few words around the words found, and a link straight to the paragraph (#p12).
+//  * A list page that names its entries is shown by entry instead: each entry with an id carries its label in the
+//    page's Pagefind meta, entry-<id> (data-pagefind-meta), so the Media Index lists items ("item 37", #item-37).
 //  * The words searched for are kept in the address (search/?q=dust), so a search can be shared, bookmarked and
 //    reached again with the back button.
 //  * Pagefind is loaded only on this page, when the reader starts typing or arrives with ?q=.
@@ -44,11 +46,11 @@
     return '..' + url + (id ? '#' + id : '');
   }
 
-  // The places on a page where the words were found, grouped by the paragraph (p12) or heading they are under, best
-  // first; each with the stretch of words it spans in Pagefind's text of the page.
+  // The places on a page where the words were found, grouped by the paragraph (p12), heading or labelled entry they are
+  // under, best first; each with the stretch of words it spans in Pagefind's text of the page.
   function passages(data) {
-    var words = data.content.split(/\s+/);
-    var marks = (data.anchors || []).filter(function (a) { return /^p\d+$/.test(a.id) || /^h[2-6]$/.test(a.element); })
+    var words = data.content.split(/\s+/), meta = data.meta || {};
+    var marks = (data.anchors || []).filter(function (a) { return /^p\d+$/.test(a.id) || /^h[2-6]$/.test(a.element) || meta['entry-' + a.id]; })
       .sort(function (a, b) { return a.location - b.location; });
     var groups = {}, order = [];
     (data.weighted_locations || data.locations.map(function (n) { return { location: n, balanced_score: 1 }; })).forEach(function (hit) {
@@ -75,8 +77,10 @@
     return (from > group.start ? '… ' : '') + out.join(' ') + (to < group.end ? ' …' : '');
   }
 
-  function label(mark) {
+  // what a place is called in the results: its entry's label (item 37), its paragraph's number (para. 12) or its heading
+  function label(mark, meta) {
     if (!mark) return 'Top of the page';
+    if (meta['entry-' + mark.id]) return meta['entry-' + mark.id];
     if (/^p\d+$/.test(mark.id)) return 'para. ' + mark.id.slice(1);
     return mark.text || 'Section';
   }
@@ -86,7 +90,7 @@
     var p = passages(data);
     var html = '<li class="search-result"><h2 class="search-result__title"><a href="' + escape(href(data.url)) + '">' + escape(title) + '</a></h2><ul class="search-result__passages">';
     p.best.forEach(function (group) {
-      html += '<li><a class="search-result__where" href="' + escape(href(data.url, group.mark && group.mark.id)) + '">' + escape(label(group.mark)) + '</a> ' +
+      html += '<li><a class="search-result__where" href="' + escape(href(data.url, group.mark && group.mark.id)) + '">' + escape(label(group.mark, data.meta || {})) + '</a> ' +
         '<span class="search-result__excerpt">' + excerpt(group, p.words) + '</span></li>';
     });
     html += '</ul>';
