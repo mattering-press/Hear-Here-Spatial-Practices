@@ -1,3 +1,16 @@
+---
+# Who made this page, for its citations. A draft, to be confirmed with Nirmal Puwar (23 November 2026).
+author:
+  - Alami Fariman, Mahsa
+  - Hakiminejad, Ahmadreza
+  - Sabboubeh, Heba N.
+interviewer:
+  - Puwar, Nirmal
+producer:
+  - Whitley, Duncan
+transcript-editor:
+  - Phung, Phavine
+---
 .ve-style ./custom.css
 .ve-script ./custom.js
 

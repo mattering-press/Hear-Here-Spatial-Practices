@@ -13,6 +13,10 @@ $if(on-page)$
   <link rel="alternate" type="text/markdown" href="index.md">
   <link rel="alternate" type="application/json" href="page.json">
 $endif$
+$if(scholar)$
+  $scholar$
+$endif$
+  <script src="$shared$assets/copy.js?v=$asset-version$" defer></script>
   <script src="$shared$assets/zoom.js?v=$asset-version$" defer></script>
   <script src="$shared$assets/player.js?v=$asset-version$" defer></script>
   <script src="$shared$assets/paragraphs.js?v=$asset-version$" defer></script>
@@ -20,6 +24,7 @@ $endif$
   <script src="$shared$assets/settings.js?v=$asset-version$" defer></script>
   <script src="$shared$assets/menu.js?v=$asset-version$" defer></script>
   <script src="$shared$assets/place.js?v=$asset-version$" defer></script>
+  <script src="$shared$assets/cite.js?v=$asset-version$" defer></script>
 $if(has-citations)$
   <script src="$shared$assets/citations.js?v=$asset-version$" defer></script>
 $endif$
@@ -81,8 +86,8 @@ $if(whole-book)$
 $endif$
 $endif$
         <a class="search-link" href="$root$search/" title="Search"$if(search-page)$ aria-current="page"$endif$><svg aria-hidden="true" viewBox="0 0 16 16" width="14" height="14"><circle cx="6.5" cy="6.5" r="5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m10.3 10.3 4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span class="search-link__text">Search</span></a>
-        <button class="settings-button" type="button" popovertarget="settings" aria-label="Text size and colours" hidden><span aria-hidden="true">Aa</span></button>
-        <div class="settings" id="settings" popover role="dialog" aria-label="Text size and colours">
+        <button class="settings-button" type="button" popovertarget="settings" aria-label="Reading and citation settings" hidden><span aria-hidden="true">Aa</span></button>
+        <div class="settings" id="settings" popover role="dialog" aria-label="Reading and citation settings">
           <fieldset>
             <legend>Text size</legend>
             <div class="settings__choices settings__sizes">
@@ -98,6 +103,23 @@ $endif$
               <button type="button" data-theme="">System</button>
               <button type="button" data-theme="light">Light</button>
               <button type="button" data-theme="dark">Dark</button>
+            </div>
+          </fieldset>
+          <fieldset class="settings__citations">
+            <legend>Citation style</legend>
+            <div class="settings__choices settings__wrap">
+              <button type="button" data-citation-style="">Mattering Press</button>
+              <button type="button" data-citation-style="apa">APA</button>
+              <button type="button" data-citation-style="chicago">Chicago</button>
+              <button type="button" data-citation-style="mla">MLA</button>
+              <button type="button" data-citation-style="harvard">Harvard</button>
+            </div>
+          </fieldset>
+          <fieldset class="settings__citations">
+            <legend>Copy citations as</legend>
+            <div class="settings__choices">
+              <button type="button" data-citation-format="">Formatted</button>
+              <button type="button" data-citation-format="plain">Plain text</button>
             </div>
           </fieldset>
         </div>
@@ -119,12 +141,18 @@ $endif$
 $if(subtitle)$
           <p class="page-subtitle">$subtitle$</p>
 $endif$
+$if(cite-data)$
+          <p class="page-cite"><button class="cite-button" type="button" hidden>Cite</button></p>
+$endif$
         </div>
       </div>
     </div>
   </header>
   <main id="main"$if(searchable)$ data-pagefind-body$endif$>
 $body$
+$if(cite-section)$
+$cite-section$
+$endif$
   </main>
   <div class="copy-status" role="status" aria-live="polite" aria-atomic="true"></div>
   <footer class="site-footer">
@@ -146,5 +174,8 @@ $endif$
       </div>
     </div>
   </footer>
+$if(cite-data)$
+  $cite-data$
+$endif$
 </body>
 </html>

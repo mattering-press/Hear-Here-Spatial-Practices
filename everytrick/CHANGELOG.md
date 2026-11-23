@@ -12,13 +12,55 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of everytrick’ in `DEVELOPMENT.md`.
 
-## 1.17.0
+## 1.18.0
 
 23 November 2026. everytrick has a home of its own: everytrick.org.
 
 - The footer’s credit, the colophon and the Versions page link the name everytrickinthebook to everytrick.org, where
   they linked to its repository on GitHub. The site says what everytrick is and how to get in touch; its code is
   still linked from there. everytrickinthebook.org leads to it too.
+
+## 1.17.0
+
+23 November 2026. Copying citations: quotes, pages, media items and references, in the reader's citation style. The
+plan is "Plan: copying citations" in `DEVELOPMENT.md`.
+
+- **The ¶ is unchanged.** It still copies the link to its paragraph in one click. Every new way of copying works like
+  it: one click copies, and the status line at the foot of the window says what was copied.
+- **Every copy is one block**: the quote, its citation and the reference in one paragraph, with the address inside the
+  reference, between angle brackets, as MHRA has it.
+- **Citation settings.** The settings ("Aa") have a citation style, Mattering Press (the preset), APA, Chicago, MLA or
+  Harvard, and "Copy citations as", Formatted (the preset; italics and links, for a word processor) or Plain text (for
+  an email, a form, or an app that would turn formatting into Markdown). Every copy on the site follows them.
+- **Copy quote.** Selecting words in the text shows a Copy quote button at the foot of the window. It copies the words
+  in quotation marks with their citation and the reference: ‘Cairo is a very dusty city’ (Nassar 2026: para. 55).
+  Nassar, A., ‘Hear Here Podcast: Aya Nassar’, … <…/v0.1/essays/aya_nassar/#p55> [accessed 23 November 2026].
+  Formatted, the citation is a link that highlights the quoted words when it is opened. A selection over several
+  paragraphs is cited as paras 55–56; a selection that starts or ends inside a word takes the whole word. The button
+  never sits beside the selection, where a phone's own menu and Hypothesis's Annotate button appear.
+- **Cite**, under every page's title, cites the page as a whole. Its panel says so in a line of small type, and that
+  selected words are cited with Copy quote; then come the page's reference in the reader's style, its in-text
+  citation, a Copy button, the style with a link to the settings, and BibTeX and RIS for a reference manager.
+- **The latest text cites the newest release.** A quote copied on the latest text whose paragraphs are unchanged in
+  version 0.1 is cited there, with its numbers and address in that version; one that is new or changed since is cited
+  as the latest text, unreleased, and the status line says that its number may still change. Cite cites the page in
+  version 0.1.
+- **How to cite this page**, at the end of every page, gives the citation and the reference, also without JavaScript,
+  in print and in archives, in the reader's style.
+- **Media items** are cited against the book, in one block: Item 37, ‘The baptismal font in Coventry Cathedral’, in N.
+  Puwar, ed., Hear Here: Spatial Practices, version 0.1 (Mattering Press, 2026) <…/37/> [accessed …]. Each item's page
+  has it under To cite, with its in-text citation, (Puwar 2026: item 37), and a Copy button, and the zoom viewer has a
+  Cite button in its top bar.
+- **The References page and the citation popups** copy a work in the reader's style in one click. The References page's
+  Copy menu is gone; BibTeX and RIS are in its downloads.
+- **Who made each page** is written at the top of its Markdown file (see "Credits" in `CONTRACT.md`): authors, and for
+  the podcasts the interviewer, producer and transcription editor. The house style names the authors first and the
+  others after the title: ‘Hear Here Podcast: Aya Nassar’, interviewed by N. Puwar, prod. by D. Whitley, transcript ed.
+  by P. Phung. The credits on the pages are a draft until Nirmal Puwar has confirmed them.
+- **For Google Scholar** every page has the `citation_…` tags and a JSON-LD block that describe it as a chapter of the
+  book.
+- The page data is contract 0.9: page.json gains `credits` and `citation`, publication.json `editors` and `citation`,
+  and formatted.json each style's formatted text. The paragraph rule is unchanged, so no paragraph has a new number.
 
 ## 1.16.0
 

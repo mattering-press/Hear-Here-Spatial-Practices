@@ -128,8 +128,20 @@ export function itemFacts(it, { root, siteUrl }) {
   if (it.files.length) row('Files', `<ul>${it.files.map((f) => `<li><a href="${f.external ? esc(f.url) : href(root, f.url)}"${f.download ? ' download' : ''}>${esc(f.label)}</a>${f.note ? ` <span class="item-facts__where">${esc(f.note)}</span>` : ''}</li>`).join('')}</ul>`);
   if (it.formerNames.length) row('Former addresses', it.formerNames.map((n) => `/${esc(it.kind)}/${esc(n)}/`).join(', ') + ', which lead here');
   if (it.formerSources.length) row('Earlier files', `${it.formerSources.map(esc).join(', ')}: replaced, and still shown in the versions that used them`);
-  row('To cite', it.label ? `item ${it.label}, ${esc(siteUrl + it.short)}` : `${esc(siteUrl + it.url)} (until it has its number)`);
+  row('To cite', it.cite ? itemCite(it) : it.label ? `item ${it.label}, ${esc(siteUrl + it.short)}` : `${esc(siteUrl + it.url)} (until it has its number)`);
   return `<dl class="item-facts">\n${rows.join('\n')}\n</dl>`;
+}
+
+// How to cite an item, against the book ("Plan: copying citations" in DEVELOPMENT.md): one block, its reference in the
+// house style, "Item 37, ‘The baptismal font in Coventry Cathedral’, in N. Puwar, ed., Hear Here: Spatial Practices, …
+// <https://hearhere.matteringpress.org/37/> [accessed …]", ending with how to cite its own source where the register
+// says, and below it the in-text citation, (Puwar 2026: item 37). assets/cite.js shows both in the reader's citation
+// style, adds the Copy button and fills in the date accessed, which the build leaves as 31 December 9999 (cite.mjs).
+export const sourceText = (citeAs) => (citeAs ? ` Source: ${citeAs}${/[.!?]$/.test(citeAs) ? '' : '.'}` : '');
+function itemCite(it) {
+  const c = it.cite;
+  return `<div class="item-cite"><p class="item-cite__reference">${c.styles.house.html.replace('31 December 9999', '<span class="cite-today">the day you read it</span>')}${esc(sourceText(c.citeAs))}</p>` +
+    `<p class="item-cite__intext">In the text: <span class="item-cite__example">${esc(c.intext.house)}</span></p></div>`;
 }
 
 // ---- The Media Index ------------------------------------------------------------------------------------------

@@ -103,8 +103,9 @@ export function prepareReferences({ pandoc, work, bibliography = BIBLIOGRAPHY })
 
 // Every work of an edition's bibliography in each style of COPY_STYLES, for its References page, and the bibliography
 // for its downloads. references: what prepareReferences returned.
-// -> { texts: { <key>: { house: text, apa: text, …, bibtex: entry, ris: entry } }, csljson, bibtex, ris (the files'
-//    text), warnings }
+// -> { texts: { <key>: { house: text, apa: text, …, bibtex: entry, ris: entry, html: { house: html, apa: html, … } } },
+//    csljson, bibtex, ris (the files' text), warnings }: html, each style's reference formatted (italics), for a reader
+//    who copies formatted text (assets/cite.js)
 // The house style is the reference as the page shows it, with the book's year letters (Stengers 2005a). The other
 // styles format each work as it stands alone, as a reference manager copies it: their year letters, which only tell
 // apart two works of the same author and year in this book, and the dashes some styles put for a repeated author, are
@@ -118,7 +119,7 @@ export function formatReferences({ pandoc, work, references }) {
   const input = join(work, 'bibliography-clean.json');
   writeFileSync(input, csljson);
   const warnings = [];
-  const texts = Object.fromEntries(clean.map((item) => [item.id, { house: plain(index[item.id]?.html || '') }]));
+  const texts = Object.fromEntries(clean.map((item) => [item.id, { house: plain(index[item.id]?.html || ''), html: { house: (index[item.id]?.html || '').replace(/\s+/g, ' ') } }]));
   for (const style of COPY_STYLES.filter((s) => s.csl)) {
     const csl = join(work, `copy-${style.id}.csl`);
     writeFileSync(csl, readFileSync(join(TOOLKIT_DIR, 'csl', style.csl), 'utf8')
@@ -127,9 +128,9 @@ export function formatReferences({ pandoc, work, references }) {
       { input: "---\nnocite: '@*'\n---\n", encoding: 'utf8' });
     if (result.status !== 0) throw new Error(`citeproc failed with csl/${style.csl}:\n${result.stderr}`);
     warnings.push(...result.stderr.split('\n').filter(Boolean).map((l) => `csl/${style.csl}: ${l.replace(/^\[WARNING\] /, '')}`));
-    const formatted = new Map([...result.stdout.matchAll(/<div id="ref-([^"]+)" class="csl-entry"[^>]*>\s*([\s\S]*?)\s*<\/div>/g)].map((m) => [m[1], plain(m[2])]));
+    const formatted = new Map([...result.stdout.matchAll(/<div id="ref-([^"]+)" class="csl-entry"[^>]*>\s*([\s\S]*?)\s*<\/div>/g)].map((m) => [m[1], m[2].replace(/\s+/g, ' ')]));
     for (const item of clean) {
-      if (formatted.get(item.id)) texts[item.id][style.id] = formatted.get(item.id);
+      if (formatted.get(item.id)) { texts[item.id][style.id] = plain(formatted.get(item.id)); texts[item.id].html[style.id] = formatted.get(item.id); }
       else warnings.push(`csl/${style.csl} wrote nothing for ${item.id}`);
     }
   }

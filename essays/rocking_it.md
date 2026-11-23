@@ -1,3 +1,9 @@
+---
+# Who made this page, for its citations. A draft, to be confirmed with Nirmal Puwar (23 November 2026).
+author:
+  - Puwar, Nirmal
+  - Burley, Stuart
+---
 .ve-style ./custom.css
 .ve-script ./custom.js
 
