@@ -8,6 +8,8 @@
   var panel = document.getElementById('settings');
   if (!button || !panel || typeof panel.showPopover !== 'function') return;   // browsers without popovers: no settings
   var root = document.documentElement;
+  // The keys keep the toolkit's old name (every_trick_in_the_book until 1.13.0) so that readers keep their settings,
+  // as do those in place.js, search.js and media-index.js. Readers never see them.
   var settings = { textSize: 'every-trick-text-size', theme: 'every-trick-theme' };
 
   function store(key, value) {

@@ -82,8 +82,8 @@ function Pandoc(doc)
   lib.init(doc.meta)
   local setting = doc.meta['paragraph-numbers']   -- -M paragraph-numbers=false arrives as a boolean
   if setting == false or (setting and pandoc.utils.stringify(setting) == 'false') then return nil end
-  local rule = doc.meta['paragraph-rule'] and pandoc.utils.stringify(doc.meta['paragraph-rule']) or '0.5'
-  if rule ~= '0.3' and rule ~= '0.4' and rule ~= '0.5' then error('paragraphs.lua: unknown paragraph rule ' .. rule .. ' (known: 0.3, 0.4, 0.5)') end
+  local rule = doc.meta['paragraph-rule'] and pandoc.utils.stringify(doc.meta['paragraph-rule']) or '0.6'
+  if rule ~= '0.3' and rule ~= '0.4' and rule ~= '0.5' and rule ~= '0.6' then error('paragraphs.lua: unknown paragraph rule ' .. rule .. ' (known: 0.3, 0.4, 0.5, 0.6)') end
   local whole_lists = rule ~= '0.3'
   local paragraphs = {}
   local references_level = nil   -- inside a "References" section: the level of its heading

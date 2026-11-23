@@ -1,9 +1,9 @@
 {
-  "name": "every_trick_in_the_book",
-  "version": "1.13.0",
+  "name": "everytrickinthebook",
+  "version": "1.14.0",
   "private": true,
   "type": "module",
-  "description": "every_trick_in_the_book by SJMcH, a Mattering toolkit: every trick in the book for making books. Builds the book in this repository into ../_site with Pandoc and Lua filters.",
+  "description": "everytrickinthebook by SJMcH, a Mattering toolkit: every trick in the book for making books. Builds the book in this repository into ../_site with Pandoc and Lua filters.",
   "scripts": {
     "build": "node build.mjs",
     "build:preview": "node build.mjs --preview",

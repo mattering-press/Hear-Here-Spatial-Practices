@@ -2,7 +2,7 @@ WEBVTT
 
 NOTE
 Paragraph cues for “Hear Here Podcast: Aya Nassar” (essays/aya_nassar.md), one cue per paragraph of the transcript,
-made by every_trick/scripts/align.mjs on 2026-11-22 and then checked by ear. The build finds each cue's paragraph by its
+made by everytrick/scripts/align.mjs on 2026-11-22 and then checked by ear. The build finds each cue's paragraph by its
 words. To correct a cue, change its start time. To leave a paragraph untimed, delete its cue and write a line
 "NOTE untimed: <its first words>" in its place.
 

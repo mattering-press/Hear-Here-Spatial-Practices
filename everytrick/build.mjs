@@ -20,7 +20,7 @@
 // media/zines/, is shown as page images with zoom tiles in the viewer (assets/zoom.js), with its text on its own page.
 //   npm run build            needs Pandoc 3.8 on the PATH (or its path in the PANDOC environment variable)
 //   npm run build:preview    the same, with the Media Index's editing view (/media-index/edit/), which only previews
-//                            have: the workflow sets EVERY_TRICK_PREVIEW=true on every branch but main
+//                            have: the workflow sets EVERYTRICK_PREVIEW=true on every branch but main
 import { spawn, spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
@@ -41,15 +41,15 @@ import { checkout, longDate, matchParagraphs, readRegistry } from './versions.mj
 // ---- Settings ------------------------------------------------------------------------------------------
 const NOINDEX = false;  // true hides every page from search engines (it was true while Juncture served the public site)
 // A build for a preview adds the Media Index's editing view, /media-index/edit/; the public site never has it.
-const PREVIEW = process.argv.includes('--preview') || /^(1|true|yes)$/i.test(process.env.EVERY_TRICK_PREVIEW || '');
+const PREVIEW = process.argv.includes('--preview') || /^(1|true|yes)$/i.test(process.env.EVERYTRICK_PREVIEW || '');
 const PUBLICATION = { creators: ['Nirmal Puwar'], publisher: 'Mattering Press', language: 'en' };
-const CONTRACT = '0.5';  // version of the page.json / publication.json / media.json format, and of the paragraph rule for new text
+const CONTRACT = '0.6';  // version of the page.json / publication.json / media.json format, and of the paragraph rule for new text
 // A frozen version keeps the paragraph rule of the contract it was frozen under ("contract" in versions.json). The
-// paragraph rule of contract 0.5 is the rule of 0.4, unchanged.
-// every_trick_in_the_book, the toolkit in this folder. Every footer names it with its version (every_trick/package.json),
+// paragraph rules of contracts 0.5 and 0.6 are the rule of 0.4, unchanged.
+// everytrickinthebook, the toolkit in this folder. Every footer names it with its version (everytrick/package.json),
 // and links the name to its home and the version to the list of what changed in each version.
-const TOOLKIT_HOME = 'https://github.com/every-trick/every_trick_in_the_book';
-const TOOLKIT_CHANGES = 'https://github.com/mattering-press/Hear-Here-Spatial-Practices/blob/main/every_trick/CHANGELOG.md';
+const TOOLKIT_HOME = 'https://github.com/everytrick/everytrickinthebook';
+const TOOLKIT_CHANGES = 'https://github.com/mattering-press/Hear-Here-Spatial-Practices/blob/main/everytrick/CHANGELOG.md';
 // Where the site is published. publication.md uses absolute URLs built from this; the pages use relative ones.
 // It becomes 'https://hearhere.matteringpress.org/' when the site moves to its own domain.
 const siteUrl = 'https://hearhere.matteringpress.org/';
@@ -361,7 +361,7 @@ const documentReport = { pages: 0, tiles: 0 };
     documents.set(it.name, doc);
     mkdirSync(join(SITE, url), { recursive: true });
     writeFileSync(join(SITE, doc.json), JSON.stringify({
-      contract: CONTRACT, every_trick_in_the_book: TOOLKIT_VERSION, number: it.number, name: it.name, title: doc.title, url, source: it.source,
+      contract: CONTRACT, everytrickinthebook: TOOLKIT_VERSION, number: it.number, name: it.name, title: doc.title, url, source: it.source,
       download: { url: doc.download.url, label: doc.download.label, size: doc.download.size ?? null },
       copy: doc.copy ? { folder: doc.copy.folder, fetched: doc.copy.fetched } : null,
       text: doc.text,
@@ -476,7 +476,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     page.url = url || './';
     writeFileSync(join(dir, 'page.json'), JSON.stringify({
       contract: CONTRACT, paragraphRule: edition.rule, id: page.file, url: page.url, title: page.title, subtitle: page.subtitle,
-      version: edition.version, every_trick_in_the_book: TOOLKIT_VERSION,
+      version: edition.version, everytrickinthebook: TOOLKIT_VERSION,
       markdown: `${url}index.md`,
       headings: list(data.headings).map(({ level, text, id }) => ({ level, text, id })),
       paragraphs: paragraphs.map(({ id, n, text_hash }) => ({ id, n, text_hash })),
@@ -529,7 +529,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     writeFileSync(join(out, 'references', DOWNLOADS.ris), formats.ris);
     writeFileSync(join(out, 'references', DOWNLOADS.csljson), formats.csljson);
     writeFileSync(join(out, 'references', COPY_DATA), JSON.stringify({
-      contract: CONTRACT, every_trick_in_the_book: TOOLKIT_VERSION, version: edition.version,
+      contract: CONTRACT, everytrickinthebook: TOOLKIT_VERSION, version: edition.version,
       styles: COPY_STYLES.map(({ id, label, short, csl, locale, entry }) => ({ id, label, short, ...(csl ? { csl: `https://github.com/citation-style-language/styles/blob/${CSL_COMMIT}/${csl}`, locale } : {}), ...(entry ? { entry } : {}) })),
       works: formats.texts,
     }) + '\n');
@@ -543,7 +543,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
   const versionsList = [latest, ...editions.slice(1).reverse()].map((e) => ({ ...e.version, url: e === edition ? './' : prefix + e.dir || './' }));
   writeFileSync(join(out, 'publication.json'), JSON.stringify({
     contract: CONTRACT, paragraphRule: edition.rule, title: home.title, subtitle: home.subtitle, ...PUBLICATION, url: siteUrl + edition.dir, markdown: 'publication.md',
-    version: edition.version, every_trick_in_the_book: TOOLKIT_VERSION, versions: versionsList,
+    version: edition.version, everytrickinthebook: TOOLKIT_VERSION, versions: versionsList,
     readingOrder: edition.order.map((file) => ({ id: file, url: edition.byFile.get(file).url, title: edition.byFile.get(file).title })),
   }, null, 2) + '\n');
 
@@ -552,7 +552,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
   const front = ['---', `title: ${JSON.stringify(home.title)}`, `subtitle: ${JSON.stringify(home.subtitle ?? '')}`, 'author:', ...PUBLICATION.creators.map((c) => `  - ${JSON.stringify(c)}`),
     `publisher: ${JSON.stringify(PUBLICATION.publisher)}`, `lang: ${PUBLICATION.language}`,
     'version:', `  id: ${JSON.stringify(v.id)}`, `  label: ${JSON.stringify(v.label)}`, `  date: ${JSON.stringify(v.date)}`, `  status: ${JSON.stringify(v.status)}`,
-    `every_trick_in_the_book: ${JSON.stringify(TOOLKIT_VERSION)}`, '---'].join('\n');
+    `everytrickinthebook: ${JSON.stringify(TOOLKIT_VERSION)}`, '---'].join('\n');
   const publication = `${front}\n\n${edition.order.map((file) => edition.byFile.get(file).markdownBody).join('\n\n')}\n`;
   writeFileSync(join(out, 'publication.md'), publication);
   // publication/: the same Markdown in the frame of the site, at a reading width, like a page's Markdown view.
@@ -614,7 +614,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     '',
     editions.length === 1 ? 'No version has been frozen yet.' : 'A frozen version keeps its text, but it is shown with the current design of the site.',
     '',
-    `The site’s design, and what its pages do, come from the toolkit that builds it: [every_trick_in_the_book](${TOOLKIT_HOME}){.toolkit-name aria-label="every trick in the book"} ${TOOLKIT_VERSION} ([what’s new](${TOOLKIT_CHANGES})). The toolkit’s versions are numbered separately from the book’s.`,
+    `The site’s design, and what its pages do, come from the toolkit that builds it: [everytrickinthebook](${TOOLKIT_HOME}){.toolkit-name aria-label="every trick in the book"} ${TOOLKIT_VERSION} ([what’s new](${TOOLKIT_CHANGES})). The toolkit’s versions are numbered separately from the book’s.`,
   ].join('\n');
   const dir = join(SITE, 'versions');
   mkdirSync(dir, { recursive: true });
@@ -804,7 +804,7 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
 
   // media.json: every item, for other frontends (CONTRACT.md). URLs are relative to the site's root.
   writeFileSync(join(SITE, 'media.json'), JSON.stringify({
-    contract: CONTRACT, every_trick_in_the_book: TOOLKIT_VERSION, title: latest.home.title, url: siteUrl,
+    contract: CONTRACT, everytrickinthebook: TOOLKIT_VERSION, title: latest.home.title, url: siteUrl,
     items: views.map((it) => ({
       number: it.number, kind: it.kind, name: it.name, source: it.source, since: it.since || null, credit: it.credit || '',
       rights: it.rights || '', rights_label: it.rightsLabel || '', rights_note: it.rightsNote || '', cite_as: it.citeAs || '', title: it.title || '',
@@ -862,7 +862,7 @@ const total = size(SITE), imageBytes = size(join(SITE, 'images')), tileBytes = s
 const pageCount = editions.reduce((n, e) => n + e.pages.length, 0);
 console.log(`Built ${pageCount} pages${editions.length > 1 ? ` in ${editions.length} editions` : ''} into _site/ in ${((Date.now() - started) / 1000).toFixed(1)} s: ${mb(total)} ` +
   `(images ${mb(imageBytes)}, tiles ${mb(tileBytes)}, other ${mb(total - imageBytes - tileBytes)}); ` +
-  `${sources} source images, ${tiles} tiles; every_trick_in_the_book ${TOOLKIT_VERSION}, contract ${CONTRACT}${NOINDEX ? '; pages carry noindex' : ''}.`);
+  `${sources} source images, ${tiles} tiles; everytrickinthebook ${TOOLKIT_VERSION}, contract ${CONTRACT}${NOINDEX ? '; pages carry noindex' : ''}.`);
 {
   const counted = (list) => ['see', 'listen', 'watch', 'read'].map((k) => `${list.filter((it) => it.kind === k).length} ${k}`).join(', ');
   const numbered = media.items.filter((it) => it.number !== null), fresh = media.items.filter((it) => it.number === null);

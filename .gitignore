@@ -1,4 +1,4 @@
 .DS_Store
 .venv/
 _site/
-every_trick/node_modules/
+everytrick/node_modules/

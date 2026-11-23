@@ -1,22 +1,24 @@
-# every_trick_in_the_book
+# everytrickinthebook
 
-every_trick_in_the_book by SJMcH, a Mattering toolkit: every trick in the book for making books.
+everytrickinthebook by SJMcH, a Mattering toolkit: every trick in the book for making books.
 
-Its home is https://github.com/every-trick/every_trick_in_the_book. Its versions, and what changed in each, are listed in
+Its home is https://github.com/everytrick/everytrickinthebook. Its versions, and what changed in each, are listed in
 `CHANGELOG.md`.
 
 Copyright © 2026 Studio Julien McHardy (SJMcH). Made for Mattering Press, its first publisher.
 
-The name is written in lower case with underscores, `every_trick_in_the_book`, and `every_trick` for short in running
-text. Web addresses cannot contain underscores, so a domain for it would be `every-trick-in-the-book.org`. Its parts are named like folders: `every_trick/markdown`, `every_trick/conventions`, `every_trick/plain`
-(the open default style) and `sjmch/styles` (the designed styles).
+The name is written as one word in lower case, `everytrickinthebook`, and `everytrick` for short in running text,
+so that it reads the same in prose, in web addresses and on GitHub: `everytrick.org` (with `everytrickinthebook.org`
+leading to it) and `github.com/everytrick`. Until version 1.13.0 it was written `every_trick_in_the_book`. Its parts
+are named like folders: `everytrick/markdown`, `everytrick/conventions`, `everytrick/plain` (the open default style)
+and `sjmch/styles` (the designed styles).
 
 ## Licences
 
-- **The toolkit** (the build, filters, scripts, template and `every_trick/plain`, the default style in this folder):
+- **The toolkit** (the build, filters, scripts, template and `everytrick/plain`, the default style in this folder):
   Mozilla Public License 2.0, see `LICENSE`. You may use, change and share it, also commercially; changes to these
   files must be shared under the same licence, and this notice must be kept.
-- **`every_trick/markdown`, `every_trick/conventions` and the documentation** (`CONTRACT.md`, `CHANGELOG.md` and
+- **`everytrick/markdown`, `everytrick/conventions` and the documentation** (`CONTRACT.md`, `CHANGELOG.md` and
   the writing conventions): Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0).
 - **The house citation style** (`csl/mattering-press.csl`): CC BY-SA 3.0, as required by the Citation Style
   Language styles it is adapted from; see the file's header.
@@ -41,5 +43,5 @@ text. Web addresses cannot contain underscores, so a domain for it would be `eve
 To keep the option of offering commercial licences, contributions to the toolkit and the styles are accepted under
 a short contributor agreement with Studio Julien McHardy. Please get in touch before sending changes.
 
-"every_trick_in_the_book" and "SJMcH" are names of Studio Julien McHardy; the licences above do not grant use of
-these names for other products.
+"everytrickinthebook", "everytrick", its former name "every_trick_in_the_book" and "SJMcH" are names of Studio
+Julien McHardy; the licences above do not grant use of these names for other products.

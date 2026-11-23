@@ -1,4 +1,4 @@
-# Page data, contract 0.5
+# Page data, contract 0.6
 
 The build writes JSON beside the HTML so that other frontends (the collage index, a Tapestry export) can
 read the book without parsing HTML: `publication.json` at the root of each edition, a `page.json` beside every
@@ -29,7 +29,9 @@ order whose list has it, and puts beside it the edition's bibliography to downlo
 documents (every_trick_in_the_book 1.13.0; see "Documents"): a PDF of the repository, or a zine copied from
 archive.org, is shown as its pages, each with zoom tiles, and has `read/<name>/document.json`; media.json gains `pages`
 and `document`; and a document is no longer listed in page.json's `video`, where an archive.org reader was an `embed`.
-The paragraph rule of 0.5 is 0.4's, unchanged.
+The paragraph rule of 0.5 is 0.4's, unchanged. 0.6 renames the toolkit's version `everytrickinthebook` in page.json,
+publication.json, media.json, document.json, formatted.json and the Markdown view's front matter, with the toolkit's
+new name (everytrickinthebook 1.14.0); it changes nothing else, and its paragraph rule is 0.4's, unchanged.
 
 ## Editions
 
@@ -52,7 +54,7 @@ depends only on the page's content, as its Markdown view (`index.md`) has it, ne
 stylesheet. Every version is rebuilt with the current toolkit, so a frozen version is numbered by the rule of the
 contract it was frozen under (`contract` in its entry in `versions.json`), and a rule never changes within a contract
 version: changing it would renumber the paragraphs of frozen versions and break every citation of them. The rule
-below is contract 0.4's; contract 0.5 kept it unchanged. Contract 0.3, which numbers version 0.1, differs only for
+below is contract 0.4's; contracts 0.5 and 0.6 kept it unchanged. Contract 0.3, which numbers version 0.1, differs only for
 lists (see the list item below).
 
 Numbered, wherever they are (at the top level, in block quotes, in the transcript, in any other div that is not
@@ -105,7 +107,7 @@ hover and focus, so that copied text and text fragments (`#p12:~:text=…`) see 
 On a frozen version every page starts with a notice, `<aside class="version-notice">`, whose link
 `<a class="version-notice__link" href="…" data-paragraphs='{"p12": "p14", …}'>` goes to the same page in the newer
 text (the latest text, or for an older release the newest release). `data-paragraphs` maps each of the page's
-paragraphs to the matching paragraph there (see `every_trick/versions.mjs`).
+paragraphs to the matching paragraph there (see `everytrick/versions.mjs`).
 
 ## Poems
 
@@ -146,8 +148,8 @@ its mark in the text, at the end of the paragraph before it, is `<a class="margi
 
 | field | value |
 |---|---|
-| `contract` | `"0.5"`, the version of this format |
-| `paragraphRule` | the contract whose paragraph rule numbered this edition: `"0.5"` for the latest text (whose rule is 0.4's), the `contract` of its entry in `versions.json` for a frozen version (`"0.3"` for version 0.1) |
+| `contract` | `"0.6"`, the version of this format |
+| `paragraphRule` | the contract whose paragraph rule numbered this edition: `"0.6"` for the latest text (whose rule is 0.4's), the `contract` of its entry in `versions.json` for a frozen version (`"0.3"` for version 0.1) |
 | `title`, `subtitle` | from the header of the home page (`README.md`) |
 | `creators` | list of names |
 | `publisher` | name |
@@ -155,7 +157,7 @@ its mark in the text, at the end of the paragraph before it, is `<a class="margi
 | `url` | where this edition is published: the `siteUrl` setting in `build.mjs`, followed by `v<id>/` for a frozen version; the Markdown view `publication.md` uses it for its absolute URLs |
 | `markdown` | `"publication.md"` |
 | `version` | this edition: `{ id, label, date, status }`. `status` is `latest` for the working text (`id` `"latest"`, `label` `"Latest text, unreleased"`, `date` the day of its last commit), or `review` or `release` for a frozen version, with the `id`, `label` and `date` (`YYYY-MM-DD`) of its entry in `versions.json` |
-| `every_trick_in_the_book` | the version of every_trick_in_the_book, the toolkit that built the site (`version` in `every_trick/package.json`; `every_trick/CHANGELOG.md` lists what changed in each), e.g. `"1.0.0"`. It is numbered separately from the book's version, `version` |
+| `everytrickinthebook` | the version of everytrickinthebook, the toolkit that built the site (`version` in `everytrick/package.json`; `everytrick/CHANGELOG.md` lists what changed in each), e.g. `"1.0.0"`. It is numbered separately from the book's version, `version` |
 | `versions` | every edition, the latest text first, then the frozen versions, newest first: `{ id, label, date, status, url }`, `url` relative to this edition's root (`"./"` for itself) |
 | `readingOrder` | every page once, as `{ id, url, title }`: the home page; then each page in the home page's menu, followed by the pages its cards lead to (depth first); then any other page, alphabetically |
 
@@ -167,7 +169,7 @@ its mark in the text, at the end of the paragraph before it, is `<a class="margi
 | `id` | the page's Markdown file, e.g. `"essays/walk.md"`; `"README.md"` for the home page |
 | `url` | e.g. `"essays/walk/"`; `"./"` for the home page |
 | `title`, `subtitle` | from the page's header; `subtitle` is `null` when there is none |
-| `version`, `every_trick_in_the_book` | as in publication.json |
+| `version`, `everytrickinthebook` | as in publication.json |
 | `markdown` | the page's Markdown view, e.g. `"essays/walk/index.md"` |
 | `headings` | `{ level, text, id }` in page order; `level` is the HTML level (2 to 6), `id` the fragment for `url#id` |
 | `paragraphs` | the numbered paragraphs (see "Paragraph numbers"), `{ id, n, text_hash }` in page order: `id` is the fragment (`"p12"`), `n` the number (12), `text_hash` the hash of its normalised text, the same in every version where the paragraph's text is the same |
@@ -232,7 +234,7 @@ At the root of the site, every media item, for other frontends. Its URLs are rel
 
 | field | value |
 |---|---|
-| `contract`, `every_trick_in_the_book` | as in publication.json |
+| `contract`, `everytrickinthebook` | as in publication.json |
 | `title`, `url` | the book's title, and where the site is published |
 | `items` | every item, the numbered ones by number, then the new ones in order of first appearance: `{ number, kind, name, source, since, credit, rights, rights_label, rights_note, cite_as, title, url, short, caption, former_names, former_sources, stored, served, pages, document, appearances }` |
 
@@ -264,7 +266,7 @@ like media.json's.
 
 | field | value |
 |---|---|
-| `contract`, `every_trick_in_the_book` | as in publication.json |
+| `contract`, `everytrickinthebook` | as in publication.json |
 | `number`, `name`, `title`, `source` | the item's number (`null` until it has one), name and source, as in media.json, and its title: the register's, or else the title its page gives it |
 | `url` | its item page, `"read/<name>/"`; the site's root is as many folders up from `document.json` as `url` has |
 | `download` | `{ url, label, size }`: the original. For a PDF its file in the site (`"media/events/walking_sitting_sketching.pdf"`), `label` `"PDF"` and `size` in bytes; for a zine the item on archive.org, `label` `"archive.org"` and `size` `null` |
@@ -296,7 +298,7 @@ does.
 Every `index.html` has an `index.md` beside it, and the root of each edition has `publication.md` with all
 pages in reading order. They are written by the build from the book's source, in Pandoc Markdown with a YAML
 front matter (`title`, `subtitle`, `lang`, and the version stamp: `version` with `id`, `label`, `date` and `status`,
-and `every_trick_in_the_book`, the toolkit's version), and contain
+and `everytrickinthebook`, the toolkit's version), and contain
 no Juncture syntax. `index.md` uses URLs relative to
 itself; `publication.md` uses absolute URLs and starts each page with its title as a level-1 heading.
 Media are written as:
@@ -357,7 +359,7 @@ work in the page's order:
 - `bibliography.bib`: the same in BibTeX, as Pandoc writes it, with `doi` and `urldate` added where a work has them;
 - `bibliography.ris`: the same in RIS, with the tags in the places Zotero's RIS translator reads them, the entry's key
   as `ID`, UTF-8 and the specification's CRLF line ends;
-- `formatted.json`: `{ contract, every_trick_in_the_book, version, styles, works }`. `styles` lists the forms of the
+- `formatted.json`: `{ contract, everytrickinthebook, version, styles, works }`. `styles` lists the forms of the
   Copy menu in its order, each `{ id, label, short }` (the menu's name and the confirmation's: `APA (7th edition)`,
   `APA`), with the address of its CSL file and the `locale` it is formatted in for a citation style, and `entry: true`
   for an entry of a reference manager. `works` holds, for each key, the work in each form as plain text: `house` (the

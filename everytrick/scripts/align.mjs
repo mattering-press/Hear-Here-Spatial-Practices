@@ -1,6 +1,6 @@
 // Times the paragraphs of a podcast transcript against its recordings, once, on your own computer. Not part of the build.
 //
-//   cd every_trick && npm run build
+//   cd everytrick && npm run build
 //   node scripts/align.mjs essays/aya_nassar.md [--report report.md]
 //
 // For each recording that the page plays, whisper.cpp transcribes the audio with a time for every word (offline: the
@@ -28,7 +28,7 @@ import { fileURLToPath } from 'node:url';
 const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const REPO = 'mattering-press/Hear-Here-Spatial-Practices';
 const MODEL = process.env.WHISPER_MODEL || join(homedir(), '.cache', 'whisper.cpp', 'ggml-large-v3-turbo.bin');
-const WORK = join(tmpdir(), 'every_trick-align');
+const WORK = join(tmpdir(), 'everytrick-align');
 const FILLERS = new Set(['um', 'uh', 'er', 'erm', 'ah', 'eh', 'mm', 'hmm', 'mhm', 'uhm', 'oh']);
 
 const args = process.argv.slice(2);
@@ -270,7 +270,7 @@ for (const pl of players) {
   const vtt = ['WEBVTT', '',
     'NOTE',
     `Paragraph cues for “${pl.title}” (${page}), one cue per paragraph of the transcript,`,
-    `made by every_trick/scripts/align.mjs on ${today} and then checked by ear. The build finds each cue's paragraph by its`,
+    `made by everytrick/scripts/align.mjs on ${today} and then checked by ear. The build finds each cue's paragraph by its`,
     'words. To correct a cue, change its start time. To leave a paragraph untimed, delete its cue and write a line',
     '"NOTE untimed: <its first words>" in its place.', '', ...cues.flatMap((c) => [c, ''])].join('\n');
   const target = join(REPO_ROOT, pl.path.replace(/\.mp3$/i, '.paragraphs.vtt'));
@@ -281,7 +281,7 @@ for (const pl of players) {
 
 // ---- the report -------------------------------------------------------------------------------------------
 const lines = [];
-lines.push(`# Timing report: ${page}`, '', `Made by every_trick/scripts/align.mjs on ${today}, with whisper.cpp (${basename(MODEL)}).`, '');
+lines.push(`# Timing report: ${page}`, '', `Made by everytrick/scripts/align.mjs on ${today}, with whisper.cpp (${basename(MODEL)}).`, '');
 lines.push('## Recordings', '');
 for (const { pl, out, kept } of written) {
   lines.push(`- ${pl.title} (${pl.path}): paragraphs ${pl.paras.length ? `${pl.paras[0].n}–${pl.paras.at(-1).n}` : 'none'}, ${pl.paras.length} cues. ` +

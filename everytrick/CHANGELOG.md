@@ -1,15 +1,31 @@
-# every_trick_in_the_book: what’s new
+# everytrickinthebook: what’s new
 
-Every version of every_trick_in_the_book, newest first, with what changed in it.
+Every version of everytrickinthebook, newest first, with what changed in it. Until 1.13.0 it was called
+every_trick_in_the_book, and the entries for those versions keep that name.
 
 The toolkit’s versions are numbered separately from the versions of the books it makes. A book’s versions follow its
 text, such as version 0.1 of *Hear Here: Spatial Practices*, its first public version. The toolkit’s versions follow
-the design and what the pages do, and are always written with the toolkit’s name, such as every_trick_in_the_book 1.0.0.
+the design and what the pages do, and are always written with the toolkit’s name, such as everytrickinthebook 1.14.0.
 Every version of a book is shown with the current version of the toolkit, so a frozen version keeps its text but
 takes on the current design.
 
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
-reader sees. How to add a version: ‘Versions of the book and of every_trick’ in `DEVELOPMENT.md`.
+reader sees. How to add a version: ‘Versions of the book and of everytrick’ in `DEVELOPMENT.md`.
+
+## 1.14.0
+
+23 November 2026. A new name: everytrickinthebook, and everytrick for short.
+
+- The toolkit is now called everytrickinthebook, one word in lower case, so that its name reads the same in prose,
+  in its web address and on GitHub: everytrick.org, and github.com/everytrick. It was every_trick_in_the_book; the
+  underscores could not go into a web address, and the hyphens that would have replaced them were ugly and confusing.
+- The footer’s credit reads ‘built with everytrickinthebook 1.14.0 by SJMcH’, and its name links to the toolkit’s home
+  at github.com/everytrick/everytrickinthebook. Screen readers still read it as ‘every trick in the book’.
+- In the book’s data the toolkit’s version is now `everytrickinthebook`, where it was `every_trick_in_the_book`: in
+  page.json, publication.json, media.json, the documents’ data, the bibliography’s formatted texts and the Markdown
+  view’s front matter. That is contract 0.6, which changes nothing else.
+- The toolkit’s folder in the book’s repository is `everytrick/`, where it was `every_trick/`.
+- Readers keep their text size, colours and place in the book: those are still stored under their old keys.
 
 ## 1.13.0
 

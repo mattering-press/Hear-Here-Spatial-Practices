@@ -1,5 +1,5 @@
 // The Media Index (/media-index/) and its editing view (/media-index/edit/, on previews only). The build writes the
-// list as plain HTML (every_trick/media-pages.mjs), which is what readers get without JavaScript.
+// list as plain HTML (everytrick/media-pages.mjs), which is what readers get without JavaScript.
 //  * Filters: chips by kind (see, listen, watch, read) and by where items are served from (our own site, GitHub,
 //    archive.org …), made from the list itself, with how many items each has. One choice in each row; "All" clears
 //    both. A line says how many items are shown.
@@ -86,7 +86,7 @@
   var NAME = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
   var names = {};   // every name and former name of the book -> the source of its item
   try { names = JSON.parse(edit.querySelector('.media-names').textContent); } catch (e) { /* no check of names */ }
-  // the statements and licences the build knows (RIGHTS in every_trick/register.mjs): an address is labelled as
+  // the statements and licences the build knows (RIGHTS in everytrick/register.mjs): an address is labelled as
   // register.mjs's rightsLabel does it, "In Copyright", "CC BY 4.0"
   var RIGHTS = { patterns: {}, statements: {}, notKnown: {} }, pattern = {};
   try { RIGHTS = JSON.parse(edit.querySelector('.media-rights').textContent); } catch (e) { /* no check of rights */ }
