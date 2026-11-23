@@ -1,7 +1,7 @@
 # Development and deployment workflow
 
 This repository is the only source for the publication. Since version 0.1 (2026-11-20) the public site is the
-static edition built by every_trick_in_the_book in `every_trick/`; Juncture, which rendered the first version, is
+static edition built by everytrickinthebook in `everytrick/`; Juncture, which rendered the first version, is
 retired and forwards its visitors to the new site.
 
 - Repository: `mattering-press/Hear-Here-Spatial-Practices`
@@ -102,7 +102,7 @@ pull request is the record of what was published.
 
 ## Checking a change locally
 
-`npm run build` and `npm run serve` in `every_trick/` (see "Static twin" below) show the site at `http://localhost:8080/`,
+`npm run build` and `npm run serve` in `everytrick/` (see "Static twin" below) show the site at `http://localhost:8080/`,
 made by the same build as the previews and the public site. Check the pages you changed there before pushing, at
 desktop and phone widths. The preview adds only the real hosting.
 
@@ -110,14 +110,14 @@ desktop and phone widths. The preview adds only the real hosting.
 
 The static twin is a plain static copy of the whole book, built from the same Markdown with Pandoc,
 so that the book does not depend on Juncture alone. Since version 0.1 (2026-11-20) it is the public site,
-open to search engines (the `NOINDEX` setting at the top of `every_trick/build.mjs` is off). Existing pages keep
-Juncture's syntax, which the build reads; new content may use the Pandoc conventions in `every_trick/CONTRACT.md`.
+open to search engines (the `NOINDEX` setting at the top of `everytrick/build.mjs` is off). Existing pages keep
+Juncture's syntax, which the build reads; new content may use the Pandoc conventions in `everytrick/CONTRACT.md`.
 
 To build and preview it locally you need Node.js 20.11 or later, Pandoc 3.8 and poppler, which renders the book's PDF
 documents (`brew install poppler` on a Mac, `poppler-utils` on Debian and Ubuntu; see "Documents and zines"):
 
 ```sh
-cd every_trick
+cd everytrick
 npm ci          # once, and again after package-lock.json changes
 npm run build   # writes ../_site/ in about ten seconds
 npm run build:preview  # the same, with the Media Index's editing view, as on the previews
@@ -137,7 +137,7 @@ Markdown, so the two cannot drift apart. Every page has a Page / Markdown switch
 "Header" below). "Markdown" leads to `markdown/` beside the page: the same header and footer, with `index.md` shown at a reading
 width and a link to download it. `publication/` at the root of each edition does the same for `publication.md`, the
 whole book; its switch stays on "Markdown", and "Page" leads back to the page the reader came from (a line of
-script in the template reads it from the referrer), or to the home page. The format of the Markdown media blocks is in `every_trick/CONTRACT.md`.
+script in the template reads it from the referrer), or to the home page. The format of the Markdown media blocks is in `everytrick/CONTRACT.md`.
 
 The frame of every page:
 
@@ -145,33 +145,33 @@ The frame of every page:
   link to the home page), the menu, and at the right end the tools: the views switch, search and "Aa". The menu is the
   home page's (`README.md`), followed by "media index" and "references" (the Media Index, shared by all versions,
   and the References page of the version being read; their words are `FRAME.menu` at the top of
-  `every_trick/build.mjs`); the menus in the other pages' `.ve-header` lines are ignored. Where the whole menu does
+  `everytrick/build.mjs`); the menus in the other pages' `.ve-header` lines are ignored. Where the whole menu does
   not fit beside the title and the tools, it folds into a menu button (☰, named "Menu") at the start of the tools,
-  which opens a panel listing every entry (`every_trick/assets/menu.js`): opening it moves the focus to its first
+  which opens a panel listing every entry (`everytrick/assets/menu.js`): opening it moves the focus to its first
   entry, Escape closes it and puts the focus back on the button, and a click or tap outside, or Tab past its last
   entry, closes it. The button is a `<details>`, so without JavaScript it opens and closes all the same. The width at
-  which the menu folds is a container query in `every_trick/assets/site.css` ("the menu button"), in rem, so that it
+  which the menu folds is a container query in `everytrick/assets/site.css` ("the menu button"), in rem, so that it
   follows the reader's text size: this book's bar needs 62.2rem (995 px at the usual size, measured on 2026-11-23),
   so the menu shows from 63rem (1008 px) and folds below; measure again and change it when the menu changes. On phones
   the title and the tools get smaller; at 320 px the title ends in an ellipsis. The views switch is a round-ended pill
   of icons, each a plain link with its name for screen readers and in a tooltip: Page (a sheet) and Markdown (the
   Markdown mark), and later Collage, the third segment it is made for (its icon waits in a comment in
-  `every_trick/template.html`). Below the bar, the page's title, over the picture of its own `.ve-header` line,
+  `everytrick/template.html`). Below the bar, the page's title, over the picture of its own `.ve-header` line,
   cropped to a band of the same height on every page. A page reached through a card names its section above its title
   (Podcasts, Events), and that section is marked in the menu. To give a page its own header picture, change the
   picture in its `.ve-header` line.
 - **Search.** A magnifier beside "Aa" leads to the edition's search page, `search/` (see "Plan: search").
-- **Settings.** The "Aa" button at the end of the bar opens the reader's settings (`every_trick/assets/settings.js`):
+- **Settings.** The "Aa" button at the end of the bar opens the reader's settings (`everytrick/assets/settings.js`):
   text size in four steps (90, 100, 115 and 130 per cent; the whole page scales, the text column with it) and colours:
   System (the preset, which follows the reader's device), Light or Dark. The browser keeps the choice
   (`localStorage`), and a line in the template's `<head>` applies it before the page is drawn. The dark colours are
-  set in `every_trick/assets/site.css`, below the light ones; the publisher's logo turns white in dark mode.
+  set in `everytrick/assets/site.css`, below the light ones; the publisher's logo turns white in dark mode.
 - **Footer.** The publisher's logo (the long one; the icon alone on phones), a credit line with the licence, the
   book's version line (with links to all versions, to the Media Index and to the References page of the same version)
-  and the toolkit's line. They are set in `FRAME` at the top of `every_trick/build.mjs`, with the logos in
+  and the toolkit's line. They are set in `FRAME` at the top of `everytrick/build.mjs`, with the logos in
   `media/publisher/`; the `.ve-footer` lines in the pages are ignored.
 
-What is in `every_trick/`:
+What is in `everytrick/`:
 
 - `build.mjs`: the build, with its few settings at the top
 - `versions.mjs`: reads the version registry (`versions.json` at the repository root), takes each version's text from its Git tag, and matches paragraphs between versions
@@ -186,7 +186,7 @@ What is in `every_trick/`:
 - `csl/`: `mattering-press.csl`, the house citation style, and its test (`csl/test/`); and four styles of the official
   CSL repository, unchanged, for the References page's Copy menus: `apa.csl`, `chicago-author-date.csl`,
   `modern-language-association.csl` and `harvard-cite-them-right.csl` (source, commit and licence in
-  `every_trick/NOTICE.md`; to update them, copy them again from a newer commit and change `CSL_COMMIT` in
+  `everytrick/NOTICE.md`; to update them, copy them again from a newer commit and change `CSL_COMMIT` in
   `citations.mjs` and the commit in `NOTICE.md`)
 - `scripts/to-citation-keys.mjs`: for the switch, shows how the plain-text citations would become Pandoc citations
 - `scripts/align.mjs`: times a podcast transcript's paragraphs against its recordings with whisper.cpp, on the editor's computer, and writes the cue files and a report (see "Plan: podcast player and transcript")
@@ -200,7 +200,7 @@ What is in `every_trick/`:
   edition has its search index, and its References page with the downloads and the Copy menus' texts, each with every
   work) and the local server
 - `CONTRACT.md`: the `page.json`, `publication.json` and `media.json` files that other frontends can read, the paragraph rule and the media items
-- `package.json`: the toolkit's name and version (see "Versions of the book and of every_trick" below)
+- `package.json`: the toolkit's name and version (see "Versions of the book and of everytrick" below)
 - `CHANGELOG.md`: every version of the toolkit and what changed in it
 
 GitHub Actions (`.github/workflows/static-twin.yml`) builds and checks the twin on every push and pull
@@ -208,14 +208,14 @@ request, and uploads every pushed branch as a preview (see "Previews"). It insta
 whole history with its tags, so that it can build the frozen versions. On `main` it also deploys `_site/` to GitHub
 Pages, which serves it at `https://hearhere.matteringpress.org/` (the deploy is skipped if Pages is not enabled
 with "GitHub Actions" as its source). `_site/` is never committed. On every branch but `main` its build step sets
-`EVERY_TRICK_PREVIEW=true`, which adds the Media Index's editing view (`/media-index/edit/`, see "The media
+`EVERYTRICK_PREVIEW=true`, which adds the Media Index's editing view (`/media-index/edit/`, see "The media
 register") to the build; a build of `main`, which is what GitHub Pages publishes, never has it. `npm run
-build:preview` (or `EVERY_TRICK_PREVIEW=true npm run build`) does the same locally.
+build:preview` (or `EVERYTRICK_PREVIEW=true npm run build`) does the same locally.
 
 ### The media register
 
 Every picture, recording, video and document of the book is a media item with a permanent number (the plan:
-"Plan: media register, item pages and the Media Index"; the details: "Media items" in `every_trick/CONTRACT.md`).
+"Plan: media register, item pages and the Media Index"; the details: "Media items" in `everytrick/CONTRACT.md`).
 The items are listed in `media/register.csv`, one line each, which GitHub shows as a table you can search. The
 columns are `number`, `kind` (`see`, `listen`, `watch` or `read`), `name`, `source` (the file in the repository, or the
 address elsewhere), `since` (the version it entered with), `credit`, `rights`, `rights_note`, `cite_as` (how to cite
@@ -298,14 +298,14 @@ picture. "Clear all edits" puts every field back as the pages and the register h
 commit in which a page (`README.md`, `essays/*.md`) refers to its file or address, current or former, and when its file
 last changed, the day of the latest commit that changed it (current or former; for a zine, the folder of its copied
 pages). An item served from elsewhere (YouTube, Vimeo, the BBC, archive.org) has only the first. Both are read from
-the Git history at every build (`every_trick/history.mjs`, two passes over the history for all items); GitHub Actions
+the Git history at every build (`everytrick/history.mjs`, two passes over the history for all items); GitHub Actions
 fetches the whole history. A shallow clone has no dates: the item pages leave the rows out and the build says so in its
 warnings. To date an item's earlier file correctly, list it in `former_sources`.
 
 ### Documents and zines
 
 A document is a media item of kind `read` whose pages the build shows as pictures, in the zoom viewer (the plan:
-"Plan: documents and zines"; the data: "Documents" in `every_trick/CONTRACT.md`). There are two kinds:
+"Plan: documents and zines"; the data: "Documents" in `everytrick/CONTRACT.md`). There are two kinds:
 
 - **A PDF in the repository**, such as the walk's booklet (`media/events/walking_sitting_sketching.pdf`), linked from an
   `::: {.embed}` block (or, in Juncture's syntax, a `<figure class="pdf-embed" data-repo-pdf=…>`). At every build poppler
@@ -322,7 +322,7 @@ A document is a media item of kind `read` whose pages the build shows as picture
 
 A `read` item that is neither (another site's reader) stays an embed, as before.
 
-**Fetching or refreshing a zine.** On your own computer, in `every_trick/`, run `npm run fetch-zine -- <identifier>`,
+**Fetching or refreshing a zine.** On your own computer, in `everytrick/`, run `npm run fetch-zine -- <identifier>`,
 the part of the zine's archive.org address after `/details/` (`npm run fetch-zine -- trauma-body-and-home`; add
 `--dry-run` to see what it would fetch). It downloads the item's "Single Page Processed JP2 ZIP" (about 12 MB), checks it
 against the MD5 that archive.org lists, leaves out any page that archive.org's scandata marks as not part of the book,
@@ -356,12 +356,12 @@ site is rebuilt:
 - a paragraph that holds only a timecode such as `[00:10:13]`, or only a picture, gets no number;
 - a short line on its own, such as **Addendum** or `[music]`, is a paragraph like any other and gets a number.
 
-The precise rule is in `every_trick/CONTRACT.md` ("Paragraph numbers"). A rule never changes once a version has been
+The precise rule is in `everytrick/CONTRACT.md` ("Paragraph numbers"). A rule never changes once a version has been
 frozen with it, because that version would be renumbered: a new rule comes with a new contract version, and each
 frozen version keeps the rule it was frozen under (`contract` in `versions.json`). Version 0.1 is numbered by
 contract 0.3, which gave each list item its own number. Contract 0.6 (every_trick_in_the_book 1.14.0) added long
 descriptions to the blocks that get no number; no page had one before, so no number changed. The build prints how many paragraphs each page has. To hide the
-numbers (the ¶ link stays), set `--paragraph-numbers: 0` at the top of `every_trick/assets/site.css`.
+numbers (the ¶ link stays), set `--paragraph-numbers: 0` at the top of `everytrick/assets/site.css`.
 
 ### Versions and the version stamp
 
@@ -380,8 +380,8 @@ link follows the paragraph in the address or the one the reader last scrolled to
 or rewritten beyond recognition leads to the nearest paragraph before it that was matched.
 
 Every page's footer shows the book's version and its date, with a link to `/versions/`, which lists every version.
-The line below it names the version of every_trick_in_the_book that built the page (see "Versions of the book and
-of every_trick"). The same stamp, `version` for the book and `every_trick_in_the_book` for the toolkit, is in `publication.json`, every
+The line below it names the version of everytrickinthebook that built the page (see "Versions of the book and
+of everytrick"). The same stamp, `version` for the book and `everytrickinthebook` for the toolkit, is in `publication.json`, every
 `page.json` and the front matter of the Markdown view.
 
 Each entry in `versions.json` has:
@@ -393,7 +393,7 @@ Each entry in `versions.json` has:
 | `label` | how pages name it, e.g. `Version 0.9, second peer review` |
 | `date` | the day it was frozen or released, e.g. `2026-11-20` |
 | `status` | `review` (frozen for peer review) or `release` (published) |
-| `contract` | the contract current when it was frozen (`CONTRACT` in `every_trick/build.mjs`, e.g. `0.6`): its paragraph rule numbers this version, so its numbers never change |
+| `contract` | the contract current when it was frozen (`CONTRACT` in `everytrick/build.mjs`, e.g. `0.7`): its paragraph rule numbers this version, so its numbers never change |
 | `annotations` | `hypothesis` to open its pages for annotation with Hypothesis (below), otherwise `none` |
 | `hypothesisGroup` | the ID of the private Hypothesis group for its reviewers |
 
@@ -402,36 +402,44 @@ or on a release, and its sidebar starts closed. With `hypothesisGroup` set, the 
 `groupsAllowlist`, so its group menu offers only that group (and no "Public"). This does not admit anyone: a
 reviewer must be a member of the group to see or post in it.
 
-### Versions of the book and of every_trick
+### Versions of the book and of everytrick
 
-The book and every_trick_in_the_book, the toolkit that builds it, have separate version numbers. The site never
+The book and everytrickinthebook, the toolkit that builds it, have separate version numbers. The site never
 shows one without saying which it is: the book's version is written with its label, the toolkit's with its name.
+
+The toolkit's name is one word in lower case, everytrickinthebook, and everytrick for short, the same in prose, in
+its web address (`everytrick.org`, with `everytrickinthebook.org` leading to it) and on GitHub
+(`github.com/everytrick/everytrickinthebook`). Agreed with the publisher on 2026-11-23, because hyphens are ugly in
+an address and confusing beside the underscores the name had; until 1.14.0 it was every_trick_in_the_book, in
+`every_trick/`. The history keeps the old name: the changelog's earlier entries, the contract's earlier versions and
+frozen versions such as version 0.1. The keys under which a reader's browser keeps their settings and place still
+begin with `every-trick-`, so that nobody loses them; readers never see these keys.
 
 | | the book | the toolkit |
 |---|---|---|
 | follows | the text | the design and what the pages do |
-| written | `Version 0.1, first public version` (its `label`) | `every_trick_in_the_book 1.0.0`, never "version 1.0.0" alone |
-| set in | `versions.json`, each version with its Git tag (`v0.1`) | `version` in `every_trick/package.json` |
-| what changed | the text of each frozen version, online at `/v<id>/` | `every_trick/CHANGELOG.md` |
-| on the site | the footer's version line, the version notice, `/versions/` | the footer's credit line, linked to the toolkit's home and to `every_trick/CHANGELOG.md` |
-| in the data | `version` in `page.json`, `publication.json` and the Markdown view | `every_trick_in_the_book` in the same files |
+| written | `Version 0.1, first public version` (its `label`) | `everytrickinthebook 1.0.0`, never "version 1.0.0" alone |
+| set in | `versions.json`, each version with its Git tag (`v0.1`) | `version` in `everytrick/package.json` |
+| what changed | the text of each frozen version, online at `/v<id>/` | `everytrick/CHANGELOG.md` |
+| on the site | the footer's version line, the version notice, `/versions/` | the footer's credit line, linked to the toolkit's home and to `everytrick/CHANGELOG.md` |
+| in the data | `version` in `page.json`, `publication.json` and the Markdown view | `everytrickinthebook` in the same files |
 
 Every version of the book is built with the current toolkit, so a frozen version keeps its text but takes on the
 current design.
 
 A change to the toolkit bumps its version and adds an entry to its list of changes, in the same commit:
 
-1. In `every_trick/`, run `npm version <minor|patch> --no-git-tag-version` (it updates `package-lock.json` too):
+1. In `everytrick/`, run `npm version <minor|patch> --no-git-tag-version` (it updates `package-lock.json` too):
    - `1.x.0`, the minor number, when what readers see or what the pages do changes: the template, the stylesheet,
      the scripts, or the HTML the filters write;
    - `1.x.y`, the patch number, for fixes that change nothing a reader sees: the build, its checks, its report;
    - `1.0.0` marked the switch from Juncture to the static edition (20 November 2026).
-2. Add the version at the top of `every_trick/CHANGELOG.md`: its number as the heading, the date, and what changed, in a
+2. Add the version at the top of `everytrick/CHANGELOG.md`: its number as the heading, the date, and what changed, in a
    few plain sentences written for editors and readers rather than developers.
 
-The footer's two links are set at the top of `every_trick/build.mjs`: `TOOLKIT_HOME`, the toolkit's home, and
+The footer's two links are set at the top of `everytrick/build.mjs`: `TOOLKIT_HOME`, the toolkit's home, and
 `TOOLKIT_CHANGES`, its list of changes. The format of `page.json` and `publication.json`, and the paragraph rule,
-have their own version, `CONTRACT` in `build.mjs` and `every_trick/CONTRACT.md`.
+have their own version, `CONTRACT` in `build.mjs` and `everytrick/CONTRACT.md`.
 
 ### Freezing a version for review or release
 
@@ -458,13 +466,13 @@ Freezing a version gives its text a permanent address. The text is taken from a 
      "label": "Version 0.9, second peer review",
      "date": "2026-11-20",
      "status": "review",
-     "contract": "0.6",
+     "contract": "0.7",
      "annotations": "hypothesis",
      "hypothesisGroup": "<group ID>"
    }
    ```
 
-4. Number the version's new media items. In `every_trick/`, run `npm run number-media -- 0.9-review2` (with
+4. Number the version's new media items. In `everytrick/`, run `npm run number-media -- 0.9-review2` (with
    `--dry-run` first to see what it will do, without writing). Every item of the version that has no number yet gets
    the next one, in the version's reading order, with `since` set to the version; an item without a line in
    `media/register.csv` gets one, with a name drafted from its caption: check those names now, since they become
@@ -494,7 +502,7 @@ The book has one bibliography, `references/bibliography.json` (CSL-JSON), with e
 names, entered once. Keys are the first author's surname and the year in plain ASCII (`becker2007`, `puigdelabellacasa2017`),
 with a letter where one author has two works in a year (`stengers2005a`); a web page without author or date is keyed by
 its site (`jacobinnd`). Each entry's `custom.typed` records where it is typed (page and text as Pandoc reads it). The
-house style is `every_trick/csl/mattering-press.csl`, adapted from the MHRA styles of the official CSL repository; its header
+house style is `everytrick/csl/mattering-press.csl`, adapted from the MHRA styles of the official CSL repository; its header
 lists the changes, and `npm run test:csl` checks it against the style guide's examples.
 
 During the parallel run the essays keep their typed citations and reference lists, and the build links them:
@@ -526,19 +534,19 @@ menu that copies the reference as plain text in Mattering Press' house style, AP
 MLA (9th edition) or Harvard (Cite Them Right), or as a BibTeX or RIS entry, and the status line at the foot of the
 window says what was copied ("Copied: APA"). The house style is the reference as the page shows it, with the book's
 year letters. The other four are made at build time by citeproc with the official CSL repository's styles in
-`every_trick/csl/` (`formatReferences` in `citations.mjs`), each in the locale its guide is written for (Harvard in
+`everytrick/csl/` (`formatReferences` in `citations.mjs`), each in the locale its guide is written for (Harvard in
 British English, the others in American), with their year letters and their dashes for a repeated author switched
 off: each work is given as it stands on its own, as a reference manager copies one, because a letter such as 2005a only
 tells two works of this book apart. BibTeX is Pandoc's (`-t bibtex`, with the DOI and the date accessed added, which
-it leaves out), RIS comes from `every_trick/ris.mjs`. The texts are in `references/formatted.json` beside the page,
-which `every_trick/assets/references.js` loads only when the reader first comes to a Copy button; the buttons and their
+it leaves out), RIS comes from `everytrick/ris.mjs`. The texts are in `references/formatted.json` beside the page,
+which `everytrick/assets/references.js` loads only when the reader first comes to a Copy button; the buttons and their
 menu are made by that script, so the page stays light, they are in no search index, and without JavaScript there are
 none. The menu is a menu button: ↓ or Enter opens it, ↑ ↓ Home End move, Enter copies, Escape closes it, focus goes
 back to the button. The explainer at the top of the page links the whole bibliography to download, as
 `references/bibliography.bib` (BibTeX), `references/bibliography.ris` (RIS) and `references/bibliography.json`
 (CSL-JSON, without the build's `custom` field), in each edition's own `references/` folder, beside its References page:
 an edition's bibliography comes from its own tag, as its References page does. `npm run check` confirms that each has
-every work. The formats of these files are in `every_trick/CONTRACT.md`.
+every work. The formats of these files are in `everytrick/CONTRACT.md`.
 
 At the switch to the static edition, `node scripts/to-citation-keys.mjs` prints the change that turns the typed
 citations into Pandoc citations (`[@becker2007, p. 74]`, `[-@fryer1984]` where the author is named in the sentence) and
@@ -587,7 +595,7 @@ Agreed with the publisher on 2026-11-19. The static twin does not implement all 
 - **Media addresses are unversioned.** Every image, audio and video item gets its own page at a permanent, word-based address, such as `/see/plumbline`, `/listen/boulder` or `/watch/<name>`. Audio and video addresses may carry a start time (`#t=12:40`). If a file is replaced, the address stays and the item page notes the change.
 - **Print.** Printed captions carry the item's address, and a QR code generated from the same address is always printed with it, because a printed link cannot be clicked. The colophon states which online version a printed edition corresponds to.
 - **Shared media.** Images, tiles and audio are stored once and shared by all versions, so each release adds only its pages.
-- **Two version numbers.** The book has `v1.0`, `v1.1`, `v2.0` and so on, following the text. every_trick_in_the_book, the toolkit, has its own numbers (`1.0.0`), following design and behaviour, and `every_trick/CHANGELOG.md` lists them with what changed. Each book release records the toolkit version that built it. All published versions are rebuilt with the current toolkit, so their text and paragraph numbers never change. Paragraph numbering is defined by the content in `every_trick/CONTRACT.md`, never by the template. Archived snapshots keep the exact design of their day.
+- **Two version numbers.** The book has `v1.0`, `v1.1`, `v2.0` and so on, following the text. everytrickinthebook, the toolkit, has its own numbers (`1.0.0`), following design and behaviour, and `everytrick/CHANGELOG.md` lists them with what changed. Each book release records the toolkit version that built it. All published versions are rebuilt with the current toolkit, so their text and paragraph numbers never change. Paragraph numbering is defined by the content in `everytrick/CONTRACT.md`, never by the template. Archived snapshots keep the exact design of their day.
 - **DOIs and archiving.** Book and chapter DOIs are registered through Thoth and point to the latest version. Each release is tagged in Git and archived as a fixed snapshot: the site package, a web archive file, the whole-book Markdown and the media masters, deposited with Zenodo and through Thoth, plus Wayback Machine captures of every page.
 
 ## Plan: additions from reviewing Entreluma
@@ -617,7 +625,7 @@ to listen.
 
 - **The player stays in the page**, under "Podcast", built on the browser's `<audio>`, so that it plays without
   JavaScript. `filters/embeds.lua` writes it with the recording's length, which the build reads from the MP3 itself
-  (`every_trick/audio.mjs`); `assets/player.js` adds the controls: play, time and length, position, back and forward
+  (`everytrick/audio.mjs`); `assets/player.js` adds the controls: play, time and length, position, back and forward
   15 seconds, speed, and "Follow text" where the transcript has cues. On a narrow player (a phone; the publisher,
   2026-11-22) the controls are one line, play, time, position, "More" (⋯) and, when docked, ×; back, forward, speed
   and Follow text wait in a small panel that "More" opens, which also says what is playing. They are the same
@@ -642,7 +650,7 @@ to listen.
   that moment. Once it has cues, the timecode lines are left out of the page, because every paragraph has its own ▸
   (the publisher, 2026-11-22). They stay in the Markdown and in the Markdown view, as the editors' record, and
   `scripts/align.mjs` checks its timings against them when it first times a recording.
-- **Making the cues** (`every_trick/scripts/align.mjs`, run once on the editor's computer, not in the build):
+- **Making the cues** (`everytrick/scripts/align.mjs`, run once on the editor's computer, not in the build):
   whisper.cpp transcribes the recording offline with a time for every word, and those words are matched against the
   edited transcript. Speaker labels, bracketed directions, timecodes and unnumbered lines are not matched. Words heard
   between two paragraphs that the text changed or does not have (one speaker's edited ending, the next one's
@@ -676,19 +684,19 @@ to listen.
 
 ## Plan: margin notes
 
-Agreed with the publisher on 2026-11-19. Text notes and media in the margin are built (`every_trick/filters/margins.lua`, `every_trick/assets/margins.js`): a margin note may hold pictures, animated GIFs, video and audio players, and one that holds only media has no note number (example: the cover beside para. 1 of the home page). Media in the margin are media items with their own numbers, like any other (every_trick_in_the_book 1.11.0). The print and EPUB forms are not built yet.
+Agreed with the publisher on 2026-11-19. Text notes and media in the margin are built (`everytrick/filters/margins.lua`, `everytrick/assets/margins.js`): a margin note may hold pictures, animated GIFs, video and audio players, and one that holds only media has no note number (example: the cover beside para. 1 of the home page). Media in the margin are media items with their own numbers, like any other (everytrickinthebook 1.11.0). The print and EPUB forms are not built yet.
 
 - **What:** short notes, links and small media thumbnails in a right-hand margin column. Paragraph numbers keep the left margin.
 - **Where they live in the source:** directly after the paragraph they belong to (`::: {.margin}` … `:::`), or attached to a word (`[given by Germany in 1962]{.margin}`). They are never stored by paragraph number, so they move with their paragraph from version to version. While Juncture still renders the site, write them as `<aside class="margin" markdown="1">…</aside>`, which the build converts.
-- **Layout on wide screens:** notes float in the margin starting level with their paragraph. When the margin is crowded, later notes are pushed down, so the text column never gets gaps. A marker in the text and the same mark on the note highlight together on hover and focus. Notes show in full (the publisher's preset, 2026-11-20). Setting `--margin-note-lines` in `every_trick/assets/site.css` above 0 makes long notes show that many lines, then "more".
+- **Layout on wide screens:** notes float in the margin starting level with their paragraph. When the margin is crowded, later notes are pushed down, so the text column never gets gaps. A marker in the text and the same mark on the note highlight together on hover and focus. Notes show in full (the publisher's preset, 2026-11-20). Setting `--margin-note-lines` in `everytrick/assets/site.css` above 0 makes long notes show that many lines, then "more".
 - **Phones, no JavaScript and screen readers:** a note stays in reading order directly after its paragraph, as a labelled aside.
 - **Print and EPUB:** decided per note: an endnote, a small figure with address and QR code, or web-only.
-- **Numbering:** text notes are numbered per chapter (`n1`, `n2`), matching the endnote numbers they get in print; media in the margin are media items like any other, with their own numbers and item addresses (see "Plan: media register, item pages and the Media Index"; the publisher, 2026-11-22, replacing `Fig. 2.3` numbers); plain links are not numbered; paragraph numbers ignore the margin. Details in `every_trick/CONTRACT.md`.
+- **Numbering:** text notes are numbered per chapter (`n1`, `n2`), matching the endnote numbers they get in print; media in the margin are media items like any other, with their own numbers and item addresses (see "Plan: media register, item pages and the Media Index"; the publisher, 2026-11-22, replacing `Fig. 2.3` numbers); plain links are not numbered; paragraph numbers ignore the margin. Details in `everytrick/CONTRACT.md`.
 
 ## Plan: image display and the zoom viewer
 
 Agreed with the publisher on 2026-11-22. It settles how pictures sit in the page and how they are viewed; the data
-stays as "Plan: media data decisions" fixes it. Built in every_trick_in_the_book 1.10.0 (22 November 2026), except the
+stays as "Plan: media data decisions" fixes it. Built in everytrickinthebook 1.10.0 (22 November 2026), except the
 `.compare` class, which is for later.
 
 - **In the page a picture is a plain image**: an `<img>` with `srcset` in 800, 1200, 1600 and 2400 px (JPEG at about
@@ -704,7 +712,7 @@ stays as "Plan: media data decisions" fixes it. Built in every_trick_in_the_book
   too narrow for a caption and the button side by side, it has the line below each picture to itself). Clicking the
   picture also opens the viewer (with a zoom cursor); the button is the figure's only keyboard stop. Without JavaScript
   the picture links to its largest image, and to its item page once item pages exist (it does since
-  every_trick_in_the_book 1.11.0; on the item page itself it links to the largest image).
+  everytrickinthebook 1.11.0; on the item page itself it links to the largest image).
 - **Tall pictures** are never taller than about 80% of the window. The build writes each picture's proportions into
   the page, so the stylesheet sizes the picture and its caption without JavaScript.
 - **Galleries** are justified rows: every picture keeps its proportions, its share of the row follows its shape, and
@@ -729,7 +737,7 @@ stays as "Plan: media data decisions" fixes it. Built in every_trick_in_the_book
 
 Agreed with the publisher on 2026-11-22 (option A of three: page images with the text beside them, rather than
 PDF.js or the browser's own PDF reader). It builds the `/read/<name>` item pages of "Plan: media data decisions".
-Built in every_trick_in_the_book 1.13.0 (23 November 2026); how editors use it is in "Documents and zines" above. Settled
+Built in everytrickinthebook 1.13.0 (23 November 2026); how editors use it is in "Documents and zines" above. Settled
 while building, where the plan was silent: spreads are shown where the viewer is at least 600 px wide and wider than it
 is tall (a phone, or a tablet held upright, shows one page at a time); the viewer on a document's own page sits in the
 page, as wide as the page's opening, where the mouse wheel and a vertical swipe scroll the page until the pages are zoomed
@@ -738,7 +746,7 @@ an essay page the cover is at most 20rem wide; the walk booklet's caption loses 
 which the download replaces. Changed by the publisher on 2026-11-23: the two pages of a spread meet without a gap, and a
 soft shadow on each page towards the spine, with a one-pixel hairline at the spine, shows that they are two (an
 OpenSeadragon overlay in the viewport's coordinates, `div.viewer__spine`, so that it zooms and moves with the pages and
-stays in full screen; a single page and the cover alone have none; its look is in `every_trick/assets/site.css`); and
+stays in full screen; a single page and the cover alone have none; its look is in `everytrick/assets/site.css`); and
 the text of a document is searched (below).
 
 - **Pages in the zoom viewer.** A document's pages are page images with zoom tiles, shown in the image viewer as
@@ -766,7 +774,7 @@ the text of a document is searched (below).
 
 Agreed with the publisher on 2026-11-22. Every media item has one permanent number, kept in a register, and every
 number a reader sees is made from it. It replaces chapter-based figure numbers (`Fig. 2.3`) on the web; print keeps
-them, worked out for the printed route. Built in every_trick_in_the_book 1.11.0 (23 November 2026), except print, which
+them, worked out for the printed route. Built in everytrickinthebook 1.11.0 (23 November 2026), except print, which
 waits for the print edition; how editors use it is in "The media register" above.
 
 - **The register** is one table in the repository with a line per item: its number, its kind (`see`, `listen`,
@@ -832,12 +840,12 @@ waits for the print edition; how editors use it is in "The media register" above
   item's short address and a QR code are printed with it, and the list of illustrations gives both numbers. Not built
   until the print edition.
 - **First published and last changed** (a reviewer's suggestion, accepted by the publisher, 2026-11-23; built in
-  every_trick_in_the_book 1.14.0): item pages say when the item was first published and, for an item whose file is the
+  everytrickinthebook 1.14.0): item pages say when the item was first published and, for an item whose file is the
   book's, when that file last changed, both from the Git history, in the house style ("27 August 2025"); an item served
   from elsewhere (YouTube, Vimeo, the BBC, archive.org) shows only the first. `media.json` has both (contract 0.6).
   Without the whole history the rows are left out and the build warns.
 - **Long descriptions** (a reviewer's suggestion, accepted by the publisher, 2026-11-23; built in
-  every_trick_in_the_book 1.14.0): a picture that carries an argument (an artist's map, an archive photograph) may have
+  everytrickinthebook 1.14.0): a picture that carries an argument (an artist's map, an archive photograph) may have
   a longer description, written by an author or an editor and credited to them, as `::: {.description by="Name"}` …
   `:::` directly after the picture. The page shows it as a quiet "Description" disclosure under the caption, linked to
   the picture for screen readers (`aria-details`); the item page shows it in full under the picture. It is never
@@ -852,7 +860,7 @@ waits for the print edition; how editors use it is in "The media register" above
 ## Plan: the References page
 
 Agreed with the publisher on 2026-11-22. The bibliography already works as a register for works: each is entered once,
-with a permanent key. Built in every_trick_in_the_book 1.12.0 (23 November 2026), with copying each reference and
+with a permanent key. Built in everytrickinthebook 1.12.0 (23 November 2026), with copying each reference and
 downloading the bibliography (the publisher, 2026-11-23), except the Zotero library, which is for later; how it works
 is in "References and citations" above.
 
@@ -887,19 +895,19 @@ is in "References and citations" above.
 
 ## Plan: search
 
-Agreed with the publisher on 2026-11-22 and built in every_trick_in_the_book 1.9.0, with Pagefind 1.6.0 (a pinned
-dependency of `every_trick/`; MIT licence).
+Agreed with the publisher on 2026-11-22 and built in everytrickinthebook 1.9.0, with Pagefind 1.6.0 (a pinned
+dependency of `everytrick/`; MIT licence).
 
 - **A search page, not a pop-up.** Every page has a magnifier in its header that leads to `search/`. A search has an
   address (`search/?q=dust`) that can be shared and works with the back button, and Pagefind loads only on that page.
   A pop-up over the current page could be added later on top of the page.
 - **Closing search.** A × at the top right of the search page leads back to the page search was opened from, at the
-  place the reader last stopped scrolling below its header (`every_trick/assets/place.js`, on every page, keeps it
+  place the reader last stopped scrolling below its header (`everytrick/assets/place.js`, on every page, keeps it
   for the tab in `sessionStorage`), because the browser's Back button is not evident to every reader and the
   magnifier makes readers scroll to the top. It works after following a result and coming back too; Escape does the
   same when the field is empty. Without JavaScript the × leads to the home page. Asked for by the publisher on
   2026-11-22.
-- **Results lead to paragraphs.** Our own small script (`every_trick/assets/search.js`), not Pagefind's ready-made
+- **Results lead to paragraphs.** Our own small script (`everytrick/assets/search.js`), not Pagefind's ready-made
   box, lists each page found with up to three of its paragraphs: number (para. 12), the words around the ones
   found, marked, and a link to `#p12`. It uses the site's stylesheet, so it follows the reader's text size and
   colours. A list page lists its entries instead, each labelled in the page's Pagefind meta (`entry-<id>`): the

@@ -6,7 +6,7 @@
     "label": "Version 0.9, second peer review",
     "date": "2026-11-20",
     "status": "review",
-    "contract": "0.6",
+    "contract": "0.7",
     "annotations": "hypothesis",
     "hypothesisGroup": "the group ID from the group's invite link, https://hypothes.is/groups/<ID>/<name>"
   },

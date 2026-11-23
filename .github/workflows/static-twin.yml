@@ -1,4 +1,4 @@
-# Builds the static twin of the book (every_trick/), checks every internal link and local file in it, and tests the house
+# Builds the static twin of the book (everytrick/), checks every internal link and local file in it, and tests the house
 # citation style.
 # On main it also publishes the result on GitHub Pages, but only once Pages is enabled for the repository
 # with "GitHub Actions" as its source; until then the deploy job is skipped.
@@ -33,7 +33,7 @@ jobs:
         with:
           node-version: 24
           cache: npm
-          cache-dependency-path: every_trick/package-lock.json
+          cache-dependency-path: everytrick/package-lock.json
 
       - name: Install Pandoc 3.8.3
         run: |
@@ -50,22 +50,22 @@ jobs:
           sudo apt-get install -y -q poppler-utils
           pdftoppm -v 2>&1 | head -n 1
 
-      # Every branch but main is a preview build: EVERY_TRICK_PREVIEW adds the Media Index's editing view,
+      # Every branch but main is a preview build: EVERYTRICK_PREVIEW adds the Media Index's editing view,
       # /media-index/edit/, which the public site, built from main, never has ("The media register" in DEVELOPMENT.md).
       - name: Build
-        working-directory: every_trick
+        working-directory: everytrick
         env:
-          EVERY_TRICK_PREVIEW: ${{ github.ref != 'refs/heads/main' && 'true' || '' }}
+          EVERYTRICK_PREVIEW: ${{ github.ref != 'refs/heads/main' && 'true' || '' }}
         run: |
           npm ci
           npm run build
 
       - name: Check links and files
-        working-directory: every_trick
+        working-directory: everytrick
         run: npm run check
 
       - name: Test the house citation style
-        working-directory: every_trick
+        working-directory: everytrick
         run: npm run test:csl
 
       - name: Preview on Cloudflare Pages
@@ -126,7 +126,7 @@ jobs:
             echo "- Latest on this branch: $alias"
             echo "- This push, kept until deleted: $deployment"
           } >> "$GITHUB_STEP_SUMMARY"
-        working-directory: every_trick
+        working-directory: everytrick
 
       - name: Is GitHub Pages enabled?
         id: pages

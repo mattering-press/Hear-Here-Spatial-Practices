@@ -1,7 +1,7 @@
 // Copies the page images of a zine on the Internet Archive into the repository, once, on your own computer. Not part of
 // the build ("Plan: documents and zines" in DEVELOPMENT.md).
 //
-//   cd every_trick && npm run fetch-zine -- <archive.org identifier>       e.g. npm run fetch-zine -- trauma-body-and-home
+//   cd everytrick && npm run fetch-zine -- <archive.org identifier>       e.g. npm run fetch-zine -- trauma-body-and-home
 //   npm run fetch-zine -- <identifier> --dry-run                             says what it would fetch, and writes nothing
 //
 // It reads the item's metadata (https://archive.org/metadata/<identifier>), downloads its "Single Page Processed JP2

@@ -205,7 +205,7 @@ export function resolveItems({ lines, editions, bookTitle = '', versions = [] })
     if (missing.length) {
       unnumbered.push(`Version ${edition.id} has ${missing.length} media item${missing.length > 1 ? 's' : ''} without a number: ${missing.map((it) => `${it.source} (on ${it.appearances.find((a) => a.edition === edition).file})`).join('; ')}.\n` +
         `  Every item of a frozen version has a number. If one of these is the old file or address of an item that has a line in media/register.csv, add it to that line's "former_sources".\n` +
-        `  Otherwise the version's new items have not been numbered yet. In every_trick/, run: npm run number-media -- ${edition.id}\n` +
+        `  Otherwise the version's new items have not been numbered yet. In everytrick/, run: npm run number-media -- ${edition.id}\n` +
         `  and commit media/register.csv with the version's entry in versions.json ("Freezing a version for review or release" in DEVELOPMENT.md).`);
     }
   }
