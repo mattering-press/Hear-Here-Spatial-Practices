@@ -1,6 +1,6 @@
 -- Stage 1 of every page: the converted Juncture Markdown (see convert.mjs) -> the clean Pandoc Markdown of the
 -- page's Markdown view. It reads the twin-* divs and writes the plain forms:
---   ![caption](images/x-1600.jpg){.zoom .right width="75%" alt="…"}      a zoomable image
+--   ![caption](images/x-1600.jpg){.zoom .right width="75%" alt="…"}      a zoomable image (.left, .right, .wide or .full)
 --   ::: {.video} / ::: {.embed}   a div holding an ordinary link to the video or embedded page
 --   ::: {.audio}                  a div holding a link to the MP3
 --   ::: {.cards}                  a list of links, each with a picture and a title
@@ -19,8 +19,8 @@ local function class_list(...)
   return list
 end
 
--- A zoomable image: its 1600 px copy, with the caption as the image text. An animated GIF is an animated WebP
--- instead, marked .animated, which cannot zoom.
+-- A zoomable image: its 1600 px copy, with the caption as the image text, and its place as a class (side: left, right,
+-- wide or full). An animated GIF is an animated WebP instead, marked .animated, which cannot zoom.
 local function figure(div)
   local a = div.attributes
   local img = lib.image('figure', a.src, a.rotation)

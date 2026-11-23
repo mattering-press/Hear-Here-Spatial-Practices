@@ -11,6 +11,34 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of every_trick’ in `DEVELOPMENT.md`.
 
+## 1.10.0
+
+22 November 2026. Pictures in several widths, Zoom on the caption line and a new zoom viewer.
+
+- Every zoomable picture is published in several widths, 800, 1200, 1600 and 2400 pixels (never wider than the
+  original), and the browser takes the one the reader's screen needs. The build says how much these widths add to the
+  images. Resized pictures are saved at quality 82, as the house style asks.
+- Pictures can be wider than the text: `wide` makes a picture as wide as the page's opening and its footer, `full` as
+  wide as the window. They are written like `left` and `right`, on a `.ve-media` line or as a class in Pandoc's syntax
+  (`{.zoom .wide}`). The caption keeps the width of the text, and a margin note beside such a picture moves below it.
+  On phones every picture is as wide as the text.
+- A tall picture is never taller than about four fifths of the window, and its caption is as wide as the picture.
+- Nothing covers a picture any more: ⤢ Zoom sits at the right end of the caption line, and clicking the picture opens
+  the viewer too. Without JavaScript the picture is a link to its largest image.
+- Galleries are justified rows: every picture keeps its shape, its share of a row follows its shape, and nothing is
+  cropped. A gallery of two pictures is two pictures side by side. On phones a gallery's pictures are one below the
+  other.
+- An animation, such as the cover beside the first paragraph of the home page, has a Pause button that shows its first
+  frame instead. Readers who ask their device for less motion start on that still, and can press Play.
+- The zoom viewer fills the window, on a dark ground, with buttons shaped like the podcast player's. All the zoomable
+  pictures of a page are one sequence. The top bar says which picture you are on (3 / 12) and gives its caption, which
+  opens in full when you click or tap it; the bottom bar has zoom out, zoom in, fit, full screen, previous and next.
+  The arrow keys go to the previous and next picture, + and − zoom, and Escape closes the viewer and goes back to the
+  Zoom button of the picture you saw last. On a touch screen a sideways swipe turns to the next picture while the whole
+  picture is in view, and moves the picture once you have zoomed in. The picture already in the page shows at once
+  while the sharper tiles arrive. For readers who ask for less motion, zooming jumps instead of gliding.
+- The link check also checks every width of every picture.
+
 ## 1.9.0
 
 22 November 2026. Search.

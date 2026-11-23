@@ -1,5 +1,9 @@
 // Resized copies of the book's photographs, and static IIIF tiles for the zoomable ones (uses sharp).
 //   figure, inline  ->  images/<name>-1600.jpg, 1600 px on the long edge
+//   figure          ->  also the widths the page offers the browser through srcset: 800, 1200, 1600 and 2400 px
+//                       ("Images online" in DEVELOPMENT.md), never wider than the original. A width that a file made
+//                       for the picture already has (the 1600 px file: a landscape picture's 1600, a portrait's 1200;
+//                       a card's 800) is that file; the others are images/<name>-w<width>.jpg
 //   figure          ->  also iiif/<name>/: info.json and 512 px tiles (IIIF Image API 2, level 0)
 //   header          ->  images/<name>-2000.jpg, 2000 px wide: the band behind a page's title
 //   card, poster    ->  images/<name>-800.jpg, 800 px wide
@@ -14,8 +18,9 @@ import sharp from 'sharp';
 
 const SIZES = { figure: 1600, inline: 1600, header: 2000, card: 800, poster: 800 };
 const LONG_EDGE = new Set(['figure', 'inline']);
+const WIDTHS = [800, 1200, 1600, 2400];   // a zoomable picture's widths in the page (srcset)
 const TILE = 512;
-const JPEG = { quality: 80, progressive: true, mozjpeg: true };
+const JPEG = { quality: 82, progressive: true, mozjpeg: true };
 const TILE_JPEG = { quality: 80 };
 
 // media/podcasts/POD08_IMG_4200.jpeg, rotated 90 -> podcasts-pod08-img-4200-r90
@@ -77,10 +82,11 @@ async function makeGroup({ src, rotation, roles, root }, site) {
     const info = await sharp(file, { page: 0 }).jpeg(JPEG).toFile(join(site, still));
     await sharp(file, { animated: true }).webp({ quality: 65 }).toFile(join(site, url));
     for (const role of roles) entries[`${role}|${src}|${rotation}`] = { url, still, width: info.width, height: info.height, animated: true };
-    return { entries, tiles: 0 };
+    return { entries, tiles: 0, widths: { files: 0, bytes: 0 } };
   }
   const full = roles.has('figure') ? await open(file, rotation).raw().toBuffer({ resolveWithObject: true }) : null;
   let tiles = 0;
+  const widths = { files: 0, bytes: 0 };
   for (const role of roles) {
     const size = SIZES[role];
     const url = `images/${name}-${size}.jpg`;
@@ -93,13 +99,28 @@ async function makeGroup({ src, rotation, roles, root }, site) {
     entries[`${role}|${src}|${rotation}`] = { ...done[url] };
   }
   if (full) {
+    const figure = entries[`figure|${src}|${rotation}`];
+    // the picture's widths for srcset, smallest first; the largest is also where the picture links without JavaScript
+    figure.srcset = [];
+    for (const width of new Set(WIDTHS.map((w) => Math.min(w, full.info.width)))) {
+      // a file of this width made above (the 1600 px file, a card's 800 px one) is the same picture: use it
+      const same = Object.values(done).find((d) => d.width === width);
+      if (same) { figure.srcset.push({ url: same.url, width }); continue; }
+      const url = `images/${name}-w${width}.jpg`;
+      const info = await sharp(full.data, { raw: full.info }).resize({ width }).jpeg(JPEG).toFile(join(site, url));
+      figure.srcset.push({ url, width: info.width });
+      widths.files++;
+      widths.bytes += info.size;
+    }
+    figure.largest = figure.srcset.at(-1).url;
     tiles = await writeTiles(full, join(site, 'iiif', name));
-    entries[`figure|${src}|${rotation}`].tiles = `iiif/${name}/info.json`;
+    figure.tiles = `iiif/${name}/info.json`;
   }
-  return { entries, tiles };
+  return { entries, tiles, widths };
 }
 
-// jobs: [{ src, role, rotation, root? }] -> { images: { "role|src|rotation": { url, width, height, tiles? } }, tiles }
+// jobs: [{ src, role, rotation, root? }] -> { images: { "role|src|rotation": { url, width, height, tiles?, srcset?, largest? } },
+//   tiles, sources, widths: { files, bytes } } (widths: the files made only for srcset, so the build can say what they add)
 export async function makeImages(jobs, sourceRoot, site) {
   mkdirSync(join(site, 'images'), { recursive: true });
   const groups = new Map(), names = new Map();
@@ -113,13 +134,16 @@ export async function makeImages(jobs, sourceRoot, site) {
   }
   const queue = [...groups.values()], images = {};
   let tiles = 0;
+  const widths = { files: 0, bytes: 0 };
   const worker = async () => {
     for (let group; (group = queue.shift());) {
       const result = await makeGroup(group, site);
       Object.assign(images, result.entries);
       tiles += result.tiles;
+      widths.files += result.widths.files;
+      widths.bytes += result.widths.bytes;
     }
   };
   await Promise.all(Array.from({ length: Math.min(4, Math.max(1, availableParallelism() - 1)) }, worker));
-  return { images, tiles, sources: groups.size };
+  return { images, tiles, sources: groups.size, widths };
 }

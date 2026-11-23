@@ -1,5 +1,6 @@
-// Checks the built site without a browser: every internal link and every local file that a page, the
-// stylesheet or a JSON file refers to must exist in _site/, and links to #fragments must find their id.
+// Checks the built site without a browser: every internal link and every local file that a page (including every
+// width in a picture's srcset), the stylesheet or a JSON file refers to must exist in _site/, and links to #fragments
+// must find their id.
 // Root-absolute URLs ("/essays/…") are errors too, because the site must also work under a sub-path.
 // Frozen versions (v<id>/, each with its own publication.json) are checked too, with the media they share.
 // Every edition must also have its search page and search index (search/, pagefind/), with at least one page in it.
@@ -42,6 +43,8 @@ for (const file of all) {
   if (file.endsWith('.html')) {
     const html = text.replace(/<!--.*?-->/gs, '');
     for (const m of html.matchAll(/\s(?:href|src|poster|data|data-tiles)="([^"]*)"/g)) check(m[1].replace(/&amp;/g, '&'), from, base);
+    // every width of a picture: srcset="images/x-w800.jpg 800w, images/x-1600.jpg 1600w, …"
+    for (const m of html.matchAll(/\ssrcset="([^"]*)"/g)) for (const candidate of m[1].split(',')) check(candidate.trim().split(/\s+/)[0].replace(/&amp;/g, '&'), from, base);
     for (const m of html.matchAll(/url\(['"]?([^'")]+)['"]?\)/g)) check(m[1], from, base);
     // paragraphs are numbered p1, p2, … without gaps; a version notice's paragraph map points at paragraphs that exist
     const numbers = [...html.matchAll(/<div id="p(\d+)" class="para(?: [^"]*)?"[^>]*>/g)].map((m) => Number(m[1]));

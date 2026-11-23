@@ -143,7 +143,7 @@ const sourceOf = (edition, path) => {
   return edition.take(path);
 };
 const jobs = editions.flatMap((edition) => edition.pages.flatMap((page) => page.images.map((job) => ({ ...job, root: sourceOf(edition, job.src) }))));
-const { images, tiles, sources } = await makeImages(jobs, REPO_ROOT, SITE);
+const { images, tiles, sources, widths } = await makeImages(jobs, REPO_ROOT, SITE);
 // The publisher's logos, shared by all editions like the images.
 for (const path of [FRAME.logo, FRAME.icon].filter(Boolean)) {
   if (!existsSync(join(REPO_ROOT, path))) fail(`FRAME in build.mjs names ${path}, which is not in the repository`);
@@ -240,7 +240,8 @@ for (const edition of editions) edition.paragraphs = new Map();
 for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...editions.slice(1).filter((e) => e !== newestRelease)]) {
   const out = join(SITE, edition.dir);
   const prefix = edition.dir ? '../' : '';     // from the edition's root to the shared media
-  const shift = (entry) => ({ ...entry, url: prefix + entry.url, ...(entry.tiles ? { tiles: prefix + entry.tiles } : {}), ...(entry.still ? { still: prefix + entry.still } : {}) });
+  const shift = (entry) => ({ ...entry, url: prefix + entry.url, ...(entry.tiles ? { tiles: prefix + entry.tiles } : {}), ...(entry.still ? { still: prefix + entry.still } : {}),
+    ...(entry.srcset ? { srcset: entry.srcset.map((c) => ({ ...c, url: prefix + c.url })), largest: prefix + entry.largest } : {}) });
   const editionImages = Object.fromEntries(Object.entries(images).map(([key, entry]) => [key, shift(entry)]));
   const byUrl = {};
   for (const entry of Object.values(editionImages)) if (!byUrl[entry.url] || entry.tiles) byUrl[entry.url] = entry;
@@ -473,6 +474,9 @@ const pageCount = editions.reduce((n, e) => n + e.pages.length, 0);
 console.log(`Built ${pageCount} pages${editions.length > 1 ? ` in ${editions.length} editions` : ''} into _site/ in ${((Date.now() - started) / 1000).toFixed(1)} s: ${mb(total)} ` +
   `(images ${mb(imageBytes)}, tiles ${mb(tileBytes)}, other ${mb(total - imageBytes - tileBytes)}); ` +
   `${sources} source images, ${tiles} tiles; every_trick_in_the_book ${TOOLKIT_VERSION}, contract ${CONTRACT}${NOINDEX ? '; pages carry noindex' : ''}.`);
+// what the zoomable pictures' widths for srcset add to the images (the files made for nothing else)
+console.log(`  Of the images, ${mb(widths.bytes)} are the ${widths.files} extra widths of the zoomable pictures (srcset); ` +
+  `without them the images would be ${mb(imageBytes - widths.bytes)}.`);
 for (const edition of editions.slice(1)) {
   console.log(`  ${edition.dir.padEnd(22)} ${edition.version.label} (${edition.version.status}, tag at ${edition.commit.slice(0, 7)}): ${edition.pages.length} pages, ${mb(size(join(SITE, edition.dir)))}` +
     `${edition.annotations === 'hypothesis' ? `, Hypothesis${edition.group ? ` for group ${edition.group}` : ' (no hypothesisGroup set: annotations go to the group each reviewer picks)'}` : ''}`);

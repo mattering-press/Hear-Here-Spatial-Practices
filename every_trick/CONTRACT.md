@@ -177,10 +177,13 @@ no Juncture syntax. `index.md` uses URLs relative to
 itself; `publication.md` uses absolute URLs and starts each page with its title as a level-1 heading.
 Media are written as:
 
-- zoomable images: `![caption](images/x-1600.jpg){.zoom .right width="75%" alt="…"}` (`.left` or `.right` optional)
+- zoomable images: `![caption](images/x-1600.jpg){.zoom .right width="75%" alt="…"}`, with one class for where the
+  picture sits, or none: `.left` or `.right` (half the text column, or the share `width` gives), `.wide` (as wide as the
+  page's opening and its footer) or `.full` (the whole window; `width` is ignored for these two); without one, the text
+  column. In the HTML the picture is offered in several widths (`srcset`); `image` in `page.json` stays the 1600 px copy
 - animated images (from an animated GIF): `![caption](images/x.webp){.animated alt="…"}`, an animated WebP that does not
-  zoom; in the HTML its first frame, `images/x-still.jpg`, is shown to readers who ask for less motion. In `page.json`
-  its `tiles` is `null`
+  zoom; in the HTML its first frame, `images/x-still.jpg`, is shown to readers who ask for less motion, and to anyone
+  who presses its Pause button. In `page.json` its `tiles` is `null`
 - `::: {.video}` and `::: {.embed}`: a div that starts with an ordinary link to the video or embedded page (a
   video file, a PDF); any text after the link is the caption
 - `::: {.audio}`: a div with a link to the MP3. When the MP3 has a cue file beside it, `<recording>.paragraphs.vtt`

@@ -176,7 +176,7 @@ main h2 { margin: 2.75rem 0 1rem; font-size: 1.45rem; }
 main h2::before { content: ""; display: block; width: 2.5rem; height: 3px; margin-bottom: 0.9rem; background: var(--colour-accent); }
 main h3 { margin: 2rem 0 0.75rem; font-size: 1.2rem; }
 main > :first-child { margin-top: 0; }
-blockquote { margin: var(--space) 0; padding: 0.25rem 0 0.25rem 1.25rem; border-left: 3px solid var(--colour-accent); }
+blockquote { --quote-indent: calc(1.25rem + 3px); margin: var(--space) 0; padding: 0.25rem 0 0.25rem 1.25rem; border-left: 3px solid var(--colour-accent); }   /* the indent: its padding and its rule */
 
 /* paragraph numbers (filters/paragraphs.lua): the number of each reading paragraph in the margin, and a ¶ link to it
    on hover and focus (assets/paragraphs.js copies its address). The link has no text of its own, so that copied
@@ -231,7 +231,7 @@ main.has-margin aside.margin.is-long:not(.is-open) .margin-body { max-height: va
 .version-notice a { font-weight: var(--weight-strong); }
 .has-annotations .version-notice { padding-right: calc(var(--gap) + 2.5rem); }
 
-/* figures: zoomable images, videos and other embeds, with the caption as small text below */
+/* figures: pictures, videos and other embeds, with the caption as small text below */
 figure { margin: var(--space) auto; width: var(--figure-width, 100%); }
 figure.left, figure.right { width: var(--figure-width, var(--side-figure-width)); margin-top: 0.4rem; }
 figure.left { float: left; margin-right: var(--space); }
@@ -239,12 +239,46 @@ figure.right { float: right; margin-left: var(--space); }
 figure img { display: block; width: 100%; height: auto; }
 figcaption { padding: 0.5rem 0 0; color: var(--colour-muted); font-size: 0.875rem; line-height: 1.45; overflow-wrap: anywhere; }
 figcaption a { color: inherit; }
-figure.zoom { position: relative; }
-.zoom-button { position: absolute; top: 0.5rem; right: 0.5rem; padding: 0.3rem 0.75rem; border: 0; border-radius: 4px; background: rgb(0 0 0 / 0.72); color: #fff; font: inherit; font-size: 0.875rem; font-weight: var(--weight-strong); cursor: zoom-in; }
-.zoom-button:hover { background: #000; }
-.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(15rem, 100%), 1fr)); gap: var(--gap); margin: var(--space) 0; clear: both; }
-.gallery figure { margin: 0; }
-.gallery img { aspect-ratio: 4 / 3; object-fit: cover; }
+
+/* pictures (filters/figures.lua): a plain image, which the browser takes in the width it needs (srcset). A picture is
+   never taller than about 80% of the window: the build writes its proportions into the page (--ratio, its width
+   divided by its height), so a tall picture is narrower, and its caption as wide as the picture. Nothing covers the
+   picture: its button (assets/zoom.js: Zoom, or an animation's Pause) sits at the right end of the caption line. */
+:is(figure.zoom, figure.animated) { --picture-max: calc(80vh * var(--ratio, 1)); display: flow-root; width: min(var(--figure-width, 100%), var(--picture-max)); }
+@supports (height: 1svh) { :is(figure.zoom, figure.animated) { --picture-max: calc(80svh * var(--ratio, 1)); } }
+:is(figure.zoom, figure.animated):is(.left, .right) { width: min(var(--figure-width, var(--side-figure-width)), var(--picture-max)); }
+.figure-picture { display: block; }
+figure.is-zoomable .figure-picture { cursor: zoom-in; }
+.figure-button { float: right; display: inline-flex; align-items: center; gap: 0.4em; margin: 0.4rem 0 0 0.75rem; padding: 0.2rem 0.75rem; border: 1px solid var(--colour-rule); border-radius: 999px; background: var(--colour-surface); color: var(--colour-text); font: inherit; font-size: 0.8125rem; font-weight: var(--weight-strong); line-height: 1.3; white-space: nowrap; cursor: pointer; }
+@media (hover: hover) { .figure-button:hover { border-color: var(--colour-accent); background: var(--colour-highlight); color: var(--colour-accent); } }
+.figure-button svg { flex: none; width: 0.875em; height: 0.875em; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.figure-button svg .is-solid { fill: currentColor; stroke: none; }
+/* a picture too narrow for its caption and the button side by side (figures.lua marks it .narrow): the button has
+   the line below the picture to itself, at its right end */
+@media (width > 40rem) {
+  figure.narrow > .figure-button { float: none; display: flex; width: fit-content; margin-left: auto; }
+}
+
+/* .wide: as wide as the page's opening and its footer; .full: the whole window, for a few pictures. The figure keeps
+   the text column, and with it the caption and its button; the picture reaches out from the column, centred in the
+   window. body is a size container, so that 100cqw is the window's width without its scroll bar. A block that
+   indents the text (a transcript, a quotation) says by how much, so that its pictures are centred too. In a margin
+   note a picture is as wide as the note. */
+body { container-type: inline-size; }
+figure:is(.wide, .full) { clear: both; width: 100%; }
+figure.wide { --reach: calc(min(var(--wide), 100cqw) - 2 * var(--gap)); }
+figure.full { --reach: 100cqw; }
+figure:is(.wide, .full) > .figure-picture { --picture-width: min(var(--reach), var(--picture-max)); width: var(--picture-width); margin-left: calc((min(var(--measure), 100cqw) - var(--picture-width)) / 2 - var(--column-inset, var(--gap)) - var(--transcript-indent, 0px) - var(--quote-indent, 0px)); }
+aside.margin figure:is(.wide, .full) > .figure-picture { width: 100%; margin-left: 0; }
+
+/* galleries: justified rows, which filters/figures.lua works out from the pictures' proportions. Each picture's share
+   of its row follows its shape, so the pictures of a row are equally tall and fill the text column; nothing is
+   cropped. On phones the pictures of a gallery are one below the other, as wide as the text column. */
+.gallery { clear: both; margin: var(--space) 0; }
+.gallery__row { display: flex; align-items: flex-start; gap: var(--gap); }
+.gallery__row + .gallery__row { margin-top: var(--gap); }
+.gallery__row > figure { flex: var(--ratio) 1 0%; min-width: 0; margin: 0; }
+
 .video-embed iframe, .embed iframe { display: block; width: 100%; border: 0; aspect-ratio: 16 / 9; }
 .embed iframe { aspect-ratio: var(--embed-ratio, 1); }
 .embed[style*="--embed-height"] iframe { aspect-ratio: auto; height: var(--embed-height); }
@@ -257,16 +291,41 @@ main iframe.left, main iframe.right { float: left; margin: 0.4rem var(--space) v
 main iframe.right { float: right; margin: 0.4rem 0 var(--gap) var(--space); }
 smartframe-embed:not(:defined) { aspect-ratio: auto !important; }   /* third-party image: needs JavaScript */
 
-/* the deep-zoom dialog opened by zoom.js */
-.zoom-dialog { width: calc(100vw - 2rem); height: calc(100vh - 2rem); height: calc(100dvh - 2rem); max-width: none; max-height: none; padding: 0; border: 0; border-radius: 6px; background: #111; color: #fff; }
-.zoom-dialog[open] { display: flex; flex-direction: column; }
-.zoom-dialog::backdrop { background: rgb(0 0 0 / 0.8); }
-.zoom-dialog__bar { display: flex; align-items: center; gap: var(--gap); padding: 0.5rem 0.5rem 0.5rem var(--gap); }
-.zoom-dialog__title { flex: 1; margin: 0; overflow: hidden; font-size: 0.9rem; text-overflow: ellipsis; white-space: nowrap; }
-.zoom-dialog__close { padding: 0.4rem 1rem; border: 1px solid #fff; border-radius: 4px; background: transparent; color: #fff; font: inherit; font-weight: var(--weight-strong); cursor: pointer; }
-.zoom-dialog__close:hover { background: #fff; color: #111; }
-.zoom-dialog :focus-visible { outline-color: #fff; }
-.zoom-dialog__viewer { flex: 1; min-height: 0; }
+/* the zoom viewer (assets/zoom.js): a full-window dialog on a dark ground, whatever the page's colours, with its
+   controls in the shape of the podcast player's: round-ended groups of round-ended buttons. The frame inside it is
+   what goes full screen. */
+.has-viewer { overflow: hidden; }
+.viewer { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; overflow: hidden; background: #111110; color: #f2f0ea; color-scheme: dark; overscroll-behavior: contain; }
+.viewer::backdrop { background: #111110; }
+.viewer [hidden] { display: none; }
+.viewer__frame { display: flex; flex-direction: column; width: 100%; height: 100%; background: #111110; }
+.viewer__bar { display: flex; align-items: center; gap: 0.5rem 0.75rem; padding: 0.5rem max(0.75rem, env(safe-area-inset-right)) 0.5rem max(0.75rem, env(safe-area-inset-left)); }
+.viewer__top { padding-top: max(0.5rem, env(safe-area-inset-top)); }
+.viewer__bottom { flex-wrap: wrap; justify-content: center; padding-bottom: max(0.6rem, env(safe-area-inset-bottom)); }
+.viewer__count { flex: none; margin: 0 0.25rem; color: rgb(255 255 255 / 0.7); font-size: 0.875rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.viewer__caption { flex: 1; min-width: 0; padding: 0.35rem 0; border: 0; border-radius: var(--radius); background: none; color: inherit; font: inherit; font-size: 0.9375rem; line-height: 1.4; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: default; }
+.viewer__caption:is(.is-cut, .is-expanded) { cursor: pointer; }
+.viewer__caption.is-expanded { max-height: 40vh; overflow-y: auto; white-space: normal; }
+.viewer__stage { position: relative; flex: 1; min-height: 0; }
+.viewer__canvas, .viewer__preview { position: absolute; inset: 0; width: 100%; height: 100%; }
+.viewer__preview { object-fit: contain; pointer-events: none; transition: opacity 0.4s; }
+.viewer__preview.is-gone { opacity: 0; }
+.viewer__message { position: absolute; left: 50%; bottom: 1rem; max-width: calc(100% - 2rem); margin: 0; padding: 0.5rem 1rem; transform: translateX(-50%); border-radius: 999px; background: rgb(0 0 0 / 0.78); font-size: 0.875rem; text-align: center; }
+.viewer__group { display: flex; align-items: center; gap: 0.15rem; padding: 0.2rem; border: 1px solid rgb(255 255 255 / 0.22); border-radius: 999px; background: rgb(255 255 255 / 0.06); }
+.viewer__button { display: inline-flex; align-items: center; justify-content: center; gap: 0.45em; min-width: 2.5rem; min-height: 2.5rem; padding: 0 0.7rem; border: 0; border-radius: 999px; background: none; color: inherit; font: inherit; font-size: 0.875rem; font-weight: var(--weight-strong); white-space: nowrap; cursor: pointer; }
+@media (hover: hover) { .viewer__button:hover { background: rgb(255 255 255 / 0.16); } }
+.viewer__button:active { background: rgb(255 255 255 / 0.22); }
+.viewer__button[aria-disabled="true"] { opacity: 0.35; background: none; cursor: default; }
+.viewer__button svg { flex: none; width: 1rem; height: 1rem; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.viewer :focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+.viewer__canvas :focus-visible { outline-offset: -3px; }
+@media (max-width: 30rem) {
+  .viewer__bar { gap: 0.4rem; }
+  .viewer__button { padding: 0 0.55rem; }
+  .viewer__label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }   /* the icon alone */
+}
+@media (prefers-reduced-motion: reduce) { .viewer__preview { transition: none; } }
+@media print { .figure-button { display: none; } }
 
 /* podcasts: the player (assets/player.js; without JavaScript, the browser's own), the bar it becomes at the foot of
    the window while playing out of view, the transcript and its timecodes */
@@ -312,7 +371,7 @@ audio { display: block; width: 100%; margin: var(--gap) 0; }
    the page leads to stops a little below the top of the window */
 .listen-link { font-size: 0.875rem; }
 main [id] { scroll-margin-top: var(--space); }
-.transcript { padding-left: 1.25rem; border-left: 2px solid var(--colour-transcript); }
+.transcript { --transcript-indent: calc(1.25rem + 2px); padding-left: 1.25rem; border-left: 2px solid var(--colour-transcript); }   /* the indent: its padding and its rule */
 /* the passage being heard: its stretch of the transcript's rule in the accent colour. Transcript paragraphs are
    positioned for that mark, so their numbers are placed from them, where the others are placed from main. */
 .transcript > :is(.para, p) { position: relative; }
@@ -382,13 +441,18 @@ a.toolkit-name, a .toolkit-name, .toolkit-name a, .built-with a { text-underline
   .site-menu ul { flex-wrap: wrap; gap: 0.2rem 1rem; }
 }
 
-/* phones: the title in line with the bar; figures stop floating; the footer shows the
+/* phones: the title in line with the bar; figures stop floating, and every picture is as wide as the text column
+   (still no taller than about 80% of the window); a gallery's pictures are one below the other; the footer shows the
    publisher's icon */
 @media (max-width: 40rem) {
   :root { --font-size: 1.0625rem; --opener-height: 9.5rem; }
   .page-opener { --number-room: 0rem; }
   .page-opener__inner { grid-template-columns: minmax(0, 1fr); padding: 1.25rem var(--gap) 1.5rem; }
   figure.left, figure.right, main iframe.left, main iframe.right { float: none; width: 100%; margin-left: 0; margin-right: 0; }
+  :is(figure.zoom, figure.animated), :is(figure.zoom, figure.animated):is(.left, .right) { width: min(100%, var(--picture-max)); margin-left: auto; margin-right: auto; }
+  figure:is(.wide, .full) > .figure-picture { width: 100%; margin-left: 0; }
+  .gallery__row { display: block; }
+  .gallery__row > figure + figure { margin-top: var(--gap); }
   .site-footer__logo img { height: 2.5rem; }
 }
 
