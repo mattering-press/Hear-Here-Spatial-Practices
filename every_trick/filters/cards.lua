@@ -1,6 +1,7 @@
 -- Stage 2, cards. In the page's Markdown a card list is a div holding a list of links, each with a picture
 -- and a title. The title is wrapped so that the stylesheet can set it apart:
---   <div class="cards"><ul><li><a href="…"><img …><span class="card-title">Introduction</span></a></li>…</ul></div>
+--   <div class="cards" data-pagefind-ignore="all"><ul><li><a href="…"><img …><span class="card-title">Introduction</span></a></li>…</ul></div>
+-- Search leaves cards out (data-pagefind-ignore), so that words in a card are found on the page it leads to.
 package.path = pandoc.path.directory(PANDOC_SCRIPT_FILE) .. '/?.lua;' .. package.path
 local lib = require 'lib'
 
@@ -9,6 +10,7 @@ function Pandoc(doc)
   doc.blocks = doc.blocks:walk {
     Div = function(div)
       if not div.classes:includes('cards') then return nil end
+      div.attributes['data-pagefind-ignore'] = 'all'
       return div:walk {
         Link = function(link)
           local image, title = pandoc.Inlines {}, pandoc.Inlines {}

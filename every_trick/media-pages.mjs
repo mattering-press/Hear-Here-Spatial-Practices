@@ -15,11 +15,12 @@ export const sizeText = (bytes) => (bytes >= 1e5 ? `${(bytes / 1e6).toFixed(1)} 
 // What each kind is, for people: the word of the address and what it names.
 export const KIND_NAMES = { see: 'a picture', listen: 'a recording', watch: 'a video', read: 'a document' };
 
-// The number pill, as on the pages: a link to the item's page (dashed "new" for an item not yet numbered).
-export function pill(it, root) {
+// The number pill, as on the pages: a link to the item's page (dashed "new" for an item not yet numbered). attrs: more
+// attributes for the link.
+export function pill(it, root, attrs = '') {
   return it.label
-    ? `<a class="item-number" href="${href(root, it.url)}" aria-label="Item ${it.label}">${it.label}</a>`
-    : `<a class="item-number is-new" href="${href(root, it.url)}" aria-label="New item, not yet numbered">new</a>`;
+    ? `<a class="item-number" href="${href(root, it.url)}" aria-label="Item ${it.label}"${attrs}>${it.label}</a>`
+    : `<a class="item-number is-new" href="${href(root, it.url)}" aria-label="New item, not yet numbered"${attrs}>new</a>`;
 }
 
 const clock = (seconds) => {
@@ -28,13 +29,14 @@ const clock = (seconds) => {
 };
 
 // The thumbnail: a small copy of a picture, a video's poster, or a plain labelled box (with a recording's length).
-function thumb(it, root) {
+// attrs: more attributes for the box.
+function thumb(it, root, attrs = '') {
   if (it.thumb) {
     return `<a class="media-entry__thumb" href="${href(root, it.url)}" tabindex="-1" aria-hidden="true"><img src="${href(root, it.thumb.url)}" width="${it.thumb.width}" height="${it.thumb.height}" alt="" loading="lazy" decoding="async"></a>`;
   }
   const icon = { listen: '♪', watch: '▶', read: '▤', see: '◻' }[it.kind];
   const note = it.kind === 'listen' && it.duration ? clock(it.duration) : it.kind === 'read' ? it.docType : it.kind;
-  return `<span class="media-entry__thumb media-entry__box" aria-hidden="true"><span class="media-entry__icon">${icon}</span><span>${esc(note)}</span></span>`;
+  return `<span class="media-entry__thumb media-entry__box" aria-hidden="true"${attrs}><span class="media-entry__icon">${icon}</span><span>${esc(note)}</span></span>`;
 }
 
 // Where an item appears: links to it in its pages (the latest text, or else the newest frozen version that has it).
@@ -108,14 +110,20 @@ export function itemFacts(it, { root, siteUrl }) {
 
 // ---- The Media Index ------------------------------------------------------------------------------------------
 
-function entry(it, root, inner = '') {
-  return `<li class="media-entry" id="${esc(it.anchor)}" data-kind="${it.kind}" data-served="${it.served.id}" data-served-label="${esc(it.served.chip)}">
-${pill(it, root)}
-${thumb(it, root)}
+// An entry of the list. On the Media Index (searched), search finds an entry by its title and its address, and lists
+// it as a place of its own on the page: data-pagefind-meta gives its label in the results, "item 37" (assets/search.js).
+// Its number pill (the label says it), its thumbnail's box and its facts (page titles, versions, places) are left out
+// of the index.
+function entry(it, root, inner = '', { searched = false } = {}) {
+  const ignore = searched ? ' data-pagefind-ignore' : '';
+  const label = searched ? ` data-pagefind-meta="${esc(`entry-${it.anchor}:${it.label ? `item ${it.label}` : 'new item'}`)}"` : '';
+  return `<li class="media-entry" id="${esc(it.anchor)}" data-kind="${it.kind}" data-served="${it.served.id}" data-served-label="${esc(it.served.chip)}"${label}>
+${pill(it, root, ignore)}
+${thumb(it, root, ignore)}
 <div class="media-entry__body">
 <h2 class="media-entry__title"><a href="${href(root, it.url)}">${esc(it.heading)}</a></h2>
 <p class="media-entry__address"><span class="media-entry__kind">${it.kind}</span> · <a href="${href(root, it.url)}">/${esc(it.url)}</a>${it.short ? ` · <a href="${href(root, it.short)}">/${esc(it.short)}</a>` : ''}</p>
-<dl class="media-entry__facts">
+<dl class="media-entry__facts"${ignore}>
 <div><dt>Appears in</dt><dd>${places(it, root)}</dd></div>
 <div><dt>Since</dt><dd>${since(it, root)}</dd></div>
 <div><dt>Stored</dt><dd>${stored(it)}</dd></div>
@@ -129,9 +137,9 @@ export function mediaIndexHtml(items, { root, script, preview }) {
   const numbered = items.filter((it) => it.label).length;
   return `<div class="media-index">
 <p class="media-index__intro">Every picture, recording, video and document in the book has a number of its own, the same on every page that shows it and in every version. Each has its own page, at the address below its title. ${numbered} items have their number; ${items.length - numbered ? `${items.length - numbered} new ${items.length - numbered === 1 ? 'one gets its number' : 'ones get theirs'} when the next version is frozen.` : 'new ones get theirs when the next version is frozen.'} The same list as data: <a href="${href(root, 'media.json')}">media.json</a>.</p>
-${preview ? `<p class="media-index__preview">This preview also has an <a href="edit/">editing view</a> of the list, for checking names, credits, captions and alt text.</p>\n` : ''}<div class="media-filters" hidden></div>
+${preview ? `<p class="media-index__preview" data-pagefind-ignore>This preview also has an <a href="edit/">editing view</a> of the list, for checking names, credits, captions and alt text.</p>\n` : ''}<div class="media-filters" hidden></div>
 <ol class="media-list">
-${items.map((it) => entry(it, root)).join('\n')}
+${items.map((it) => entry(it, root, '', { searched: true })).join('\n')}
 </ol>
 </div>
 <script src="${esc(script)}" defer></script>`;

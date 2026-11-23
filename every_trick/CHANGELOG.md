@@ -11,7 +11,7 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of every_trick’ in `DEVELOPMENT.md`.
 
-## 1.12.0
+## 1.13.0
 
 23 November 2026. Documents in the zoom viewer, with their text.
 
@@ -25,7 +25,8 @@ reader sees. How to add a version: ‘Versions of the book and of every_trick’
   opens the viewer at the cover without leaving the page; Text, which leads to its text; and the download, with its size.
   They take the place of archive.org’s readers on the Experimental index and on the page of Mahsa Alami Fariman, Ahmadreza
   Hakiminejad and Heba N. Sabboubeh, and of the PDF reader on the walk’s page. The pages’ Markdown is unchanged; the
-  booklet’s caption no longer ends with a link to open the PDF, since the download takes its place.
+  booklet’s caption no longer ends with a link to open the PDF, since the download takes its place. Search finds a
+  document by its caption, not by the words of its buttons.
 - Each document’s own page, such as `/read/walking-sitting-sketching/`, has the viewer, then the document’s text, page by
   page, each headed ‘Page 3’ with an address of its own (`#page-3`), then its download. A link ending in `#page=5` opens
   the viewer at page 5, and the address follows the pages as the reader turns them. Without JavaScript the page shows
@@ -44,7 +45,7 @@ reader sees. How to add a version: ‘Versions of the book and of every_trick’
 - Building the site now needs poppler for the booklet (`brew install poppler` on a Mac, `poppler-utils` on Debian and
   Ubuntu); GitHub Actions installs it.
 
-## 1.11.0
+## 1.12.0
 
 23 November 2026. A References page for the whole book.
 
@@ -56,6 +57,10 @@ reader sees. How to add a version: ‘Versions of the book and of every_trick’
 - Each frozen version has its own References page, such as `/v0.1/references/`, because which passages cite a work,
   and their paragraph numbers, can differ from one version to the next.
 - Every footer links to the References page of its version, beside the Media Index.
+- Search finds the works on the References page by their author, title or any other part of the reference. Each work
+  found is shown as the text cites it, such as "Stengers 2005a", where a page of the book shows "para. 12", with a
+  link straight to its entry. The passages and pages listed under a work are not searched, so that searching a page's
+  title does not list every work it cites. Each version searches its own References page.
 - A citation whose work is not in its page’s own reference list now leads to the work on the References page, instead
   of to the first page in reading order that lists it. A citation whose work is in its page’s list still leads there,
   and the popups are unchanged. `page.json` follows the same rule. For now every page lists all the works it cites, so
@@ -69,7 +74,7 @@ reader sees. How to add a version: ‘Versions of the book and of every_trick’
 - The build says, for each version, how many citations lead to their page’s own reference list and how many to the
   References page.
 
-## 1.10.0
+## 1.11.0
 
 23 November 2026. Every picture, recording, video and document has a number and a page of its own, and the book has a
 Media Index.
@@ -93,6 +98,12 @@ Media Index.
   where items are served from; without JavaScript it is a plain list. Every footer links to it, beside "All versions".
   `media.json` at the root of the site holds the same list as data, and every page's `page.json` lists the items on that
   page.
+- Search finds the items of the Media Index by their title or caption and by their address. The Media Index is then
+  among the pages found, and each item found on it is shown as "item 37" (or "new item"), where a page of the book
+  shows "para. 12", with a link straight to its entry. The rest of an entry (where it appears, its version, where it is
+  stored and served from) is not searched, so that searching a page's title does not list every item on that page.
+  The Media Index is shared by every version of the book, so only the latest text's search has it. The item pages, the
+  short addresses and the editing view are not searched: the Media Index holds their words.
 - An item's credit is kept in the register, written exactly as it should show ("Photo: …"), and appears after its
   caption wherever the item is shown, and on its page.
 - Videos and embedded documents whose pages give them no caption now show their real title, from the register (for
@@ -107,7 +118,7 @@ Media Index.
   version's new items when it is frozen.
 - The page data is contract 0.5 (`CONTRACT.md`); its paragraph rule is unchanged, so no paragraph has a new number.
 
-## 1.9.0
+## 1.10.0
 
 22 November 2026. Pictures in several widths, Zoom on the caption line and a new zoom viewer.
 
@@ -134,6 +145,30 @@ Media Index.
   picture is in view, and moves the picture once you have zoomed in. The picture already in the page shows at once
   while the sharper tiles arrive. For readers who ask for less motion, zooming jumps instead of gliding.
 - The link check also checks every width of every picture.
+
+## 1.9.0
+
+22 November 2026. Search.
+
+- Every page has a magnifier in its header, beside "Aa", that leads to the search page. It lists the pages the words
+  are found on, best first, and on each page up to three paragraphs with their number (para. 12) and the words
+  around the ones found, marked. Each links straight to its paragraph. Results follow the typing, so the search
+  field, a pill like the header's buttons, has no Search button.
+- A × at the top right of the search page closes it: it leads back to the page search was opened from, at the
+  place the reader last stopped to read (not the top of the page they scrolled up to for the magnifier), also after
+  following a result and coming back. Escape does the same when the search field is empty. Without JavaScript, or
+  when search was opened from outside the book, the × leads to the home page.
+- The words searched for are kept in the page's address (`search/?q=dust`), so a search can be shared or bookmarked.
+- Each frozen version searches its own text, at its own address (`/v0.1/search/`), so results lead to that
+  version's paragraph numbers. Its search page has a link that searches the latest text for the same words.
+- Only the reading text of the pages is searched: not the Markdown views, the whole book in Markdown or the versions
+  page, and not the cards that lead to other pages, so the words in a card are found on the page it leads to.
+- The index is made by Pagefind 1.6.0 when the site is built and needs no server. The search page loads it only when
+  it is used. Without JavaScript the page points to the whole book in Markdown, for the browser's own Find in page.
+- The build reports how many pages each index holds, and names any page with nothing to find (Events, which has only
+  cards). The check confirms that every edition has its search page and index.
+- On small phones the header's items sit a little closer together, so that the title, the Page / Markdown switch,
+  search and "Aa" still fit on one row (from 360 pixels wide).
 
 ## 1.8.0
 

@@ -31,8 +31,9 @@ const yearOf = (item) => item.issued?.['date-parts']?.[0]?.[0];
 
 // options: { pandoc, work (a scratch folder), bibliography (default: the working tree's; a frozen version uses the one
 // in its tag) }
-// -> { items, index, indexPath, warnings, order }: order is every key in the order of the house style's reference list
-// (by author, then year, then key: csl/mattering-press.csl), which the References page follows.
+// -> { items, index, indexPath, warnings, order, cites }: order is every key in the order of the house style's reference
+// list (by author, then year, then key: csl/mattering-press.csl), which the References page follows; cites is each
+// work as the text cites it in the house style, without the brackets ("Back and Sinha 2018"), for search results.
 export function prepareReferences({ pandoc, work, bibliography = BIBLIOGRAPHY }) {
   const items = JSON.parse(readFileSync(bibliography, 'utf8'));
   const warnings = [];
@@ -68,7 +69,15 @@ export function prepareReferences({ pandoc, work, bibliography = BIBLIOGRAPHY })
   for (const key of Object.keys(entries)) if (!order.includes(key)) order.push(key);   // (citeproc wrote nothing for it: warned above)
   const indexPath = join(work, 'citations-index.json');
   writeFileSync(indexPath, JSON.stringify({ entries }, (k, v) => (v === null ? undefined : v)));   // no nulls for Lua
-  return { items, index: entries, indexPath, warnings, order };
+  // Every work cited on its own, one paragraph each, in one run with all of them, so that the year letters match:
+  // <p><span class="citation" data-cites="back2018">(Back and Sinha 2018)</span></p>
+  const citing = spawnSync(pandoc, ['-f', 'markdown', '-t', 'html', '--wrap=none', '--citeproc', '--bibliography', bibliography, '--csl', popupCsl],
+    { input: `---\nnocite: '@*'\nsuppress-bibliography: true\n---\n\n${order.map((key) => `[@${key}]`).join('\n\n')}\n`, encoding: 'utf8' });
+  if (citing.status !== 0) throw new Error(`citeproc failed on ${bibliography}:\n${citing.stderr}`);
+  const text = (h) => h.replace(/<[^>]+>/g, '').replace(/&(amp|lt|gt|quot|#39|#(\d+));/g, (m, name, n) => (n ? String.fromCodePoint(Number(n)) : { amp: '&', lt: '<', gt: '>', quot: '"', '#39': "'" }[name]));
+  const cites = Object.fromEntries([...citing.stdout.matchAll(/<p><span class="citation" data-cites="([^"]+)">([\s\S]*?)<\/span><\/p>/g)]
+    .map((m) => [m[1], text(m[2]).replace(/^\((.*)\)$/s, '$1').trim()]).filter(([, cite]) => cite));
+  return { items, index: entries, indexPath, warnings, order, cites };
 }
 
 // The line (1-based) of each citation in the page's Markdown. Paragraphs are single lines (a Juncture rule), so the
@@ -162,9 +171,13 @@ export function report(pages, index, warnings) {
 // the house style's reference list, as <li id="<key>" class="reference">, so that /references/#hall2001 finds it. Under
 // the formatted reference: the passages that cite it ("Introduction, para. 12", each a link to the citation,
 // #cite-hall2001-1) and the pages whose typed reference lists include it (a link to #ref-hall2001 there).
-//   works: [{ key, html, cited: [{ title, url, para, note, after }], listed: [{ title, url }] }], in order; para is the
-//          numbered paragraph that holds the citation ("p12"), or for a citation outside the numbered paragraphs, note
-//          the margin note it is in ("n3") and after the paragraph before it. URLs are relative to the edition's root.
+// Search finds each work by its formatted reference and lists it as a place of its own on the page: data-pagefind-meta
+// gives its label in the results, the work as the text cites it ("Stengers 2005a"; assets/search.js). The lists of
+// passages and pages are left out of the index, so that searching a page's title does not list every work it cites.
+//   works: [{ key, html, cite, cited: [{ title, url, para, note, after }], listed: [{ title, url }] }], in order; cite is
+//          the work as the text cites it ("Hall 2001"; its key when citeproc gives none); para is the numbered
+//          paragraph that holds the citation ("p12"), or for a citation outside the numbered paragraphs, note the margin
+//          note it is in ("n3") and after the paragraph before it. URLs are relative to the edition's root.
 //   root:  the way from the References page to the edition's root ("../")
 const escHtml = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 export function referencesHtml(works, { root }) {
@@ -174,8 +187,8 @@ export function referencesHtml(works, { root }) {
     const rows = [];
     if (w.cited.length) rows.push(`<div><dt>Cited in</dt><dd>${w.cited.map((c) => link(c.url, place(c) ? `${c.title}, ${place(c)}` : c.title)).join('; ')}</dd></div>`);
     if (w.listed.length) rows.push(`<div><dt>Listed in</dt><dd>${w.listed.map((l) => link(l.url, l.title)).join('; ')}</dd></div>`);
-    return `<li id="${escHtml(w.key)}" class="reference">\n<p class="reference__text">${w.html}</p>\n` +
-      (rows.length ? `<dl class="reference__where">\n${rows.join('\n')}\n</dl>\n` : '') + '</li>';
+    return `<li id="${escHtml(w.key)}" class="reference" data-pagefind-meta="${escHtml(`entry-${w.key}:${w.cite || w.key}`)}">\n<p class="reference__text">${w.html}</p>\n` +
+      (rows.length ? `<dl class="reference__where" data-pagefind-ignore>\n${rows.join('\n')}\n</dl>\n` : '') + '</li>';
   };
   return `<div class="references">
 <p class="references__intro">All ${works.length} works in the book’s bibliography, in the house style. Under each work are the passages that cite it, which lead to the citation in the text, and the pages whose reference lists include it.</p>

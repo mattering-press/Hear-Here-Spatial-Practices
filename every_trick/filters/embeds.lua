@@ -106,10 +106,11 @@ local function srcset_of(page)
 end
 
 -- On an essay page: the cover, which leads to the document's page (and opens the viewer, with JavaScript), and the caption
--- line with Text and the download (the PDF, or the original on archive.org); zoom.js puts Open before them.
+-- line with Text and the download (the PDF, or the original on archive.org); zoom.js puts Open before them. Search leaves
+-- the buttons out (data-pagefind-ignore): their words are not the page's text.
 --   <figure id="item-64" class="document" style="--ratio: 0.7073" data-document="../../read/walking-sitting-sketching/document.json">
 --     <a class="figure-picture document__cover" href="../../read/walking-sitting-sketching/"><img … alt="Cover of …"></a>
---     <figcaption><a class="item-number" …>64</a> … <span class="document__actions"><a class="figure-button document__text"
+--     <figcaption><a class="item-number" …>64</a> … <span class="document__actions" data-pagefind-ignore><a class="figure-button document__text"
 --       href="../../read/walking-sitting-sketching/#text">Text</a> <a class="figure-button document__download" href="…" download>PDF, 0.9 MB</a></span></figcaption>
 --   </figure>
 -- On its item page: the row of its pages (each <li id="page=3">, so that #page=3 finds it without JavaScript), which
@@ -144,7 +145,7 @@ local function document_figure(item, anchor, doc, caption)
     '<figure', id_attr(anchor), ' class="document"', style, ' data-document="', json, '">\n',
     '<a class="figure-picture document__cover" href="', page, '"><img src="', lib.esc(lib.join(lib.root, img.url)), '" srcset="', srcset_of(cover), '" sizes="20rem" width="',
     cover.width, '" height="', cover.height, '" alt="Cover of ', title, '" loading="lazy"></a>\n',
-    '<figcaption>', lib.caption_line(item, caption), ' <span class="document__actions">', text, ' ', download, '</span></figcaption>\n</figure>' })
+    '<figcaption>', lib.caption_line(item, caption), ' <span class="document__actions" data-pagefind-ignore>', text, ' ', download, '</span></figcaption>\n</figure>' })
 end
 
 local function figure(div, class)

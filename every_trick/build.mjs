@@ -3,7 +3,8 @@
 // and page.json / publication.json (see CONTRACT.md). Plain-text citations are linked to references/bibliography.json
 // and show their reference in a popup (citations.mjs, filters/citations.lua); each edition has a References page
 // (references/) that lists every work, with the passages that cite it. Reading paragraphs are numbered
-// (filters/paragraphs.lua).
+// (filters/paragraphs.lua). Each edition has its own search page, /search/, and its own Pagefind index of its reading
+// text, /pagefind/ (see "Plan: search" in DEVELOPMENT.md).
 // Each page goes through Pandoc twice: stage 1 (filters/to-markdown.lua) writes its clean Markdown view,
 // stage 2 (the other filters, template.html) turns that Markdown into HTML.
 //
@@ -24,6 +25,7 @@ import { spawn, spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
+import { gunzipSync } from 'node:zlib';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { BIBLIOGRAPHY, locate, prepareReferences, referencesHtml, report as citationReport } from './citations.mjs';
@@ -32,6 +34,7 @@ import { mp3Duration, paragraphCues } from './audio.mjs';
 import { pagesOf, pdfText, renderPdf, requirePoppler, zinePages } from './documents.mjs';
 import { imageName, makeImages, makePages } from './images.mjs';
 import { documentText, forwardHtml, itemFacts, mediaEditHtml, mediaIndexHtml, sizeText } from './media-pages.mjs';
+import * as pagefind from 'pagefind';
 import { readRegister, resolveItems, servedFrom, storedAt } from './register.mjs';
 import { checkout, longDate, matchParagraphs, readRegistry } from './versions.mjs';
 
@@ -398,6 +401,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
   edition.citing = [];
   edition.listing = [];
   const target = edition.target;
+  edition.searchable = [];   // this edition's pages as built, for its search index (step 7)
 
   for (const page of edition.pages) {
     const url = urlOf(page.file);
@@ -427,7 +431,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
         [from ? 'on-markdown' : 'on-page']: 'true', 'view-page': from ? '../' : './', 'view-markdown': from ? './' : 'markdown/',
         'section-page': section && section !== edition.home.file ? section : '', 'section-title': section && section !== edition.home.file ? edition.byFile.get(section).title : '',
         'section-url': section && section !== edition.home.file ? r + urlOf(section) : '',
-        'site-title': page === edition.home ? '' : edition.home.title, noindex: NOINDEX || from ? 'true' : '' })];
+        'site-title': page === edition.home ? '' : edition.home.title, noindex: NOINDEX || from ? 'true' : '', searchable: from ? '' : 'true' })];
     };
     let html = pandoc(['-f', 'markdown-implicit_figures', '-t', 'html5', '--wrap=none', '-s', '--template', join(TOOLKIT_DIR, 'template.html'),
       ...frame(''), '-M', `citations=${references.indexPath}`, ...filterArgs(FILTERS)], readFileSync(join(dir, 'index.md'), 'utf8'), page.file);
@@ -446,6 +450,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
       report.matching.push({ edition, file: page.file, total: paragraphs.length, missing: !there, ...result.counts });
     }
     writeFileSync(join(dir, 'index.html'), html);
+    edition.searchable.push({ url: `/${url}`, content: html });
     edition.paragraphs.set(page.file, paragraphs);
     report.paragraphs.push({ edition, file: page.file, paragraphs });
     // where each media item is on the page (its anchor, and the paragraph before it), for its item page and the index
@@ -495,7 +500,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
         .map((c) => ({ title: titleOf(c.file), url: `${urlOf(c.file)}#${c.anchor}`, para: c.para, note: c.note, after: c.after }));
       const listed = [...new Set(edition.listing.filter((l) => l.key === key).sort(byPage).map((l) => l.file))]
         .map((file) => ({ title: titleOf(file), url: `${urlOf(file)}#ref-${key}` }));
-      return { key, html: references.index[key].html, cited, listed };
+      return { key, html: references.index[key].html, cite: references.cites[key] || key, cited, listed };
     });
     const s = join2('../', prefix) || './';
     const extra = { version_line: versionLine(edition, s, '../') };
@@ -503,11 +508,14 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     if (target) extra.version_notice = versionNotice(edition, join2(s, `${target.dir}references/`));
     const yaml = join(scratch, 'references.yaml');
     writeYaml(yaml, edition.menu, extra);
-    mkdirSync(join(out, 'references'), { recursive: true });
-    writeFileSync(join(out, 'references', 'index.html'), pandoc(['-f', 'markdown', '-t', 'html5', '--wrap=none', '-s', '--template', join(TOOLKIT_DIR, 'template.html'), '--metadata-file', yaml,
+    // It is searched, in this edition's index (step 7), each work a place of its own in the results ("Stengers 2005a").
+    const referencesPage = pandoc(['-f', 'markdown', '-t', 'html5', '--wrap=none', '-s', '--template', join(TOOLKIT_DIR, 'template.html'), '--metadata-file', yaml,
       ...metaArgs({ page: 'references', repo: REPO, manifest, lang: PUBLICATION.language, title: 'References', ...toolkitMeta, ...frameMeta(edition, s),
-        root: '../', shared: s, 'asset-version': ASSET_VERSION, 'site-title': edition.home.title, noindex: NOINDEX ? 'true' : '' }), ...filterArgs(['links'])],
-      rawBlock(referencesHtml(works, { root: '../' })), `${edition.name}: references/`));
+        root: '../', shared: s, 'asset-version': ASSET_VERSION, 'site-title': edition.home.title, noindex: NOINDEX ? 'true' : '', searchable: 'true' }), ...filterArgs(['links'])],
+      rawBlock(referencesHtml(works, { root: '../' })), `${edition.name}: references/`);
+    mkdirSync(join(out, 'references'), { recursive: true });
+    writeFileSync(join(out, 'references', 'index.html'), referencesPage);
+    edition.searchable.push({ url: '/references/', content: referencesPage });
     report.references.push({ edition, works: works.length, cited: works.filter((w) => w.cited.length).length,
       citations: edition.citing.length, inPage: edition.citing.filter((c) => c.inPage).length });
   }
@@ -542,6 +550,33 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
         views: 'true', 'on-markdown': 'true', 'whole-book': 'true', 'view-page': '../', 'view-markdown': './' }), ...filterArgs(['links'])],
       wrapMarkdown(publication, 'Every page of the book in reading order, in the Markdown it is built from. <a href="../publication.md" download>Download publication.md</a>'),
       `${edition.name}: publication/`));
+  }
+
+  // search/: the search page. assets/search.js asks this edition's index (pagefind/, made in step 7) and lists each page
+  // found with the paragraphs the words are in. Without JavaScript it points to the whole book in Markdown.
+  {
+    const s = join2('../', prefix) || './';
+    const yaml = join(scratch, 'search.yaml');
+    const v = edition.version;
+    const extra = { version_line: versionLine(edition, s, '../') };
+    if (edition !== latest) {
+      extra.version_notice = `<aside class="version-notice" aria-label="About this version"><p>You are searching ${esc(lcFirst(v.label))}, ` +
+        `${v.status === 'review' ? 'frozen' : 'released'} on ${longDate(v.date)}. <a class="search-elsewhere" href="${esc(join2(s, 'search/'))}">Search the latest text</a>.</p></aside>`;
+    }
+    writeYaml(yaml, edition.menu, extra);
+    const body = '```{=html}\n<div class="search" data-pagefind="../pagefind/">\n' +
+      '<form class="search__form" role="search" action="./" method="get">\n' +
+      '<label class="search__label" for="search-input">Words to find in the book</label>\n' +
+      '<input class="search__input" id="search-input" type="search" name="q" autocomplete="off" spellcheck="false">\n' +
+      '</form>\n<p class="search__status" role="status" aria-live="polite"></p>\n<ol class="search__results"></ol>\n' +
+      '<button class="search__more" type="button" hidden>More pages</button>\n' +
+      '<noscript><p class="search__noscript">Search needs JavaScript. Without it, open <a href="../publication/">the whole book in Markdown</a> and use your browser’s Find in page.</p></noscript>\n' +
+      '</div>\n```\n';
+    mkdirSync(join(out, 'search'), { recursive: true });
+    writeFileSync(join(out, 'search', 'index.html'), pandoc(['-f', 'markdown', '-t', 'html5', '--wrap=none', '-s', '--template', join(TOOLKIT_DIR, 'template.html'), '--metadata-file', yaml,
+      ...metaArgs({ page: 'search.md', repo: REPO, manifest, lang: PUBLICATION.language, title: 'Search', ...toolkitMeta, ...frameMeta(edition, s),
+        root: '../', shared: s, 'asset-version': ASSET_VERSION, 'site-title': home.title, noindex: 'true', 'search-page': 'true' }), ...filterArgs(['links'])],
+      body, `${edition.name}: search/`));
   }
 }
 
@@ -722,11 +757,15 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
     for (const old of it.formerNames) { forward(`${it.kind}/${old}/`, it, `This item has a new address:`); mediaReport.forwards++; }
   }
 
-  // The Media Index, and on a preview its editing view.
+  // The Media Index, and on a preview its editing view. The Media Index is searched, in the latest text's index only
+  // (step 7), each entry a place of its own in the results ("item 37"; mediaIndexHtml). The item pages, which hold the
+  // same words, the short and former addresses and the editing view are in no index.
   const indexHtml = mediaIndexHtml(views, { root: '../', script: `../assets/media-index.js?v=${ASSET_VERSION}`, preview: PREVIEW });
+  const indexPage = pandoc([...pageFrame('../', { page: 'media-index', title: 'Media Index', noindex: NOINDEX ? 'true' : '', searchable: 'true' }),
+    ...filterArgs(['links'])], rawBlock(indexHtml), 'the Media Index');
   mkdirSync(join(SITE, 'media-index'), { recursive: true });
-  writeFileSync(join(SITE, 'media-index', 'index.html'), pandoc([...pageFrame('../', { page: 'media-index', title: 'Media Index', noindex: NOINDEX ? 'true' : '' }),
-    ...filterArgs(['links'])], rawBlock(indexHtml), 'the Media Index'));
+  writeFileSync(join(SITE, 'media-index', 'index.html'), indexPage);
+  latest.searchable.push({ url: '/media-index/', content: indexPage });
   if (PREVIEW) {
     const names = Object.fromEntries(views.flatMap((it) => [it.name, ...it.formerNames].map((n) => [n, it.source])));
     const editHtml = mediaEditHtml(views, { root: '../../', script: `../../assets/media-index.js?v=${ASSET_VERSION}`, names });
@@ -749,7 +788,36 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
   }, null, 2) + '\n');
 }
 
-// 7. Stylesheet, scripts, the Roboto font and OpenSeadragon (the deep-zoom viewer), shared by all editions.
+// 7. Search: one Pagefind index for each edition, of its pages' reading text only (<main>, marked data-pagefind-body by
+//    the template; cards are left out by filters/cards.lua). The Markdown views, publication/, versions/ and search/
+//    are not in it. Each edition's index also holds its References page (step 4c), and the latest text's the Media
+//    Index, which all editions share (step 6); the item pages, their short and former addresses and the editing view
+//    are in no index.
+//    Result addresses are root-absolute here (/essays/aya_nassar/); search.js makes them relative.
+//    Pagefind's own search boxes are not used, so their files are removed; its licence goes with the index.
+//    A page whose reading text is only cards (Events) has nothing to index; the report lists such pages.
+for (const edition of editions) {
+  const { index, errors } = await pagefind.createIndex({});
+  if (errors.length) fail(`Pagefind could not start:\n${errors.join('\n')}`);
+  for (const file of edition.searchable) {
+    const added = await index.addHTMLFile(file);
+    if (added.errors.length) fail(`Pagefind could not index ${edition.dir}${file.url.slice(1)}:\n${added.errors.join('\n')}`);
+  }
+  const output = join(SITE, edition.dir, 'pagefind');
+  const written = await index.writeFiles({ outputPath: output });
+  if (written.errors.length) fail(`Pagefind could not write ${edition.dir}pagefind/:\n${written.errors.join('\n')}`);
+  for (const name of readdirSync(output)) if (/^pagefind-(component-|modular-)?ui\.|^pagefind-highlight\.js$/.test(name)) rmSync(join(output, name));
+  cpSync(join(TOOLKIT_DIR, 'node_modules/pagefind/LICENSE/LICENSE'), join(output, 'LICENSE.txt'));
+  // the pages that made it into the index: each has a fragment file, gzipped JSON after a short signature
+  const indexed = new Set(readdirSync(join(output, 'fragment')).map((name) => {
+    const data = gunzipSync(readFileSync(join(output, 'fragment', name))).toString('utf8');
+    return JSON.parse(data.slice(data.indexOf('{'))).url;
+  }));
+  edition.unsearchable = edition.searchable.map((file) => file.url).filter((url) => !indexed.has(url)).map((url) => url.slice(1) || './');
+}
+await pagefind.close();
+
+// 8. Stylesheet, scripts, the Roboto font and OpenSeadragon (the deep-zoom viewer), shared by all editions.
 const modules = join(TOOLKIT_DIR, 'node_modules');
 cpSync(join(TOOLKIT_DIR, 'assets'), join(SITE, 'assets'), { recursive: true });
 for (const style of ['normal', 'italic']) cpSync(join(modules, `@fontsource-variable/roboto/files/roboto-latin-wght-${style}.woff2`), join(SITE, `assets/fonts/roboto-latin-wght-${style}.woff2`));
@@ -758,7 +826,7 @@ cpSync(join(modules, 'openseadragon/build/openseadragon/openseadragon.min.js'), 
 cpSync(join(modules, 'openseadragon/build/openseadragon/images'), join(SITE, 'assets/osd/images'), { recursive: true });
 cpSync(join(modules, 'openseadragon/LICENSE.txt'), join(SITE, 'assets/osd/LICENSE.txt'));
 
-// 8. Report.
+// 9. Report.
 const size = (dir) => readdirSync(dir, { withFileTypes: true }).reduce((sum, e) => sum + (e.isDirectory() ? size(join(dir, e.name)) : statSync(join(dir, e.name)).size), 0);
 const mb = (bytes) => `${(bytes / 1e6).toFixed(1)} MB`;
 const total = size(SITE), imageBytes = size(join(SITE, 'images')), tileBytes = size(join(SITE, 'iiif'));
@@ -789,6 +857,11 @@ for (const edition of editions.slice(1)) {
   console.log(`  ${edition.dir.padEnd(22)} ${edition.version.label} (${edition.version.status}, tag at ${edition.commit.slice(0, 7)}): ${edition.pages.length} pages, ${mb(size(join(SITE, edition.dir)))}` +
     `${edition.annotations === 'hypothesis' ? `, Hypothesis${edition.group ? ` for group ${edition.group}` : ' (no hypothesisGroup set: annotations go to the group each reviewer picks)'}` : ''}`);
   if (edition.annotations === 'hypothesis' && !edition.group) warnings.push(`version ${edition.version.id}: annotations are on, but hypothesisGroup is empty, so reviewers could annotate publicly`);
+}
+for (const edition of editions) {
+  const n = edition.searchable.length - edition.unsearchable.length;
+  console.log(`Search${edition.dir ? ` in ${edition.dir}` : ''}: ${n} of ${edition.searchable.length} pages indexed` +
+    `${edition.unsearchable.length ? `; no text outside cards in ${edition.unsearchable.join(', ')}` : ''}.`);
 }
 if (fromTags.length) console.log(`\nMedia no longer in the working tree, taken from the tags:\n${[...new Set(fromTags)].map((f) => `  ${f}`).join('\n')}`);
 
