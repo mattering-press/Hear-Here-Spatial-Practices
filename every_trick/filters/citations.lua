@@ -14,13 +14,13 @@
 --
 -- What it does to the page:
 --   - the citation inside the brackets (Hall, 2001 / 1984 / 2017:147) becomes a link, class "citation", to the
---     entry in a typed reference list: on this page if its list has the entry, otherwise on the first page in
---     reading order whose list has it;
+--     work's entry in this page's typed reference list if the list has it, otherwise to its entry on the References
+--     page of the same edition (references/#hall2001, which build.mjs writes from the whole bibliography);
 --   - every paragraph of the page's "References" section that is a typed bibliography entry is wrapped in a div
 --     with the id ref-<key> (and class typed-reference), the target of those links;
 --   - every cited reference, formatted by citeproc in the house style, is added at the end as a popover that
 --     assets/citations.js shows on hover, focus and tap. The link names it in aria-describedby.
--- page.json gets `references`; build.mjs gets `citations` and `typed` for its report.
+-- page.json gets `references`; build.mjs gets `citations` and `typed` for its report and the References page.
 package.path = pandoc.path.directory(PANDOC_SCRIPT_FILE) .. '/?.lua;' .. package.path
 local lib = require 'lib'
 os.setlocale('C', 'ctype')   -- %s and %a match ASCII only, never a byte inside a UTF-8 character
@@ -186,9 +186,11 @@ local cited_order = {}
 local records = {}        -- every citation found, for build.mjs
 local counter = {}
 
-local function target(e)
-  if listed[e.key] then return '#ref-' .. e.key end
-  return lib.root .. lib.page_url(e.home) .. '#ref-' .. e.key
+-- Where a citation of e leads: the work in this page's typed list, or else on the References page, which lists every
+-- work of the bibliography (relative to the edition's root, for page.json, when `from_root` is set).
+local function target(e, from_root)
+  if listed[e.key] then return from_root and (lib.page_url(lib.page) .. '#ref-' .. e.key) or ('#ref-' .. e.key) end
+  return (from_root and '' or lib.root) .. 'references/#' .. e.key
 end
 
 local function link_maker(e, text)
@@ -321,8 +323,7 @@ local function process(inlines, prefix)
             e = nearest(cands, sentence_before(before), sentence_after(after))
             if not e and part.locator ~= '' then e = nearest(cands, before, ''); how = e and 'earlier in the paragraph' end
           end
-          if e and not listed[e.key] and not e.home then status, e = 'unlisted', nil  -- no typed list to link to
-          elseif e then status = 'matched'
+          if e then status = 'matched'
           elseif #cands > 1 and part.first ~= '' then status = 'ambiguous'
           elseif part.first ~= '' or part.locator ~= '' or mentions_author(sentence) then status = 'unmatched'
           else status = 'date' end
@@ -435,13 +436,12 @@ function Pandoc(doc)
   for _, k in ipairs(typed.listed) do if not cited[k] then order[#order + 1] = k end end
   for _, key in ipairs(order) do
     local e = index.entries[key]
-    local home = listed[key] and lib.page or e.home
-    refs[#refs + 1] = { key = key, html = e.html, url = lib.page_url(home) .. '#ref-' .. key, citations = cited[key] or {} }
+    refs[#refs + 1] = { key = key, html = e.html, url = target(e, true), citations = cited[key] or {} }
     if cited[key] then
       html[#html + 1] = string.format(
         '<div id="ref-popover-%s" class="citation-popover" popover="manual"><p id="ref-text-%s" class="citation-popover__text">%s</p>'
         .. '<p class="citation-popover__more"><a href="%s">Go to the reference list</a></p></div>',
-        key, key, e.html, lib.esc(listed[key] and ('#ref-' .. key) or (lib.root .. lib.page_url(e.home) .. '#ref-' .. key)))
+        key, key, e.html, lib.esc(target(e)))
     end
   end
   if #html > 0 then

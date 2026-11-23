@@ -9,6 +9,8 @@
 //                               writes the index that citations.lua reads
 //   locate(source, records)     the line in the page's Markdown of each citation citations.lua found
 //   report(...)                 the build's summary: per page counts, unmatched citations, uncited entries
+//   referencesHtml(works, …)    the References page of an edition (/references/): every work once, with the passages
+//                               that cite it and the pages whose reference lists include it
 import { spawnSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -27,21 +29,24 @@ const firstName = (item) => {
 };
 const yearOf = (item) => item.issued?.['date-parts']?.[0]?.[0];
 
-// options: { pandoc, work (a scratch folder), order (page files in reading order), bibliography (default: the
-// working tree's; a frozen version uses the one in its tag) }
-// -> { items, index, indexPath, warnings }
-export function prepareReferences({ pandoc, work, order, bibliography = BIBLIOGRAPHY }) {
+// options: { pandoc, work (a scratch folder), bibliography (default: the working tree's; a frozen version uses the one
+// in its tag) }
+// -> { items, index, indexPath, warnings, order }: order is every key in the order of the house style's reference list
+// (by author, then year, then key: csl/mattering-press.csl), which the References page follows.
+export function prepareReferences({ pandoc, work, bibliography = BIBLIOGRAPHY }) {
   const items = JSON.parse(readFileSync(bibliography, 'utf8'));
   const warnings = [];
-  // The popups show one reference at a time, so the "——" for a repeated author is switched off for them.
+  // The popups and the References page show each reference on its own, so the "——" for a repeated author is switched
+  // off. All the entries are formatted in one run, so the year letters (stengers2005a, 2005b) are the whole book's,
+  // whichever page shows the reference.
   const popupCsl = join(work, 'popup.csl');
   writeFileSync(popupCsl, readFileSync(CSL, 'utf8').replace(/\ssubsequent-author-substitute(-rule)?="[^"]*"/g, ''));
   const result = spawnSync(pandoc, ['-f', 'markdown', '-t', 'html', '--wrap=none', '--citeproc', '--bibliography', bibliography, '--csl', popupCsl],
     { input: "---\nnocite: '@*'\n---\n", encoding: 'utf8' });
   if (result.status !== 0) throw new Error(`citeproc failed on ${bibliography}:\n${result.stderr}`);
   warnings.push(...result.stderr.split('\n').filter(Boolean).map((l) => `references/bibliography.json: ${l.replace(/^\[WARNING\] /, '')}`));
-  const html = Object.fromEntries([...result.stdout.matchAll(/<div id="ref-([^"]+)" class="csl-entry"[^>]*>\s*([\s\S]*?)\s*<\/div>/g)].map((m) => [m[1], m[2].replace(/\s+/g, ' ')]));
-  const rank = (page) => (order.includes(page) ? order.indexOf(page) : order.length);
+  const formatted = [...result.stdout.matchAll(/<div id="ref-([^"]+)" class="csl-entry"[^>]*>\s*([\s\S]*?)\s*<\/div>/g)];
+  const html = Object.fromEntries(formatted.map((m) => [m[1], m[2].replace(/\s+/g, ' ')]));
   const entries = {};
   for (const item of items) {
     const key = item.id;
@@ -57,12 +62,13 @@ export function prepareReferences({ pandoc, work, order, bibliography = BIBLIOGR
       pages: pages && Number(pages[2]) >= Number(pages[1]) ? [Number(pages[1]), Number(pages[2])] : null,
       html: html[key] || '',
       typed: Object.fromEntries(typed.map((t) => [t.page, norm(t.text)])),
-      home: typed.map((t) => t.page).sort((a, b) => rank(a) - rank(b))[0] || null,
     };
   }
+  const order = formatted.map((m) => m[1]).filter((key) => key in entries);
+  for (const key of Object.keys(entries)) if (!order.includes(key)) order.push(key);   // (citeproc wrote nothing for it: warned above)
   const indexPath = join(work, 'citations-index.json');
   writeFileSync(indexPath, JSON.stringify({ entries }, (k, v) => (v === null ? undefined : v)));   // no nulls for Lua
-  return { items, index: entries, indexPath, warnings };
+  return { items, index: entries, indexPath, warnings, order };
 }
 
 // The line (1-based) of each citation in the page's Markdown. Paragraphs are single lines (a Juncture rule), so the
@@ -105,7 +111,6 @@ const distance = (a, b) => {
 export function hint(record, index) {
   const all = Object.entries(index).filter(([, e]) => e.surname);
   const sameYear = all.filter(([, e]) => e.year === record.year);
-  if (record.status === 'unlisted') return 'in the bibliography, but in no typed reference list to link to';
   if (record.status === 'ambiguous') return `could be ${record.candidates.join(' or ')}: add the letter (${record.year}a, ${record.year}b) or a page`;
   if (record.form === 'parenthetical') {
     const name = fold(record.names.split(/,| and | & | et al/)[0]).toLowerCase().trim();
@@ -151,4 +156,31 @@ export function report(pages, index, warnings) {
   if (uncited.length) out.push('', `${uncited.length} bibliography entries that no page cites:`, `  ${uncited.join(', ')}`);
   if (warnings.length) out.push('', ...warnings.map((w) => `  ${w}`));
   return out;
+}
+
+// The References page of an edition (references/ at its root): every work of the bibliography once, in the order of
+// the house style's reference list, as <li id="<key>" class="reference">, so that /references/#hall2001 finds it. Under
+// the formatted reference: the passages that cite it ("Introduction, para. 12", each a link to the citation,
+// #cite-hall2001-1) and the pages whose typed reference lists include it (a link to #ref-hall2001 there).
+//   works: [{ key, html, cited: [{ title, url, para, note, after }], listed: [{ title, url }] }], in order; para is the
+//          numbered paragraph that holds the citation ("p12"), or for a citation outside the numbered paragraphs, note
+//          the margin note it is in ("n3") and after the paragraph before it. URLs are relative to the edition's root.
+//   root:  the way from the References page to the edition's root ("../")
+const escHtml = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+export function referencesHtml(works, { root }) {
+  const place = (c) => (c.para ? `para. ${c.para.slice(1)}` : c.note ? `note ${c.note.slice(1)}` : c.after ? `after para. ${c.after.slice(1)}` : '');
+  const link = (url, text) => `<a href="${escHtml(root + url)}">${escHtml(text)}</a>`;
+  const entry = (w) => {
+    const rows = [];
+    if (w.cited.length) rows.push(`<div><dt>Cited in</dt><dd>${w.cited.map((c) => link(c.url, place(c) ? `${c.title}, ${place(c)}` : c.title)).join('; ')}</dd></div>`);
+    if (w.listed.length) rows.push(`<div><dt>Listed in</dt><dd>${w.listed.map((l) => link(l.url, l.title)).join('; ')}</dd></div>`);
+    return `<li id="${escHtml(w.key)}" class="reference">\n<p class="reference__text">${w.html}</p>\n` +
+      (rows.length ? `<dl class="reference__where">\n${rows.join('\n')}\n</dl>\n` : '') + '</li>';
+  };
+  return `<div class="references">
+<p class="references__intro">All ${works.length} works in the book’s bibliography, in the house style. Under each work are the passages that cite it, which lead to the citation in the text, and the pages whose reference lists include it.</p>
+<ul class="reference-list">
+${works.map(entry).join('\n')}
+</ul>
+</div>`;
 }

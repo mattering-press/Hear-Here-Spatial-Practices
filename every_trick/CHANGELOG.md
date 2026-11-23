@@ -11,6 +11,31 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of every_trick’ in `DEVELOPMENT.md`.
 
+## 1.11.0
+
+23 November 2026. A References page for the whole book.
+
+- The References page, `/references/`, lists every work in the book’s bibliography once, in the house style and in the
+  order of its reference lists, alphabetical by author. Each work has an address of its own, made from its key:
+  `/references/#hall2001`. Under each work are the passages that cite it, named by page and paragraph (‘Introduction,
+  para. 12’), each leading to the citation itself, and the pages whose reference lists include it, each leading to the
+  work in that list.
+- Each frozen version has its own References page, such as `/v0.1/references/`, because which passages cite a work,
+  and their paragraph numbers, can differ from one version to the next.
+- Every footer links to the References page of its version, beside the Media Index.
+- A citation whose work is not in its page’s own reference list now leads to the work on the References page, instead
+  of to the first page in reading order that lists it. A citation whose work is in its page’s list still leads there,
+  and the popups are unchanged. `page.json` follows the same rule. For now every page lists all the works it cites, so
+  no citation leads to the References page yet.
+- A citation of a work that is in the bibliography but in no page’s reference list is now linked as well, to the
+  References page; the build used to report it as not linked.
+- A link to a citation marks it, and its paragraph lights up for a moment, as for a link to a paragraph. When a page
+  opens at a citation, the citation’s popup waits until the reader asks for it, so that it does not cover the passage.
+- The year letters, such as Stengers 2005a and 2005b, are given once for the whole book, on the References page and in
+  the popups alike. The reference lists typed in the pages show what their authors typed.
+- The build says, for each version, how many citations lead to their page’s own reference list and how many to the
+  References page.
+
 ## 1.10.0
 
 23 November 2026. Every picture, recording, video and document has a number and a page of its own, and the book has a

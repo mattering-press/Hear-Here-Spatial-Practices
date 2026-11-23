@@ -5,12 +5,16 @@
 //   - on keyboard focus (Tab), until focus moves on;
 //   - on tap: the first tap shows the popup, a second tap on the link follows it to the reference list.
 // Escape, a tap or click elsewhere, or leaving the link closes it. Focus stays on the link and is never trapped.
+// A page opened at a citation's own address (#cite-hall2001-1, from the References page) has that citation focused by
+// some browsers; its popup waits until the reader asks for it, so that it does not cover the passage they came to read.
 // Without JavaScript or the Popover API, the links simply go to the reference list.
 (() => {
   const links = document.querySelectorAll('a.citation[data-popover]');
   if (!links.length || !HTMLElement.prototype.showPopover) return;
   const GAP = 6, MARGIN = 8, HIDE_DELAY = 250;
-  let open = null, owner = null, timer = 0, lastPointer = 'mouse';
+  let open = null, owner = null, timer = 0, lastPointer = 'mouse', keyed = false;
+  document.addEventListener('keydown', () => { keyed = true; }, true);
+  document.addEventListener('pointerdown', () => { keyed = false; }, true);
 
   const popoverOf = (link) => document.getElementById(link.dataset.popover);
   const isOpen = (popover) => popover && popover.matches(':popover-open');
@@ -52,8 +56,9 @@
     link.addEventListener('pointerdown', (e) => { lastPointer = e.pointerType; });
     link.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') show(link); });
     link.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse' && document.activeElement !== link) hideSoon(); });
-    // keyboard focus only: a tap or click also focuses the link, and is handled by the other events
-    link.addEventListener('focus', () => { if (link.matches(':focus-visible')) show(link); });
+    // keyboard focus only: a tap or click also focuses the link, and is handled by the other events; so does opening
+    // the page at the link's address, before any key is pressed
+    link.addEventListener('focus', () => { if (link.matches(':focus-visible') && (keyed || !link.matches(':target'))) show(link); });
     link.addEventListener('blur', () => { if (owner === link) hideSoon(); });
     link.addEventListener('click', (e) => {
       if (lastPointer !== 'mouse' && !(owner === link && isOpen(open))) {

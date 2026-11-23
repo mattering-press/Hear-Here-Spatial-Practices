@@ -152,9 +152,9 @@ The frame of every page:
   (`localStorage`), and a line in the template's `<head>` applies it before the page is drawn. The dark colours are
   set in `every_trick/assets/site.css`, below the light ones; the publisher's logo turns white in dark mode.
 - **Footer.** The publisher's logo (the long one; the icon alone on phones), a credit line with the licence, the
-  book's version line (with links to all versions and to the Media Index) and the toolkit's line. They are set in
-  `FRAME` at the top of `every_trick/build.mjs`, with the logos in `media/publisher/`; the `.ve-footer` lines in the
-  pages are ignored.
+  book's version line (with links to all versions, to the Media Index and to the References page of the same version)
+  and the toolkit's line. They are set in `FRAME` at the top of `every_trick/build.mjs`, with the logos in
+  `media/publisher/`; the `.ve-footer` lines in the pages are ignored.
 
 What is in `every_trick/`:
 
@@ -164,7 +164,8 @@ What is in `every_trick/`:
 - `register.mjs`: reads and writes the media register (`media/register.csv`), matches every item on the pages to its line, drafts names for new items and makes the build's checks of the register (see "The media register")
 - `media-pages.mjs`: the HTML of the item pages' facts, the Media Index, its editing view and the pages that forward short and former addresses
 - `filters/`: Lua filters, one job each. `items.lua` and `to-markdown.lua` are stage 1 (`items` lists the page's media items for the register; `to-markdown` writes the Markdown view); `figures`, `embeds`, `cards`, `transcript`, `links`, `citations`, `paragraphs`, `cues` (marks transcript paragraphs with their times from a recording's cue file), `margins` and `contract` are stage 2 (Markdown view to HTML and `page.json`)
-- `citations.mjs`: prepares the bibliography for `filters/citations.lua` and writes the build's report on citations
+- `citations.mjs`: prepares the bibliography for `filters/citations.lua`, writes the build's report on citations and
+  the HTML of the References page (see "References and citations")
 - `csl/`: `mattering-press.csl`, the house citation style, and its test (`csl/test/`)
 - `scripts/to-citation-keys.mjs`: for the switch, shows how the plain-text citations would become Pandoc citations
 - `scripts/align.mjs`: times a podcast transcript's paragraphs against its recordings with whisper.cpp, on the editor's computer, and writes the cue files and a report (see "Plan: podcast player and transcript")
@@ -400,11 +401,22 @@ During the parallel run the essays keep their typed citations and reference list
   in the brackets becomes a link, and the reference, formatted in the house style, opens in a popup on hover, keyboard
   focus or tap. Without JavaScript the link goes to the reference;
 - a link goes to the entry in the page's own typed list, or, when the page cites a work its list does not have, to the
-  entry on the first page in reading order that lists it. That is simpler than a separate references page, and every
-  work in the bibliography is listed on some page;
+  work's entry on the References page of the same version (below);
 - the build prints, per page, the citations found, linked and not matched (with file, line and a hint), the years in
   brackets it read as dates, the paragraphs of typed lists that are not bibliography entries, and the entries no page
-  cites. Correct the essay, or add the work to the bibliography, and build again.
+  cites; and, for each version, how many citations lead to their page's own list and how many to the References page.
+  Correct the essay, or add the work to the bibliography, and build again.
+
+The References page, `/references/`, lists every work in the bibliography once, formatted in the house style and in
+the order of its reference lists (by author, then year), each with an anchor made from its key (`/references/#hall2001`).
+Under each work: every passage that cites it, as page title and paragraph ("Introduction, para. 12"), linked to the
+citation itself (`/essays/introduction/#cite-hall2001-1`), and every page whose typed list includes it, linked to the
+entry there. Each frozen version has its own (`/v0.1/references/`), because which passages cite a work, and their
+numbers, differ between versions. Every footer links to the References page of its version. All the references are
+formatted in one citeproc run over the whole bibliography, so the year letters (Stengers 2005a and 2005b) are the
+book's, on the References page and in the popups alike; the typed lists show what their authors typed (Podcasts types
+"Stengers (2005)" for 2005a). When generated lists replace the typed ones, they must keep the book's letters: citeproc
+run on one page's list alone gives 2005a no letter where 2005b is not on the same page.
 
 At the switch to the static edition, `node scripts/to-citation-keys.mjs` prints the change that turns the typed
 citations into Pandoc citations (`[@becker2007, p. 74]`, `[-@fryer1984]` where the author is named in the sentence) and
@@ -667,7 +679,8 @@ waits for the print edition; how editors use it is in "The media register" above
 ## Plan: the References page
 
 Agreed with the publisher on 2026-11-22. The bibliography already works as a register for works: each is entered once,
-with a permanent key. Not built yet.
+with a permanent key. Built in every_trick_in_the_book 1.11.0 (23 November 2026), except the last point (a Zotero
+library and downloads of the bibliography), which is for later; how it works is in "References and citations" above.
 
 - **One page for the whole book**, `/references/`, lists every work in the bibliography once, formatted in the house
   style, each with an anchor made from its key (`/references/#hall2001`). Under each work: every passage that cites it

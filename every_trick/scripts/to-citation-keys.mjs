@@ -30,7 +30,7 @@ const PANDOC = process.env.PANDOC || 'pandoc';
 const all = ['README.md', ...readdirSync(join(REPO_ROOT, 'essays')).filter((f) => f.endsWith('.md')).sort().map((f) => `essays/${f}`)];
 const files = process.argv.length > 2 ? process.argv.slice(2) : all;
 const work = mkdtempSync(join(tmpdir(), 'citation-keys-'));
-const { index, indexPath } = prepareReferences({ pandoc: PANDOC, work, order: all });
+const { index, indexPath } = prepareReferences({ pandoc: PANDOC, work });
 
 // "184" -> "p. 184", "413, 417–18" -> "pp. 413, 417–18", "p.127" -> "p. 127", "para. 12" stays
 function locator(text) {
