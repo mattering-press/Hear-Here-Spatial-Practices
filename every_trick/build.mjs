@@ -1,7 +1,8 @@
 // Builds the static twin: every page of the book, compiled from the unchanged Juncture Markdown into plain
 // HTML in ../_site, with resized images, zoom tiles, a Markdown view of every page (index.md, publication.md)
 // and page.json / publication.json (see CONTRACT.md). Plain-text citations are linked to references/bibliography.json
-// and show their reference in a popup (citations.mjs, filters/citations.lua). Reading paragraphs are numbered
+// and show their reference in a popup (citations.mjs, filters/citations.lua); each edition has a References page
+// (references/) that lists every work, with the passages that cite it. Reading paragraphs are numbered
 // (filters/paragraphs.lua). Each edition has its own search page, /search/, and its own Pagefind index of its reading
 // text, /pagefind/ (see "Plan: search" in DEVELOPMENT.md).
 // Each page goes through Pandoc twice: stage 1 (filters/to-markdown.lua) writes its clean Markdown view,
@@ -25,7 +26,7 @@ import { tmpdir } from 'node:os';
 import { gunzipSync } from 'node:zlib';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { BIBLIOGRAPHY, locate, prepareReferences, report as citationReport } from './citations.mjs';
+import { BIBLIOGRAPHY, COPY_DATA, COPY_STYLES, CSL_COMMIT, DOWNLOADS, formatReferences, locate, prepareReferences, referencesHtml, report as citationReport } from './citations.mjs';
 import { readBook, REPO, REPO_ROOT, repoPath } from './convert.mjs';
 import { mp3Duration, paragraphCues } from './audio.mjs';
 import { makeImages } from './images.mjs';
@@ -51,13 +52,15 @@ const TOOLKIT_CHANGES = 'https://github.com/mattering-press/Hear-Here-Spatial-Pr
 const siteUrl = 'https://hearhere.matteringpress.org/';
 const LATEST_LABEL = 'Latest text, unreleased';
 // What frames every page (template.html): in every footer the publisher's logo (the long one, the icon alone on
-// phones), a credit line and the licence. Paths are files in the repository.
+// phones), a credit line and the licence. Paths are files in the repository. menu: the entries the header's menu adds
+// after the home page's own, written as those are (here in lower case); an empty one leaves its entry out.
 const FRAME = {
   credit: 'convened by Nirmal Puwar',
   publisherUrl: 'https://www.matteringpress.org/',
   logo: 'media/publisher/mattering-press-logo.svg',
   icon: 'media/publisher/mattering-press-icon.svg',
   licence: { name: 'CC BY 4.0', url: 'https://creativecommons.org/licenses/by/4.0/' },
+  menu: { mediaIndex: 'media index', references: 'references' },
 };
 // ---------------------------------------------------------------------------------------------------------
 
@@ -201,11 +204,13 @@ const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replac
 const rawHtml = (html) => JSON.stringify('`' + html.replace(/`/g, '&#96;').replace(/\n/g, ' ') + '`{=html}');
 // root .. url, where url may start with ../ (shared media seen from a version): as lib.join in filters/lib.lua.
 const join2 = (root, url) => (root === './' && url.startsWith('../') ? url : root + url);
-const versionLine = (edition, shared) => {
+// The book's version line in every footer, with links to all versions, the Media Index (shared, at the site's root)
+// and the edition's own References page. shared: the way to the site's root; root: to the edition's root.
+const versionLine = (edition, shared, root) => {
   const v = edition.version;
   const what = v.status === 'latest' ? `${esc(v.label)} · last changed ${longDate(v.date)}`
     : `${esc(v.label)} · ${v.status === 'review' ? 'frozen' : 'released'} on ${longDate(v.date)}`;
-  return `<p class="site-footer__version">${what} · <a href="${shared}versions/">All versions</a> · <a href="${shared}media-index/">Media Index</a></p>`;
+  return `<p class="site-footer__version">${what} · <a href="${shared}versions/">All versions</a> · <a href="${shared}media-index/">Media Index</a> · <a href="${root}references/">References</a></p>`;
 };
 // The toolkit's line in every footer (template.html), below the book's version line.
 const toolkitMeta = { 'toolkit-version': TOOLKIT_VERSION, 'toolkit-home': TOOLKIT_HOME, 'toolkit-changes': TOOLKIT_CHANGES };
@@ -217,6 +222,20 @@ const hypothesis = (edition) => {
     '<script async src="https://hypothes.is/embed.js"></script>';
 };
 const versionMeta = (edition) => ({ 'version-id': edition.version.id, 'version-label': edition.version.label, 'version-date': edition.version.date, 'version-status': edition.version.status, 'toolkit-version': TOOLKIT_VERSION });
+// The notice at the top of every page of a frozen version, with a link (href) to the same page in the newer text it
+// points its readers to. A page's build fills in data-paragraphs, the map of its paragraphs to that page's.
+const versionNotice = (edition, href) => {
+  const v = edition.version, when = `${v.status === 'review' ? 'frozen' : 'released'} on ${longDate(v.date)}`;
+  const link = edition.target === latest ? 'Read the latest text' : `Read the newest release, ${lcFirst(edition.target.version.label)}`;
+  const newest = edition === newestRelease ? ', the newest release' : '';
+  return `<aside class="version-notice" aria-label="About this version"><p>You are reading ${esc(lcFirst(v.label))}, ${when}${newest}. ` +
+    `<a class="version-notice__link" href="${esc(href)}" data-paragraphs="{}">${esc(link)}</a>.</p></aside>`;
+};
+// raw HTML as a block of the Markdown that stage 2 reads
+const rawBlock = (html) => {
+  const fence = '`'.repeat(Math.max(3, ...[...html.matchAll(/`+/g)].map((m) => m[0].length + 1)));
+  return `${fence}{=html}\n${html}\n${fence}\n`;
+};
 // Markdown shown as a page (a page's Markdown view, publication/): the text at a reading width under a line about it.
 const wrapMarkdown = (source, about) => {
   const fence = '`'.repeat(Math.max(3, ...[...source.matchAll(/`+/g)].map((m) => m[0].length + 1)));
@@ -225,10 +244,12 @@ const wrapMarkdown = (source, about) => {
 };
 // One folder further from the site's root: from a page to its Markdown view.
 const deeper = (root) => (root === './' ? '../' : root + '../');
-// The parts of the frame that are the same on every page of an edition (template.html); s is the site's root.
+// The parts of the frame that are the same on every page of an edition (template.html); s is the site's root. The menu
+// ends with the Media Index (shared, at the site's root) and the edition's References page.
 const frameMeta = (edition, s) => ({
   'book-title': edition.home.title, credit: FRAME.credit, publisher: PUBLICATION.publisher, 'publisher-url': FRAME.publisherUrl,
   licence: FRAME.licence?.name, 'licence-url': FRAME.licence?.url, logo: FRAME.logo && s + FRAME.logo, icon: FRAME.icon && s + FRAME.icon,
+  'menu-media-index': FRAME.menu?.mediaIndex, 'menu-references': FRAME.menu?.references,
 });
 // The metadata file that stage 2 reads: the menu, and values of raw HTML (version notice, footer line, picture).
 const writeYaml = (file, menu, extra) => writeFileSync(file, [
@@ -295,7 +316,7 @@ for (const edition of editions) {
 }
 
 // 4c. Stage 2 of every page: HTML from its Markdown view (index.html), its Markdown view's page, and page.json.
-const report = { paragraphs: [], matching: [], citations: [] };
+const report = { paragraphs: [], matching: [], citations: [], references: [] };
 // An edition is built after the one its notice points to, whose paragraphs it is matched against.
 for (const edition of editions) edition.paragraphs = new Map();
 for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...editions.slice(1).filter((e) => e !== newestRelease)]) {
@@ -310,8 +331,12 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     warnings.push(`${edition.name} has no references/bibliography.json; its citations are linked with the working tree's`);
     bibliography = BIBLIOGRAPHY;
   }
-  const references = prepareReferences({ pandoc: PANDOC, work: scratch, order: edition.order, bibliography });
+  const references = prepareReferences({ pandoc: PANDOC, work: scratch, bibliography });
   edition.references = references;
+  // for the edition's References page: every linked citation ({ key, file, anchor, para, note, after, inPage }) and
+  // every entry of a typed reference list ({ key, file }), page by page
+  edition.citing = [];
+  edition.listing = [];
   const target = edition.target;
   edition.searchable = [];   // this edition's pages as built, for its search index (step 7)
 
@@ -331,18 +356,11 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     // the frame of this page as seen from `from`, the page's own folder ('') or its Markdown view ('markdown/')
     const frame = (from) => {
       const r = from ? deeper(root) : root, s = join2(r, prefix) || './';
-      const extra = { version_line: versionLine(edition, s) };
+      const extra = { version_line: versionLine(edition, s, r) };
       if (edition.annotations === 'hypothesis') extra.annotations = hypothesis(edition);
-      if (target) {
-        // The notice links to the same page there (its home page if the page is gone). paragraphs.js takes the reader
-        // to the passage they are reading, with the map of this page's paragraphs to that page's added below.
-        const href = join2(s, target.dir + (there ? url : ''));
-        const v = edition.version, when = `${v.status === 'review' ? 'frozen' : 'released'} on ${longDate(v.date)}`;
-        const link = target === latest ? 'Read the latest text' : `Read the newest release, ${lcFirst(target.version.label)}`;
-        const newest = edition === newestRelease ? ', the newest release' : '';
-        extra.version_notice = `<aside class="version-notice" aria-label="About this version"><p>You are reading ${esc(lcFirst(v.label))}, ${when}${newest}. ` +
-          `<a class="version-notice__link" href="${esc(href)}" data-paragraphs="{}">${esc(link)}</a>.</p></aside>`;
-      }
+      // The notice links to the same page there (its home page if the page is gone). paragraphs.js takes the reader
+      // to the passage they are reading, with the map of this page's paragraphs to that page's added below.
+      if (target) extra.version_notice = versionNotice(edition, join2(s, target.dir + (there ? url : '')));
       if (band) extra.page_band = `<img src="${esc(join2(r, band.url))}" width="${band.width}" height="${band.height}" alt="" fetchpriority="high">`;
       const yaml = join(scratch, page.file.replace(/\W/g, '_') + (from ? '.markdown' : '') + '.yaml');
       writeYaml(yaml, edition.menu, extra);
@@ -380,6 +398,14 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
       if (a) Object.assign(a, { anchor: d.anchor, after: d.after || null });
     }
 
+    // what the References page says of this page: the works its typed list has, and its linked citations
+    const typed = list(data.typed)[0] || {};
+    const listedHere = new Set(list(typed.listed));
+    for (const key of listedHere) edition.listing.push({ key, file: page.file });
+    for (const c of list(data.citations)) {
+      if (c.status === 'matched' && c.key && c.id) edition.citing.push({ key: c.key, file: page.file, anchor: c.id, para: c.para || null, note: c.note || null, after: c.after || null, inPage: listedHere.has(c.key) });
+    }
+
     page.url = url || './';
     writeFileSync(join(dir, 'page.json'), JSON.stringify({
       contract: CONTRACT, paragraphRule: edition.rule, id: page.file, url: page.url, title: page.title, subtitle: page.subtitle,
@@ -395,6 +421,54 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
       references: list(data.references).map(({ key, html, url, citations }) => ({ key, html, url, citations: list(citations) })),
     }, null, 2) + '\n');
     if (edition === latest) report.citations.push({ file: page.file, citations: locate(readFileSync(join(REPO_ROOT, page.file), 'utf8'), list(data.citations)), typed: list(data.typed)[0] || { listed: [], unmatched: [] } });
+  }
+
+  // The References page of this edition, references/ (referencesHtml in citations.mjs): every work of its bibliography
+  // once, in the order of the house style's reference list, each with the passages that cite it and the pages whose
+  // typed lists include it, in reading order. A citation whose page does not list its work links to it there.
+  // Beside it, the whole bibliography to download as BibTeX, RIS and CSL-JSON, and formatted.json, every work in each
+  // style of the page's Copy menus (formatReferences; assets/references.js).
+  {
+    const rank = (file) => (edition.order.includes(file) ? edition.order.indexOf(file) : edition.order.length);
+    const byPage = (a, b) => rank(a.file) - rank(b.file);   // (stable: a page's citations stay in their order)
+    const titleOf = (file) => edition.byFile.get(file).title;
+    const works = references.order.map((key) => {
+      const passages = new Set();   // a passage that cites the work twice is named once, with a link to the first
+      const cited = edition.citing.filter((c) => c.key === key).sort(byPage)
+        .filter((c) => { const at = `${c.file}|${c.para || c.note || c.after || ''}`; return !passages.has(at) && passages.add(at); })
+        .map((c) => ({ title: titleOf(c.file), url: `${urlOf(c.file)}#${c.anchor}`, para: c.para, note: c.note, after: c.after }));
+      const listed = [...new Set(edition.listing.filter((l) => l.key === key).sort(byPage).map((l) => l.file))]
+        .map((file) => ({ title: titleOf(file), url: `${urlOf(file)}#ref-${key}` }));
+      return { key, html: references.index[key].html, cite: references.cites[key] || key, cited, listed };
+    });
+    const s = join2('../', prefix) || './';
+    const extra = { version_line: versionLine(edition, s, '../') };
+    if (edition.annotations === 'hypothesis') extra.annotations = hypothesis(edition);
+    if (target) extra.version_notice = versionNotice(edition, join2(s, `${target.dir}references/`));
+    const yaml = join(scratch, 'references.yaml');
+    writeYaml(yaml, edition.menu, extra);
+    // It is searched, in this edition's index (step 7), each work a place of its own in the results ("Stengers 2005a").
+    const referencesPage = pandoc(['-f', 'markdown', '-t', 'html5', '--wrap=none', '-s', '--template', join(TOOLKIT_DIR, 'template.html'), '--metadata-file', yaml,
+      ...metaArgs({ page: 'references', repo: REPO, manifest, lang: PUBLICATION.language, title: 'References', ...toolkitMeta, ...frameMeta(edition, s),
+        root: '../', shared: s, 'asset-version': ASSET_VERSION, 'site-title': edition.home.title, noindex: NOINDEX ? 'true' : '', searchable: 'true',
+        'references-page': 'true', 'on-references': 'true' }), ...filterArgs(['links'])],
+      rawBlock(referencesHtml(works, { root: '../' })), `${edition.name}: references/`);
+    mkdirSync(join(out, 'references'), { recursive: true });
+    writeFileSync(join(out, 'references', 'index.html'), referencesPage);
+    let formats;
+    try { formats = formatReferences({ pandoc: PANDOC, work: scratch, references }); } catch (e) { fail(`${edition.name}: ${e.message}`); }
+    if (edition === latest) warnings.push(...formats.warnings);
+    writeFileSync(join(out, 'references', DOWNLOADS.bibtex), formats.bibtex);
+    writeFileSync(join(out, 'references', DOWNLOADS.ris), formats.ris);
+    writeFileSync(join(out, 'references', DOWNLOADS.csljson), formats.csljson);
+    writeFileSync(join(out, 'references', COPY_DATA), JSON.stringify({
+      contract: CONTRACT, every_trick_in_the_book: TOOLKIT_VERSION, version: edition.version,
+      styles: COPY_STYLES.map(({ id, label, short, csl, locale, entry }) => ({ id, label, short, ...(csl ? { csl: `https://github.com/citation-style-language/styles/blob/${CSL_COMMIT}/${csl}`, locale } : {}), ...(entry ? { entry } : {}) })),
+      works: formats.texts,
+    }) + '\n');
+    edition.searchable.push({ url: '/references/', content: referencesPage });
+    report.references.push({ edition, works: works.length, cited: works.filter((w) => w.cited.length).length,
+      citations: edition.citing.length, inPage: edition.citing.filter((c) => c.inPage).length });
   }
 
   // publication.json, in the reading order worked out above.
@@ -418,7 +492,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
   {
     const s = join2('../', prefix) || './';
     const yaml = join(scratch, 'publication.yaml');
-    writeYaml(yaml, edition.menu, { version_line: versionLine(edition, s) });
+    writeYaml(yaml, edition.menu, { version_line: versionLine(edition, s, '../') });
     mkdirSync(join(out, 'publication'), { recursive: true });
     writeFileSync(join(out, 'publication', 'index.html'), pandoc(['-f', 'markdown', '-t', 'html5', '--wrap=none', '-s', '--template', join(TOOLKIT_DIR, 'template.html'), '--metadata-file', yaml,
       ...metaArgs({ page: 'publication.md', repo: REPO, manifest, lang: PUBLICATION.language, title: 'The whole book in Markdown', ...toolkitMeta, ...frameMeta(edition, s),
@@ -435,7 +509,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     const s = join2('../', prefix) || './';
     const yaml = join(scratch, 'search.yaml');
     const v = edition.version;
-    const extra = { version_line: versionLine(edition, s) };
+    const extra = { version_line: versionLine(edition, s, '../') };
     if (edition !== latest) {
       extra.version_notice = `<aside class="version-notice" aria-label="About this version"><p>You are searching ${esc(lcFirst(v.label))}, ` +
         `${v.status === 'review' ? 'frozen' : 'released'} on ${longDate(v.date)}. <a class="search-elsewhere" href="${esc(join2(s, 'search/'))}">Search the latest text</a>.</p></aside>`;
@@ -479,7 +553,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
   mkdirSync(dir, { recursive: true });
   const yaml = join(work, 'versions.yaml');
   const home = latest.home;
-  writeYaml(yaml, latest.menu, { version_line: versionLine(latest, '../') });
+  writeYaml(yaml, latest.menu, { version_line: versionLine(latest, '../', '../') });
   const html = pandoc(['-f', 'markdown', '-t', 'html5', '--wrap=none', '-s', '--template', join(TOOLKIT_DIR, 'template.html'), '--metadata-file', yaml,
     ...metaArgs({ page: 'versions.md', repo: REPO, manifest: latest.manifest, 'contract-out': join(work, 'versions.json'), lang: PUBLICATION.language, title: 'Versions',
       ...toolkitMeta, ...frameMeta(latest, '../'), root: '../', shared: '../', 'asset-version': ASSET_VERSION, 'site-title': home.title, 'paragraph-numbers': 'false', noindex: NOINDEX ? 'true' : '' }),
@@ -507,11 +581,6 @@ const pandocAsync = (args, input, file) => new Promise((resolve) => {
 const inParallel = async (list, task) => {
   const queue = [...list];
   await Promise.all(Array.from({ length: 6 }, async () => { for (let x; (x = queue.shift()) !== undefined;) await task(x); }));
-};
-// raw HTML as a block of the Markdown that stage 2 reads
-const rawBlock = (html) => {
-  const fence = '`'.repeat(Math.max(3, ...[...html.matchAll(/`+/g)].map((m) => m[0].length + 1)));
-  return `${fence}{=html}\n${html}\n${fence}\n`;
 };
 const ordinal = (n) => ['first', 'second', 'third', 'fourth', 'fifth'][n - 1] || `${n}th`;
 const rawGitHub = (path) => `https://raw.githubusercontent.com/${REPO}/main/${path.split('/').map(encodeURIComponent).join('/')}`;
@@ -594,7 +663,7 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
   writeFileSync(itemManifest, JSON.stringify({ ...manifestOf('', allFiles), items: itemsFor('') }));
   const pageFrame = (root, extra = {}) => {
     const yaml = join(work, `frame-${root.length}.yaml`);
-    if (!existsSync(yaml)) writeYaml(yaml, latest.menu, { version_line: versionLine(latest, root) });
+    if (!existsSync(yaml)) writeYaml(yaml, latest.menu, { version_line: versionLine(latest, root, root) });
     return ['-f', 'markdown-implicit_figures', '-t', 'html5', '--wrap=none', '-s', '--template', join(TOOLKIT_DIR, 'template.html'), '--metadata-file', yaml,
       ...metaArgs({ repo: REPO, lang: PUBLICATION.language, ...toolkitMeta, ...frameMeta(latest, root), root, shared: root, 'asset-version': ASSET_VERSION,
         'site-title': latest.home.title, ...extra })];
@@ -608,7 +677,7 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
     }
     body += `\n${rawBlock(itemFacts(it, { root: '../../', siteUrl }))}`;
     const html = await pandocAsync([...pageFrame('../../', { ...meta, pagetitle: `${it.label ? `Item ${it.label}` : 'New item'}: ${it.heading}`, 'item-page': 'true',
-      'section-title': it.label ? `Item ${it.label}` : 'New item', 'section-url': `../../media-index/#${it.anchor}`, noindex: NOINDEX ? 'true' : '' }),
+      'section-title': it.label ? `Item ${it.label}` : 'New item', 'section-url': `../../media-index/#${it.anchor}`, 'in-media-index': 'true', noindex: NOINDEX ? 'true' : '' }),
       ...filterArgs(['figures', 'embeds', 'links'])], body, name);
     mkdirSync(join(SITE, it.url), { recursive: true });
     writeFileSync(join(SITE, it.url, 'index.html'), html);
@@ -631,7 +700,7 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
   // (step 7), each entry a place of its own in the results ("item 37"; mediaIndexHtml). The item pages, which hold the
   // same words, the short and former addresses and the editing view are in no index.
   const indexHtml = mediaIndexHtml(views, { root: '../', script: `../assets/media-index.js?v=${ASSET_VERSION}`, preview: PREVIEW });
-  const indexPage = pandoc([...pageFrame('../', { page: 'media-index', title: 'Media Index', noindex: NOINDEX ? 'true' : '', searchable: 'true' }),
+  const indexPage = pandoc([...pageFrame('../', { page: 'media-index', title: 'Media Index', noindex: NOINDEX ? 'true' : '', searchable: 'true', 'on-media-index': 'true' }),
     ...filterArgs(['links'])], rawBlock(indexHtml), 'the Media Index');
   mkdirSync(join(SITE, 'media-index'), { recursive: true });
   writeFileSync(join(SITE, 'media-index', 'index.html'), indexPage);
@@ -641,7 +710,7 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
     const editHtml = mediaEditHtml(views, { root: '../../', script: `../../assets/media-index.js?v=${ASSET_VERSION}`, names, rights: RIGHTS });
     mkdirSync(join(SITE, 'media-index', 'edit'), { recursive: true });
     writeFileSync(join(SITE, 'media-index', 'edit', 'index.html'), pandoc([...pageFrame('../../', { page: 'media-index/edit', title: 'Editing view',
-      pagetitle: 'Media Index: editing view', 'section-title': 'Media Index', 'section-url': '../', noindex: 'true' }), ...filterArgs(['links'])], rawBlock(editHtml), 'the editing view'));
+      pagetitle: 'Media Index: editing view', 'section-title': 'Media Index', 'section-url': '../', 'in-media-index': 'true', noindex: 'true' }), ...filterArgs(['links'])], rawBlock(editHtml), 'the editing view'));
   }
 
   // media.json: every item, for other frontends (CONTRACT.md). URLs are relative to the site's root.
@@ -660,8 +729,9 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
 
 // 7. Search: one Pagefind index for each edition, of its pages' reading text only (<main>, marked data-pagefind-body by
 //    the template; cards are left out by filters/cards.lua). The Markdown views, publication/, versions/ and search/
-//    are not in it. The latest text's index also holds the Media Index, which all editions share (step 6); the item
-//    pages, their short and former addresses and the editing view are in no index.
+//    are not in it. Each edition's index also holds its References page (step 4c), and the latest text's the Media
+//    Index, which all editions share (step 6); the item pages, their short and former addresses and the editing view
+//    are in no index.
 //    Result addresses are root-absolute here (/essays/aya_nassar/); search.js makes them relative.
 //    Pagefind's own search boxes are not used, so their files are removed; its licence goes with the index.
 //    A page whose reading text is only cards (Events) has nothing to index; the report lists such pages.
@@ -708,6 +778,11 @@ console.log(`Built ${pageCount} pages${editions.length > 1 ? ` in ${editions.len
   const numbered = media.items.filter((it) => it.number !== null), fresh = media.items.filter((it) => it.number === null);
   console.log(`  Media items: ${media.items.length}, ${numbered.length} with a number (${counted(numbered)})${fresh.length ? `, ${fresh.length} new, not numbered yet (${fresh.map((it) => it.name).join(', ')})` : ''}; ` +
     `${mediaReport.pages} item pages, ${mediaReport.short} short addresses, ${mediaReport.forwards} former name${mediaReport.forwards === 1 ? '' : 's'} forwarded. The editing view ${PREVIEW ? 'is built: a preview build' : 'is not built: it is for previews only'}.`);
+}
+// the References pages: how many citations lead to their page's own list, and how many to the References page
+for (const r of report.references) {
+  console.log(`  References page ${`${r.edition.dir}references/`.padEnd(16)} ${r.works} works, ${r.cited} of them cited; of ${r.citations} linked citations, ` +
+    `${r.inPage} lead to their page's own reference list and ${r.citations - r.inPage} to the References page.`);
 }
 // what the zoomable pictures' widths for srcset add to the images (the files made for nothing else)
 console.log(`  Of the images, ${mb(widths.bytes)} are the ${widths.files} extra widths of the zoomable pictures (srcset); ` +

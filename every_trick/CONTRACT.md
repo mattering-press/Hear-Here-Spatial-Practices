@@ -20,7 +20,12 @@ media items (below): every picture, recording, video and document has a number f
 of its own; `items` in page.json, `media.json` at the root of the site, and the items' anchors and number pills in
 the HTML. Media in the margin are items with their own numbers, no longer figures with the chapter's numbering. An
 item may have a credit, rights (the address of a rightsstatements.org statement or a Creative Commons licence, with a
-note) and how to cite its own source, in the register and in `media.json`; empty ones are never shown. The paragraph
+note) and how to cite its own source, in the register and in `media.json`; empty ones are never shown. 0.5 also gives
+each edition a References page, `references/`, which lists every work of the bibliography (see "Citations in the
+HTML"): a reference's `url` in page.json, like the citation's link, points at the work's entry there
+(`references/#hall2001`) when the page's own typed list lacks the work, where it pointed at the first page in reading
+order whose list has it, and puts beside it the edition's bibliography to download, as CSL-JSON, BibTeX and RIS, and
+`formatted.json`, every work in the styles of the page's Copy menus (every_trick_in_the_book 1.12.0). The paragraph
 rule of 0.5 is 0.4's, unchanged.
 
 ## Editions
@@ -28,10 +33,10 @@ rule of 0.5 is 0.4's, unchanged.
 The root of the site is the working text, "latest, unreleased". Every version listed in `versions.json` at the
 root of the repository is built as well, from the text of its Git tag but with the current toolkit, into its own
 folder, `v<id>/` (for example `v0.9-review2/essays/aya_nassar/`). Each such edition has its own
-`publication.json`, `publication.md` and pages. Images, tiles, video, PDF files, the stylesheet and the scripts are
-stored once, at the site's root, and shared by all editions, so inside a frozen version their URLs start with `../`
-(`../images/x-1600.jpg`); resolved against the edition's root, they point at the shared copy. `versions/` at the
-site's root lists every edition.
+`publication.json`, `publication.md`, References page (`references/`, with the bibliography to download) and pages. Images, tiles, video, PDF files, the
+stylesheet and the scripts are stored once, at the site's root, and shared by all editions, so inside a frozen version
+their URLs start with `../` (`../images/x-1600.jpg`); resolved against the edition's root, they point at the shared
+copy. `versions/` at the site's root lists every edition.
 
 ## Paragraph numbers
 
@@ -167,7 +172,7 @@ its mark in the text, at the end of the paragraph before it, is `<a class="margi
 | `audio` | `{ url, title }`; `url` is the MP3 on GitHub, which supports range requests |
 | `video` | `{ url, title, kind }`; `kind` is `youtube`, `vimeo`, `file` (a video file in the site) or `embed` (any other embedded page, such as the Internet Archive or the BBC); `url` is the address given in the Markdown |
 | `links` | links in the page's text (not its menu or footer) to other pages, as `{ id, url, text }`, each target once, in order of first appearance; citation links are not included |
-| `references` | works from the book's bibliography (`references/bibliography.json`) that the page cites or lists, as `{ key, html, url, citations }`: first those cited, in order of first citation, then the rest of the page's typed reference list. `key` is the entry's id in the bibliography (`hall2001`); `html` is the reference formatted in the house style, as an HTML fragment (`<em>`, `<span>`, `<a>`); `url` is the entry in a typed reference list, on this page if its list has it, otherwise on the first page in reading order that does (`essays/introduction/#ref-hall2001`); `citations` are the ids of the citation links in this page's text that point to it (`cite-hall2001-1`), `[]` when the page only lists it |
+| `references` | works from the book's bibliography (`references/bibliography.json`) that the page cites or lists, as `{ key, html, url, citations }`: first those cited, in order of first citation, then the rest of the page's typed reference list. `key` is the entry's id in the bibliography (`hall2001`); `html` is the reference formatted in the house style, as an HTML fragment (`<em>`, `<span>`, `<a>`); `url` is the entry in this page's typed reference list if the list has it (`essays/introduction/#ref-hall2001`), otherwise the work's entry on the edition's References page (`references/#hall2001`); `citations` are the ids of the citation links in this page's text that point to it (`cite-hall2001-1`), `[]` when the page only lists it |
 
 ## Media items
 
@@ -282,10 +287,45 @@ The only raw HTML that remains is the third-party smartframe script embeds in `e
 During the parallel run the Markdown keeps its plain-text citations and typed reference lists. The build links them
 (`filters/citations.lua`); the text of the page does not change:
 
-- a citation is `<a class="citation" id="cite-<key>-<n>" href="…#ref-<key>" data-popover="ref-popover-<key>"
-  aria-describedby="ref-text-<key>">` around the text inside its brackets, as typed (`Hall, 2001`, `2017:147`);
+- a citation is `<a class="citation" id="cite-<key>-<n>" href="#ref-<key>" data-popover="ref-popover-<key>"
+  aria-describedby="ref-text-<key>">` around the text inside its brackets, as typed (`Hall, 2001`, `2017:147`), when
+  the page's own typed list has the work, and has `href="<the edition's root>references/#<key>"` when it does not;
 - an entry of a typed reference list that is in the bibliography is `<div id="ref-<key>" class="typed-reference">`;
   a paragraph holding two entries has an empty `<span id="ref-<key>">` for the second;
 - the references the page cites are at the end of `<main>`, each in
   `<div id="ref-popover-<key>" class="citation-popover" popover="manual">` with the formatted reference in
   `<p id="ref-text-<key>">`; `assets/citations.js` shows them.
+
+The References page, `references/` at the root of each edition (`v0.1/references/` for version 0.1), lists every work
+of that edition's bibliography once, formatted in the house style without the dash for a repeated author, in the order
+of the house style's reference list (by author, then year, then key, so that `stengers2005a` comes before
+`stengers2005b`). Each work is `<li id="<key>" class="reference">` in `<ul class="reference-list">`, so that
+`references/#hall2001` finds it, with the reference in `<p class="reference__text">` and, in
+`<dl class="reference__where">`, "Cited in": a link to each passage of the edition that cites it, named by page title
+and paragraph (`Introduction, para. 12`; a citation outside the numbered paragraphs is named by the margin note it is
+in, `Introduction, note 3`, or else by the paragraph before it, `Introduction, after para. 11`), pointing at the
+citation (`../essays/introduction/#cite-hall2001-1`; a paragraph that cites the work twice is named once), and
+"Listed in": a link to the work in each typed reference list that has it (`../essays/podcasts/#ref-hall2001`), both in
+reading order. A row is left out when it would be empty. All the references of an edition are formatted in one
+citeproc run over its whole bibliography, so their year letters (`2005a`, `2005b`) are the same on every page and on
+the References page.
+
+Beside the References page, in the same folder, are the edition's bibliography and the texts of its Copy menus, every
+work in the page's order:
+
+- `bibliography.json`: the bibliography in CSL-JSON, as `references/bibliography.json` in the repository (or in the
+  version's tag) has it, without `custom`, which records for the build where each entry is typed in the pages;
+- `bibliography.bib`: the same in BibTeX, as Pandoc writes it, with `doi` and `urldate` added where a work has them;
+- `bibliography.ris`: the same in RIS, with the tags in the places Zotero's RIS translator reads them, the entry's key
+  as `ID`, UTF-8 and the specification's CRLF line ends;
+- `formatted.json`: `{ contract, every_trick_in_the_book, version, styles, works }`. `styles` lists the forms of the
+  Copy menu in its order, each `{ id, label, short }` (the menu's name and the confirmation's: `APA (7th edition)`,
+  `APA`), with the address of its CSL file and the `locale` it is formatted in for a citation style, and `entry: true`
+  for an entry of a reference manager. `works` holds, for each key, the work in each form as plain text: `house` (the
+  house style as the page shows it, with the book's year letters), `apa`, `chicago`, `mla` and `harvard` (each work
+  formatted on its own, without year letters or dashes for a repeated author, as a reference manager copies it), and
+  `bibtex` and `ris` (the entry as in the files above, with `\n` line ends).
+
+The list of the References page, `<div class="references">`, names `formatted.json` in `data-copy` and the forms of the
+menu in `data-copy-styles` (JSON); `assets/references.js` makes the Copy buttons from them, so they are not part of
+the page's HTML.

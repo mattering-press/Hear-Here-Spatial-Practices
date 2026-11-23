@@ -13,7 +13,7 @@ const SITE = join(REPO_ROOT, '_site');
 const base = `/${values.base}/`.replace(/\/+/g, '/');
 const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.json': 'application/json',
   '.jpg': 'image/jpeg', '.png': 'image/png', '.svg': 'image/svg+xml', '.webp': 'image/webp', '.gif': 'image/gif', '.woff2': 'font/woff2', '.txt': 'text/plain; charset=utf-8', '.md': 'text/markdown; charset=utf-8',
-  '.mp4': 'video/mp4', '.mp3': 'audio/mpeg', '.pdf': 'application/pdf' };
+  '.mp4': 'video/mp4', '.mp3': 'audio/mpeg', '.pdf': 'application/pdf', '.bib': 'application/x-bibtex; charset=utf-8', '.ris': 'application/x-research-info-systems; charset=utf-8' };
 
 createServer((req, res) => {
   const send = (status, headers = {}) => { res.writeHead(status, headers); res.end(); };

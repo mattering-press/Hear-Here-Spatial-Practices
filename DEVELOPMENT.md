@@ -132,30 +132,43 @@ line. Images without alt text are listed as warnings.
 The Markdown view: next to every page's `index.html` the build writes `index.md`, the page as clean Pandoc
 Markdown with front matter and no Juncture syntax, and `publication.md` at the site root holds the whole
 book in reading order with absolute URLs (from `siteUrl` in `build.mjs`). The HTML is built from that
-Markdown, so the two cannot drift apart. Every page has a "Page / Markdown" switch of plain links in its header.
-"Markdown" leads to `markdown/` beside the page: the same header and footer, with `index.md` shown at a reading
+Markdown, so the two cannot drift apart. Every page has a Page / Markdown switch of plain links in its header (see
+"Header" below). "Markdown" leads to `markdown/` beside the page: the same header and footer, with `index.md` shown at a reading
 width and a link to download it. `publication/` at the root of each edition does the same for `publication.md`, the
 whole book; its switch stays on "Markdown", and "Page" leads back to the page the reader came from (a line of
 script in the template reads it from the referrer), or to the home page. The format of the Markdown media blocks is in `every_trick/CONTRACT.md`.
 
 The frame of every page:
 
-- **Header.** A bar that is the same on every page: the book's title (a link to the home page), the menu and the
-  Page / Markdown switch. The menu is the home page's (`README.md`); the menus in the other pages' `.ve-header`
-  lines are ignored. Below the bar, the page's title, over the picture of its own `.ve-header` line, cropped to a
-  band of the same height on every page. A page reached through a card names its section above its title (Podcasts,
-  Events), and that section is marked in the menu. To give a page its own header picture, change the picture in its
-  `.ve-header` line.
+- **Header.** A bar that is the same on every page and keeps one row at every width from 320 px: the book's title (a
+  link to the home page), the menu, and at the right end the tools: the views switch, search and "Aa". The menu is the
+  home page's (`README.md`), followed by "media index" and "references" (the Media Index, shared by all versions,
+  and the References page of the version being read; their words are `FRAME.menu` at the top of
+  `every_trick/build.mjs`); the menus in the other pages' `.ve-header` lines are ignored. Where the whole menu does
+  not fit beside the title and the tools, it folds into a menu button (☰, named "Menu") at the start of the tools,
+  which opens a panel listing every entry (`every_trick/assets/menu.js`): opening it moves the focus to its first
+  entry, Escape closes it and puts the focus back on the button, and a click or tap outside, or Tab past its last
+  entry, closes it. The button is a `<details>`, so without JavaScript it opens and closes all the same. The width at
+  which the menu folds is a container query in `every_trick/assets/site.css` ("the menu button"), in rem, so that it
+  follows the reader's text size: this book's bar needs 62.2rem (995 px at the usual size, measured on 2026-11-23),
+  so the menu shows from 63rem (1008 px) and folds below; measure again and change it when the menu changes. On phones
+  the title and the tools get smaller; at 320 px the title ends in an ellipsis. The views switch is a round-ended pill
+  of icons, each a plain link with its name for screen readers and in a tooltip: Page (a sheet) and Markdown (the
+  Markdown mark), and later Collage, the third segment it is made for (its icon waits in a comment in
+  `every_trick/template.html`). Below the bar, the page's title, over the picture of its own `.ve-header` line,
+  cropped to a band of the same height on every page. A page reached through a card names its section above its title
+  (Podcasts, Events), and that section is marked in the menu. To give a page its own header picture, change the
+  picture in its `.ve-header` line.
 - **Search.** A magnifier beside "Aa" leads to the edition's search page, `search/` (see "Plan: search").
-- **Settings.** The "Aa" button beside the switch opens the reader's settings (`every_trick/assets/settings.js`):
+- **Settings.** The "Aa" button at the end of the bar opens the reader's settings (`every_trick/assets/settings.js`):
   text size in four steps (90, 100, 115 and 130 per cent; the whole page scales, the text column with it) and colours:
   System (the preset, which follows the reader's device), Light or Dark. The browser keeps the choice
   (`localStorage`), and a line in the template's `<head>` applies it before the page is drawn. The dark colours are
   set in `every_trick/assets/site.css`, below the light ones; the publisher's logo turns white in dark mode.
 - **Footer.** The publisher's logo (the long one; the icon alone on phones), a credit line with the licence, the
-  book's version line (with links to all versions and to the Media Index) and the toolkit's line. They are set in
-  `FRAME` at the top of `every_trick/build.mjs`, with the logos in `media/publisher/`; the `.ve-footer` lines in the
-  pages are ignored.
+  book's version line (with links to all versions, to the Media Index and to the References page of the same version)
+  and the toolkit's line. They are set in `FRAME` at the top of `every_trick/build.mjs`, with the logos in
+  `media/publisher/`; the `.ve-footer` lines in the pages are ignored.
 
 What is in `every_trick/`:
 
@@ -165,16 +178,23 @@ What is in `every_trick/`:
 - `register.mjs`: reads and writes the media register (`media/register.csv`), matches every item on the pages to its line, drafts names for new items, names each item's rights ("In Copyright") and makes the build's checks of the register (see "The media register")
 - `media-pages.mjs`: the HTML of the item pages' facts, the Media Index, its editing view and the pages that forward short and former addresses
 - `filters/`: Lua filters, one job each. `items.lua` and `to-markdown.lua` are stage 1 (`items` lists the page's media items for the register; `to-markdown` writes the Markdown view); `figures`, `embeds`, `cards`, `transcript`, `links`, `citations`, `paragraphs`, `cues` (marks transcript paragraphs with their times from a recording's cue file), `margins` and `contract` are stage 2 (Markdown view to HTML and `page.json`)
-- `citations.mjs`: prepares the bibliography for `filters/citations.lua` and writes the build's report on citations
-- `csl/`: `mattering-press.csl`, the house citation style, and its test (`csl/test/`)
+- `citations.mjs`: prepares the bibliography for `filters/citations.lua`, writes the build's report on citations, the
+  HTML of the References page, its downloads and the texts of its Copy menus (see "References and citations")
+- `ris.mjs`: turns a CSL-JSON entry into RIS, which Pandoc cannot write, for the References page
+- `csl/`: `mattering-press.csl`, the house citation style, and its test (`csl/test/`); and four styles of the official
+  CSL repository, unchanged, for the References page's Copy menus: `apa.csl`, `chicago-author-date.csl`,
+  `modern-language-association.csl` and `harvard-cite-them-right.csl` (source, commit and licence in
+  `every_trick/NOTICE.md`; to update them, copy them again from a newer commit and change `CSL_COMMIT` in
+  `citations.mjs` and the commit in `NOTICE.md`)
 - `scripts/to-citation-keys.mjs`: for the switch, shows how the plain-text citations would become Pandoc citations
 - `scripts/align.mjs`: times a podcast transcript's paragraphs against its recordings with whisper.cpp, on the editor's computer, and writes the cue files and a report (see "Plan: podcast player and transcript")
 - `scripts/number-media.mjs` (`npm run number-media -- <version>`): numbers the media items of a frozen version that have no number yet, in its reading order, and writes the register (see "Freezing a version for review or release")
 - `template.html`: the HTML around every page. It links the stylesheet and scripts with `?v=` and a hash of their contents, so that browsers fetch them again after every change instead of keeping an old copy
-- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `search.js` (the search page; see "Plan: search"), `place.js` (keeps the reader's place for the search page's ×), `zoom.js` (the pictures' Zoom buttons, the zoom viewer and the pause button of animations; see "Plan: image display and the zoom viewer"), `player.js` (the podcast player and its docked bar; see "Plan: podcast player and transcript"), `citations.js`, `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens), `media-index.js` (the Media Index's filters, and the editing view's fields, checks and change sheet)
+- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `search.js` (the search page; see "Plan: search"), `place.js` (keeps the reader's place for the search page's ×), `zoom.js` (the pictures' Zoom buttons, the zoom viewer and the pause button of animations; see "Plan: image display and the zoom viewer"), `player.js` (the podcast player and its docked bar; see "Plan: podcast player and transcript"), `citations.js`, `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens), `media-index.js` (the Media Index's filters, and the editing view's fields, checks and change sheet), `menu.js` (the header's menu button), `references.js` (the References page's Copy buttons and their menu)
 - `images.mjs`: resized images (each zoomable picture in several widths for `srcset`) and the tiles for zooming; an animated GIF becomes an animated WebP and a still
 - `audio.mjs`: reads the length of an MP3 from the file, for the podcast players
-- `check.mjs`, `serve.mjs`: the link check and the local server
+- `check.mjs`, `serve.mjs`: the link check (it also confirms that every edition has its search index, and its References
+  page with the downloads and the Copy menus' texts, each with every work) and the local server
 - `CONTRACT.md`: the `page.json`, `publication.json` and `media.json` files that other frontends can read, the paragraph rule and the media items
 - `package.json`: the toolkit's name and version (see "Versions of the book and of every_trick" below)
 - `CHANGELOG.md`: every version of the toolkit and what changed in it
@@ -419,11 +439,41 @@ During the parallel run the essays keep their typed citations and reference list
   in the brackets becomes a link, and the reference, formatted in the house style, opens in a popup on hover, keyboard
   focus or tap. Without JavaScript the link goes to the reference;
 - a link goes to the entry in the page's own typed list, or, when the page cites a work its list does not have, to the
-  entry on the first page in reading order that lists it. That is simpler than a separate references page, and every
-  work in the bibliography is listed on some page;
+  work's entry on the References page of the same version (below);
 - the build prints, per page, the citations found, linked and not matched (with file, line and a hint), the years in
   brackets it read as dates, the paragraphs of typed lists that are not bibliography entries, and the entries no page
-  cites. Correct the essay, or add the work to the bibliography, and build again.
+  cites; and, for each version, how many citations lead to their page's own list and how many to the References page.
+  Correct the essay, or add the work to the bibliography, and build again.
+
+The References page, `/references/`, lists every work in the bibliography once, formatted in the house style and in
+the order of its reference lists (by author, then year), each with an anchor made from its key (`/references/#hall2001`).
+Under each work: every passage that cites it, as page title and paragraph ("Introduction, para. 12"), linked to the
+citation itself (`/essays/introduction/#cite-hall2001-1`), and every page whose typed list includes it, linked to the
+entry there. Each frozen version has its own (`/v0.1/references/`), because which passages cite a work, and their
+numbers, differ between versions. Every footer links to the References page of its version. All the references are
+formatted in one citeproc run over the whole bibliography, so the year letters (Stengers 2005a and 2005b) are the
+book's, on the References page and in the popups alike; the typed lists show what their authors typed (Podcasts types
+"Stengers (2005)" for 2005a). When generated lists replace the typed ones, they must keep the book's letters: citeproc
+run on one page's list alone gives 2005a no letter where 2005b is not on the same page.
+
+Copying and downloading (the publisher, 2026-11-23): beside each work on the References page a Copy button opens a short
+menu that copies the reference as plain text in Mattering Press' house style, APA (7th edition), Chicago (author-date),
+MLA (9th edition) or Harvard (Cite Them Right), or as a BibTeX or RIS entry, and the status line at the foot of the
+window says what was copied ("Copied: APA"). The house style is the reference as the page shows it, with the book's
+year letters. The other four are made at build time by citeproc with the official CSL repository's styles in
+`every_trick/csl/` (`formatReferences` in `citations.mjs`), each in the locale its guide is written for (Harvard in
+British English, the others in American), with their year letters and their dashes for a repeated author switched
+off: each work is given as it stands on its own, as a reference manager copies one, because a letter such as 2005a only
+tells two works of this book apart. BibTeX is Pandoc's (`-t bibtex`, with the DOI and the date accessed added, which
+it leaves out), RIS comes from `every_trick/ris.mjs`. The texts are in `references/formatted.json` beside the page,
+which `every_trick/assets/references.js` loads only when the reader first comes to a Copy button; the buttons and their
+menu are made by that script, so the page stays light, they are in no search index, and without JavaScript there are
+none. The menu is a menu button: ↓ or Enter opens it, ↑ ↓ Home End move, Enter copies, Escape closes it, focus goes
+back to the button. The explainer at the top of the page links the whole bibliography to download, as
+`references/bibliography.bib` (BibTeX), `references/bibliography.ris` (RIS) and `references/bibliography.json`
+(CSL-JSON, without the build's `custom` field), in each edition's own `references/` folder, beside its References page:
+an edition's bibliography comes from its own tag, as its References page does. `npm run check` confirms that each has
+every work. The formats of these files are in `every_trick/CONTRACT.md`.
 
 At the switch to the static edition, `node scripts/to-citation-keys.mjs` prints the change that turns the typed
 citations into Pandoc citations (`[@becker2007, p. 74]`, `[-@fryer1984]` where the author is named in the sentence) and
@@ -466,7 +516,7 @@ Previews are throwaway: they are not versions, never enter `versions.json`, and 
 
 Agreed with the publisher on 2026-11-19. The static twin does not implement all of this yet; it is the plan the build must follow.
 
-- **Views.** Every page is offered as plain links that work without JavaScript: the rendered page, a Markdown view of its converted Pandoc Markdown, and later site-level Collage and List views. Media appear in the Markdown view as standard image syntax and `:::` blocks containing ordinary links.
+- **Views.** Every page is offered as plain links that work without JavaScript: the rendered page, a Markdown view of its converted Pandoc Markdown, and later site-level Collage and List views. The header's switch holds them as a pill of icons with their names, Page and Markdown now, made for a third segment, Collage (the publisher, 2026-11-23; see "Header" above); the List view is the Media Index, which the menu and every footer link to. Media appear in the Markdown view as standard image syntax and `:::` blocks containing ordinary links.
 - **Versioned text links.** Each public release lives at a frozen address, for example `/v1/essays/aya_nassar/#p12`. Paragraphs are numbered cleanly in every release. Links that people copy or share always carry the version; plain addresses such as `/essays/aya_nassar/` mean "latest". A page in an older version shows a short notice linking to the same passage in the newest version, matched by its text. Only releases are public: corrections collect on GitHub until the next release. Paragraphs are numbered per chapter, the same unit as the chapter DOIs.
 - **Exact quotes.** Links can add a text fragment (`#p12:~:text=…`) so the browser highlights the quoted words. The stylesheet styles `:target` and `::target-text`.
 - **Media addresses are unversioned.** Every image, audio and video item gets its own page at a permanent, word-based address, such as `/see/plumbline`, `/listen/boulder` or `/watch/<name>`. Audio and video addresses may carry a start time (`#t=12:40`). If a file is replaced, the address stays and the item page notes the change.
@@ -712,7 +762,9 @@ waits for the print edition; how editors use it is in "The media register" above
 ## Plan: the References page
 
 Agreed with the publisher on 2026-11-22. The bibliography already works as a register for works: each is entered once,
-with a permanent key. Not built yet.
+with a permanent key. Built in every_trick_in_the_book 1.12.0 (23 November 2026), with copying each reference and
+downloading the bibliography (the publisher, 2026-11-23), except the Zotero library, which is for later; how it works
+is in "References and citations" above.
 
 - **One page for the whole book**, `/references/`, lists every work in the bibliography once, formatted in the house
   style, each with an anchor made from its key (`/references/#hall2001`). Under each work: every passage that cites it
@@ -721,9 +773,27 @@ with a permanent key. Not built yet.
   on the References page, no longer to the first page in reading order that lists it. The popups stay.
 - **Year letters** (Stengers 2005a and 2005b) are fixed for the whole book, also once reference lists are generated
   page by page.
+- **Search** finds the works of the References page (the publisher, 2026-11-23): each edition's index has its own
+  References page, and a work found there is listed by itself, labelled as the text cites it ("Stengers 2005a",
+  from citeproc in the house style; its key if citeproc gives none), with a link to its entry
+  (`/references/#stengers2005a`; see "Plan: search"). The lists of the passages and pages under each work are left
+  out, so that searching a page's title does not list every work it cites.
+- **Copy a reference** (the publisher, 2026-11-23): beside each work a Copy button opens a short menu that copies it as
+  plain text in Mattering Press' house style (as the page shows it), APA (7th edition), Chicago (author-date), MLA
+  (9th edition) or Harvard (Cite Them Right), or as a BibTeX or RIS entry, and says what it copied ("Copied: APA").
+  The other styles are made at build time by Pandoc's citeproc with the styles of the official CSL repository, pinned
+  to a commit. It works with the keyboard and on phones; without JavaScript there are no buttons. The buttons are
+  interface, not reading text, and are kept out of the search index.
+- **Downloads** (the publisher, 2026-11-23): the explainer at the top of the page links the whole bibliography as
+  BibTeX, RIS and CSL-JSON, in each edition's `references/` folder, beside its References page. Its words: "All 71
+  works in the book’s bibliography, in Mattering Press’ house style. Under each work are the passages that cite it,
+  which lead to the citation in the text, and the pages whose reference lists include it. Copy any reference in
+  another style with the Copy button beside it, or download them all as BibTeX, RIS or CSL-JSON." (the number is
+  counted at every build; the page names the house style "Mattering Press’ house style" throughout).
+- **In the menu** (the publisher, 2026-11-23): the header's menu ends with "media index" and "references" on every
+  page (see "Header" above).
 - **Later, perhaps** (the publisher, 2026-11-22: "keep it for later"): references edited in a Zotero group library and
-  handed over to `references/bibliography.json` on a branch, and downloads of the bibliography as BibTeX, RIS and
-  CSL-JSON.
+  handed over to `references/bibliography.json` on a branch.
 
 ## Plan: search
 
@@ -743,13 +813,16 @@ dependency of `every_trick/`; MIT licence).
   box, lists each page found with up to three of its paragraphs: number (para. 12), the words around the ones
   found, marked, and a link to `#p12`. It uses the site's stylesheet, so it follows the reader's text size and
   colours. A list page lists its entries instead, each labelled in the page's Pagefind meta (`entry-<id>`): the
-  Media Index's results are its items, "item 37", with a link to `#item-37`.
+  Media Index's results are its items, "item 37", with a link to `#item-37`, and the References page's its works,
+  as the text cites them ("Stengers 2005a"), with a link to `#stengers2005a`.
 - **Only the reading text.** The template marks `<main>` of real pages for indexing (`data-pagefind-body`) and the
   page's title as the result's title. The Markdown views, `publication/`, `versions/` and `search/` are not indexed.
   Cards are left out (`data-pagefind-ignore`, set by `filters/cards.lua`), so the words in a card are found on the
   page it leads to; a page with only cards (Events) has nothing to find. Transcripts, captions and alt text are in.
-  The Media Index is in the latest text's index; the media items' own pages, their short and former addresses and
-  the editing view are in none (see "Plan: media register, item pages and the Media Index").
+  Each edition's References page is in its index, and the Media Index in the latest text's; the media items' own
+  pages, their short and former addresses and the editing view are in none (see "Plan: media register, item pages
+  and the Media Index" and "Plan: the References page"). The References page's Copy buttons are interface, made by its
+  script, so no index has them; the header, the menu panel included, is outside `<main>`.
 - **Each edition searches itself.** The latest text and every frozen version get their own index (`pagefind/`) and
   search page (`/v0.1/search/`), so results in a frozen version lead to its permanent paragraph numbers. A frozen
   version's search page has a link that searches the latest text for the same words. Each index adds about 0.6 MB.

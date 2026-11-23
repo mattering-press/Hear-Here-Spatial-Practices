@@ -1,8 +1,8 @@
 -- The page's data for page.json (see CONTRACT.md): its headings and links, plus the figures, audio, video, media
 -- items, references and paragraphs that the other filters recorded (and the citations and typed references for the
--- build's report).
+-- build's report and the References page: each citation with the numbered paragraph that holds it).
 -- Written as JSON to the file given with -M contract-out; build.mjs adds the fields it knows itself and writes
--- page.json. Runs last, so headings have their ids.
+-- page.json. Runs last, so headings have their ids and paragraphs their numbers.
 package.path = pandoc.path.directory(PANDOC_SCRIPT_FILE) .. '/?.lua;' .. package.path
 local lib = require 'lib'
 
@@ -55,6 +55,31 @@ function Pandoc(doc)
     end,
   }
   for _, it in ipairs(recorded) do if not done[it.anchor] then data.items[#data.items + 1] = it end end
+  -- Where each citation link is, for the References page ("Introduction, para. 12"): the numbered paragraph that holds
+  -- it (para: "p12"); for one outside the numbered paragraphs, the margin note it is in (note: "n3"), if any, and the
+  -- numbered paragraph before it (after: "p11"). Paragraphs never hold one another, so a paragraph's citations are
+  -- all the citation links inside it.
+  local where, note, before = {}, nil, nil
+  doc.blocks:walk {
+    traverse = 'topdown',
+    Div = function(div)
+      if not div.classes:includes('para') then return end
+      before = div.identifier
+      div:walk { Link = function(link) if link.classes:includes('citation') then where[link.identifier] = { para = div.identifier } end end }
+    end,
+    RawBlock = function(raw)
+      if raw.format ~= 'html' then return end
+      local id = raw.text:match('^<aside id="(n%d+)" class="margin"')
+      if id then note = id elseif raw.text:match('^</aside>') then note = nil end
+    end,
+    Link = function(link)
+      if link.classes:includes('citation') and not where[link.identifier] then where[link.identifier] = { note = note, after = before } end
+    end,
+  }
+  for _, rec in ipairs(data.citations) do
+    local w = rec.id and where[rec.id]
+    if w then rec.para, rec.note, rec.after = w.para, w.note, w.after end
+  end
   local f = assert(io.open(lib.contract_path, 'w'))
   f:write(pandoc.json.encode(data))
   f:close()

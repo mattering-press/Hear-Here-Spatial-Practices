@@ -9,15 +9,38 @@
 //                               writes the index that citations.lua reads
 //   locate(source, records)     the line in the page's Markdown of each citation citations.lua found
 //   report(...)                 the build's summary: per page counts, unmatched citations, uncited entries
+//   formatReferences(options)   every work in the styles of the References page's Copy menus, as plain text, and as
+//                               BibTeX and RIS; and the whole bibliography as BibTeX, RIS and CSL-JSON, for its downloads
+//   referencesHtml(works, …)    the References page of an edition (/references/): every work once, with the passages
+//                               that cite it and the pages whose reference lists include it
 import { spawnSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { REPO_ROOT } from './convert.mjs';
+import { toRis } from './ris.mjs';
 
 const TOOLKIT_DIR = dirname(fileURLToPath(import.meta.url));
 export const BIBLIOGRAPHY = join(REPO_ROOT, 'references', 'bibliography.json');
 export const CSL = join(TOOLKIT_DIR, 'csl', 'mattering-press.csl');
+// The styles a reference can be copied in on the References page, in the order of its Copy menu: the house style (as
+// the page shows it), four styles of the official CSL repository <https://github.com/citation-style-language/styles>,
+// copied unchanged into csl/ from commit CSL_COMMIT (see NOTICE.md), each formatted in the locale its guide is written
+// for, and the entry for a reference manager. label is the menu's, short the confirmation's ("Copied: APA").
+export const CSL_COMMIT = 'edc263cf0e4b09ed184f8a9e1e1de23deb2a7a9e';   // 23 November 2026
+export const HOUSE_STYLE = 'Mattering Press’ house style';   // the house style (CSL above) as the References page names it
+export const COPY_STYLES = [
+  { id: 'house', label: HOUSE_STYLE, short: HOUSE_STYLE },
+  { id: 'apa', label: 'APA (7th edition)', short: 'APA', csl: 'apa.csl', locale: 'en-US' },
+  { id: 'chicago', label: 'Chicago (author-date)', short: 'Chicago', csl: 'chicago-author-date.csl', locale: 'en-US' },
+  { id: 'mla', label: 'MLA (9th edition)', short: 'MLA', csl: 'modern-language-association.csl', locale: 'en-US' },
+  { id: 'harvard', label: 'Harvard (Cite Them Right)', short: 'Harvard', csl: 'harvard-cite-them-right.csl', locale: 'en-GB' },
+  { id: 'bibtex', label: 'BibTeX', short: 'BibTeX', entry: true },
+  { id: 'ris', label: 'RIS', short: 'RIS', entry: true },
+];
+// Formatted HTML -> plain text: tags dropped, entities read, white space collapsed.
+const plain = (h) => h.replace(/<[^>]+>/g, '').replace(/&(amp|lt|gt|quot|#39|#(\d+));/g, (m, name, n) => (n ? String.fromCodePoint(Number(n)) : { amp: '&', lt: '<', gt: '>', quot: '"', '#39': "'" }[name]))
+  .replace(/\s+/g, ' ').trim();
 
 const norm = (s) => s.replace(/\s+/g, ' ').trim();
 export const fold = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[‘’]/g, "'").replace(/[“”]/g, '"');
@@ -27,21 +50,25 @@ const firstName = (item) => {
 };
 const yearOf = (item) => item.issued?.['date-parts']?.[0]?.[0];
 
-// options: { pandoc, work (a scratch folder), order (page files in reading order), bibliography (default: the
-// working tree's; a frozen version uses the one in its tag) }
-// -> { items, index, indexPath, warnings }
-export function prepareReferences({ pandoc, work, order, bibliography = BIBLIOGRAPHY }) {
+// options: { pandoc, work (a scratch folder), bibliography (default: the working tree's; a frozen version uses the one
+// in its tag) }
+// -> { items, index, indexPath, warnings, order, cites }: order is every key in the order of the house style's reference
+// list (by author, then year, then key: csl/mattering-press.csl), which the References page follows; cites is each
+// work as the text cites it in the house style, without the brackets ("Back and Sinha 2018"), for search results.
+export function prepareReferences({ pandoc, work, bibliography = BIBLIOGRAPHY }) {
   const items = JSON.parse(readFileSync(bibliography, 'utf8'));
   const warnings = [];
-  // The popups show one reference at a time, so the "——" for a repeated author is switched off for them.
+  // The popups and the References page show each reference on its own, so the "——" for a repeated author is switched
+  // off. All the entries are formatted in one run, so the year letters (stengers2005a, 2005b) are the whole book's,
+  // whichever page shows the reference.
   const popupCsl = join(work, 'popup.csl');
   writeFileSync(popupCsl, readFileSync(CSL, 'utf8').replace(/\ssubsequent-author-substitute(-rule)?="[^"]*"/g, ''));
   const result = spawnSync(pandoc, ['-f', 'markdown', '-t', 'html', '--wrap=none', '--citeproc', '--bibliography', bibliography, '--csl', popupCsl],
     { input: "---\nnocite: '@*'\n---\n", encoding: 'utf8' });
   if (result.status !== 0) throw new Error(`citeproc failed on ${bibliography}:\n${result.stderr}`);
   warnings.push(...result.stderr.split('\n').filter(Boolean).map((l) => `references/bibliography.json: ${l.replace(/^\[WARNING\] /, '')}`));
-  const html = Object.fromEntries([...result.stdout.matchAll(/<div id="ref-([^"]+)" class="csl-entry"[^>]*>\s*([\s\S]*?)\s*<\/div>/g)].map((m) => [m[1], m[2].replace(/\s+/g, ' ')]));
-  const rank = (page) => (order.includes(page) ? order.indexOf(page) : order.length);
+  const formatted = [...result.stdout.matchAll(/<div id="ref-([^"]+)" class="csl-entry"[^>]*>\s*([\s\S]*?)\s*<\/div>/g)];
+  const html = Object.fromEntries(formatted.map((m) => [m[1], m[2].replace(/\s+/g, ' ')]));
   const entries = {};
   for (const item of items) {
     const key = item.id;
@@ -57,12 +84,78 @@ export function prepareReferences({ pandoc, work, order, bibliography = BIBLIOGR
       pages: pages && Number(pages[2]) >= Number(pages[1]) ? [Number(pages[1]), Number(pages[2])] : null,
       html: html[key] || '',
       typed: Object.fromEntries(typed.map((t) => [t.page, norm(t.text)])),
-      home: typed.map((t) => t.page).sort((a, b) => rank(a) - rank(b))[0] || null,
     };
   }
+  const order = formatted.map((m) => m[1]).filter((key) => key in entries);
+  for (const key of Object.keys(entries)) if (!order.includes(key)) order.push(key);   // (citeproc wrote nothing for it: warned above)
   const indexPath = join(work, 'citations-index.json');
   writeFileSync(indexPath, JSON.stringify({ entries }, (k, v) => (v === null ? undefined : v)));   // no nulls for Lua
-  return { items, index: entries, indexPath, warnings };
+  // Every work cited on its own, one paragraph each, in one run with all of them, so that the year letters match:
+  // <p><span class="citation" data-cites="back2018">(Back and Sinha 2018)</span></p>
+  const citing = spawnSync(pandoc, ['-f', 'markdown', '-t', 'html', '--wrap=none', '--citeproc', '--bibliography', bibliography, '--csl', popupCsl],
+    { input: `---\nnocite: '@*'\nsuppress-bibliography: true\n---\n\n${order.map((key) => `[@${key}]`).join('\n\n')}\n`, encoding: 'utf8' });
+  if (citing.status !== 0) throw new Error(`citeproc failed on ${bibliography}:\n${citing.stderr}`);
+  const text = (h) => h.replace(/<[^>]+>/g, '').replace(/&(amp|lt|gt|quot|#39|#(\d+));/g, (m, name, n) => (n ? String.fromCodePoint(Number(n)) : { amp: '&', lt: '<', gt: '>', quot: '"', '#39': "'" }[name]));
+  const cites = Object.fromEntries([...citing.stdout.matchAll(/<p><span class="citation" data-cites="([^"]+)">([\s\S]*?)<\/span><\/p>/g)]
+    .map((m) => [m[1], text(m[2]).replace(/^\((.*)\)$/s, '$1').trim()]).filter(([, cite]) => cite));
+  return { items, index: entries, indexPath, warnings, order, cites };
+}
+
+// Every work of an edition's bibliography in each style of COPY_STYLES, for its References page, and the bibliography
+// for its downloads. references: what prepareReferences returned.
+// -> { texts: { <key>: { house: text, apa: text, …, bibtex: entry, ris: entry } }, csljson, bibtex, ris (the files'
+//    text), warnings }
+// The house style is the reference as the page shows it, with the book's year letters (Stengers 2005a). The other
+// styles format each work as it stands alone, as a reference manager copies it: their year letters, which only tell
+// apart two works of the same author and year in this book, and the dashes some styles put for a repeated author, are
+// switched off. The works are in the order of the References page; the CSL-JSON leaves out custom (where each entry is
+// typed in the pages, for the build), and the BibTeX, which Pandoc writes, gets the DOI and date accessed it leaves out.
+export function formatReferences({ pandoc, work, references }) {
+  const { items, order, index } = references;
+  const byKey = new Map(items.map((item) => [item.id, item]));
+  const clean = order.map((key) => byKey.get(key)).filter(Boolean).map(({ custom, ...item }) => item);
+  const csljson = JSON.stringify(clean, null, 2) + '\n';
+  const input = join(work, 'bibliography-clean.json');
+  writeFileSync(input, csljson);
+  const warnings = [];
+  const texts = Object.fromEntries(clean.map((item) => [item.id, { house: plain(index[item.id]?.html || '') }]));
+  for (const style of COPY_STYLES.filter((s) => s.csl)) {
+    const csl = join(work, `copy-${style.id}.csl`);
+    writeFileSync(csl, readFileSync(join(TOOLKIT_DIR, 'csl', style.csl), 'utf8')
+      .replace(/\sdisambiguate-add-year-suffix="[^"]*"/g, '').replace(/\ssubsequent-author-substitute(-rule)?="[^"]*"/g, ''));
+    const result = spawnSync(pandoc, ['-f', 'markdown', '-t', 'html', '--wrap=none', '--citeproc', '--bibliography', input, '--csl', csl, '-M', `lang=${style.locale}`],
+      { input: "---\nnocite: '@*'\n---\n", encoding: 'utf8' });
+    if (result.status !== 0) throw new Error(`citeproc failed with csl/${style.csl}:\n${result.stderr}`);
+    warnings.push(...result.stderr.split('\n').filter(Boolean).map((l) => `csl/${style.csl}: ${l.replace(/^\[WARNING\] /, '')}`));
+    const formatted = new Map([...result.stdout.matchAll(/<div id="ref-([^"]+)" class="csl-entry"[^>]*>\s*([\s\S]*?)\s*<\/div>/g)].map((m) => [m[1], plain(m[2])]));
+    for (const item of clean) {
+      if (formatted.get(item.id)) texts[item.id][style.id] = formatted.get(item.id);
+      else warnings.push(`csl/${style.csl} wrote nothing for ${item.id}`);
+    }
+  }
+  // BibTeX: Pandoc's entries, one field a line, with the DOI and the date accessed added where the entry has them
+  const bib = spawnSync(pandoc, ['-f', 'csljson', '-t', 'bibtex', '--wrap=none', input], { encoding: 'utf8' });
+  if (bib.status !== 0) throw new Error(`Pandoc could not write BibTeX:\n${bib.stderr}`);
+  const brace = (s) => String(s).replace(/[{}]/g, '');
+  for (const entry of bib.stdout.split(/\n(?=@)/)) {
+    const key = /^@\w+\{([^,\s]+),/.exec(entry.trim())?.[1];
+    const item = key && byKey.get(key);
+    if (!item) continue;
+    const extra = [];
+    if (item.DOI && !/^\s*doi\s*=/m.test(entry)) extra.push(`  doi = {${brace(item.DOI)}}`);
+    const accessed = item.accessed?.['date-parts']?.[0];
+    if (accessed?.[0] && !/^\s*urldate\s*=/m.test(entry)) extra.push(`  urldate = {${accessed.map((n, i) => (i ? String(n).padStart(2, '0') : n)).join('-')}}`);
+    texts[key].bibtex = extra.length ? entry.trim().replace(/\n\}$/, `,\n${extra.join(',\n')}\n}`) : entry.trim();
+  }
+  for (const item of clean) {
+    if (!texts[item.id].bibtex) warnings.push(`Pandoc wrote no BibTeX entry for ${item.id}`);
+    texts[item.id].ris = toRis(item);
+  }
+  return {
+    texts, csljson, warnings,
+    bibtex: clean.map((item) => texts[item.id].bibtex).filter(Boolean).join('\n\n') + '\n',
+    ris: clean.map((item) => texts[item.id].ris).join('\n\n').replace(/\n/g, '\r\n') + '\r\n',   // the specification's line ends
+  };
 }
 
 // The line (1-based) of each citation in the page's Markdown. Paragraphs are single lines (a Juncture rule), so the
@@ -105,7 +198,6 @@ const distance = (a, b) => {
 export function hint(record, index) {
   const all = Object.entries(index).filter(([, e]) => e.surname);
   const sameYear = all.filter(([, e]) => e.year === record.year);
-  if (record.status === 'unlisted') return 'in the bibliography, but in no typed reference list to link to';
   if (record.status === 'ambiguous') return `could be ${record.candidates.join(' or ')}: add the letter (${record.year}a, ${record.year}b) or a page`;
   if (record.form === 'parenthetical') {
     const name = fold(record.names.split(/,| and | & | et al/)[0]).toLowerCase().trim();
@@ -151,4 +243,43 @@ export function report(pages, index, warnings) {
   if (uncited.length) out.push('', `${uncited.length} bibliography entries that no page cites:`, `  ${uncited.join(', ')}`);
   if (warnings.length) out.push('', ...warnings.map((w) => `  ${w}`));
   return out;
+}
+
+// The References page of an edition (references/ at its root): every work of the bibliography once, in the order of
+// the house style's reference list, as <li id="<key>" class="reference">, so that /references/#hall2001 finds it. Under
+// the formatted reference: the passages that cite it ("Introduction, para. 12", each a link to the citation,
+// #cite-hall2001-1) and the pages whose typed reference lists include it (a link to #ref-hall2001 there).
+// Search finds each work by its formatted reference and lists it as a place of its own on the page: data-pagefind-meta
+// gives its label in the results, the work as the text cites it ("Stengers 2005a"; assets/search.js). The lists of
+// passages and pages are left out of the index, so that searching a page's title does not list every work it cites.
+//   works: [{ key, html, cite, cited: [{ title, url, para, note, after }], listed: [{ title, url }] }], in order; cite is
+//          the work as the text cites it ("Hall 2001"; its key when citeproc gives none); para is the numbered
+//          paragraph that holds the citation ("p12"), or for a citation outside the numbered paragraphs, note the margin
+//          note it is in ("n3") and after the paragraph before it. URLs are relative to the edition's root.
+//   root:  the way from the References page to the edition's root ("../")
+// The explainer at the top links the downloads of the whole bibliography (DOWNLOADS, beside the page). The Copy
+// buttons are made by assets/references.js, which reads the styles of the menu from data-copy-styles and the texts
+// from formatted.json (COPY_DATA) when a menu is first opened; without JavaScript there are none, and nothing of them
+// is in the page's text or its search index.
+export const DOWNLOADS = { bibtex: 'bibliography.bib', ris: 'bibliography.ris', csljson: 'bibliography.json' };
+export const COPY_DATA = 'formatted.json';
+const escHtml = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+export function referencesHtml(works, { root }) {
+  const place = (c) => (c.para ? `para. ${c.para.slice(1)}` : c.note ? `note ${c.note.slice(1)}` : c.after ? `after para. ${c.after.slice(1)}` : '');
+  const link = (url, text) => `<a href="${escHtml(root + url)}">${escHtml(text)}</a>`;
+  const entry = (w) => {
+    const rows = [];
+    if (w.cited.length) rows.push(`<div><dt>Cited in</dt><dd>${w.cited.map((c) => link(c.url, place(c) ? `${c.title}, ${place(c)}` : c.title)).join('; ')}</dd></div>`);
+    if (w.listed.length) rows.push(`<div><dt>Listed in</dt><dd>${w.listed.map((l) => link(l.url, l.title)).join('; ')}</dd></div>`);
+    return `<li id="${escHtml(w.key)}" class="reference" data-pagefind-meta="${escHtml(`entry-${w.key}:${w.cite || w.key}`)}">\n<p class="reference__text">${w.html}</p>\n` +
+      (rows.length ? `<dl class="reference__where" data-pagefind-ignore>\n${rows.join('\n')}\n</dl>\n` : '') + '</li>';
+  };
+  const download = (file, name) => `<a href="${escHtml(file)}" download>${name}</a>`;
+  const styles = COPY_STYLES.map(({ id, label, short, entry }) => ({ id, label, short, ...(entry ? { entry } : {}) }));
+  return `<div class="references" data-copy="${escHtml(COPY_DATA)}" data-copy-styles="${escHtml(JSON.stringify(styles))}">
+<p class="references__intro">All ${works.length} works in the book’s bibliography, in ${escHtml(HOUSE_STYLE)}. Under each work are the passages that cite it, which lead to the citation in the text, and the pages whose reference lists include it. Copy any reference in another style with the Copy button beside it, or download them all as ${download(DOWNLOADS.bibtex, 'BibTeX')}, ${download(DOWNLOADS.ris, 'RIS')} or ${download(DOWNLOADS.csljson, 'CSL-JSON')}.</p>
+<ul class="reference-list">
+${works.map(entry).join('\n')}
+</ul>
+</div>`;
 }
