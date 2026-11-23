@@ -16,7 +16,8 @@
 //   .ve-iframe https://…, raw <iframe>         ->  ::: {.twin-embed src="…"}
 //   raw <audio>                                ->  ::: {.twin-audio src="…" title="…"}
 //   raw <figure class="video-embed"> (Vimeo or a repository video) -> ::: {.twin-video …} with the caption inside
-//   raw <figure data-repo-pdf>                 ->  ::: {.twin-embed …} with the caption inside
+//   raw <figure data-repo-pdf>                 ->  ::: {.twin-embed …} with the caption inside, less a closing link to
+//                                                  the PDF itself (a document's caption line has its download)
 // .ve-header and .ve-footer become page data (title, menu, footer); .ve-style and .ve-script are dropped.
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { dirname, join, posix } from 'node:path';
@@ -120,12 +121,16 @@ export function convert(source, file, { exists = inWorkingTree } = {}) {
     }
     // <figure class="video-embed"> or <figure class="pdf-embed" data-repo-pdf="…">
     const figureTag = /^\s*<figure\b[^>]*>/.exec(block)?.[0] ?? '';
-    const caption = htmlToMd(block.match(/<figcaption>(.*?)<\/figcaption>/s)?.[1] ?? '');
+    const figcaption = block.match(/<figcaption>(.*?)<\/figcaption>/s)?.[1] ?? '';
     const pdf = htmlAttr(figureTag, 'data-repo-pdf');
     if (pdf) {
       useFile(pdf);
-      return div('twin-embed', { src: '/' + pdf, title: htmlAttr(figureTag, 'data-title') }, caption);
+      // A closing link to the PDF itself ("Open the booklet (PDF).") is left out: the document's caption line has its
+      // download (filters/embeds.lua).
+      const own = new RegExp(`\\s*<a\\s[^>]*data-repo-href="${pdf.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"[^>]*>[^<]*</a>\\.?\\s*$`);
+      return div('twin-embed', { src: '/' + pdf, title: htmlAttr(figureTag, 'data-title') }, htmlToMd(figcaption.replace(own, '')));
     }
+    const caption = htmlToMd(figcaption);
     const iframe = block.match(/<iframe\s[^>]*>/)?.[0], video = block.match(/<video\s[^>]*>/)?.[0];
     const vimeo = iframe && /^https:\/\/player\.vimeo\.com\/video\/(\d+)\?h=(\w+)$/.exec(htmlAttr(iframe, 'src') ?? '');
     if (vimeo) return div('twin-video', { src: `https://vimeo.com/${vimeo[1]}/${vimeo[2]}`, title: htmlAttr(iframe, 'title') }, caption);

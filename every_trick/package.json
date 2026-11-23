@@ -1,6 +1,6 @@
 {
   "name": "every_trick_in_the_book",
-  "version": "1.11.0",
+  "version": "1.12.0",
   "private": true,
   "type": "module",
   "description": "every_trick_in_the_book by SJMcH, a Mattering toolkit: every trick in the book for making books. Builds the book in this repository into ../_site with Pandoc and Lua filters.",
@@ -8,6 +8,7 @@
     "build": "node build.mjs",
     "build:preview": "node build.mjs --preview",
     "check": "node check.mjs",
+    "fetch-zine": "node scripts/fetch-zine.mjs",
     "number-media": "node scripts/number-media.mjs",
     "serve": "node serve.mjs",
     "test:csl": "node csl/test/run.mjs"

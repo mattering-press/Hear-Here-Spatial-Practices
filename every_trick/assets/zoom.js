@@ -22,12 +22,30 @@
 //
 // An animation, <figure class="animated">, gets a pause button on its caption line, which swaps the animation for its
 // first frame (the still that the build makes); readers who ask for less motion start on the still.
+//
+// Documents (filters/embeds.lua writes them; the plan is in DEVELOPMENT.md, "Plan: documents and zines") open in the same
+// viewer, which shows their pages' tiles (read/<name>/document.json lists the pages, their tiles and their text).
+//  * On an essay page a document is <figure class="document" data-document="…/document.json">: its cover, and on its
+//    caption line Text and its download, before which "⤢ Open" is put here. Open, or a click on the cover, opens the
+//    viewer in a full-window dialog at the cover; on closing, the focus goes back to Open.
+//  * On the document's own page (/read/<name>/) the viewer is in the page, in place of the row of pages that readers
+//    without JavaScript get (<div class="document-viewer">). It opens at the page in the address (#page=3) and keeps
+//    the address on the page shown. In the page, its keys work while it has the focus, a vertical swipe scrolls the page
+//    unless the pages are zoomed in, and the mouse wheel scrolls the page (with Ctrl or ⌘ it zooms).
+//  * Pages are shown two by two, as spreads, where the viewer is wider than it is tall (the cover alone, then 2–3, 4–5 …:
+//    OpenSeadragon with two tiled images side by side), one at a time where it is not (a phone).
+//  * Its bar: ‹ 4–5 / 21 ›, zoom out, zoom in, fit, full screen, Text (the text of the pages on screen in place of their
+//    pictures, and back again) and the download. Keys, swipes and less motion as for pictures; Home and End go to the
+//    first and the last pages.
 (function () {
   var script = document.currentScript;
   var root = document.documentElement;
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var ZOOM = 1.6;      // one press of zoom in or zoom out
   var SWIPE = 40;      // px a finger moves sideways to turn to the next picture
+  var GUTTER = 0.006;  // between the two pages of a spread, in pages' heights
+  var assets = new URL('./', script.src);
+  var loading = null;  // OpenSeadragon, once it is asked for
   var ICONS = {
     zoom: '<path d="M9 2.5h4.5V7M13.5 2.5 9 7M7 13.5H2.5V9M2.5 13.5 7 9"/>',
     pause: '<path class="is-solid" d="M4 2.5h2.75v11H4zM9.25 2.5H12v11H9.25z"/>',
@@ -39,8 +57,18 @@
     exitFullscreen: '<path d="M6 2.5V6H2.5M13.5 6H10V2.5M10 13.5V10h3.5M2.5 10H6v3.5"/>',
     previous: '<path d="M10.25 2.75 5 8l5.25 5.25"/>',
     next: '<path d="M5.75 2.75 11 8l-5.25 5.25"/>',
+    text: '<path d="M3 4h10M3 8h10M3 12h6.5"/>',                         // the same three as filters/embeds.lua's
+    download: '<path d="M8 2.5v8M4.75 7.25 8 10.5l3.25-3.25M3 13.5h10"/>',
+    external: '<path d="M9.5 2.5h4v4M13.5 2.5 8 8M11.5 9.5v4h-9v-9h4"/>',
   };
   function icon(name) { return '<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">' + ICONS[name] + '</svg>'; }
+  // the size of a file, for people, as the build writes it (media-pages.mjs, sizeText): "0.9 MB", "64 KB"
+  function sizeOf(bytes) { return bytes >= 1e5 ? (bytes / 1e6).toFixed(1) + ' MB' : Math.max(1, Math.round(bytes / 1e3)) + ' KB'; }
+  function el(tag, className) {
+    var e = document.createElement(tag);
+    if (className) e.className = className;
+    return e;
+  }
   function hiddenText(text) {
     var span = document.createElement('span');
     span.className = 'visually-hidden';
@@ -66,16 +94,17 @@
     show();
   });
 
-  // ---- Zoomable pictures: the Zoom button, and the picture opens the viewer ----------------------------------------
-  var figures = Array.prototype.slice.call(document.querySelectorAll('figure[data-tiles]'));
-  if (!figures.length || typeof HTMLDialogElement !== 'function') return;
-  var assets = new URL('./', script.src);
-  // A caption line holds the item's number pill, the caption and the item's credit: the viewer shows each in its place.
+  // A caption line holds the item's number pill, the caption and the item's credit (and a document's buttons): the viewer
+  // shows each in its place.
   function captionText(caption) {
     if (!caption) return '';
     var copy = caption.cloneNode(true);
-    Array.prototype.forEach.call(copy.querySelectorAll('.item-number, .item-credit'), function (el) { el.parentNode.removeChild(el); });
+    Array.prototype.forEach.call(copy.querySelectorAll('.item-number, .item-credit, .document__actions'), function (el) { el.parentNode.removeChild(el); });
     return copy.textContent.replace(/\s+/g, ' ').trim();
+  }
+  function creditText(caption) {
+    var credit = caption && caption.querySelector('.item-credit');
+    return credit ? credit.textContent.replace(/^\s*·\s*/, '').trim() : '';
   }
   function numberOf(caption) {
     var pill = caption && caption.querySelector('.item-number');
@@ -83,14 +112,19 @@
     var isNew = pill.classList.contains('is-new'), text = isNew ? 'new' : pill.textContent.replace(/\D+/g, '');
     return { text: text, isNew: isNew, href: pill.getAttribute('href'), label: pill.getAttribute('aria-label') || (isNew ? 'New item, not yet numbered' : 'Item ' + text) };
   }
+
+  documents();
+
+  // ---- Zoomable pictures: the Zoom button, and the picture opens the viewer ----------------------------------------
+  var figures = Array.prototype.slice.call(document.querySelectorAll('figure[data-tiles]'));
+  if (!figures.length || typeof HTMLDialogElement !== 'function') return;
   var items = figures.map(function (figure, index) {
     var link = figure.querySelector('.figure-picture');
     var img = figure.querySelector('img');
     var caption = figure.querySelector('figcaption');
-    var credit = caption && caption.querySelector('.item-credit');
     var item = {
       figure: figure, img: img, caption: captionText(caption), alt: img ? img.alt : '', number: numberOf(caption),
-      credit: credit ? credit.textContent.replace(/^\s*·\s*/, '').trim() : '',
+      credit: creditText(caption),
       tiles: figure.getAttribute('data-tiles'),
       largest: (link && (link.getAttribute('data-largest') || link.getAttribute('href'))) || (img && img.getAttribute('src')),
     };
@@ -112,7 +146,7 @@
 
   // ---- The viewer --------------------------------------------------------------------------------------------------
   var dialog, frame, count, numberLink, captionButton, stage, canvas, preview, message, live, buttons = {};
-  var viewer = null, current = 0, expanded = false, loading = null, sources = null, previewTimer = 0, swipe = null, lastTap = 0;
+  var viewer = null, current = 0, expanded = false, sources = null, previewTimer = 0, swipe = null, lastTap = 0;
 
   function loadViewer() {
     return loading || (loading = new Promise(function (resolve, reject) {
@@ -142,14 +176,15 @@
   }
 
   // a button of the viewer: its icon, if it has one, and its text (html), which may give way on a narrow screen
-  // (class viewer__label); label is its name for screen readers where the text alone would not say enough
-  function control(name, label, html) {
+  // (class viewer__label); label is its name for screen readers where the text alone would not say enough. It is kept
+  // in map under its name (the pictures' viewer's buttons, or a document viewer's).
+  function control(name, label, html, map) {
     var b = document.createElement('button');
     b.type = 'button';
     b.className = 'viewer__button viewer__' + name.replace(/[A-Z]/g, function (c) { return '-' + c.toLowerCase(); });
     if (label) b.setAttribute('aria-label', label);
     b.innerHTML = (ICONS[name] ? icon(name) : '') + (html || '');
-    buttons[name] = b;
+    (map || buttons)[name] = b;
     return b;
   }
   function quietly(promise) { if (promise && promise.catch) promise.catch(function () {}); }
@@ -428,5 +463,453 @@
       if (touch && Math.abs(dx) > SWIPE && Math.abs(dx) > 1.5 * Math.abs(dy)) go(current + (dx < 0 ? 1 : -1));
     });
     viewer.addHandler('canvas-pinch', function () { swipe = null; });
+  }
+
+  // ---- Documents: Open on an essay page, and the viewer, in a dialog or in the document's own page ---------------------
+  function documents() {
+    var covers = Array.prototype.slice.call(document.querySelectorAll('figure.document[data-document]'));
+    var hosts = Array.prototype.slice.call(document.querySelectorAll('.document-viewer[data-document]'));
+    if ((!covers.length && !hosts.length) || typeof window.fetch !== 'function') return;
+    var loaded = {}, dialog = null, shown = null, from = null;
+    var PAGE = /^#page=(\d+)$/;
+
+    // A document's data (read/<name>/document.json), fetched once. Its URLs are relative to the site's root, as many
+    // folders up from it as the document's own address (read/<name>/) has; each page's info.json gets its @id from there.
+    function load(url) {
+      var href = new URL(url, document.baseURI).href;
+      return loaded[href] || (loaded[href] = fetch(href).then(function (r) {
+        if (!r.ok) throw new Error(r.status);
+        return r.json();
+      }).then(function (data) {
+        var site = new URL(data.url.replace(/[^/]+/g, '..'), href);
+        data.pages.forEach(function (page) {
+          var info = JSON.parse(JSON.stringify(page.info));
+          info['@id'] = new URL(page.tiles, site).href.replace(/\/info\.json$/, '');
+          page.source = info;
+        });
+        data.href = /^[a-z][\w+.-]*:/i.test(data.download.url) ? data.download.url : new URL(data.download.url, site).href;
+        return data;
+      }).catch(function (e) {
+        delete loaded[href];
+        throw e;
+      }));
+    }
+
+    // On an essay page: Open on the caption line, and the cover, open the viewer in a dialog, at the cover.
+    if (typeof HTMLDialogElement === 'function') covers.forEach(function (figure) {
+      var caption = figure.querySelector('figcaption');
+      var actions = figure.querySelector('.document__actions') || caption;
+      var cover = figure.querySelector('.document__cover');
+      var button = el('button', 'figure-button document__open');
+      button.type = 'button';
+      button.innerHTML = icon('zoom') + 'Open';
+      button.appendChild(hiddenText(': ' + (captionText(caption) || 'the document')));
+      function open() { openDialog(figure, button); }
+      button.addEventListener('click', open);
+      actions.insertBefore(button, actions.firstChild);
+      if (cover) {
+        cover.removeAttribute('href');   // no longer a link or a keyboard stop: Open is
+        cover.addEventListener('click', function (event) { event.preventDefault(); open(); });
+      }
+      figure.classList.add('is-openable');
+    });
+
+    function openDialog(figure, button) {
+      if (!dialog) {
+        dialog = el('dialog', 'viewer viewer--document');
+        dialog.setAttribute('aria-labelledby', 'document-number document-caption');
+        dialog.addEventListener('close', function () {
+          if (document.fullscreenElement) quietly(document.exitFullscreen());
+          if (shown) { shown.destroy(); shown = null; }
+          dialog.textContent = '';
+          root.classList.remove('has-viewer');
+          // back to the document, and its Open button
+          var box = from.figure.getBoundingClientRect();
+          if (box.top < 0 || box.bottom > window.innerHeight) from.figure.scrollIntoView({ block: 'center' });
+          from.button.focus({ preventScroll: true });
+        });
+        document.body.appendChild(dialog);
+      }
+      var caption = figure.querySelector('figcaption');
+      from = { figure: figure, button: button };
+      shown = documentViewer({ dialog: dialog, caption: captionText(caption), credit: creditText(caption), number: numberOf(caption) });
+      dialog.appendChild(shown.frame);
+      root.classList.add('has-viewer');
+      dialog.showModal();
+      shown.start(load(figure.getAttribute('data-document')), 1);
+    }
+
+    // On the document's own page: the viewer in place of the row of pages, at the page in the address (#page=3), which it
+    // then keeps on the page shown. Until it is ready, and if it cannot be shown, the row stays.
+    hosts.forEach(function (host) {
+      var caption = host.parentNode.querySelector('figcaption');
+      var at = PAGE.exec(location.hash);
+      var viewer = documentViewer({
+        inline: true, caption: captionText(caption),
+        onPage: function (n) { if (history.replaceState) history.replaceState(null, '', '#page=' + n); },
+      });
+      host.appendChild(viewer.frame);
+      viewer.start(load(host.getAttribute('data-document')), at ? Number(at[1]) : 1,
+        function () { host.classList.add('is-live'); },
+        function () { host.classList.remove('is-live'); host.removeChild(viewer.frame); });
+      window.addEventListener('hashchange', function () {
+        var m = PAGE.exec(location.hash);
+        if (m) viewer.goToPage(Number(m[1]));
+      });
+    });
+  }
+
+  // One viewer of a document's pages. options: inline (in the page), or dialog (the dialog it is in) with the document's
+  // caption, credit and number (numberOf) for its top bar; onPage(n), called with the first page shown after each turn.
+  //   -> { frame, start(data, page, ready, failed), goToPage(n), destroy() }
+  function documentViewer(options) {
+    var buttons = {}, data = null, viewer = null, spreads = [], current = 0, double = false, reading = false, turned = false;
+    var swipe = null, lastTap = 0, expanded = false, observer = null, gone = false;
+    var frame = el('div', 'viewer__frame viewer__frame--document' + (options.inline ? ' is-inline' : ''));
+    var captionButton = null;
+    if (!options.inline) {
+      // top bar: the document's number, its caption and credit (click to read it all), Close
+      var top = el('div', 'viewer__bar viewer__top');
+      var number = options.number, pill = el('a', 'viewer__number' + (number && number.isNew ? ' is-new' : ''));
+      pill.id = 'document-number';
+      pill.hidden = !number;
+      if (number) {
+        pill.textContent = number.text;
+        pill.setAttribute('aria-label', number.label);
+        if (number.href) pill.href = number.href;
+      }
+      captionButton = el('button', 'viewer__caption');
+      captionButton.type = 'button';
+      captionButton.id = 'document-caption';
+      captionButton.textContent = options.credit ? (options.caption ? options.caption + ' · ' : '') + options.credit : options.caption || '';
+      captionButton.addEventListener('click', function () {
+        expanded = !expanded;
+        captionButton.classList.toggle('is-expanded', expanded);
+        measure();
+      });
+      var close = control('close', 'Close', '<span class="viewer__label">Close</span>', buttons);
+      close.autofocus = true;
+      close.addEventListener('click', function () { options.dialog.close(); });
+      top.appendChild(pill);
+      top.appendChild(captionButton);
+      top.appendChild(group('', [close]));
+      frame.appendChild(top);
+    }
+    // the pages (OpenSeadragon), or their text
+    var stage = el('div', 'viewer__stage');
+    var canvas = el('div', 'viewer__canvas');
+    var reader = el('div', 'viewer__reader');
+    reader.hidden = true;
+    reader.tabIndex = 0;
+    reader.setAttribute('role', 'region');
+    reader.setAttribute('aria-label', 'The text of the pages');
+    var message = el('p', 'viewer__message');
+    message.setAttribute('role', 'status');
+    message.hidden = true;
+    stage.appendChild(canvas);
+    stage.appendChild(reader);
+    stage.appendChild(message);
+    // the bar: ‹ 4–5 / 21 ›; zoom out, zoom in, fit; full screen; Text and the download
+    var bottom = el('div', 'viewer__bar viewer__bottom');
+    var count = el('p', 'viewer__count');
+    count.innerHTML = '<span aria-hidden="true"></span><span class="visually-hidden"></span>';
+    bottom.appendChild(group('viewer__pages', [control('previous', 'Previous pages', '', buttons), count, control('next', 'Next pages', '', buttons)]));
+    bottom.appendChild(group('', [control('zoomOut', 'Zoom out', '', buttons), control('zoomIn', 'Zoom in', '', buttons), control('fit', 'Fit the pages in view', 'Fit', buttons)]));
+    var full = group('viewer__screen', [control('fullscreen', 'Full screen', '<span class="viewer__label">Full screen</span>', buttons)]);
+    if (!document.fullscreenEnabled || typeof frame.requestFullscreen !== 'function') full.hidden = true;
+    bottom.appendChild(full);
+    var textButton = control('text', null, 'Text', buttons);
+    textButton.setAttribute('aria-pressed', 'false');
+    var download = el('a', 'viewer__button viewer__download');
+    download.hidden = true;
+    bottom.appendChild(group('', [textButton, download]));
+    var live = el('p', 'visually-hidden');
+    live.setAttribute('aria-live', 'polite');
+    frame.appendChild(stage);
+    frame.appendChild(bottom);
+    frame.appendChild(live);
+    ['previous', 'next', 'zoomOut', 'zoomIn', 'fit', 'text'].forEach(function (name) { setDisabled(buttons[name], true); });
+
+    buttons.previous.addEventListener('click', function () { go(current - 1); });
+    buttons.next.addEventListener('click', function () { go(current + 1); });
+    buttons.zoomOut.addEventListener('click', function () { zoom(1 / ZOOM); });
+    buttons.zoomIn.addEventListener('click', function () { zoom(ZOOM); });
+    buttons.fit.addEventListener('click', function () { if (viewer && !reading && usable(buttons.fit)) viewer.viewport.goHome(); });
+    buttons.fullscreen.addEventListener('click', function () {
+      quietly(document.fullscreenElement ? document.exitFullscreen() : frame.requestFullscreen());
+    });
+    textButton.addEventListener('click', function () { if (data) setReading(!reading); });
+    frame.addEventListener('keydown', onKey, true);
+    document.addEventListener('fullscreenchange', onFullscreen);
+
+    function start(promise, page, ready, failed) {
+      message.textContent = 'Loading the pages…';
+      message.hidden = false;
+      measure();
+      Promise.all([promise, loadViewer()]).then(function (results) {
+        if (gone) return;
+        data = results[0];
+        if (ready) ready();
+        setup(page || 1);
+      }).catch(function () {
+        message.textContent = 'The pages could not be loaded.';
+        message.hidden = false;
+        if (failed) failed();
+      });
+    }
+
+    function setup(page) {
+      message.hidden = true;
+      var external = /^[a-z][\w+.-]*:/i.test(data.download.url);
+      download.href = data.href;
+      if (!external) download.setAttribute('download', '');
+      download.innerHTML = icon(external ? 'external' : 'download') + '<span class="viewer__label">' + (external ? 'archive.org' : 'Download') + '</span>';
+      download.setAttribute('aria-label', external ? 'The original, on archive.org' : 'Download the ' + data.download.label + (data.download.size ? ' (' + sizeOf(data.download.size) + ')' : ''));
+      download.hidden = false;
+      setDisabled(textButton, false);
+      arrange(page);
+      var o = {
+        element: canvas, prefixUrl: new URL('osd/images/', assets).href,
+        showNavigationControl: false, showSequenceControl: false, showReferenceStrip: false, showNavigator: false,
+        visibilityRatio: 1, constrainDuringPan: true, minZoomImageRatio: 1, viewportMargins: { top: 12, right: 12, bottom: 12, left: 12 },
+      };
+      if (reduceMotion) {
+        o.animationTime = 0;
+        o.gestureSettingsTouch = { flickEnabled: false };
+      }
+      viewer = OpenSeadragon(o);
+      viewer.canvas.setAttribute('role', 'img');
+      viewer.addHandler('open', function () { showZoom(); touch(); });
+      viewer.addHandler('open-failed', function () {
+        message.textContent = 'These pages could not be loaded for zooming.';
+        message.hidden = false;
+      });
+      function moved() { showZoom(); touch(); }
+      viewer.addHandler('zoom', moved);
+      viewer.addHandler('pan', moved);
+      // the viewer changes size (full screen, a phone turned on its side): pages that were shown whole fill the new size,
+      // once OpenSeadragon has done its own resizing (in the frame it raises this event in)
+      viewer.addHandler('resize', function () {
+        if (!viewer.world.getItemAt(0) || !atHome(0.05)) return;
+        requestAnimationFrame(function () {
+          if (!viewer) return;
+          viewer.viewport.goHome(true);
+          moved();
+        });
+      });
+      // Swipes, as for pictures: while the pages are in view as a whole, a sideways swipe turns them; zoomed in, dragging
+      // moves them. A double tap and drag zooms.
+      viewer.addHandler('canvas-click', function (event) { if (event.quick) lastTap = Date.now(); });
+      viewer.addHandler('canvas-press', function (event) {
+        var zooming = event.pointerType !== 'mouse' && Date.now() - lastTap < 300;
+        swipe = !zooming && viewer.world.getItemAt(0) && atHome(0.05) ? { x: event.position.x, y: event.position.y, touch: event.pointerType !== 'mouse' } : null;
+      });
+      viewer.addHandler('canvas-drag', function (event) {
+        if (!swipe) return;
+        if (!atHome(0.05)) { swipe = null; return; }
+        event.preventDefaultAction = true;
+      });
+      viewer.addHandler('canvas-drag-end', function (event) {
+        if (!swipe) return;
+        var dx = event.position.x - swipe.x, dy = event.position.y - swipe.y, isTouch = swipe.touch;
+        swipe = null;
+        event.preventDefaultAction = true;
+        if (isTouch && Math.abs(dx) > SWIPE && Math.abs(dx) > 1.5 * Math.abs(dy)) go(current + (dx < 0 ? 1 : -1));
+      });
+      viewer.addHandler('canvas-pinch', function () { swipe = null; });
+      // in the page, the mouse wheel scrolls the page; with Ctrl or ⌘ (and a trackpad's pinch), and in full screen, it zooms
+      if (options.inline) {
+        viewer.addHandler('canvas-scroll', function (event) {
+          var e = event.originalEvent;
+          if (document.fullscreenElement === frame || e.ctrlKey || e.metaKey) return;
+          event.preventDefaultAction = true;
+          event.preventDefault = false;
+        });
+      }
+      show(current, false);
+      if (typeof ResizeObserver === 'function') {
+        observer = new ResizeObserver(function () {
+          if (!viewer) return;
+          if (spreading() !== double) {
+            arrange(spreads[current][0] + 1);
+            show(current, false);
+          }
+          measure();
+        });
+        observer.observe(stage);
+      }
+    }
+
+    // two pages side by side where the viewer is wider than it is tall, and wide enough; one at a time otherwise
+    function spreading() {
+      var w = stage.clientWidth, h = stage.clientHeight;
+      return w >= 600 && w >= h * 1.15;
+    }
+    // the spreads (or single pages), and the one that holds page `page`
+    function arrange(page) {
+      var n = data.pages.length, target = Math.max(1, Math.min(page, n)) - 1, i;
+      double = spreading();
+      spreads = [];
+      if (double) {
+        spreads.push([0]);
+        for (i = 1; i < n; i += 2) spreads.push(i + 1 < n ? [i, i + 1] : [i]);
+      } else {
+        for (i = 0; i < n; i++) spreads.push([i]);
+      }
+      current = 0;
+      spreads.forEach(function (spread, k) { if (spread.indexOf(target) >= 0) current = k; });
+    }
+
+    // spread `index`: its pages side by side, each as tall as the other, with a hairline between them (GUTTER, in pages'
+    // heights); the count; the text, when it is shown
+    function show(index, announce) {
+      current = index;
+      var spread = spreads[index], n = data.pages.length, first = spread[0] + 1, last = spread[spread.length - 1] + 1;
+      count.firstChild.textContent = (first === last ? first : first + '–' + last) + ' / ' + n;
+      var said = (first === last ? 'Page ' + first : 'Pages ' + first + ' and ' + last) + ' of ' + n;
+      count.lastChild.textContent = said;
+      setDisabled(buttons.previous, index === 0);
+      setDisabled(buttons.next, index === spreads.length - 1);
+      if (viewer) {
+        var x = 0;
+        viewer.open(spread.map(function (i) {
+          var page = data.pages[i], item = { tileSource: JSON.parse(JSON.stringify(page.source)), x: x, y: 0, height: 1 };
+          x += page.width / page.height + GUTTER;
+          return item;
+        }));
+        viewer.canvas.setAttribute('aria-label', said);
+      }
+      if (reading) readPages();
+      if (announce) live.textContent = said;
+      if (turned && options.onPage) options.onPage(first);
+    }
+    function go(index) {
+      if (!data || index < 0 || index >= spreads.length || index === current) return;
+      turned = true;
+      show(index, true);
+    }
+    function goToPage(n) {
+      if (!data) return;
+      var target = Math.max(1, Math.min(n, data.pages.length)) - 1;
+      spreads.forEach(function (spread, k) { if (spread.indexOf(target) >= 0 && k !== current) show(k, true); });
+    }
+
+    // Text: the text of the pages on screen, in place of their pictures. A zine has none that can be shown.
+    function setReading(on) {
+      reading = on;
+      textButton.setAttribute('aria-pressed', on ? 'true' : 'false');
+      frame.classList.toggle('is-reading', on);
+      reader.hidden = !on;
+      if (on) readPages();
+      showZoom();
+      live.textContent = on ? 'The text of these pages' : 'The pictures of these pages';
+    }
+    function readPages() {
+      reader.textContent = '';
+      var inner = el('div', 'viewer__reader-inner');
+      if (!data.text) {
+        var title = el('p', 'viewer__reader-title');
+        title.textContent = options.caption || data.title;
+        var about = el('p');
+        about.textContent = 'The pages of this zine are pictures, and the text that can be recognised in them is not reliable enough to show here. A description of each page will follow.';
+        inner.appendChild(title);
+        inner.appendChild(about);
+      } else {
+        spreads[current].forEach(function (i) {
+          var page = data.pages[i], heading = el('h2', 'viewer__reader-heading');
+          heading.textContent = 'Page ' + (i + 1);
+          inner.appendChild(heading);
+          if (!page.text || !page.text.length) {
+            var none = el('p', 'viewer__reader-empty');
+            none.textContent = 'No text on this page.';
+            inner.appendChild(none);
+          } else {
+            page.text.forEach(function (text) { inner.appendChild(linked(text)); });
+          }
+        });
+      }
+      reader.appendChild(inner);
+      reader.scrollTop = 0;
+    }
+    // a paragraph of plain text, with its web addresses as links
+    function linked(text) {
+      var p = el('p'), re = /https?:\/\/[^\s]*[^\s.,;:!?)’”'"]/g, at = 0, m;
+      while ((m = re.exec(text))) {
+        p.appendChild(document.createTextNode(text.slice(at, m.index)));
+        var a = el('a');
+        a.href = m[0];
+        a.textContent = m[0];
+        p.appendChild(a);
+        at = m.index + m[0].length;
+      }
+      p.appendChild(document.createTextNode(text.slice(at)));
+      return p;
+    }
+
+    // the pages are in view as a whole: the zoom is the home zoom and they have not been moved (within slack)
+    function atHome(slack) {
+      var vp = viewer.viewport, home = vp.getHomeBounds();
+      return vp.getZoom() <= vp.getHomeZoom() * (1 + slack) && vp.getCenter().distanceTo(home.getCenter()) <= home.width * slack;
+    }
+    function showZoom() {
+      var off = !viewer || reading || !viewer.world.getItemAt(0);
+      setDisabled(buttons.fit, off);
+      if (off) {
+        setDisabled(buttons.zoomIn, true);
+        setDisabled(buttons.zoomOut, true);
+        return;
+      }
+      var vp = viewer.viewport, z = vp.getZoom();
+      setDisabled(buttons.zoomIn, z >= vp.getMaxZoom() * 0.999);
+      setDisabled(buttons.zoomOut, z <= vp.getMinZoom() * 1.001);
+    }
+    function zoom(factor) {
+      if (!viewer || reading || !viewer.world.getItemAt(0) || !usable(factor > 1 ? buttons.zoomIn : buttons.zoomOut)) return;
+      viewer.viewport.zoomBy(factor);
+      viewer.viewport.applyConstraints();
+    }
+    // In the page, a vertical swipe scrolls the page while the pages are in view as a whole; once they are zoomed in
+    // (and in full screen), the viewer takes every touch. While the page may take a swipe, OpenSeadragon's tracker is told
+    // so (its cooperative gesture handling), so that it neither holds on to the finger nor warns when the page takes it.
+    function touch() {
+      if (!options.inline || !viewer) return;
+      var share = !!(document.fullscreenElement !== frame && viewer.world.getItemAt(0) && atHome(0.05));
+      viewer.canvas.style.touchAction = viewer.container.style.touchAction = share ? 'pan-y' : 'none';
+      if (viewer.innerTracker && viewer.innerTracker.setCooperativeGestureHandling) viewer.innerTracker.setCooperativeGestureHandling(share);
+    }
+
+    function onKey(event) {
+      if (event.altKey || event.ctrlKey || event.metaKey || !data) return;
+      var key = event.key;
+      if (key === 'ArrowLeft' || key === 'ArrowRight') go(current + (key === 'ArrowRight' ? 1 : -1));
+      else if ((key === 'Home' || key === 'End') && !reader.contains(event.target)) go(key === 'Home' ? 0 : spreads.length - 1);
+      else if (key === '+' || key === '=') zoom(ZOOM);
+      else if (key === '-' || key === '_' || key === '−') zoom(1 / ZOOM);
+      else if (!/^[rRfF]$/.test(key)) return;   // OpenSeadragon's keys for turning and flipping the pages are not used
+      event.preventDefault();
+      event.stopPropagation();   // before OpenSeadragon, whose arrow keys would move the pages
+    }
+    function onFullscreen() {
+      var on = document.fullscreenElement === frame, label = on ? 'Exit full screen' : 'Full screen';
+      buttons.fullscreen.innerHTML = icon(on ? 'exitFullscreen' : 'fullscreen') + '<span class="viewer__label">' + label + '</span>';
+      buttons.fullscreen.setAttribute('aria-label', label);
+      touch();
+    }
+    // the caption in the top bar: one line, with an ellipsis where it is cut; a keyboard stop only where there is more
+    function measure() {
+      if (!captionButton) return;
+      var cut = !expanded && captionButton.scrollWidth > captionButton.clientWidth + 1, more = expanded || cut;
+      captionButton.tabIndex = more ? 0 : -1;
+      captionButton.classList.toggle('is-cut', cut);
+      if (more) captionButton.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      else captionButton.removeAttribute('aria-expanded');
+    }
+    function destroy() {
+      gone = true;
+      document.removeEventListener('fullscreenchange', onFullscreen);
+      if (observer) observer.disconnect();
+      if (viewer) { viewer.destroy(); viewer = null; }
+    }
+    return { frame: frame, start: start, goToPage: goToPage, destroy: destroy };
   }
 })();

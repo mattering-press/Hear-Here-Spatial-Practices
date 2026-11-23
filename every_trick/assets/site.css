@@ -333,6 +333,60 @@ smartframe-embed:not(:defined) { aspect-ratio: auto !important; }   /* third-par
 @media (prefers-reduced-motion: reduce) { .viewer__preview { transition: none; } }
 @media print { .figure-button { display: none; } }
 
+/* documents (filters/embeds.lua, assets/zoom.js). On an essay page a document is its cover, at most 20rem wide, with its
+   caption line below it ending in a row of buttons: Open (the viewer, added by zoom.js), Text and the download. On its own
+   page (/read/<name>/) its pages are a row you can scroll sideways, which zoom.js replaces with the viewer, as wide as
+   the page's opening; its text follows, page by page. */
+figure.document { width: min(100%, 20rem); }
+.document__cover { display: block; }
+figure.document .document__cover img { width: 100%; height: auto; background: var(--colour-rule); box-shadow: var(--shadow); }
+figure.document.is-openable .document__cover { cursor: zoom-in; }
+.document__actions { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.55rem; }
+figcaption .document__actions .figure-button { float: none; margin: 0; color: var(--colour-text); text-decoration: none; }
+@media (hover: hover) { figcaption .document__actions .figure-button:hover { color: var(--colour-accent); } }
+figure.document.is-page { width: 100%; }
+.document-viewer { --reach: calc(min(var(--wide), 100cqw) - 2 * var(--gap)); width: var(--reach); margin-left: calc((min(var(--measure), 100cqw) - var(--reach)) / 2 - var(--column-inset, var(--gap))); }
+.document-strip { display: flex; gap: 0.75rem; margin: 0; padding: 0 0 0.75rem; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; list-style: none; }
+.document-strip li { flex: none; scroll-snap-align: start; scroll-margin: 0 var(--gap); }
+.document-strip img { display: block; width: auto; max-width: none; height: min(70vh, 34rem, calc((100cqw - 3rem) / var(--ratio, 0.7071))); background: #fff; box-shadow: var(--shadow); }
+.document-viewer > .viewer__frame { display: none; }
+/* the viewer fits in the window below the page's opening, bar and all, where the window is not very short */
+.document-viewer.is-live { height: clamp(24rem, calc(100vh - 19rem), 48rem); }
+@supports (height: 1svh) { .document-viewer.is-live { height: clamp(24rem, calc(100svh - 19rem), 48rem); } }
+.document-viewer.is-live > .document-strip { display: none; }
+.document-viewer.is-live > .viewer__frame { display: flex; }
+.viewer__frame.is-inline { border-radius: var(--radius); overflow: hidden; color: #f2f0ea; color-scheme: dark; }
+.viewer__frame.is-inline:fullscreen { border-radius: 0; }
+.viewer__frame.is-inline [hidden] { display: none; }
+.viewer__frame.is-inline :focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+.viewer__frame.is-inline .viewer__bottom { padding-top: 0.45rem; padding-bottom: 0.45rem; }
+.viewer__pages .viewer__count { margin: 0 0.3rem; color: inherit; }
+a.viewer__button { color: inherit; text-decoration: none; }
+.viewer__button[aria-pressed="true"] { background: #f2f0ea; color: #111110; }
+@media (hover: hover) { .viewer__button[aria-pressed="true"]:hover { background: #fff; } }
+/* Text: the text of the pages on screen, in place of their pictures */
+.viewer__frame.is-reading .viewer__canvas { visibility: hidden; }
+.viewer__reader { position: absolute; inset: 0; overflow-y: auto; padding: 1.5rem max(1rem, env(safe-area-inset-right)) 2rem max(1rem, env(safe-area-inset-left)); background: #111110; overscroll-behavior: contain; }
+.viewer__reader-inner { max-width: 36rem; margin: 0 auto; font-size: 1rem; line-height: 1.6; }
+.viewer__reader p { margin: 0 0 0.8rem; }
+.viewer__reader a { color: #f2b8bb; overflow-wrap: anywhere; }
+.viewer__reader .viewer__reader-heading { clear: none; margin: 1.75rem 0 0.6rem; color: rgb(255 255 255 / 0.62); font-size: 0.8125rem; font-weight: var(--weight-strong); letter-spacing: 0.1em; text-transform: uppercase; }
+.viewer__reader .viewer__reader-heading::before { content: none; }
+.viewer__reader .viewer__reader-heading:first-child { margin-top: 0; }
+.viewer__reader-empty { color: rgb(255 255 255 / 0.62); font-style: italic; }
+.viewer__reader-title { font-weight: var(--weight-strong); }
+/* the document's page: its text, page by page, and its download */
+.document-about { margin-top: calc(var(--space) * 1.5); }
+.document-text__about { color: var(--colour-muted); font-size: 0.9375rem; }
+.document-text__title { font-weight: var(--weight-strong); }
+.document-page { scroll-margin-top: var(--space); border-radius: 4px; }
+main .document-page h3 { margin: 1.75rem 0 0.5rem; color: var(--colour-muted); font-size: 0.8125rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.document-page p { margin: 0 0 0.75rem; }
+.document-page__empty { color: var(--colour-muted); font-style: italic; }
+.document-page:target { animation: para-highlight 3s ease-out; }
+@media (prefers-reduced-motion: reduce) { .document-page:target { animation: none; background: var(--colour-highlight); box-shadow: 0 0 0 0.4rem var(--colour-highlight); } }
+@media print { .document-viewer > .viewer__frame { display: none !important; } .document-viewer.is-live { height: auto; } .document-viewer.is-live > .document-strip { display: flex; flex-wrap: wrap; } }
+
 /* podcasts: the player (assets/player.js; without JavaScript, the browser's own), the bar it becomes at the foot of
    the window while playing out of view, the transcript and its timecodes */
 audio { display: block; width: 100%; margin: var(--gap) 0; }

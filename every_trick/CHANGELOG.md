@@ -11,6 +11,39 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of every_trick’ in `DEVELOPMENT.md`.
 
+## 1.12.0
+
+23 November 2026. Documents in the zoom viewer, with their text.
+
+- The book’s documents – the walk’s booklet and the two zines, the Experimental Zine Index and *Trauma, Body and Home* –
+  are shown as pictures of their pages, in the same viewer as the pictures. Where the viewer is wider than it is tall it
+  shows two pages side by side, as a spread: the cover alone, then pages 2 and 3, 4 and 5, and so on; on a phone, one page
+  at a time. Its bar shows which pages are on screen and how many there are (‹ 4–5 / 21 ›), and has zoom out, zoom in and
+  fit, full screen, Text and the download. The arrow keys, the + and − keys and a swipe on a phone work as for pictures;
+  Home and End go to the first and the last pages.
+- On an essay page a document is its cover, with its number and its caption below it, and three buttons: Open, which
+  opens the viewer at the cover without leaving the page; Text, which leads to its text; and the download, with its size.
+  They take the place of archive.org’s readers on the Experimental index and on the page of Mahsa Alami Fariman, Ahmadreza
+  Hakiminejad and Heba N. Sabboubeh, and of the PDF reader on the walk’s page. The pages’ Markdown is unchanged; the
+  booklet’s caption no longer ends with a link to open the PDF, since the download takes its place.
+- Each document’s own page, such as `/read/walking-sitting-sketching/`, has the viewer, then the document’s text, page by
+  page, each headed ‘Page 3’ with an address of its own (`#page-3`), then its download. A link ending in `#page=5` opens
+  the viewer at page 5, and the address follows the pages as the reader turns them. Without JavaScript the page shows
+  the pages as pictures in a row that scrolls sideways, then the text.
+- In the viewer, Text shows the text of the pages on screen in place of their pictures, and the pictures again. The
+  booklet’s text is read from its PDF when the site is built. The zines’ pages are pictures, and the text that archive.org
+  recognises in them is not reliable enough to show, so for now each shows its title and says that a description of each
+  page will follow.
+- The zines’ pages are copied from archive.org into the repository, in `media/zines/`, so readers no longer wait on
+  archive.org’s own reader, which failed for the zine index on 22 November. archive.org keeps the originals, and the
+  zines’ download leads there. After a zine has been corrected on archive.org, `npm run fetch-zine -- <identifier>` copies
+  its pages again.
+- The Media Index shows each document’s cover, and lists the zines as served from our own site. A document’s page says
+  how many pages it has, and where its pages come from, and `read/<name>/document.json` holds its pages, their zoom tiles
+  and their text as data.
+- Building the site now needs poppler for the booklet (`brew install poppler` on a Mac, `poppler-utils` on Debian and
+  Ubuntu); GitHub Actions installs it.
+
 ## 1.11.0
 
 23 November 2026. A References page for the whole book.

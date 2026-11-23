@@ -11,6 +11,8 @@
 // images/<name>-still.jpg for readers who ask for less motion; it gets no tiles, since a zoom viewer cannot animate.
 // A photo's EXIF orientation is applied, as browsers do. Juncture's rotation=90 instead turns the stored
 // pixels clockwise, as Juncture's image service does (that service ignores the EXIF orientation).
+// The pages of a document (documents.mjs, makePages) each get tiles, iiif/<name>/, and two widths, images/<name>-w400.jpg
+// (thumbnails, the row of pages on a phone) and images/<name>-w800.jpg (the row of pages, a document's cover in a page).
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { availableParallelism } from 'node:os';
 import { join } from 'node:path';
@@ -19,6 +21,7 @@ import sharp from 'sharp';
 const SIZES = { figure: 1600, inline: 1600, header: 2000, card: 800, poster: 800 };
 const LONG_EDGE = new Set(['figure', 'inline']);
 const WIDTHS = [800, 1200, 1600, 2400];   // a zoomable picture's widths in the page (srcset)
+const PAGE_WIDTHS = [400, 800];           // a document page's widths (srcset)
 const TILE = 512;
 const JPEG = { quality: 82, progressive: true, mozjpeg: true };
 const TILE_JPEG = { quality: 80 };
@@ -64,12 +67,13 @@ async function writeTiles(full, dir) {
     count += tiles.length;
   }
   // "@id" cannot be known in advance (the site may live at any address); zoom.js sets it from the info.json URL.
-  writeFileSync(join(dir, 'info.json'), JSON.stringify({
+  const info = {
     '@context': 'http://iiif.io/api/image/2/context.json', '@id': '.', protocol: 'http://iiif.io/api/image',
     width: W, height: H, sizes: sizes.reverse(), tiles: [{ width: TILE, scaleFactors: factors }],
     profile: ['http://iiif.io/api/image/2/level0.json'],
-  }));
-  return count;
+  };
+  writeFileSync(join(dir, 'info.json'), JSON.stringify(info));
+  return { count, info };
 }
 
 // root is the folder that holds the source image: sourceRoot, or the job's own (a file only in a frozen version's tag).
@@ -113,10 +117,34 @@ async function makeGroup({ src, rotation, roles, root }, site) {
       widths.bytes += info.size;
     }
     figure.largest = figure.srcset.at(-1).url;
-    tiles = await writeTiles(full, join(site, 'iiif', name));
+    tiles = (await writeTiles(full, join(site, 'iiif', name))).count;
     figure.tiles = `iiif/${name}/info.json`;
   }
   return { entries, tiles, widths };
+}
+
+// The pages of documents: pages [{ file, name }] -> [{ width, height, tiles, info, srcset: [{ url, width, height }] }] in
+// the same order, and the number of tiles. info is the page's info.json, which the document's data repeats.
+export async function makePages(pages, site) {
+  mkdirSync(join(site, 'images'), { recursive: true });
+  const out = new Array(pages.length), queue = pages.map((page, i) => ({ ...page, i }));
+  let tiles = 0;
+  const worker = async () => {
+    for (let page; (page = queue.shift());) {
+      const full = await sharp(page.file).flatten({ background: '#ffffff' }).removeAlpha().toColourspace('srgb').raw().toBuffer({ resolveWithObject: true });
+      const srcset = [];
+      for (const width of new Set(PAGE_WIDTHS.map((w) => Math.min(w, full.info.width)))) {
+        const url = `images/${page.name}-w${width}.jpg`;
+        const info = await sharp(full.data, { raw: full.info }).resize({ width }).jpeg(JPEG).toFile(join(site, url));
+        srcset.push({ url, width: info.width, height: info.height });
+      }
+      const made = await writeTiles(full, join(site, 'iiif', page.name));
+      tiles += made.count;
+      out[page.i] = { width: full.info.width, height: full.info.height, tiles: `iiif/${page.name}/info.json`, info: made.info, srcset };
+    }
+  };
+  await Promise.all(Array.from({ length: Math.min(4, Math.max(1, availableParallelism() - 1)) }, worker));
+  return { pages: out, tiles };
 }
 
 // jobs: [{ src, role, rotation, root? }] -> { images: { "role|src|rotation": { url, width, height, tiles?, srcset?, largest? } },
