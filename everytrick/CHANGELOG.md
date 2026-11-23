@@ -12,6 +12,14 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of everytrick’ in `DEVELOPMENT.md`.
 
+## 1.16.0
+
+23 November 2026. everytrick has a home of its own: everytrick.org.
+
+- The footer’s credit and the Versions page link the name everytrickinthebook to everytrick.org, where they linked to its
+  repository on GitHub. The site says what everytrick is and how to get in touch; its code is still linked from
+  there. everytrickinthebook.org leads to it too.
+
 ## 1.15.0
 
 23 November 2026. A new name: everytrickinthebook, and everytrick for short.

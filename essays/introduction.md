@@ -60,7 +60,7 @@ Tensions within and between communities of race, faith, class, gender and sexual
 
 The material arrangement of the book, spatially and temporally, moves through a **series of interlinked writings, podcasts, conversations and short videos**. Collaboration and experimentation are braided (Kimmerer, 2013) through each of the inter-connected pieces. The format is inspired by the Sukhdev Sandhu’s _Night Haunts_ (2010), which was released over the duration of several months, as ethnographic observations with night workers in London, for [the artistic website hosted by Artangle](https://www.artangel.org.uk/project/night-haunts/), before it became a widely read book. Les Back’s method for his book _Academic Diary_ (2016) has additionally informed the scale and tempo of the writing, which was written as a blogpost, before it was published as a book to be read from any page.
 
-The first version of this book was developed in collaboration with Simon Bowie using the [Juncture](https://www.juncture-digital.org/) visual essaying platform, created by [JSTOR Labs](https://labs.jstor.org/) (now ITHAKA Labs). The current version is built with [everytrickinthebook](https://github.com/everytrick/everytrickinthebook) by SJMcH for and with Mattering Press.
+The first version of this book was developed in collaboration with Simon Bowie using the [Juncture](https://www.juncture-digital.org/) visual essaying platform, created by [JSTOR Labs](https://labs.jstor.org/) (now ITHAKA Labs). The current version is built with [everytrickinthebook](https://everytrick.org/) by SJMcH for and with Mattering Press.
 
 # References
 

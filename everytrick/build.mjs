@@ -49,7 +49,7 @@ const CONTRACT = '0.7';  // version of the page.json / publication.json / media.
 // paragraph rule of contract 0.5 is the rule of 0.4, unchanged; 0.6's adds long descriptions to the blocks not numbered, and 0.7 keeps 0.6's.
 // everytrickinthebook, the toolkit in this folder. Every footer names it with its version (everytrick/package.json),
 // and links the name to its home and the version to the list of what changed in each version.
-const TOOLKIT_HOME = 'https://github.com/everytrick/everytrickinthebook';
+const TOOLKIT_HOME = 'https://everytrick.org/';
 const TOOLKIT_CHANGES = 'https://github.com/mattering-press/Hear-Here-Spatial-Practices/blob/main/everytrick/CHANGELOG.md';
 // Where the site is published. publication.md uses absolute URLs built from this; the pages use relative ones.
 // It becomes 'https://hearhere.matteringpress.org/' when the site moves to its own domain.
