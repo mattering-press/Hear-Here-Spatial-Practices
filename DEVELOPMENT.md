@@ -146,6 +146,7 @@ The frame of every page:
   band of the same height on every page. A page reached through a card names its section above its title (Podcasts,
   Events), and that section is marked in the menu. To give a page its own header picture, change the picture in its
   `.ve-header` line.
+- **Search.** A magnifier beside "Aa" leads to the edition's search page, `search/` (see "Plan: search").
 - **Settings.** The "Aa" button beside the switch opens the reader's settings (`every_trick/assets/settings.js`):
   text size in four steps (90, 100, 115 and 130 per cent; the whole page scales, the text column with it) and colours:
   System (the preset, which follows the reader's device), Light or Dark. The browser keeps the choice
@@ -171,7 +172,7 @@ What is in `every_trick/`:
 - `scripts/align.mjs`: times a podcast transcript's paragraphs against its recordings with whisper.cpp, on the editor's computer, and writes the cue files and a report (see "Plan: podcast player and transcript")
 - `scripts/number-media.mjs` (`npm run number-media -- <version>`): numbers the media items of a frozen version that have no number yet, in its reading order, and writes the register (see "Freezing a version for review or release")
 - `template.html`: the HTML around every page. It links the stylesheet and scripts with `?v=` and a hash of their contents, so that browsers fetch them again after every change instead of keeping an old copy
-- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `zoom.js` (the pictures' Zoom buttons, the zoom viewer and the pause button of animations; see "Plan: image display and the zoom viewer"), `player.js` (the podcast player and its docked bar; see "Plan: podcast player and transcript"), `citations.js`, `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens), `media-index.js` (the Media Index's filters, and the editing view's fields, checks and change sheet)
+- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `search.js` (the search page; see "Plan: search"), `place.js` (keeps the reader's place for the search page's ×), `zoom.js` (the pictures' Zoom buttons, the zoom viewer and the pause button of animations; see "Plan: image display and the zoom viewer"), `player.js` (the podcast player and its docked bar; see "Plan: podcast player and transcript"), `citations.js`, `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens), `media-index.js` (the Media Index's filters, and the editing view's fields, checks and change sheet)
 - `images.mjs`: resized images (each zoomable picture in several widths for `srcset`) and the tiles for zooming; an animated GIF becomes an animated WebP and a still
 - `audio.mjs`: reads the length of an MP3 from the file, for the podcast players
 - `check.mjs`, `serve.mjs`: the link check and the local server
@@ -474,7 +475,7 @@ Agreed with the publisher on 2026-11-19 after reviewing Entreluma, a static succ
 
 - **Links that drive the media.** A link in the text can zoom an image to a detail or move audio and video to a moment. These are real links to the media item pages, using the standard media-fragment addresses `#xywh=x,y,w,h` (an image region) and `#t=12:40` (a time), for example `/see/plumbline#xywh=1200,800,600,400` and `/listen/boulder#t=12:40`. With JavaScript they act in place on the current page; without it, in print (as QR codes) and in archives they open the item page at that region or moment. Transcript timecodes use the same mechanism.
 - **Retiring old addresses.** At the switch the site gets a "page not found" page that looks the requested address up in a redirect map and forwards the reader, so old Juncture links and any later renamed page still reach the right place.
-- **Search.** Full-text search across the book with Pagefind, which builds its index at build time and needs no server.
+- **Search.** Full-text search across the book with Pagefind, which builds its index at build time and needs no server. Built as agreed in "Plan: search".
 - **Checks before publishing.** The build reports problems in plain language for authors and editors: missing alt text, unmatched citations, broken links, oversized images and a size limit for image tiles. During the parallel run these are warnings; from release 1.0, errors that stop a release.
 
 ## Plan: media data decisions
@@ -554,7 +555,7 @@ to listen.
 
 ## Plan: margin notes
 
-Agreed with the publisher on 2026-11-19. Text notes and media in the margin are built (`every_trick/filters/margins.lua`, `every_trick/assets/margins.js`): a margin note may hold pictures, animated GIFs, video and audio players, and one that holds only media has no note number (example: the cover beside para. 1 of the home page). Media in the margin are media items with their own numbers, like any other (every_trick_in_the_book 1.10.0). The print and EPUB forms are not built yet.
+Agreed with the publisher on 2026-11-19. Text notes and media in the margin are built (`every_trick/filters/margins.lua`, `every_trick/assets/margins.js`): a margin note may hold pictures, animated GIFs, video and audio players, and one that holds only media has no note number (example: the cover beside para. 1 of the home page). Media in the margin are media items with their own numbers, like any other (every_trick_in_the_book 1.11.0). The print and EPUB forms are not built yet.
 
 - **What:** short notes, links and small media thumbnails in a right-hand margin column. Paragraph numbers keep the left margin.
 - **Where they live in the source:** directly after the paragraph they belong to (`::: {.margin}` … `:::`), or attached to a word (`[given by Germany in 1962]{.margin}`). They are never stored by paragraph number, so they move with their paragraph from version to version. While Juncture still renders the site, write them as `<aside class="margin" markdown="1">…</aside>`, which the build converts.
@@ -566,7 +567,7 @@ Agreed with the publisher on 2026-11-19. Text notes and media in the margin are 
 ## Plan: image display and the zoom viewer
 
 Agreed with the publisher on 2026-11-22. It settles how pictures sit in the page and how they are viewed; the data
-stays as "Plan: media data decisions" fixes it. Built in every_trick_in_the_book 1.9.0 (22 November 2026), except the
+stays as "Plan: media data decisions" fixes it. Built in every_trick_in_the_book 1.10.0 (22 November 2026), except the
 `.compare` class, which is for later.
 
 - **In the page a picture is a plain image**: an `<img>` with `srcset` in 800, 1200, 1600 and 2400 px (JPEG at about
@@ -582,7 +583,7 @@ stays as "Plan: media data decisions" fixes it. Built in every_trick_in_the_book
   too narrow for a caption and the button side by side, it has the line below each picture to itself). Clicking the
   picture also opens the viewer (with a zoom cursor); the button is the figure's only keyboard stop. Without JavaScript
   the picture links to its largest image, and to its item page once item pages exist (it does since
-  every_trick_in_the_book 1.10.0; on the item page itself it links to the largest image).
+  every_trick_in_the_book 1.11.0; on the item page itself it links to the largest image).
 - **Tall pictures** are never taller than about 80% of the window. The build writes each picture's proportions into
   the page, so the stylesheet sizes the picture and its caption without JavaScript.
 - **Galleries** are justified rows: every picture keeps its proportions, its share of the row follows its shape, and
@@ -632,7 +633,7 @@ Not built yet.
 
 Agreed with the publisher on 2026-11-22. Every media item has one permanent number, kept in a register, and every
 number a reader sees is made from it. It replaces chapter-based figure numbers (`Fig. 2.3`) on the web; print keeps
-them, worked out for the printed route. Built in every_trick_in_the_book 1.10.0 (23 November 2026), except print, which
+them, worked out for the printed route. Built in every_trick_in_the_book 1.11.0 (23 November 2026), except print, which
 waits for the print edition; how editors use it is in "The media register" above.
 
 - **The register** is one table in the repository with a line per item: its number, its kind (`see`, `listen`,
@@ -662,6 +663,12 @@ waits for the print edition; how editors use it is in "The media register" above
   title, kind and address, where it appears (links to the item in its page), the version it entered with, where it
   is stored and where it is served from. It can be filtered by kind and by where items are served from; without
   JavaScript it is a plain list. It is the "List" view of "Plan: stable links", and the footer links to it.
+- **Search** finds the items of the Media Index (the publisher, 2026-11-23): each entry's title and address are in
+  the latest text's search index, and a result leads to the entry (`/media-index/#item-37`), labelled "item 37" where
+  a page shows "para. 12" (see "Plan: search"). Its other facts (where it appears, its version, where it is stored
+  and served from) are left out, and so are the item pages, whose words the Media Index holds, the short and former
+  addresses and the editing view. The Media Index is shared by every version, so a frozen version's search does not
+  have it.
 - **The editing view** (`/media-index/edit/`) is built on previews only, never on the public site. It is the same list
   with fields for the name, the credit, the caption and alt text of each appearance, and a comment, and checks beside
   each item: no alt text, alt text that repeats the caption, no credit, used on no page. Edits stay in the browser;
@@ -679,7 +686,7 @@ waits for the print edition; how editors use it is in "The media register" above
 ## Plan: the References page
 
 Agreed with the publisher on 2026-11-22. The bibliography already works as a register for works: each is entered once,
-with a permanent key. Built in every_trick_in_the_book 1.11.0 (23 November 2026), except the last point (a Zotero
+with a permanent key. Built in every_trick_in_the_book 1.12.0 (23 November 2026), except the last point (a Zotero
 library and downloads of the bibliography), which is for later; how it works is in "References and citations" above.
 
 - **One page for the whole book**, `/references/`, lists every work in the bibliography once, formatted in the house
@@ -689,9 +696,52 @@ library and downloads of the bibliography), which is for later; how it works is 
   on the References page, no longer to the first page in reading order that lists it. The popups stay.
 - **Year letters** (Stengers 2005a and 2005b) are fixed for the whole book, also once reference lists are generated
   page by page.
+- **Search** finds the works of the References page (the publisher, 2026-11-23): each edition's index has its own
+  References page, and a work found there is listed by itself, labelled as the text cites it ("Stengers 2005a",
+  from citeproc in the house style; its key if citeproc gives none), with a link to its entry
+  (`/references/#stengers2005a`; see "Plan: search"). The lists of the passages and pages under each work are left
+  out, so that searching a page's title does not list every work it cites.
 - **Later, perhaps** (the publisher, 2026-11-22: "keep it for later"): references edited in a Zotero group library and
   handed over to `references/bibliography.json` on a branch, and downloads of the bibliography as BibTeX, RIS and
   CSL-JSON.
+
+## Plan: search
+
+Agreed with the publisher on 2026-11-22 and built in every_trick_in_the_book 1.9.0, with Pagefind 1.6.0 (a pinned
+dependency of `every_trick/`; MIT licence).
+
+- **A search page, not a pop-up.** Every page has a magnifier in its header that leads to `search/`. A search has an
+  address (`search/?q=dust`) that can be shared and works with the back button, and Pagefind loads only on that page.
+  A pop-up over the current page could be added later on top of the page.
+- **Closing search.** A × at the top right of the search page leads back to the page search was opened from, at the
+  place the reader last stopped scrolling below its header (`every_trick/assets/place.js`, on every page, keeps it
+  for the tab in `sessionStorage`), because the browser's Back button is not evident to every reader and the
+  magnifier makes readers scroll to the top. It works after following a result and coming back too; Escape does the
+  same when the field is empty. Without JavaScript the × leads to the home page. Asked for by the publisher on
+  2026-11-22.
+- **Results lead to paragraphs.** Our own small script (`every_trick/assets/search.js`), not Pagefind's ready-made
+  box, lists each page found with up to three of its paragraphs: number (para. 12), the words around the ones
+  found, marked, and a link to `#p12`. It uses the site's stylesheet, so it follows the reader's text size and
+  colours. A list page lists its entries instead, each labelled in the page's Pagefind meta (`entry-<id>`): the
+  Media Index's results are its items, "item 37", with a link to `#item-37`, and the References page's its works,
+  as the text cites them ("Stengers 2005a"), with a link to `#stengers2005a`.
+- **Only the reading text.** The template marks `<main>` of real pages for indexing (`data-pagefind-body`) and the
+  page's title as the result's title. The Markdown views, `publication/`, `versions/` and `search/` are not indexed.
+  Cards are left out (`data-pagefind-ignore`, set by `filters/cards.lua`), so the words in a card are found on the
+  page it leads to; a page with only cards (Events) has nothing to find. Transcripts, captions and alt text are in.
+  Each edition's References page is in its index, and the Media Index in the latest text's; the media items' own
+  pages, their short and former addresses and the editing view are in none (see "Plan: media register, item pages
+  and the Media Index" and "Plan: the References page").
+- **Each edition searches itself.** The latest text and every frozen version get their own index (`pagefind/`) and
+  search page (`/v0.1/search/`), so results in a frozen version lead to its permanent paragraph numbers. A frozen
+  version's search page has a link that searches the latest text for the same words. Each index adds about 0.6 MB.
+- **Without JavaScript** the search page says so and points to the whole book in Markdown, where the browser's own
+  Find in page works.
+- **Build and check.** `build.mjs` makes the indexes as its last step, so GitHub Actions and the previews need no
+  change, and reports how many pages each holds. `check.mjs` confirms every edition has its search page and index.
+- **Later.** WebVTT captions join the index when they exist (the media item pages stay out: the Media Index holds
+  their words); filters (by section, or by route once "several routes" is settled) can be added with
+  `data-pagefind-filter`.
 
 ## Plan, not yet confirmed: several routes through a book
 

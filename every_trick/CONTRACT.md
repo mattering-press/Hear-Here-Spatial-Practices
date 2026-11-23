@@ -22,7 +22,7 @@ the HTML. Media in the margin are items with their own numbers, no longer figure
 also gives each edition a References page, `references/`, which lists every work of the bibliography (see "Citations
 in the HTML"): a reference's `url` in page.json, like the citation's link, points at the work's entry there
 (`references/#hall2001`) when the page's own typed list lacks the work, where it pointed at the first page in reading
-order whose list has it (every_trick_in_the_book 1.11.0). The paragraph rule of 0.5 is 0.4's, unchanged.
+order whose list has it (every_trick_in_the_book 1.12.0). The paragraph rule of 0.5 is 0.4's, unchanged.
 
 ## Editions
 
