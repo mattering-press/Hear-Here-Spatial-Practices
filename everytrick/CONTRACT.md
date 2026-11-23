@@ -1,4 +1,4 @@
-# Page data, contract 0.6
+# Page data, contract 0.7
 
 The build writes JSON beside the HTML so that other frontends (the collage index, a Tapestry export) can
 read the book without parsing HTML: `publication.json` at the root of each edition, a `page.json` beside every
@@ -29,9 +29,13 @@ order whose list has it, and puts beside it the edition's bibliography to downlo
 documents (every_trick_in_the_book 1.13.0; see "Documents"): a PDF of the repository, or a zine copied from
 archive.org, is shown as its pages, each with zoom tiles, and has `read/<name>/document.json`; media.json gains `pages`
 and `document`; and a document is no longer listed in page.json's `video`, where an archive.org reader was an `embed`.
-The paragraph rule of 0.5 is 0.4's, unchanged. 0.6 renames the toolkit's version `everytrickinthebook` in page.json,
-publication.json, media.json, document.json, formatted.json and the Markdown view's front matter, with the toolkit's
-new name (everytrickinthebook 1.14.0); it changes nothing else, and its paragraph rule is 0.4's, unchanged.
+The paragraph rule of 0.5 is 0.4's, unchanged. 0.6 (every_trick_in_the_book 1.14.0) adds long descriptions of pictures (see
+"Long descriptions"): their block is added to the paragraph rule's list of blocks that are not numbered, and they are
+`description` and `description_by` in page.json's `figures` and in media.json's `appearances`; and media.json gains
+`first_published` and `last_changed` for each item. No frozen version was numbered by contract 0.5's rule. 0.7
+renames the toolkit's version `everytrickinthebook` in page.json, publication.json, media.json, document.json,
+formatted.json and the Markdown view's front matter, with the toolkit's new name (everytrickinthebook 1.15.0); it
+changes nothing else, and its paragraph rule is 0.6's, unchanged.
 
 ## Editions
 
@@ -54,8 +58,9 @@ depends only on the page's content, as its Markdown view (`index.md`) has it, ne
 stylesheet. Every version is rebuilt with the current toolkit, so a frozen version is numbered by the rule of the
 contract it was frozen under (`contract` in its entry in `versions.json`), and a rule never changes within a contract
 version: changing it would renumber the paragraphs of frozen versions and break every citation of them. The rule
-below is contract 0.4's; contracts 0.5 and 0.6 kept it unchanged. Contract 0.3, which numbers version 0.1, differs only for
-lists (see the list item below).
+below is contract 0.6's, which 0.7 kept unchanged: contract 0.4's, which 0.5 kept unchanged, with long descriptions added to the blocks that are
+not numbered (no page of 0.4 or 0.5 had one). Contract 0.3, which numbers version 0.1, differs only for lists (see the
+list item below).
 
 Numbered, wherever they are (at the top level, in block quotes, in the transcript, in any other div that is not
 listed below):
@@ -74,6 +79,7 @@ Not numbered:
   next heading of the same or a higher level;
 - media and their captions: a paragraph that is only an image (a figure), and the `.video`, `.embed`, `.audio`,
   `.gallery` and `.cards` blocks;
+- a picture's long description, the `.description` block after it (from contract 0.6; see "Long descriptions");
 - a paragraph without words: only images, only raw HTML (the smartframe embeds), only a transcript timecode
   such as `[00:10:13]`, or nothing left once normalised (below);
 - tables, code blocks, horizontal rules and raw HTML blocks;
@@ -148,8 +154,8 @@ its mark in the text, at the end of the paragraph before it, is `<a class="margi
 
 | field | value |
 |---|---|
-| `contract` | `"0.6"`, the version of this format |
-| `paragraphRule` | the contract whose paragraph rule numbered this edition: `"0.6"` for the latest text (whose rule is 0.4's), the `contract` of its entry in `versions.json` for a frozen version (`"0.3"` for version 0.1) |
+| `contract` | `"0.7"`, the version of this format |
+| `paragraphRule` | the contract whose paragraph rule numbered this edition: `"0.7"` for the latest text, the `contract` of its entry in `versions.json` for a frozen version (`"0.3"` for version 0.1) |
 | `title`, `subtitle` | from the header of the home page (`README.md`) |
 | `creators` | list of names |
 | `publisher` | name |
@@ -174,7 +180,7 @@ its mark in the text, at the end of the paragraph before it, is `<a class="margi
 | `headings` | `{ level, text, id }` in page order; `level` is the HTML level (2 to 6), `id` the fragment for `url#id` |
 | `paragraphs` | the numbered paragraphs (see "Paragraph numbers"), `{ id, n, text_hash }` in page order: `id` is the fragment (`"p12"`), `n` the number (12), `text_hash` the hash of its normalised text, the same in every version where the paragraph's text is the same |
 | `items` | the media items on the page (see "Media items"), `{ number, kind, name, url, anchor, after }` in page order: `number` is the item's number (37), or `null` for an item not numbered yet; `kind` is `see`, `listen`, `watch` or `read`; `name` the readable part of its address; `url` its item page, relative to the edition's root (`"see/boulder-font/"`, `"../see/boulder-font/"` in a frozen version); `anchor` the fragment of the item on this page (`"item-37"`, for `url#anchor`); `after` the numbered paragraph before it (`"p76"`), or `null`. An item's credit, rights and source are in `media.json` |
-| `figures` | `{ image, width, height, tiles, alt, caption }`: `image` is 1600 px on the long edge, `width` and `height` are its size, `tiles` is a IIIF `info.json` or `null`; `alt` and `caption` are `""` when missing |
+| `figures` | `{ image, width, height, tiles, alt, caption, description, description_by }`: `image` is 1600 px on the long edge, `width` and `height` are its size, `tiles` is a IIIF `info.json` or `null`; `alt` and `caption` are `""` when missing; `description` is its long description as plain text, its paragraphs separated by a blank line (`"\n\n"`), and `description_by` who wrote it, both `""` when it has none (see "Long descriptions") |
 | `audio` | `{ url, title }`; `url` is the MP3 on GitHub, which supports range requests |
 | `video` | `{ url, title, kind }`; `kind` is `youtube`, `vimeo`, `file` (a video file in the site) or `embed` (any other embedded page, such as the Internet Archive or the BBC); `url` is the address given in the Markdown. A document whose pages the build shows (see "Documents") is not listed: `items` has it, with `kind` `read` |
 | `links` | links in the page's text (not its menu or footer) to other pages, as `{ id, url, text }`, each target once, in order of first appearance; citation links are not included |
@@ -236,7 +242,7 @@ At the root of the site, every media item, for other frontends. Its URLs are rel
 |---|---|
 | `contract`, `everytrickinthebook` | as in publication.json |
 | `title`, `url` | the book's title, and where the site is published |
-| `items` | every item, the numbered ones by number, then the new ones in order of first appearance: `{ number, kind, name, source, since, credit, rights, rights_label, rights_note, cite_as, title, url, short, caption, former_names, former_sources, stored, served, pages, document, appearances }` |
+| `items` | every item, the numbered ones by number, then the new ones in order of first appearance: `{ number, kind, name, source, since, credit, rights, rights_label, rights_note, cite_as, title, url, short, caption, former_names, former_sources, stored, served, first_published, last_changed, pages, document, appearances }` |
 
 - `number`, `kind`, `name`, `source`, `since`, `credit`, `rights`, `rights_note`, `cite_as`, `title`, `former_names`,
   `former_sources`: as in the register (`number` and `since` are `null` for a new item, `credit`, `rights`,
@@ -249,12 +255,48 @@ At the root of the site, every media item, for other frontends. Its URLs are rel
 - `stored`, `served`: where it is kept and where readers' browsers get it from, for people: `"this repository"`,
   `"Internet Archive"`, `"YouTube"` …; `"our own site"`, `"GitHub, as a raw file"`, `"archive.org"` … (a zine copied from
   archive.org is stored on the Internet Archive and served from our own site)
+- `first_published`, `last_changed`: days (`YYYY-MM-DD`) from the repository's Git history, as the item's page shows
+  them ("First published", "Last changed"). `first_published` is the day of the earliest commit whose change to a page
+  (`README.md`, `essays/*.md`) adds a reference to the item: its file, its address, or a former one (`former_sources`),
+  in any form a page writes it. `last_changed` is the day of the latest commit that changed its file, current or former
+  (for a zine copied from archive.org, the folder of its pages); `null` for an item served from elsewhere (YouTube,
+  Vimeo, the BBC, archive.org), whose file is not the book's. Days are commit dates. Both are `null` when the build had
+  no whole history (a shallow clone), and the item's page leaves the row out
 - `pages`, `document`: for a document whose pages the build shows, how many pages it has and its data
   (`"read/walking-sitting-sketching/document.json"`, see "Documents"); `null` for any other item
 - `appearances`: every place it appears, in every edition, `{ edition, page, url, anchor, after, caption, alt }`:
   `edition` is `"latest"` or a version's id, `page` the page's Markdown file, `url` the page with the item's anchor
   (`"v0.1/essays/catherine_hahn/#item-37"`), `after` the numbered paragraph before it, `caption` and `alt` as that page
-  has them
+  has them, and `description` and `description_by`, its long description there, as in page.json's `figures` (`""`
+  when there is none)
+
+## Long descriptions
+
+A picture that carries an argument (an artist's map, an archive photograph) may have a long description, written by an
+author or an editor, which sits in the page beside the caption, as alt text does. It is optional: where none is
+written, nothing is shown and nothing says so. In the Markdown it is a block directly after the picture:
+
+```markdown
+![Artist map drawn by Catherine Hahn](../../images/x-1600.jpg){.zoom .wide alt="…"}
+
+::: {.description by="Jane Doe"}
+One or more paragraphs.
+:::
+```
+
+after a `.ve-media` line in a page in Juncture's syntax too. `by`, who wrote it, may be left out. A block after a
+gallery belongs to the gallery's last picture; a block after anything else stops the build. It is never numbered (see
+"Paragraph numbers"). In the HTML of a page it is a disclosure at the end of the picture's caption line, which the
+picture's `img` names with `aria-details`:
+
+```html
+<img … aria-details="item-34-description">
+<figcaption>…<details class="description" id="item-34-description"><summary>Description by Jane Doe</summary><div class="description__text"><p>…</p></div></details></figcaption>
+```
+
+("Description" alone when it has no `by`). On the item's page it is shown in full below the picture, as
+`<section class="item-description" id="item-34-description">` with the heading "Description" and, when credited, "By
+Jane Doe". The zoom viewer leaves it out of its caption.
 
 ## Documents
 
@@ -318,6 +360,7 @@ Media are written as:
   (WebVTT, one cue per transcript paragraph, holding the paragraph's words), the HTML marks each timed paragraph with
   `data-cue-for` (the player's id), `data-cue-start` and `data-cue-end` (seconds). Cues are matched to paragraphs by
   their words, never by number, so they never affect the paragraph rule
+- `::: {.description by="…"}`: a picture's long description, directly after it (see "Long descriptions")
 - `::: {.gallery}`: a div of zoomable images; `::: {.cards}`: a list of links, each with a picture and a title
 - transcript timecodes such as `[00:10:13]` stay as plain text
 

@@ -32,6 +32,7 @@ import { BIBLIOGRAPHY, COPY_DATA, COPY_STYLES, CSL_COMMIT, DOWNLOADS, formatRefe
 import { readBook, REPO, REPO_ROOT, repoPath } from './convert.mjs';
 import { mp3Duration, paragraphCues } from './audio.mjs';
 import { pagesOf, pdfText, renderPdf, requirePoppler, zinePages } from './documents.mjs';
+import { itemDates } from './history.mjs';
 import { imageName, makeImages, makePages } from './images.mjs';
 import { documentText, forwardHtml, itemFacts, mediaEditHtml, mediaIndexHtml, sizeText } from './media-pages.mjs';
 import * as pagefind from 'pagefind';
@@ -43,9 +44,9 @@ const NOINDEX = false;  // true hides every page from search engines (it was tru
 // A build for a preview adds the Media Index's editing view, /media-index/edit/; the public site never has it.
 const PREVIEW = process.argv.includes('--preview') || /^(1|true|yes)$/i.test(process.env.EVERYTRICK_PREVIEW || '');
 const PUBLICATION = { creators: ['Nirmal Puwar'], publisher: 'Mattering Press', language: 'en' };
-const CONTRACT = '0.6';  // version of the page.json / publication.json / media.json format, and of the paragraph rule for new text
+const CONTRACT = '0.7';  // version of the page.json / publication.json / media.json format, and of the paragraph rule for new text
 // A frozen version keeps the paragraph rule of the contract it was frozen under ("contract" in versions.json). The
-// paragraph rules of contracts 0.5 and 0.6 are the rule of 0.4, unchanged.
+// paragraph rule of contract 0.5 is the rule of 0.4, unchanged; 0.6's adds long descriptions to the blocks not numbered, and 0.7 keeps 0.6's.
 // everytrickinthebook, the toolkit in this folder. Every footer names it with its version (everytrick/package.json),
 // and links the name to its home and the version to the list of what changed in each version.
 const TOOLKIT_HOME = 'https://github.com/everytrick/everytrickinthebook';
@@ -481,7 +482,8 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
       headings: list(data.headings).map(({ level, text, id }) => ({ level, text, id })),
       paragraphs: paragraphs.map(({ id, n, text_hash }) => ({ id, n, text_hash })),
       items: items.map(({ label, kind, name, url, anchor, after }) => ({ number: label ? Number(label) : null, kind, name, url, anchor, after: after || null })),
-      figures: list(data.figures).map(({ image, width, height, tiles, alt, caption }) => ({ image, width, height, tiles, alt, caption })),
+      figures: list(data.figures).map(({ image, width, height, tiles, alt, caption, description, description_by }) => ({ image, width, height, tiles, alt, caption,
+        description: description || '', description_by: description_by || '' })),
       audio: list(data.audio).map(({ url, title }) => ({ url, title })),
       video: list(data.video).map(({ url, title, kind }) => ({ url, title, kind })),
       links: list(data.links).map(({ id, url, text }) => ({ id, url: url || './', text })),
@@ -719,7 +721,8 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
       counts[a.file] = (counts[a.file] || 0) + 1;
       const n = counts[a.file], twice = apps.filter((b) => b.edition === latest && b.file === a.file).length > 1;
       // what readers see as the caption: a video's or an embed's caption, or the title its page gives it
-      return { ...a, key: `${a.file}|${n}`, repeat: twice ? `${ordinal(n)} place` : '', shownCaption: a.caption || (it.kind === 'see' ? '' : a.found.title) };
+      return { ...a, key: `${a.file}|${n}`, repeat: twice ? `${ordinal(n)} place` : '', shownCaption: a.caption || (it.kind === 'see' ? '' : a.found.title),
+        description: a.found.description || '', descriptionBy: a.found.description_by || '' };
     });
     const since = it.since ? versionById.get(it.since) : null;
     return {
@@ -732,6 +735,14 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
     };
   };
   const views = media.items.map(itemView);
+  // When each item was first published and last changed, from the Git history (history.mjs): two passes over it for
+  // all the items. Without the whole history the item pages leave both out, and the build says so.
+  {
+    const wanted = views.map((it) => ({ it, source: it.source, formerSources: it.formerSources, copy: it.doc?.copy?.folder || null }));
+    const { dates, warning } = itemDates(wanted, { root: REPO_ROOT });
+    for (const w of wanted) Object.assign(w.it, dates.get(w));
+    if (warning) warnings.push(`media items: ${warning}`);
+  }
 
   // The items' pages, through both stages like the book's own pages: the item alone (the converted page's block, as
   // items.lua recorded it), then the facts below it.
@@ -809,10 +820,10 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
       number: it.number, kind: it.kind, name: it.name, source: it.source, since: it.since || null, credit: it.credit || '',
       rights: it.rights || '', rights_label: it.rightsLabel || '', rights_note: it.rightsNote || '', cite_as: it.citeAs || '', title: it.title || '',
       url: it.url, short: it.short, caption: it.shown[0]?.caption ?? '', former_names: it.formerNames, former_sources: it.formerSources,
-      stored: it.stored.label, served: it.served.label,
+      stored: it.stored.label, served: it.served.label, first_published: it.firstPublished || null, last_changed: it.lastChanged || null,
       pages: it.doc ? it.doc.pages.length : null, document: it.doc ? it.doc.json : null,
       appearances: it.apps.map((a) => ({ edition: a.edition.version.id, page: a.file, url: /^#|^$/.test(a.link) ? `./${a.link}` : a.link, anchor: a.anchor || null,
-        after: a.after || null, caption: a.caption, alt: a.alt })),
+        after: a.after || null, caption: a.caption, alt: a.alt, description: a.found.description_text || '', description_by: a.found.description_by || '' })),
     })),
   }, null, 2) + '\n');
 }

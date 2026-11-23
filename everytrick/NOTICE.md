@@ -9,7 +9,7 @@ Copyright © 2026 Studio Julien McHardy (SJMcH). Made for Mattering Press, its f
 
 The name is written as one word in lower case, `everytrickinthebook`, and `everytrick` for short in running text,
 so that it reads the same in prose, in web addresses and on GitHub: `everytrick.org` (with `everytrickinthebook.org`
-leading to it) and `github.com/everytrick`. Until version 1.13.0 it was written `every_trick_in_the_book`. Its parts
+leading to it) and `github.com/everytrick`. Until version 1.14.0 it was written `every_trick_in_the_book`. Its parts
 are named like folders: `everytrick/markdown`, `everytrick/conventions`, `everytrick/plain` (the open default style)
 and `sjmch/styles` (the designed styles).
 

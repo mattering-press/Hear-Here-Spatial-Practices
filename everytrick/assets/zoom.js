@@ -97,12 +97,12 @@
     show();
   });
 
-  // A caption line holds the item's number pill, the caption and the item's credit (and a document's buttons): the viewer
-  // shows each in its place.
+  // A caption line holds the item's number pill, the caption and the item's credit (and a document's buttons, or a
+  // picture's long description): the viewer shows each in its place, and leaves the long description to the page.
   function captionText(caption) {
     if (!caption) return '';
     var copy = caption.cloneNode(true);
-    Array.prototype.forEach.call(copy.querySelectorAll('.item-number, .item-credit, .document__actions'), function (el) { el.parentNode.removeChild(el); });
+    Array.prototype.forEach.call(copy.querySelectorAll('.item-number, .item-credit, .document__actions, .description'), function (el) { el.parentNode.removeChild(el); });
     return copy.textContent.replace(/\s+/g, ' ').trim();
   }
   function creditText(caption) {

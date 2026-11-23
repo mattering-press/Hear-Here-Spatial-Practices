@@ -1,31 +1,50 @@
 # everytrickinthebook: what’s new
 
-Every version of everytrickinthebook, newest first, with what changed in it. Until 1.13.0 it was called
+Every version of everytrickinthebook, newest first, with what changed in it. Until 1.14.0 it was called
 every_trick_in_the_book, and the entries for those versions keep that name.
 
 The toolkit’s versions are numbered separately from the versions of the books it makes. A book’s versions follow its
 text, such as version 0.1 of *Hear Here: Spatial Practices*, its first public version. The toolkit’s versions follow
-the design and what the pages do, and are always written with the toolkit’s name, such as everytrickinthebook 1.14.0.
+the design and what the pages do, and are always written with the toolkit’s name, such as everytrickinthebook 1.15.0.
 Every version of a book is shown with the current version of the toolkit, so a frozen version keeps its text but
 takes on the current design.
 
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of everytrick’ in `DEVELOPMENT.md`.
 
-## 1.14.0
+## 1.15.0
 
 23 November 2026. A new name: everytrickinthebook, and everytrick for short.
 
 - The toolkit is now called everytrickinthebook, one word in lower case, so that its name reads the same in prose,
   in its web address and on GitHub: everytrick.org, and github.com/everytrick. It was every_trick_in_the_book; the
   underscores could not go into a web address, and the hyphens that would have replaced them were ugly and confusing.
-- The footer’s credit reads ‘built with everytrickinthebook 1.14.0 by SJMcH’, and its name links to the toolkit’s home
+- The footer’s credit reads ‘built with everytrickinthebook 1.15.0 by SJMcH’, and its name links to the toolkit’s home
   at github.com/everytrick/everytrickinthebook. Screen readers still read it as ‘every trick in the book’.
 - In the book’s data the toolkit’s version is now `everytrickinthebook`, where it was `every_trick_in_the_book`: in
   page.json, publication.json, media.json, the documents’ data, the bibliography’s formatted texts and the Markdown
-  view’s front matter. That is contract 0.6, which changes nothing else.
+  view’s front matter. That is contract 0.7, which changes nothing else.
 - The toolkit’s folder in the book’s repository is `everytrick/`, where it was `every_trick/`.
 - Readers keep their text size, colours and place in the book: those are still stored under their old keys.
+
+## 1.14.0
+
+23 November 2026. Item pages say when an item was first published and last changed; pictures may have a long
+description. Both follow a reviewer’s suggestions. The page data is now contract 0.6.
+
+- Every item page says when the item was **first published**, the day of the earliest change to the book’s pages that
+  shows it (under its present file or address, or a former one), and, for an item whose file is ours, when that file
+  **last changed**. A video on YouTube, Vimeo or the BBC, or a film on archive.org, shows only the first. Both come from
+  the repository’s history at every build, and `media.json` has them too (`first_published`, `last_changed`). A build
+  without the whole history leaves them out and says so.
+- A picture that carries an argument, such as an artist’s map or an archive photograph, may have a **long
+  description**, written directly after it as `::: {.description by="Name"}` … `:::` (after a `.ve-media` line too).
+  On the page it is a quiet “Description” under the caption, “Description by Name” when it is credited, which opens to
+  the text and which the picture names for screen readers; on the item’s page it is shown in full below the picture.
+  It is never numbered as a paragraph (the paragraph rule of contract 0.6; no paragraph’s number changes). It is
+  optional: nothing anywhere says that a picture has none, not even the editing view’s checks.
+- The editing view of the Media Index has a field for a long description, and one for who wrote it, at each place a
+  picture appears. The change sheet lists them only when they are filled in, as the block to write after the picture.
 
 ## 1.13.0
 

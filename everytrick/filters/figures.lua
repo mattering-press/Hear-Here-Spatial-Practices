@@ -24,11 +24,20 @@
 -- button side by side is marked .narrow (in a gallery, all its pictures are), and its button gets a line of its own.
 -- An animated image, ![caption](images/x.webp){.animated alt="…"}, becomes a figure without zoom, whose picture shows
 -- its first frame (images/x-still.jpg) to readers who ask their system for less motion; zoom.js adds a pause button.
+-- A long description, a ::: {.description by="…"} block directly after a picture (after a gallery: its last picture),
+-- is taken into the picture's figure ("Long descriptions" in CONTRACT.md). On a page it is a disclosure at the end of the
+-- caption line, which the picture names with aria-details:
+--   <img … aria-details="item-34-description">
+--   <figcaption>… <details class="description" id="item-34-description"><summary>Description by Jane Doe</summary>
+--     <div class="description__text"><p>…</p></div></details></figcaption>
+-- On the item's own page it is shown in full below the picture, as <section class="item-description" id="…">. A
+-- description that follows anything but a picture stops the build.
 -- Other images of the site get their size and lazy loading.
 package.path = pandoc.path.directory(PANDOC_SCRIPT_FILE) .. '/?.lua;' .. package.path
 local lib = require 'lib'
 
 local figures, items = {}, {}
+local descriptions = {}   -- the long descriptions taken into figures, in page order (attach)
 
 -- The page's measures in rem, as assets/site.css sets them: the text column (--measure less the gutters), the wide
 -- width (--wide less the gutters) and the gap between the pictures of a gallery (--gap). On phones (40rem and less)
@@ -84,16 +93,20 @@ local function figure(img, shown, narrow)
   local animated = entry.animated
   local alt = img.attributes.alt or ''
   local caption = pandoc.utils.stringify(img.caption)
-  figures[#figures + 1] = { image = entry.url, width = entry.width, height = entry.height, tiles = entry.tiles, alt = alt, caption = caption }
+  local description = descriptions[tonumber(img.attributes['twin-description'] or '')]
+  figures[#figures + 1] = { image = entry.url, width = entry.width, height = entry.height, tiles = entry.tiles, alt = alt, caption = caption,
+    description = description and description.text or '', description_by = description and description.by or '' }
   local item = lib.item(entry.src)
   local anchor = item and lib.anchor(item)
+  local described = description and ((anchor or ('figure-' .. #figures)) .. '-description')
   if item then items[#items + 1] = { anchor = anchor, source = entry.src, label = item.label, kind = item.kind, name = item.name, url = item.url } end
   local place = not shown and place_of(img) or nil
   local ratio = entry.width / entry.height
   local width = not shown and place ~= 'wide' and place ~= 'full' and img.attributes.width or nil
   local style = { '--ratio: ' .. num(ratio) }
   if width then table.insert(style, 1, '--figure-width: ' .. width) end
-  local size = ' width="' .. entry.width .. '" height="' .. entry.height .. '" alt="' .. lib.esc(alt) .. '" loading="lazy"'
+  local size = ' width="' .. entry.width .. '" height="' .. entry.height .. '" alt="' .. lib.esc(alt) .. '"' ..
+    (described and (' aria-details="' .. described .. '"') or '') .. ' loading="lazy"'
   local css, rem = column_width(width, place)
   if shown then css = num(shown) .. 'rem' end
   if not shown then narrow = place ~= 'wide' and place ~= 'full' and rem and rem < NARROW end
@@ -112,12 +125,25 @@ local function figure(img, shown, narrow)
   end
   local classes = (animated and 'animated' or 'zoom') .. (place and (' ' .. place) or '') .. (narrow and ' narrow' or '')
   local line = lib.caption_line(item, caption ~= '' and lib.esc(caption) or '')
+  -- the long description: on a page, a disclosure after the caption line; on the item's page, in full below the picture
+  local disclosure, below = '', ''
+  if description then
+    local credit = description.by ~= '' and (' by ' .. lib.esc(description.by)) or ''
+    if lib.item_page then
+      below = table.concat { '\n<section class="item-description" id="', described, '" aria-labelledby="', described, '-heading">\n',
+        '<h2 id="', described, '-heading">Description</h2>\n', credit ~= '' and ('<p class="item-description__by">By ' .. lib.esc(description.by) .. '</p>\n') or '',
+        description.html, '\n</section>' }
+    else
+      disclosure = table.concat { '<details class="description" id="', described, '"><summary>Description', credit, '</summary>',
+        '<div class="description__text">', description.html, '</div></details>' }
+    end
+  end
   return pandoc.RawBlock('html', table.concat {
     '<figure', anchor and (' id="' .. anchor .. '"') or '', ' class="', classes, '" style="', lib.esc(table.concat(style, '; ')), '"',
     animated and '' or (' data-tiles="' .. lib.esc(lib.join(lib.root, entry.tiles)) .. '"'), '>\n',
     picture, '\n',
-    line ~= '' and ('<figcaption>' .. line .. '</figcaption>\n') or '',
-    '</figure>' })
+    (line ~= '' or disclosure ~= '') and ('<figcaption>' .. line .. disclosure .. '</figcaption>\n') or '',
+    '</figure>', below })
 end
 
 local function only_image(block)
@@ -181,8 +207,42 @@ local function gallery(div)
   return div
 end
 
+-- Long descriptions: each ::: {.description} block is taken into the picture directly before it (in a gallery's place,
+-- the gallery's last picture), whose image is marked with its place in descriptions; the block itself goes.
+local function attach(blocks)
+  local out, changed = pandoc.Blocks {}, false
+  for _, b in ipairs(blocks) do
+    if b.t == 'Div' and b.classes:includes('description') then
+      local before = out[#out]
+      local img, k = before and only_image(before), nil
+      if not is_picture(img) and before and before.t == 'Div' and before.classes:includes('gallery') then
+        for j = #before.content, 1, -1 do
+          img = only_image(before.content[j])
+          if is_picture(img) then k = j break end
+        end
+      end
+      if not is_picture(img) then
+        error('a long description, ::: {.description}, must come directly after a picture (' .. lib.page .. '): ' .. pandoc.utils.stringify(b):sub(1, 60))
+      end
+      local texts = {}
+      for _, block in ipairs(b.content) do texts[#texts + 1] = pandoc.utils.stringify(block) end
+      descriptions[#descriptions + 1] = { by = b.attributes.by or '', text = table.concat(texts, '\n\n'),
+        html = (pandoc.write(pandoc.Pandoc(b.content), 'html', { wrap_text = 'wrap-none' }):gsub('%s+$', '')) }
+      img.attributes['twin-description'] = tostring(#descriptions)
+      local para = pandoc.Para { img }
+      if k then before.content[k] = para else before = para end
+      out[#out] = before
+      changed = true
+    else
+      out:insert(b)
+    end
+  end
+  return changed and out or nil
+end
+
 function Pandoc(doc)
   lib.init(doc.meta)
+  doc.blocks = doc.blocks:walk { Blocks = attach }
   -- figures first (in page order), then the other images
   doc.blocks = doc.blocks:walk {
     traverse = 'topdown',
