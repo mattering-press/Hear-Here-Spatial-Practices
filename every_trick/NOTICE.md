@@ -25,6 +25,8 @@ text. Web addresses cannot contain underscores, so a domain for it would be `eve
 - **Books made with the toolkit** keep their own licence; *Hear Here: Spatial Practices* is published by
   Mattering Press under CC BY 4.0.
 - **Pandoc**, which the build runs as a separate program, is under its own licence (GPL).
+- **Pagefind**, which the build runs to make the search index and whose search script the site serves
+  (`pagefind/`), is under the MIT licence; its licence is copied next to the index.
 
 ## Contributing
 

@@ -11,7 +11,7 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of every_trick’ in `DEVELOPMENT.md`.
 
-## 1.9.0
+## 1.10.0
 
 22 November 2026. Pictures in several widths, Zoom on the caption line and a new zoom viewer.
 
@@ -38,6 +38,30 @@ reader sees. How to add a version: ‘Versions of the book and of every_trick’
   picture is in view, and moves the picture once you have zoomed in. The picture already in the page shows at once
   while the sharper tiles arrive. For readers who ask for less motion, zooming jumps instead of gliding.
 - The link check also checks every width of every picture.
+
+## 1.9.0
+
+22 November 2026. Search.
+
+- Every page has a magnifier in its header, beside "Aa", that leads to the search page. It lists the pages the words
+  are found on, best first, and on each page up to three paragraphs with their number (para. 12) and the words
+  around the ones found, marked. Each links straight to its paragraph. Results follow the typing, so the search
+  field, a pill like the header's buttons, has no Search button.
+- A × at the top right of the search page closes it: it leads back to the page search was opened from, at the
+  place the reader last stopped to read (not the top of the page they scrolled up to for the magnifier), also after
+  following a result and coming back. Escape does the same when the search field is empty. Without JavaScript, or
+  when search was opened from outside the book, the × leads to the home page.
+- The words searched for are kept in the page's address (`search/?q=dust`), so a search can be shared or bookmarked.
+- Each frozen version searches its own text, at its own address (`/v0.1/search/`), so results lead to that
+  version's paragraph numbers. Its search page has a link that searches the latest text for the same words.
+- Only the reading text of the pages is searched: not the Markdown views, the whole book in Markdown or the versions
+  page, and not the cards that lead to other pages, so the words in a card are found on the page it leads to.
+- The index is made by Pagefind 1.6.0 when the site is built and needs no server. The search page loads it only when
+  it is used. Without JavaScript the page points to the whole book in Markdown, for the browser's own Find in page.
+- The build reports how many pages each index holds, and names any page with nothing to find (Events, which has only
+  cards). The check confirms that every edition has its search page and index.
+- On small phones the header's items sit a little closer together, so that the title, the Page / Markdown switch,
+  search and "Aa" still fit on one row (from 360 pixels wide).
 
 ## 1.8.0
 
