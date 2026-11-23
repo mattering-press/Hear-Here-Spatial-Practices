@@ -795,7 +795,8 @@ waits for the print edition; how editors use it is in "The media register" above
 - **What readers see.** Every caption starts with the item's number, a small pill that links to its item page. In the
   viewer the number stands before the caption, and "3 / 12" is only the picture's place in the sequence. Authors link
   to an item by its name (`[the boulder from Bethlehem](/see/boulder-font)`), never by its number, so no typed number
-  can go stale. An item can be cited like a paragraph: "(Hahn 2026: item 37)".
+  can go stale. An item can be cited like a paragraph, against the book: "(Puwar 2026: item 37)" (the publisher,
+  2026-11-23, replacing "(Hahn 2026: item 37)"; see "Plan: copying citations").
 - **Item pages** at `/see/<name>/`, `/listen/<name>/`, `/watch/<name>/` and `/read/<name>/` show the item (the
   zoomable picture, the player or the document), its number, its caption or captions, its credit, its rights and its
   source, every place it appears, the version it entered with, where it is stored and where it is served from.
@@ -892,6 +893,67 @@ is in "References and citations" above.
   page (see "Header" above).
 - **Later, perhaps** (the publisher, 2026-11-22: "keep it for later"): references edited in a Zotero group library and
   handed over to `references/bibliography.json` on a branch.
+
+## Plan: copying citations
+
+Agreed with the publisher on 2026-11-23, except the one point marked "to confirm". It gathers what earlier plans
+promised: a "Cite this" panel and "copy quote with citation" (notes of 19 November), exact quotes as text fragments
+("Plan: stable links, versions and print companions"), citing a media item like a paragraph ("Plan: media register,
+item pages and the Media Index") and the house style's `(Nassar 2026: para. 12)`. Not built yet.
+
+- **The ¶ stays as it is.** One click copies the link to the paragraph, with the version in it on a frozen version
+  (see "Paragraph numbers"). Every new way of copying works like it: one click copies, and the status line says what
+  was copied. Nothing is added to the left margin, which already holds the number, the ¶ and, in transcripts, the ▸.
+- **Who wrote a page.** Each page names its authors in its front matter, in Pandoc's `author:` field, and its
+  interviewers in `interviewer:` (the role CSL and MHRA 7.11 give the person who conducts a published interview), so a
+  podcast credits both the person interviewed and the interviewer (the publisher, 2026-11-23). `convert.mjs` keeps a
+  front-matter block at the top of a legacy page. The names go into `page.json` (a new contract version; the paragraph
+  rule does not change) and later to Thoth. The book's own data (editor, publisher, year, licence) stay in `build.mjs`.
+  The build warns about a page that has numbered paragraphs but no author.
+- **Quotes.** Selecting words in numbered paragraphs shows a small bar at the foot of the window, on every screen,
+  with two labelled buttons, "Copy quote" and "Copy citation". The bar never sits beside the selection, where the
+  phone's own menu and Hypothesis's Annotate button appear, so it works on any page that loads Hypothesis, including
+  latest-text or release pages if Hypothesis is later opened there, for teaching for example (the publisher,
+  2026-11-23). It leaves the right edge free for Hypothesis's sidebar and sits above the docked player. "Copy quote"
+  copies:
+
+  > ‘Cairo is a very dusty city’ (Nassar 2026: para. 55)
+  >
+  > Nassar, Aya, ‘Hear Here Podcast: Aya Nassar’, interviewed by Nirmal Puwar, in *Hear Here: Spatial Practices*,
+  > ed. by Nirmal Puwar, version 0.1 (Mattering Press, 2026) <https://hearhere.matteringpress.org/v0.1/essays/aya_nassar/>
+  > [accessed 23 November 2026]
+
+  "Copy citation" copies the same without the quote. A selection over several paragraphs gives "paras 55–56". The
+  quote is the words as selected, without paragraph numbers, ▸ or margin notes. The clipboard gets formatted text
+  (italics, live links) and plain text, so it pastes well into a word processor and into a plain field.
+- **The link to the exact words** (to confirm). The address of the quoted words is the paragraph with a text fragment
+  (`…/v0.1/essays/aya_nassar/#p55:~:text=Cairo%20is%20a%20very%20dusty%20city`), so the browser highlights them;
+  browsers without text fragments land on the paragraph. In formatted text the in-text citation, "(Nassar 2026:
+  para. 55)", is itself that link, and the reference ends with the chapter's address, later its DOI, as a reference
+  should. Plain text cannot hold a hidden link, so there the passage's address follows on a line of its own.
+- **"Cite" under the page title** opens a panel (a popover, like the text size and colours): the in-text citation, set
+  to the paragraph in the address or the one being read (the reading position `paragraphs.js` already keeps for the
+  version notice), the reference, the link, a copy button for each, and downloads of the page's reference as BibTeX,
+  RIS and CSL-JSON. Keyboard users cite a passage here. Without JavaScript the same reference stands in a "How to cite
+  this page" section at the end of the page, which also serves print and archives.
+- **From the latest text.** A citation always names a version. Copied on the latest text, it cites the newest release
+  wherever the passage is unchanged there (the build matches paragraphs by their words, as for the version notice),
+  with that release's paragraph number and address. A passage that is new or changed since is cited as "latest text,
+  unreleased", and the status line says that its number may still change (the publisher, 2026-11-23). The ¶ link is
+  unchanged.
+- **Media items** are cited against the book, since their numbers belong to the book (the publisher, 2026-11-23):
+  `(Puwar 2026: item 37)`, the item's title and credit, the book's reference, and the item's short address (`/37/`).
+  "Cite" sits in the zoom viewer's top bar, and each item page has a "Cite this item" box. The number pill in a caption
+  stays a link to the item page. Later, perhaps: a recording cited at a moment (`#t=12:40`).
+- **Works in the bibliography.** Each entry on the References page, and each citation popup, gets "Copy reference",
+  which copies the work's reference in the house style. Downloads of the whole bibliography stay for later (see "Plan:
+  the References page").
+- **Made at build time.** References are written by citeproc with the house style, so they match the reference lists;
+  the browser adds only the accessed date. `npm run test:csl` gains a chapter, a podcast with its interviewer and a
+  media item. The same data give every page Google Scholar `citation_*` tags and a JSON-LD block.
+- **Order of work:** 1. authors in the pages, the page metadata, the Cite panel, Copy quote and Copy citation, from
+  `main`; 2. media items and bibliography entries, once the media register and the References page (pull requests
+  #32–#34) are on `main`. Each step is a minor version of every_trick_in_the_book.
 
 ## Plan: search
 
