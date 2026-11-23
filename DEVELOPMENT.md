@@ -939,8 +939,10 @@ item pages and the Media Index") and the house style's `(Nassar 2026: para. 12)`
   publisher, 2026-11-23).
 - **"Cite" under the page title** opens a panel (a popover, like the text size and colours): the in-text citation, set
   to the paragraph in the address or the one being read (the reading position `paragraphs.js` already keeps for the
-  version notice), the reference, the link, a copy button for each, and downloads of the page's reference as BibTeX,
-  RIS and CSL-JSON. Keyboard users cite a passage here. Without JavaScript the same reference stands in a "How to cite
+  version notice), the reference, the link and a copy button for each. The reference's Copy button is the References
+  page's menu (house style, APA, Chicago, MLA, Harvard, BibTeX, RIS; see "Plan: the References page"), made the same
+  way at build time (`formatReferences` in `citations.mjs`, `ris.mjs`), so a reader can cite a page in the style they
+  need. Keyboard users cite a passage here. Without JavaScript the same reference stands in a "How to cite
   this page" section at the end of the page, which also serves print and archives.
 - **From the latest text.** A citation always names a version. Copied on the latest text, it cites the newest release
   wherever the passage is unchanged there (the build matches paragraphs by their words, as for the version notice),
@@ -949,17 +951,19 @@ item pages and the Media Index") and the house style's `(Nassar 2026: para. 12)`
   unchanged.
 - **Media items** are cited against the book, since their numbers belong to the book (the publisher, 2026-11-23):
   `(Puwar 2026: item 37)`, the item's title and credit, the book's reference, and the item's short address (`/37/`).
+  When the register's `cite_as` is filled in, the item's own source follows as well (the "Cite this item" line that
+  "How to cite the source" foresees).
   "Cite" sits in the zoom viewer's top bar, and each item page has a "Cite this item" box. The number pill in a caption
   stays a link to the item page. Later, perhaps: a recording cited at a moment (`#t=12:40`).
-- **Works in the bibliography.** Each entry on the References page, and each citation popup, gets "Copy reference",
-  which copies the work's reference in the house style. Downloads of the whole bibliography stay for later (see "Plan:
-  the References page").
+- **Works in the bibliography.** The References page already copies each work in seven forms and downloads the whole
+  bibliography (everytrickinthebook 1.12.0). Each citation popup in the text gets the same Copy menu, reading the same
+  texts (`references/formatted.json`).
 - **Made at build time.** References are written by citeproc with the house style, so they match the reference lists;
   the browser adds only the accessed date. `npm run test:csl` gains a chapter, a podcast with its interviewer and a
   media item. The same data give every page Google Scholar `citation_*` tags and a JSON-LD block.
-- **Order of work:** 1. authors in the pages, the page metadata, the Cite panel, Copy quote and Copy citation, from
-  `main`; 2. media items and bibliography entries, once the media register and the References page (pull requests
-  #32–#34) are on `main`. Each step is a minor version of every_trick_in_the_book.
+- **Order of work:** 1. authors in the pages, the page metadata, the Cite panel, Copy quote and Copy citation; 2. media
+  items and the citation popups' Copy menu. The names wait for Nirmal Puwar's answers; the rest can be built before,
+  with the names filled in once they come. Each step is a minor version of everytrickinthebook.
 
 ## Plan: search
 
