@@ -957,7 +957,9 @@ item pages and the Media Index") and the house style's `(Nassar 2026: para. 12)`
   quoted words, the paragraph with a text fragment (`…/v0.1/essays/aya_nassar/#p55:~:text=Cairo%20is%20a%20very%20dusty%20city`),
   so the browser highlights them; browsers without text fragments land on the paragraph.
 - **"Cite" under the page title** cites the page as a whole, the chapter, not a paragraph (the publisher, 2026-11-23):
-  a panel with the reference in the reader's style, its in-text citation ("In the text: (Nassar 2026)"), one Copy
+  a panel that starts with a line in small type, "Press Copy to cite this entire page. You can also select words in
+  the text and press Copy quote to cite a particular quote." (in place of a heading; the publisher, 2026-11-23), then
+  the reference in the reader's style, its in-text citation ("In the text: (Nassar 2026)"), one Copy
   button, the style's name with a link to the settings, and "For a reference manager: BibTeX · RIS", which copy the
   page's entry. On the latest text it cites the newest release that has the page, and says so. Without JavaScript the
   reference stands in a "How to cite this page" section at the end of the page, which also serves print and archives.

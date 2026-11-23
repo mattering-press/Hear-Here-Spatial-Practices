@@ -8,8 +8,9 @@
 //    selection, where the phone's own menu and Hypothesis's Annotate button appear. It copies ‘the words’ (Nassar 2026:
 //    para. 55). Nassar, A., …, <…/essays/aya_nassar/#p55> [accessed …]. In formatted text the in-text citation is a
 //    link to the words themselves (#p55:~:text=…), which browsers highlight.
-//  * Cite, under the page's title, cites the page as a whole (the chapter): its reference in the reader's style, its
-//    in-text citation, a Copy button, the style with a link to the settings, and BibTeX and RIS for a reference manager.
+//  * Cite, under the page's title, cites the page as a whole (the chapter): a line saying so, and that selected words
+//    are cited with Copy quote; its reference in the reader's style, its in-text citation, a Copy button, the style
+//    with a link to the settings, and BibTeX and RIS for a reference manager.
 //    On the latest text it cites the newest release that has the page.
 //  * On the latest text a quote whose paragraphs are unchanged in the newest release is cited there, with that
 //    release's numbers and address; any other is cited as the latest text, unreleased, and the status line says that
@@ -229,7 +230,9 @@
     panel.setAttribute('role', 'dialog');
     panel.setAttribute('aria-labelledby', 'cite-panel-title');
     var head = element('div', 'cite-panel__head');
-    var title = element('h2', 'cite-panel__title', data.home ? 'Cite the book' : 'Cite this page');
+    // no heading: a line in small type says what the panel does (the publisher, 2026-11-23)
+    var title = element('p', 'cite-panel__title', 'Press Copy to cite ' + (data.home ? 'the entire book' : 'this entire page') +
+      '. You can also select words in the text and press Copy quote to cite a particular quote.');
     title.id = 'cite-panel-title';
     title.tabIndex = -1;
     var closer = textButton('', 'Close', 'cite-panel__close');

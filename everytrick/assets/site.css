@@ -726,8 +726,8 @@ main h2.search-result__title::before { content: none; }
 @media (hover: hover) { .copy-button.is-strong:hover { border-color: var(--colour-accent); background: var(--colour-accent); color: #fff; } }
 /* the panel */
 .cite-panel { position: fixed; inset: auto; margin: 0; box-sizing: border-box; width: min(34rem, calc(100vw - 16px)); max-height: calc(100vh - 16px); overflow: auto; padding: 0.9rem 1.1rem 1.1rem; border: 1px solid var(--colour-rule); border-radius: 6px; background: var(--colour-surface); color: var(--colour-text); box-shadow: var(--shadow); font-size: 0.9375rem; line-height: 1.45; }
-.cite-panel__head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0.6rem; }
-.cite-panel__title { margin: 0; font-size: 1rem; font-weight: var(--weight-heading); }
+.cite-panel__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 0.6rem; }
+.cite-panel__title { margin: 0; color: var(--colour-muted); font-size: 0.8125rem; line-height: 1.4; }
 .cite-panel__title:focus { outline: none; }
 .cite-panel__close { display: inline-grid; place-items: center; width: 2rem; height: 2rem; padding: 0; border: 0; border-radius: 999px; background: none; color: var(--colour-muted); cursor: pointer; }
 .cite-panel__close:is(:hover, :focus-visible) { color: var(--colour-text); background: var(--colour-highlight); }

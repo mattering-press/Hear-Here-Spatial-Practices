@@ -30,7 +30,8 @@ plan is "Plan: copying citations" in `DEVELOPMENT.md`.
   Formatted, the citation is a link that highlights the quoted words when it is opened. A selection over several
   paragraphs is cited as paras 55–56; a selection that starts or ends inside a word takes the whole word. The button
   never sits beside the selection, where a phone's own menu and Hypothesis's Annotate button appear.
-- **Cite**, under every page's title, cites the page as a whole: its reference in the reader's style, its in-text
+- **Cite**, under every page's title, cites the page as a whole. Its panel says so in a line of small type, and that
+  selected words are cited with Copy quote; then come the page's reference in the reader's style, its in-text
   citation, a Copy button, the style with a link to the settings, and BibTeX and RIS for a reference manager.
 - **The latest text cites the newest release.** A quote copied on the latest text whose paragraphs are unchanged in
   version 0.1 is cited there, with its numbers and address in that version; one that is new or changed since is cited
