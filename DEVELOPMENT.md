@@ -896,7 +896,7 @@ is in "References and citations" above.
 
 ## Plan: copying citations
 
-Agreed with the publisher on 2026-11-23, except the one point marked "to confirm". It gathers what earlier plans
+Agreed with the publisher on 2026-11-23. It gathers what earlier plans
 promised: a "Cite this" panel and "copy quote with citation" (notes of 19 November), exact quotes as text fragments
 ("Plan: stable links, versions and print companions"), citing a media item like a paragraph ("Plan: media register,
 item pages and the Media Index") and the house style's `(Nassar 2026: para. 12)`. Not built yet.
@@ -910,6 +910,8 @@ item pages and the Media Index") and the house style's `(Nassar 2026: para. 12)`
   front-matter block at the top of a legacy page. The names go into `page.json` (a new contract version; the paragraph
   rule does not change) and later to Thoth. The book's own data (editor, publisher, year, licence) stay in `build.mjs`.
   The build warns about a page that has numbered paragraphs but no author.
+  An event page is credited to Nirmal Puwar together with the event's collaborators (the publisher, 2026-11-23); the
+  names for each page are being confirmed with Nirmal Puwar before they are entered.
 - **Quotes.** Selecting words in numbered paragraphs shows a small bar at the foot of the window, on every screen,
   with two labelled buttons, "Copy quote" and "Copy citation". The bar never sits beside the selection, where the
   phone's own menu and Hypothesis's Annotate button appear, so it works on any page that loads Hypothesis, including
@@ -926,11 +928,12 @@ item pages and the Media Index") and the house style's `(Nassar 2026: para. 12)`
   "Copy citation" copies the same without the quote. A selection over several paragraphs gives "paras 55–56". The
   quote is the words as selected, without paragraph numbers, ▸ or margin notes. The clipboard gets formatted text
   (italics, live links) and plain text, so it pastes well into a word processor and into a plain field.
-- **The link to the exact words** (to confirm). The address of the quoted words is the paragraph with a text fragment
+- **The link to the exact words.** The address of the quoted words is the paragraph with a text fragment
   (`…/v0.1/essays/aya_nassar/#p55:~:text=Cairo%20is%20a%20very%20dusty%20city`), so the browser highlights them;
   browsers without text fragments land on the paragraph. In formatted text the in-text citation, "(Nassar 2026:
   para. 55)", is itself that link, and the reference ends with the chapter's address, later its DOI, as a reference
-  should. Plain text cannot hold a hidden link, so there the passage's address follows on a line of its own.
+  should. Plain text cannot hold a hidden link, so there the passage's address follows on a line of its own (the
+  publisher, 2026-11-23).
 - **"Cite" under the page title** opens a panel (a popover, like the text size and colours): the in-text citation, set
   to the paragraph in the address or the one being read (the reading position `paragraphs.js` already keeps for the
   version notice), the reference, the link, a copy button for each, and downloads of the page's reference as BibTeX,
