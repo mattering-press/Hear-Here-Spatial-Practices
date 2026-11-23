@@ -63,15 +63,21 @@ const linked = (text) => String(text ?? '').split(/(https?:\/\/[^\s<>"'‘’“
 
 // ---- A document's page: below the viewer, its text page by page, and its download -------------------------------
 
+// The text of a document's pages is searched, in the latest text's index (build.mjs, step 7): only the pages' text, in
+// <div class="document-pages" data-pagefind-body>, each page a place of its own in the results, "page 3", leading to
+// #page-3 (its data-pagefind-meta, as the References page's works and the Media Index's items; assets/search.js). The
+// headings "Page 3", the line said for a page without text, and everything else on the page are left out.
 export function documentText(it, { root }) {
   const doc = it.doc;
   const sections = [];
   if (doc.text) {
     sections.push(`<section class="document-text" id="text" aria-labelledby="text-heading">\n<h2 id="text-heading">Text</h2>\n` +
       `<p class="document-text__about">The text of each page, as it is read from the PDF. The pictures of the pages are above.</p>\n` +
-      doc.pages.map((p) => `<section class="document-page" id="page-${p.n}" aria-labelledby="page-${p.n}-heading"><h3 id="page-${p.n}-heading">Page ${p.n}</h3>\n` +
-        (p.text.length ? p.text.map((para) => `<p>${linked(para)}</p>`).join('\n') : '<p class="document-page__empty">No text on this page.</p>') + '\n</section>').join('\n') +
-      '\n</section>');
+      '<div class="document-pages" data-pagefind-body>\n' +
+      doc.pages.map((p) => `<section class="document-page" id="page-${p.n}" aria-labelledby="page-${p.n}-heading" data-pagefind-meta="entry-page-${p.n}:page ${p.n}">` +
+        `<h3 id="page-${p.n}-heading" data-pagefind-ignore>Page ${p.n}</h3>\n` +
+        (p.text.length ? p.text.map((para) => `<p>${linked(para)}</p>`).join('\n') : '<p class="document-page__empty" data-pagefind-ignore>No text on this page.</p>') + '\n</section>').join('\n') +
+      '\n</div>\n</section>');
   } else {
     const caption = it.shown[0]?.caption || doc.title;
     sections.push(`<section class="document-text" id="text" aria-labelledby="text-heading">\n<h2 id="text-heading">Text</h2>\n` +

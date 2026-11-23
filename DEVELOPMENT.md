@@ -709,14 +709,20 @@ is tall (a phone, or a tablet held upright, shows one page at a time); the viewe
 page, as wide as the page's opening, where the mouse wheel and a vertical swipe scroll the page until the pages are zoomed
 in; the address follows the pages as the reader turns them (`#page=6`); Home and End go to the first and last pages; on
 an essay page the cover is at most 20rem wide; the walk booklet's caption loses its closing "Open the booklet (PDF)" link,
-which the download replaces.
+which the download replaces. Changed by the publisher on 2026-11-23: the two pages of a spread meet without a gap, and a
+soft shadow on each page towards the spine, with a one-pixel hairline at the spine, shows that they are two (an
+OpenSeadragon overlay in the viewport's coordinates, `div.viewer__spine`, so that it zooms and moves with the pages and
+stays in full screen; a single page and the cover alone have none; its look is in `every_trick/assets/site.css`); and
+the text of a document is searched (below).
 
 - **Pages in the zoom viewer.** A document's pages are page images with zoom tiles, shown in the image viewer as
   two-page spreads on wide screens (the cover alone, then 2–3, 4–5 …) and one page at a time on phones, with a thin bar:
   ‹ 4–5 / 21 ›, Zoom, Full screen, Text, Download. Keyboard and swipe work as for pictures.
 - **The text** of a document is plain HTML on its `/read/` page, below the viewer, one section per page headed
   "Page 3" (anchor `#page-3`; links that open the viewer at a page use `#page=3`), so that it can be searched, read
-  aloud, translated and copied. In the viewer, Text swaps the pages on screen for their text. A PDF made on a computer
+  aloud, translated and copied. Search (the publisher, 2026-11-23): only the pages' text of a document's `/read/` page,
+  not its facts or buttons, is in the latest text's search index, each page labelled "page 3" where an essay's
+  paragraphs are "para. 12", and a result leads to `#page-3` (see "Plan: search"). The zines have no text to find. In the viewer, Text swaps the pages on screen for their text. A PDF made on a computer
   gives clean text; a scan or a flattened zine does not (archive.org's text recognition of the zine index is
   unusable), so it shows its caption, and later a description written by an editor.
 - **On an essay page** a document is a figure: its cover with the caption, and on the caption line Open (the viewer,
@@ -784,9 +790,9 @@ waits for the print edition; how editors use it is in "The media register" above
 - **Search** finds the items of the Media Index (the publisher, 2026-11-23): each entry's title and address are in
   the latest text's search index, and a result leads to the entry (`/media-index/#item-37`), labelled "item 37" where
   a page shows "para. 12" (see "Plan: search"). Its other facts (where it appears, its version, where it is stored
-  and served from) are left out, and so are the item pages, whose words the Media Index holds, the short and former
-  addresses and the editing view. The Media Index is shared by every version, so a frozen version's search does not
-  have it.
+  and served from) are left out, and so are the item pages, whose words the Media Index holds (except the text of a
+  document's pages, see "Plan: documents and zines"), the short and former addresses and the editing view. The Media
+  Index and the item pages are shared by every version, so a frozen version's search does not have them.
 - **The editing view** (`/media-index/edit/`) is built on previews only, never on the public site. It is the same list
   with fields for the name, the credit, the rights (a choice of the common rightsstatements.org statements and Creative
   Commons licences, plus any other address typed in) and their note, how to cite the source, the caption and alt text
@@ -867,7 +873,10 @@ dependency of `every_trick/`; MIT licence).
   Each edition's References page is in its index, and the Media Index in the latest text's; the media items' own
   pages, their short and former addresses and the editing view are in none (see "Plan: media register, item pages
   and the Media Index" and "Plan: the References page"). The References page's Copy buttons are interface, made by its
-  script, so no index has them; the header, the menu panel included, is outside `<main>`.
+  script, so no index has them; the header, the menu panel included, is outside `<main>`. The text of a document's
+  pages is in the latest text's index too, from its `/read/` page: only the text (`<div class="document-pages"
+  data-pagefind-body>`), each page a place of its own labelled "page 3" (`entry-page-3`) with a link to `#page-3`;
+  the page's facts, buttons and "Page 3" headings are left out (see "Plan: documents and zines").
 - **Each edition searches itself.** The latest text and every frozen version get their own index (`pagefind/`) and
   search page (`/v0.1/search/`), so results in a frozen version lead to its permanent paragraph numbers. A frozen
   version's search page has a link that searches the latest text for the same words. Each index adds about 0.6 MB.

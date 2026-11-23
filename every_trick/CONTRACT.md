@@ -279,8 +279,10 @@ ends with `<span class="document__actions">`: Text, a link to its text on its pa
 and the download; `assets/zoom.js` puts Open first. On its item page, the figure (`class="document is-page"`) holds
 `<div class="document-viewer" data-document="…">` with the row of its pages, `<ol class="document-strip">`, each page a
 `<li id="page=3">`, so that `#page=3` finds the page without JavaScript; with JavaScript the viewer takes its place and
-opens at that page. Below it, the text: `<section id="text">`, holding `<section class="document-page" id="page-3">` for
-each page of a PDF, headed `Page 3`; then `<section id="download">`.
+opens at that page. Below it, the text: `<section id="text">`, holding, in `<div class="document-pages"
+data-pagefind-body>`, `<section class="document-page" id="page-3" data-pagefind-meta="entry-page-3:page 3">` for each
+page of a PDF, headed `Page 3`; then `<section id="download">`. Only that `div` of the page is in the latest text's
+search index, each page a result's place labelled `page 3`.
 
 ## Zoom tiles
 

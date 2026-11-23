@@ -121,7 +121,7 @@ $endif$
 $if(section-title)$
           <p class="page-section"><a href="$section-url$">$section-title$</a></p>
 $endif$
-          <h1 class="page-title"$if(searchable)$ data-pagefind-meta="title"$endif$>$title$</h1>
+          <h1 class="page-title"$if(searchable)$ data-pagefind-meta="title"$elseif(search-title)$ data-pagefind-meta="title"$endif$>$title$</h1>
 $if(subtitle)$
           <p class="page-subtitle">$subtitle$</p>
 $endif$

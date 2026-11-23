@@ -18,7 +18,9 @@ reader sees. How to add a version: ‘Versions of the book and of every_trick’
 - The book’s documents – the walk’s booklet and the two zines, the Experimental Zine Index and *Trauma, Body and Home* –
   are shown as pictures of their pages, in the same viewer as the pictures. Where the viewer is wider than it is tall it
   shows two pages side by side, as a spread: the cover alone, then pages 2 and 3, 4 and 5, and so on; on a phone, one page
-  at a time. Its bar shows which pages are on screen and how many there are (‹ 4–5 / 21 ›), and has zoom out, zoom in and
+  at a time. The two pages of a spread meet without a gap, and a soft shadow on each page towards the spine, with a
+  hairline at the spine itself, shows that they are two; it zooms and moves with the pages, also in full screen. A
+  single page and the cover alone have none. Its bar shows which pages are on screen and how many there are (‹ 4–5 / 21 ›), and has zoom out, zoom in and
   fit, full screen, Text and the download. The arrow keys, the + and − keys and a swipe on a phone work as for pictures;
   Home and End go to the first and the last pages.
 - On an essay page a document is its cover, with its number and its caption below it, and three buttons: Open, which
@@ -42,6 +44,10 @@ reader sees. How to add a version: ‘Versions of the book and of every_trick’
 - The Media Index shows each document’s cover, and lists the zines as served from our own site. A document’s page says
   how many pages it has, and where its pages come from, and `read/<name>/document.json` holds its pages, their zoom tiles
   and their text as data.
+- Search finds the words of a document’s text: the booklet’s page on its own (`/read/walking-sitting-sketching/`) is in
+  the latest text’s search, with only its text, each page of it shown as ‘page 3’ where a page of the book shows
+  ‘para. 12’, leading to that page’s text (`#page-3`). The page’s facts and buttons are not searched, and the zines,
+  which have no text, are not either.
 - Building the site now needs poppler for the booklet (`brew install poppler` on a Mac, `poppler-utils` on Debian and
   Ubuntu); GitHub Actions installs it.
 

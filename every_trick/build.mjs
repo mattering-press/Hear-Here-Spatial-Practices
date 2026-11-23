@@ -745,6 +745,7 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
       ...metaArgs({ repo: REPO, lang: PUBLICATION.language, ...toolkitMeta, ...frameMeta(latest, root), root, shared: root, 'asset-version': ASSET_VERSION,
         'site-title': latest.home.title, ...extra })];
   };
+  const documentsSearched = [];   // the pages of the documents that have text, for the latest text's search index
   await inParallel(views, async (it) => {
     const name = `${it.url} (the page of ${it.label ? `item ${it.label}` : 'a new item'})`;
     const meta = { page: it.blockPage, manifest: itemManifest, title: it.heading };
@@ -752,16 +753,24 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
     if (it.block) {
       body = bracedDivs(await pandocAsync([...toMarkdown(['to-markdown']), ...metaArgs({ ...meta, repo: REPO, lang: PUBLICATION.language, root: '../../' })], it.block, name));
     }
-    // a document: below the viewer (filters/embeds.lua), its text page by page and its download
+    // a document: below the viewer (filters/embeds.lua), its text page by page and its download. The text of a document
+    // that has one is searched, in the latest text's index (step 7): the page's title names the result, and only the
+    // pages' text is indexed (documentText).
+    const searched = !!it.doc?.text;
     if (it.doc) body += `\n${rawBlock(documentText(it, { root: '../../' }))}`;
     body += `\n${rawBlock(itemFacts(it, { root: '../../', siteUrl }))}`;
     const html = await pandocAsync([...pageFrame('../../', { ...meta, pagetitle: `${it.label ? `Item ${it.label}` : 'New item'}: ${it.heading}`, 'item-page': 'true',
-      'section-title': it.label ? `Item ${it.label}` : 'New item', 'section-url': `../../media-index/#${it.anchor}`, 'in-media-index': 'true', noindex: NOINDEX ? 'true' : '' }),
+      'section-title': it.label ? `Item ${it.label}` : 'New item', 'section-url': `../../media-index/#${it.anchor}`, 'in-media-index': 'true', noindex: NOINDEX ? 'true' : '',
+      'search-title': searched ? 'true' : '' }),
       ...filterArgs(['figures', 'embeds', 'links'])], body, name);
     mkdirSync(join(SITE, it.url), { recursive: true });
     writeFileSync(join(SITE, it.url, 'index.html'), html);
+    if (searched) documentsSearched.push({ url: `/${it.url}`, content: html });
     mediaReport.pages++;
   });
+  // in the order of the Media Index, whichever page Pandoc finished first
+  documentsSearched.sort((a, b) => views.findIndex((it) => `/${it.url}` === a.url) - views.findIndex((it) => `/${it.url}` === b.url));
+  latest.searchable.push(...documentsSearched);
 
   // Short addresses, /37/, and the former names' addresses: small pages that forward to the item's page.
   const forward = (dir, it, text) => {
@@ -777,7 +786,8 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
 
   // The Media Index, and on a preview its editing view. The Media Index is searched, in the latest text's index only
   // (step 7), each entry a place of its own in the results ("item 37"; mediaIndexHtml). The item pages, which hold the
-  // same words, the short and former addresses and the editing view are in no index.
+  // same words, the short and former addresses and the editing view are in no index; only the text of a document's pages
+  // is, on its page (above).
   const indexHtml = mediaIndexHtml(views, { root: '../', script: `../assets/media-index.js?v=${ASSET_VERSION}`, preview: PREVIEW });
   const indexPage = pandoc([...pageFrame('../', { page: 'media-index', title: 'Media Index', noindex: NOINDEX ? 'true' : '', searchable: 'true', 'on-media-index': 'true' }),
     ...filterArgs(['links'])], rawBlock(indexHtml), 'the Media Index');
@@ -810,8 +820,8 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
 // 7. Search: one Pagefind index for each edition, of its pages' reading text only (<main>, marked data-pagefind-body by
 //    the template; cards are left out by filters/cards.lua). The Markdown views, publication/, versions/ and search/
 //    are not in it. Each edition's index also holds its References page (step 4c), and the latest text's the Media
-//    Index, which all editions share (step 6); the item pages, their short and former addresses and the editing view
-//    are in no index.
+//    Index and the text of the documents' pages (/read/<name>/, only the text), which all editions share (step 6); the
+//    other item pages, their short and former addresses and the editing view are in no index.
 //    Result addresses are root-absolute here (/essays/aya_nassar/); search.js makes them relative.
 //    Pagefind's own search boxes are not used, so their files are removed; its licence goes with the index.
 //    A page whose reading text is only cards (Events) has nothing to index; the report lists such pages.

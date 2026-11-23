@@ -2,8 +2,9 @@
 // (pagefind/, made by the build) and lists every page the words are found on, best first, each with up to three of its
 // paragraphs: their number, a few words around the words found, and a link straight to the paragraph (#p12).
 //  * A list page that names its entries is shown by entry instead: each entry with an id carries its label in the
-//    page's Pagefind meta, entry-<id> (data-pagefind-meta), so the Media Index lists items ("item 37", #item-37) and
-//    the References page works ("Stengers 2005a", #stengers2005a).
+//    page's Pagefind meta, entry-<id> (data-pagefind-meta), so the Media Index lists items ("item 37", #item-37), the
+//    References page works ("Stengers 2005a", #stengers2005a) and a document's page (/read/<name>/) the pages of its
+//    text ("page 3", #page-3).
 //  * The words searched for are kept in the address (search/?q=dust), so a search can be shared, bookmarked and
 //    reached again with the back button.
 //  * Pagefind is loaded only on this page, when the reader starts typing or arrives with ?q=.

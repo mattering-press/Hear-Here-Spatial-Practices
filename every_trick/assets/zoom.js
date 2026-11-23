@@ -33,7 +33,10 @@
 //    the address on the page shown. In the page, its keys work while it has the focus, a vertical swipe scrolls the page
 //    unless the pages are zoomed in, and the mouse wheel scrolls the page (with Ctrl or ⌘ it zooms).
 //  * Pages are shown two by two, as spreads, where the viewer is wider than it is tall (the cover alone, then 2–3, 4–5 …:
-//    OpenSeadragon with two tiled images side by side), one at a time where it is not (a phone).
+//    OpenSeadragon with two tiled images side by side), one at a time where it is not (a phone). The two pages of a spread
+//    meet, without a gap, and a soft shadow on each page towards the spine, with a hairline at the spine itself, shows
+//    that they are two (div.viewer__spine, an overlay placed in the viewport's coordinates, so that it zooms and moves
+//    with the pages). A single page and the cover alone have none.
 //  * Its bar: ‹ 4–5 / 21 ›, zoom out, zoom in, fit, full screen, Text (the text of the pages on screen in place of their
 //    pictures, and back again) and the download. Keys, swipes and less motion as for pictures; Home and End go to the
 //    first and the last pages.
@@ -43,7 +46,7 @@
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var ZOOM = 1.6;      // one press of zoom in or zoom out
   var SWIPE = 40;      // px a finger moves sideways to turn to the next picture
-  var GUTTER = 0.006;  // between the two pages of a spread, in pages' heights
+  var SPINE = 0.06;    // how far the shadow at a spread's spine reaches into each page, in the narrower page's width
   var assets = new URL('./', script.src);
   var loading = null;  // OpenSeadragon, once it is asked for
   var ICONS = {
@@ -565,6 +568,7 @@
   function documentViewer(options) {
     var buttons = {}, data = null, viewer = null, spreads = [], current = 0, double = false, reading = false, turned = false;
     var swipe = null, lastTap = 0, expanded = false, observer = null, gone = false;
+    var spine = el('div', 'viewer__spine'), spineAt = null;   // the spine of the spread on screen: { x, reach }, or null
     var frame = el('div', 'viewer__frame viewer__frame--document' + (options.inline ? ' is-inline' : ''));
     var captionButton = null;
     if (!options.inline) {
@@ -679,7 +683,7 @@
       }
       viewer = OpenSeadragon(o);
       viewer.canvas.setAttribute('role', 'img');
-      viewer.addHandler('open', function () { showZoom(); touch(); });
+      viewer.addHandler('open', function () { markSpine(); showZoom(); touch(); });
       viewer.addHandler('open-failed', function () {
         message.textContent = 'These pages could not be loaded for zooming.';
         message.hidden = false;
@@ -760,8 +764,8 @@
       spreads.forEach(function (spread, k) { if (spread.indexOf(target) >= 0) current = k; });
     }
 
-    // spread `index`: its pages side by side, each as tall as the other, with a hairline between them (GUTTER, in pages'
-    // heights); the count; the text, when it is shown
+    // spread `index`: its pages side by side, each as tall as the other, meeting at the spine; the count; the text, when
+    // it is shown
     function show(index, announce) {
       current = index;
       var spread = spreads[index], n = data.pages.length, first = spread[0] + 1, last = spread[spread.length - 1] + 1;
@@ -771,10 +775,11 @@
       setDisabled(buttons.previous, index === 0);
       setDisabled(buttons.next, index === spreads.length - 1);
       if (viewer) {
-        var x = 0;
-        viewer.open(spread.map(function (i) {
-          var page = data.pages[i], item = { tileSource: JSON.parse(JSON.stringify(page.source)), x: x, y: 0, height: 1 };
-          x += page.width / page.height + GUTTER;
+        var x = 0, widths = spread.map(function (i) { return data.pages[i].width / data.pages[i].height; });
+        spineAt = spread.length === 2 ? { x: widths[0], reach: SPINE * Math.min(widths[0], widths[1]) } : null;
+        viewer.open(spread.map(function (i, k) {
+          var item = { tileSource: JSON.parse(JSON.stringify(data.pages[i].source)), x: x, y: 0, height: 1 };
+          x += widths[k];
           return item;
         }));
         viewer.canvas.setAttribute('aria-label', said);
@@ -782,6 +787,12 @@
       if (reading) readPages();
       if (announce) live.textContent = said;
       if (turned && options.onPage) options.onPage(first);
+    }
+    // the shadow at the spine, once the spread's pages are open: in the viewport's coordinates, as tall as the pages and
+    // reaching SPINE into each, so that OpenSeadragon zooms and moves it with them
+    function markSpine() {
+      viewer.removeOverlay(spine);
+      if (spineAt) viewer.addOverlay({ element: spine, location: new OpenSeadragon.Rect(spineAt.x - spineAt.reach, 0, 2 * spineAt.reach, 1) });
     }
     function go(index) {
       if (!data || index < 0 || index >= spreads.length || index === current) return;
