@@ -37,6 +37,12 @@ and `sjmch/styles` (the designed styles).
 - **Pandoc**, which the build runs as a separate program, is under its own licence (GPL).
 - **Pagefind**, which the build runs to make the search index and whose search script the site serves
   (`pagefind/`), is under the MIT licence; its licence is copied next to the index.
+- **OpenSeadragon**, the zoom viewer whose script the site serves (`assets/osd/`), is under the BSD 3-Clause licence;
+  its licence is copied next to it.
+- **Roboto**, the typeface the site serves (`assets/fonts/`, from the Fontsource package), is under the SIL Open Font
+  License 1.1; its licence is copied next to it.
+
+The colophon of each edition (about/colophon/) names these, with their versions and licences.
 
 ## Contributing
 

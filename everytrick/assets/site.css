@@ -115,7 +115,7 @@ img, iframe, video, object { max-width: 100%; }
 .site-bar { view-transition-name: site-bar; }
 
 /* the header: the same bar on every page, then the page's opening. The bar is one row at every width: the book's title,
-   the menu (the home page's entries, then media index and references), and at its right end the tools: the views of
+   the menu (the home page's entries, then one entry for the back matter), and at its right end the tools: the views of
    this page, search and the reader's settings. Where the whole menu does not fit beside the title and the tools, it
    folds into a menu button (☰) at the start of the tools, which opens it as a panel (assets/menu.js; without
    JavaScript the button opens and closes it all the same). The widths are container queries on body in rem, so they
@@ -130,6 +130,22 @@ img, iframe, video, object { max-width: 100%; }
 .site-menu ul { flex-wrap: wrap; gap: 0.25rem 1.25rem; }
 .site-menu a { color: var(--colour-header-muted); text-decoration: none; text-underline-offset: 0.45em; white-space: nowrap; }
 .site-menu a:hover, .site-menu a[aria-current] { color: var(--colour-header-text); text-decoration: underline; text-decoration-thickness: 2px; }
+/* the back matter's entry: without JavaScript a link to its contents; with it a menu button (assets/menu.js) that opens
+   the list of its sections below it, in the colours of the menu button's panel */
+.backmatter-menu { position: relative; }
+.backmatter-menu__button { display: inline-flex; align-items: center; gap: 0.3em; padding: 0; border: 0; background: none; color: var(--colour-header-muted); font: inherit; white-space: nowrap; cursor: pointer; }
+.backmatter-menu__button svg { flex: none; width: 0.65em; height: 0.65em; transition: transform 0.15s; }
+.backmatter-menu__button[aria-expanded="true"] svg { transform: rotate(180deg); }
+@media (prefers-reduced-motion: reduce) { .backmatter-menu__button svg { transition: none; } }
+.backmatter-menu__label { text-underline-offset: 0.45em; }
+.backmatter-menu__button:hover, .backmatter-menu__button[aria-expanded="true"], .backmatter-menu__button.is-current { color: var(--colour-header-text); }
+.backmatter-menu__button:hover .backmatter-menu__label, .backmatter-menu__button.is-current .backmatter-menu__label { text-decoration: underline; text-decoration-thickness: 2px; }
+.site-menu .backmatter-menu__list { position: absolute; top: calc(100% + 0.65rem); left: -0.85rem; z-index: 30; display: block; width: max-content; min-width: 12rem; margin: 0; padding: 0.35rem; border: 1px solid rgb(255 255 255 / 0.2); border-radius: 6px; background: var(--colour-header); box-shadow: 0 8px 24px rgb(0 0 0 / 0.35); font-size: 1rem; list-style: none; }
+.site-menu .backmatter-menu__list[hidden] { display: none; }
+.site-menu .backmatter-menu__list a { display: flex; align-items: center; min-height: 2.5rem; padding: 0 0.85rem; border-radius: 4px; text-decoration: none; }
+.site-menu .backmatter-menu__list a:is(:hover, :focus) { background: rgb(255 255 255 / 0.1); color: var(--colour-header-text); }
+.site-menu .backmatter-menu__list a[aria-current] { color: var(--colour-header-text); box-shadow: inset 3px 0 0 var(--colour-header-text); }
+.site-menu .backmatter-menu__list :focus-visible { outline-offset: -3px; }
 /* the tools, one group at the bar's right end; every tool is a round-ended button as tall as the others */
 .site-tools { display: flex; flex: none; align-items: center; gap: 0.3rem; margin-left: auto; }
 .menu-button__toggle, .search-link, .settings-button { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; min-width: calc(var(--control) + 0.25rem); height: var(--control); padding: 0 0.5rem; border: 1px solid rgb(255 255 255 / 0.3); border-radius: 999px; background: none; color: var(--colour-header-muted); font: inherit; font-size: 0.8125rem; line-height: 1; text-decoration: none; cursor: pointer; }
@@ -146,6 +162,9 @@ img, iframe, video, object { max-width: 100%; }
 .menu-panel a:hover { background: rgb(255 255 255 / 0.1); color: var(--colour-header-text); }
 .menu-panel a[aria-current] { color: var(--colour-header-text); box-shadow: inset 3px 0 0 var(--colour-header-text); }
 .menu-panel :focus-visible { outline-offset: -3px; }
+/* in the panel, the back matter's sections: an indented group under its entry */
+.menu-panel .menu-panel__group { margin: 0 0 0.25rem 0.85rem; padding-left: 0.35rem; border-left: 1px solid rgb(255 255 255 / 0.2); }
+.menu-panel__group a { min-height: 2.5rem; font-size: 0.9375rem; }
 /* the views of this page (Page, Markdown; later the Collage), a switch of round-ended segments, each an icon with its
    name for screen readers and as a tooltip; it is made for three */
 .view-switcher ul { box-sizing: border-box; height: var(--control); padding: 2px; border: 1px solid rgb(255 255 255 / 0.3); border-radius: 999px; }
@@ -518,7 +537,7 @@ a.citation:target { border-radius: 2px; background: var(--colour-highlight); box
 .para:has(a.citation:target) { animation: para-highlight 3s ease-out; }
 @media (prefers-reduced-motion: reduce) { .para:has(a.citation:target) { animation: none; } }
 
-/* the References page (references/ in each edition): every work of the bibliography once, in the house style, with
+/* the References (the first part of about/references-and-media/ in each edition): every work of the bibliography once, in the house style, with
    the passages that cite it and the pages whose reference lists include it (referencesHtml in citations.mjs) */
 .references__intro { margin-top: 0; color: var(--colour-muted); font-size: 0.9375rem; }
 .reference-list { margin: var(--space) 0 0; padding: 0; border-top: 1px solid var(--colour-rule); list-style: none; }
@@ -553,7 +572,7 @@ a.citation:target { border-radius: 2px; background: var(--colour-highlight); box
 .item-facts li + li { margin-top: 0.2rem; }
 .item-facts__where { color: var(--colour-muted); }
 
-/* the Media Index (/media-index/) and its editing view: every item by number, with its pill, a thumbnail, its title
+/* the Media Index (the second part of about/references-and-media/) and its editing view: every item by number, with its pill, a thumbnail, its title
    and address and where it is; chips filter the list (assets/media-index.js) */
 .media-index__intro { margin-top: 0; color: var(--colour-muted); font-size: 0.9375rem; }
 .media-index__preview { padding: 0.6rem 0.9rem; border-left: 3px solid var(--colour-accent); background: var(--colour-surface); font-size: 0.9375rem; }
@@ -573,8 +592,8 @@ a.citation:target { border-radius: 2px; background: var(--colour-highlight); box
 .media-entry__thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .media-entry__box { display: grid; place-content: center; color: var(--colour-muted); font-size: 0.75rem; font-variant-numeric: tabular-nums; line-height: 1.25; text-align: center; }
 .media-entry__icon { font-size: 1rem; }
-main h2.media-entry__title { margin: 0; font-size: 1rem; line-height: 1.35; }
-main h2.media-entry__title::before { content: none; }
+main :is(h2, h3).media-entry__title { margin: 0; font-size: 1rem; line-height: 1.35; }
+main :is(h2, h3).media-entry__title::before { content: none; }
 .media-entry__title a { color: var(--colour-text); text-decoration: none; }
 .media-entry__title a:hover { color: var(--colour-accent); text-decoration: underline; }
 .media-entry__address { margin: 0.15rem 0 0; color: var(--colour-muted); font-size: 0.8125rem; overflow-wrap: anywhere; }
@@ -610,6 +629,20 @@ main .media-sheet h2::before { content: none; }
 .media-sheet__text { max-height: 55vh; margin: 0; padding: 0.9rem 1rem; overflow: auto; border: 1px solid var(--colour-rule); border-radius: var(--radius); background: var(--colour-surface); font: 0.8125rem / 1.55 var(--font-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
 .media-sheet__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-top: 0.75rem; }
 .media-sheet__status { color: var(--colour-muted); font-size: 0.875rem; }
+/* About this book (about/), the overview of the back matter: a short paragraph, then each part with its link and a line */
+.about-intro { margin-top: 0; }
+.about-parts { margin: var(--space) 0 0; padding: 0; border-top: 1px solid var(--colour-rule); list-style: none; }
+.about-parts li { padding: 0.9rem 0 1rem; border-bottom: 1px solid var(--colour-rule); }
+.about-parts__title { font-size: 1.15rem; font-weight: var(--weight-strong); text-decoration: none; }
+.about-parts__title:hover { text-decoration: underline; }
+.about-parts p { margin: 0.2rem 0 0; color: var(--colour-muted); font-size: 0.9375rem; }
+/* the colophon: what the build writes after Making this book and the publisher's statement */
+.colophon__data li + li { margin-top: 0.35rem; }
+/* References and media (about/references-and-media/): a switch to its two parts, References and Media */
+.part-switch { display: inline-flex; margin: 0 0 0.5rem; padding: 2px; border: 1px solid var(--colour-rule); border-radius: 999px; background: var(--colour-surface); font-size: 0.875rem; font-weight: var(--weight-strong); }
+.part-switch a { padding: 0.3rem 0.95rem; border-radius: 999px; color: var(--colour-text); text-decoration: none; }
+.part-switch a:hover { background: var(--colour-highlight); color: var(--colour-accent); }
+.part > h2 { scroll-margin-top: var(--space); }
 /* a page that forwards an old or short address to an item's page */
 main.forward { padding-top: 3rem; }
 
@@ -642,10 +675,11 @@ a.toolkit-name, a .toolkit-name, .toolkit-name a, .built-with a { text-underline
 }
 
 /* the menu button: below the width at which the title, the whole menu and the tools stop fitting on one row, the menu
-   folds into the menu button. For this book's menu, with the views switch, the bar needs 62.2rem (995 px at the usual
-   text size, measured in Chromium on 2026-11-23), so the menu shows from 63rem (1008 px) and folds below; in rem, the
-   width grows with the reader's text size. Measure again, and change the width here, when the menu changes. */
-@container (max-width: 63rem) {
+   folds into the menu button. For this book's menu (four entries and "about", the back matter's), with the views
+   switch, the bar needs 54.7rem (875 px at the usual text size, measured in Chromium on 2026-11-23), so the menu shows
+   from 55.5rem (888 px) and folds below; in rem, the width grows with the reader's text size. Measure again, and change
+   the width here, when the menu changes. */
+@container (max-width: 55.5rem) {
   .site-bar { gap: 1rem; }
   .site-menu { display: none; }
   .menu-button { display: block; }

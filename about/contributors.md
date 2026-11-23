@@ -1,7 +1,7 @@
 .ve-style ./custom.css
 .ve-script ./custom.js
 
-.ve-header 'Contributors' gh:mattering-press/Hear-Here-Spatial-Practices/media/generic/IMG_8963_chairs_detail.jpg
+.ve-header 'Contributors & acknowledgements' gh:mattering-press/Hear-Here-Spatial-Practices/media/generic/IMG_8963_chairs_detail.jpg
     - [home](/)
     - [introduction](/essays/introduction.md)
     - [podcasts](/essays/podcasts.md)

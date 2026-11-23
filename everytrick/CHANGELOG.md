@@ -12,6 +12,41 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of everytrick’ in `DEVELOPMENT.md`.
 
+## 1.16.0
+
+23 November 2026. About this book: one entry in the menu for what follows the book’s text, and a lighter footer. The
+page data is now contract 0.8.
+
+- What follows the book’s text is now About this book. Its overview, `about/`, says in a sentence what it holds and
+  leads to its three parts, each with a line: Contributors & acknowledgements, the Colophon, and References and media.
+  Every version of the book has them, and each of these pages says “About this book” above its title.
+- The menu’s two last entries, “media index” and “references”, become one, “about”, so the menu has five entries again
+  and stays on one line down to a narrower window (888 pixels at the usual text size, where it needed 1008). On a wide
+  screen “about” opens a short list – About this book, Contributors & acknowledgements, Colophon, References and media
+  – with the mouse or the keyboard: the arrow keys move through it, Escape closes it. In the menu of a narrower window
+  the list is an indented group under “about”. Without JavaScript, “about” leads to the overview.
+- Contributors & acknowledgements, `about/contributors/`, is the Contributors page, with room after it for the author’s
+  own thanks under “Acknowledgements”, which shows only once they are written. Its old address leads there.
+- The Colophon, `about/colophon/`, starts with “Making this book”, Mattering Press’ opening for the author to finish,
+  and the publisher’s statement, “Mattering Press”; then the book’s licence, with a note that its media items may carry
+  other rights, which the Media Index gives; and “Versions and kit”: the version being read and a link to all versions,
+  the book’s open data, and the toolkit and its version, the typeface, the programs that make the site and their
+  licences, and where it is hosted, after a few sentences of the publisher’s own if there are any.
+- References and media, `about/references-and-media/`, is the References page and the Media Index on one page, the
+  references first, with a small switch at the top to go to either part. Every work and every item keeps its anchor,
+  its Copy menu, its downloads, its filters and the way search finds it. The old addresses, `references/` and
+  `media-index/`, lead there, to the same work or item; the editing view of the Media Index stays where it was.
+- Making this book, the publisher’s statement and the contributors are reading text: their paragraphs are numbered and
+  search finds them. What the build writes on the Colophon, and the overview, are neither.
+- The footer is lighter: the book’s title and licence, its version, and one link, “About this book”, instead of the
+  links to all versions, the Media Index and the References page.
+- A new page may give its title in a front matter at its start (`title: Colophon` between two lines of three hyphens)
+  instead of a header line.
+- In the book’s data the back matter closes the reading order in `publication.json` and the whole book in Markdown;
+  each page is marked as part of the back matter or of the body (`part`, also in `page.json`), and `publication.json`
+  lists the parts of About this book (`backmatter`). Citations and `page.json` lead to the References at their new
+  address. That is contract 0.8; its paragraph rule is that of 0.7, so no paragraph’s number changes.
+
 ## 1.15.0
 
 23 November 2026. A new name: everytrickinthebook, and everytrick for short.
