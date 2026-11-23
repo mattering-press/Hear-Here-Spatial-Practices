@@ -487,9 +487,9 @@ main h2.media-entry__title::before { content: none; }
 .media-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(11rem, 100%), 1fr)); gap: 0.6rem 0.9rem; margin-top: 0.75rem; }
 .media-field { display: block; min-width: 0; color: var(--colour-muted); font-size: 0.8125rem; }
 .media-field.is-wide { grid-column: 1 / -1; }
-.media-field input, .media-field textarea { display: block; width: 100%; margin-top: 0.2rem; padding: 0.35rem 0.5rem; border: 1px solid var(--colour-rule); border-radius: var(--radius); background: var(--colour-surface); color: var(--colour-text); font: inherit; font-size: 0.875rem; line-height: 1.4; }
+.media-field input, .media-field textarea, .media-field select { display: block; width: 100%; margin-top: 0.2rem; padding: 0.35rem 0.5rem; border: 1px solid var(--colour-rule); border-radius: var(--radius); background: var(--colour-surface); color: var(--colour-text); font: inherit; font-size: 0.875rem; line-height: 1.4; }
 .media-field textarea { min-height: 3.2em; resize: vertical; }
-.media-field.is-changed input, .media-field.is-changed textarea { border-color: var(--colour-accent); box-shadow: inset 3px 0 0 var(--colour-accent); }
+.media-field.is-changed input, .media-field.is-changed textarea, .media-field.is-changed select { border-color: var(--colour-accent); box-shadow: inset 3px 0 0 var(--colour-accent); }
 .media-handover { position: sticky; bottom: 0; z-index: 5; display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.9rem; margin: var(--space) calc(-1 * var(--gap)) 0; padding: 0.7rem var(--gap) calc(0.7rem + env(safe-area-inset-bottom)); border-top: 1px solid var(--colour-rule); background: var(--colour-background); font-size: 0.875rem; }
 .media-handover__count { flex: 1 1 8rem; color: var(--colour-muted); }
 .media-button { padding: 0.3rem 0.95rem; border: 1px solid var(--colour-rule); border-radius: 999px; background: var(--colour-surface); color: var(--colour-text); font: inherit; font-size: 0.875rem; font-weight: var(--weight-strong); white-space: nowrap; cursor: pointer; }

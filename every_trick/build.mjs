@@ -32,7 +32,7 @@ import { mp3Duration, paragraphCues } from './audio.mjs';
 import { makeImages } from './images.mjs';
 import { forwardHtml, itemFacts, mediaEditHtml, mediaIndexHtml } from './media-pages.mjs';
 import * as pagefind from 'pagefind';
-import { readRegister, resolveItems, servedFrom, storedAt } from './register.mjs';
+import { readRegister, resolveItems, RIGHTS, servedFrom, storedAt } from './register.mjs';
 import { checkout, longDate, matchParagraphs, readRegistry } from './versions.mjs';
 
 // ---- Settings ------------------------------------------------------------------------------------------
@@ -689,7 +689,7 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
   latest.searchable.push({ url: '/media-index/', content: indexPage });
   if (PREVIEW) {
     const names = Object.fromEntries(views.flatMap((it) => [it.name, ...it.formerNames].map((n) => [n, it.source])));
-    const editHtml = mediaEditHtml(views, { root: '../../', script: `../../assets/media-index.js?v=${ASSET_VERSION}`, names });
+    const editHtml = mediaEditHtml(views, { root: '../../', script: `../../assets/media-index.js?v=${ASSET_VERSION}`, names, rights: RIGHTS });
     mkdirSync(join(SITE, 'media-index', 'edit'), { recursive: true });
     writeFileSync(join(SITE, 'media-index', 'edit', 'index.html'), pandoc([...pageFrame('../../', { page: 'media-index/edit', title: 'Editing view',
       pagetitle: 'Media Index: editing view', 'section-title': 'Media Index', 'section-url': '../', noindex: 'true' }), ...filterArgs(['links'])], rawBlock(editHtml), 'the editing view'));
@@ -699,7 +699,8 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
   writeFileSync(join(SITE, 'media.json'), JSON.stringify({
     contract: CONTRACT, every_trick_in_the_book: TOOLKIT_VERSION, title: latest.home.title, url: siteUrl,
     items: views.map((it) => ({
-      number: it.number, kind: it.kind, name: it.name, source: it.source, since: it.since || null, credit: it.credit || '', title: it.title || '',
+      number: it.number, kind: it.kind, name: it.name, source: it.source, since: it.since || null, credit: it.credit || '',
+      rights: it.rights || '', rights_label: it.rightsLabel || '', rights_note: it.rightsNote || '', cite_as: it.citeAs || '', title: it.title || '',
       url: it.url, short: it.short, caption: it.shown[0]?.caption ?? '', former_names: it.formerNames, former_sources: it.formerSources,
       stored: it.stored.label, served: it.served.label,
       appearances: it.apps.map((a) => ({ edition: a.edition.version.id, page: a.file, url: /^#|^$/.test(a.link) ? `./${a.link}` : a.link, anchor: a.anchor || null,

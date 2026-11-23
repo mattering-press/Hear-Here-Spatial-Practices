@@ -162,7 +162,7 @@ What is in `every_trick/`:
 - `build.mjs`: the build, with its few settings at the top
 - `versions.mjs`: reads the version registry (`versions.json` at the repository root), takes each version's text from its Git tag, and matches paragraphs between versions
 - `convert.mjs`: turns Juncture's `.ve-*` lines and its raw HTML (audio, iframes, videos) into Pandoc Markdown, and works out each edition's reading order
-- `register.mjs`: reads and writes the media register (`media/register.csv`), matches every item on the pages to its line, drafts names for new items and makes the build's checks of the register (see "The media register")
+- `register.mjs`: reads and writes the media register (`media/register.csv`), matches every item on the pages to its line, drafts names for new items, names each item's rights ("In Copyright") and makes the build's checks of the register (see "The media register")
 - `media-pages.mjs`: the HTML of the item pages' facts, the Media Index, its editing view and the pages that forward short and former addresses
 - `filters/`: Lua filters, one job each. `items.lua` and `to-markdown.lua` are stage 1 (`items` lists the page's media items for the register; `to-markdown` writes the Markdown view); `figures`, `embeds`, `cards`, `transcript`, `links`, `citations`, `paragraphs`, `cues` (marks transcript paragraphs with their times from a recording's cue file), `margins` and `contract` are stage 2 (Markdown view to HTML and `page.json`)
 - `citations.mjs`: prepares the bibliography for `filters/citations.lua`, writes the build's report on citations and
@@ -195,15 +195,18 @@ Every picture, recording, video and document of the book is a media item with a 
 "Plan: media register, item pages and the Media Index"; the details: "Media items" in `every_trick/CONTRACT.md`).
 The items are listed in `media/register.csv`, one line each, which GitHub shows as a table you can search. The
 columns are `number`, `kind` (`see`, `listen`, `watch` or `read`), `name`, `source` (the file in the repository, or the
-address elsewhere), `since` (the version it entered with), `credit`, `title`, `former_names` and `former_sources`.
-Captions and alt text stay in the pages; the register holds only what the pages cannot.
+address elsewhere), `since` (the version it entered with), `credit`, `rights`, `rights_note`, `cite_as` (how to cite
+the item's own source), `title`, `former_names` and `former_sources`. Captions and alt text stay in the pages; the
+register holds only what the pages cannot.
 
 What readers see: every caption starts with the item's number, a small pill that leads to the item's own page
 (`/see/boulder-font/`); a recording has a small caption line below its player with its number and title. The zoom
-viewer shows the number before the caption. Each item's page shows the item, its caption, its credit, every place it
-appears, the version it entered with, where it is stored and served from, and its files. `/37/` forwards to item
-37's page. The Media Index, `/media-index/` (linked in every footer), lists every item, with filters by kind and by
-where items are served from, and `media.json` holds the same list as data.
+viewer shows the number before the caption. Each item's page shows the item, its caption, its credit, its rights and
+how to cite its source, every place it appears, the version it entered with, where it is stored and served from, and
+its files. `/37/` forwards to item 37's page. The Media Index, `/media-index/` (linked in every footer), lists every
+item, with its credit and rights, and filters by kind and by where items are served from; `media.json` holds the same
+list as data. Credit, rights and source are shown only when they are filled in: no public page says that one is
+missing, not evaluated or unknown (the publisher, 2026-11-23). Only the editing view's checks say what is missing.
 
 How editors change it, on a branch like any other change:
 
@@ -213,6 +216,17 @@ How editors change it, on a branch like any other change:
 - **Credit an item:** write the whole credit in `credit`, exactly as it should show, for example `Photo: Jane Doe`. It
   appears after the caption wherever the item is shown, and on its page. Permission letters and contact details stay
   out of the repository, which is public.
+- **Give an item's rights:** write in `rights` the address of a statement of rightsstatements.org, such as
+  `http://rightsstatements.org/vocab/InC/1.0/` (In Copyright), or of a Creative Commons licence, such as
+  `https://creativecommons.org/licenses/by/4.0/` (CC BY 4.0), CC0 or the Public Domain Mark. The item's page shows its
+  name, "In Copyright" or "CC BY 4.0", linked to the address. Fill it in only when the rights are clear, and otherwise
+  leave it empty: never write Copyright Not Evaluated or Copyright Undetermined, which the build refuses. `rights_note`
+  holds a few words or a link, shown after the rights (item 1 links to the Historic England Archive's terms for using
+  its images). Permission letters and contact details stay out of the repository.
+- **Say how to cite an item's source:** `cite_as` holds how to cite the item's own source in the house style, with
+  what is known of its maker, title, date and holder, for example
+  `Clarke Fitzgerald, ‘The Plumb Line and the City’ (1971), Coventry Cathedral`. The item's page shows it as "Source".
+  Never guess a maker or a date: leave it empty instead.
 - **Title an item:** only for an item whose pages give it no caption (an embedded film, the zines on archive.org): its
   `title` names it in the Media Index and on its page, and for a video or an embed also in its caption line.
 - **Replace a file or an address:** write the new one in `source` and add the old one to `former_sources` (a space
@@ -226,16 +240,20 @@ How editors change it, on a branch like any other change:
 
 The build stops, with a message saying what to do, when a registered item's file has gone from the repository and
 from every frozen version, when a numbered item is on no page any more (its file or address changed), when two items
-share a name, or when an item of a frozen version has no number.
+share a name, when an item of a frozen version has no number, or when an item's rights are not the address of a
+rightsstatements.org statement or a Creative Commons licence.
 
 **The editing view** (`/media-index/edit/`, on previews only, never on the public site) is the Media Index with fields
-for each item's name and credit, the caption and alt text of each place it appears in the latest text, and a
-comment. Beside each item, checks follow what you type: no alt text, alt text that repeats the caption, no credit,
-used on no page, and a name that is not allowed or already taken. Your edits stay in your browser, also when you
-reload the page; nothing is saved anywhere else. When you are done, "Hand over changes" opens a sheet that lists only
-what changed, item by item ("caption on Hear Here Podcast: Catherine Hahn (essays/catherine_hahn.md): “…” → “…”",
-and the comments), with Copy and Download (.md); someone applies it on a branch. "Clear all edits" puts every field
-back as the pages have it.
+for each item's name and credit, its rights (a choice of the common rightsstatements.org statements and Creative
+Commons licences, which writes the address, or any other such address typed in) and their note, how to cite its
+source, the caption and alt text of each place it appears in the latest text, and a comment. Beside each item, checks
+follow what you type: no alt text, alt text that repeats the caption, no credit, no rights (or an address that is not
+a statement or a licence), no source to cite, used on no page, and a name that is not allowed or already taken. These
+checks are the only place that marks what is missing. Your edits stay in your browser, also when you reload the page;
+nothing is saved anywhere else. When you are done, "Hand over changes" opens a sheet that lists only what changed, item
+by item ("caption on Hear Here Podcast: Catherine Hahn (essays/catherine_hahn.md): “…” → “…”", "rights: (empty) →
+“http://rightsstatements.org/vocab/InC/1.0/” (In Copyright)", and the comments), with Copy and Download (.md); someone
+applies it on a branch. "Clear all edits" puts every field back as the pages and the register have it.
 
 ### Paragraph numbers
 
@@ -638,8 +656,9 @@ waits for the print edition; how editors use it is in "The media register" above
 
 - **The register** is one table in the repository with a line per item: its number, its kind (`see`, `listen`,
   `watch` or `read`, the words of its address), its name, its file or address, the version it entered with, its
-  credit, and its former names and files. Nothing else is stored: captions, sizes and where an item appears are read
-  from the pages at every build. A title is stored only for an item whose pages give it none.
+  credit, its rights and how to cite its source, and its former names and files. Nothing else is stored: captions,
+  sizes and where an item appears are read from the pages at every build. A title is stored only for an item whose
+  pages give it none.
 - **Numbers** are given when a version is frozen, to the items of that version that have none, in its reading order.
   A number never changes and is never reused, also when its item is withdrawn. Version 0.1's 70 items are numbered
   1–70 in its reading order. An item not yet in a frozen version shows "new" where its number will be. The register
@@ -655,14 +674,30 @@ waits for the print edition; how editors use it is in "The media register" above
   to an item by its name (`[the boulder from Bethlehem](/see/boulder-font)`), never by its number, so no typed number
   can go stale. An item can be cited like a paragraph: "(Hahn 2026: item 37)".
 - **Item pages** at `/see/<name>/`, `/listen/<name>/`, `/watch/<name>/` and `/read/<name>/` show the item (the
-  zoomable picture, the player or the document), its number, its caption or captions, its credit, every place it
-  appears, the version it entered with, where it is stored and where it is served from.
+  zoomable picture, the player or the document), its number, its caption or captions, its credit, its rights and its
+  source, every place it appears, the version it entered with, where it is stored and where it is served from.
 - **Credit** is the item's own field in the register (the publisher, 2026-11-22), shown after its caption wherever it
   appears and on its item page.
+- **Rights** (the publisher, 2026-11-23) are a standard address in the register's `rights`: a statement of
+  rightsstatements.org or a Creative Commons licence. The item page shows its label linked to the address ("In
+  Copyright", "CC BY 4.0"), followed by `rights_note`, a few words or a link, when there is one; `media.json` carries
+  both. Rights are filled in only where they are clear: In Copyright for item 1 (Historic England Archive, whose terms
+  of use are its note), for House of Hope (item 42: its archive.org page allows no reproduction without the artist's
+  written permission) and for the YouTube, Vimeo and BBC videos. Every other item is left empty, never "Copyright Not
+  Evaluated". Permission letters and contact details never go in the repository.
+- **How to cite the source** (the publisher, 2026-11-23): `cite_as` in the register says how to cite the item's own
+  source in the house style, with its maker, title, date and holder
+  (`Clarke Fitzgerald, ‘The Plumb Line and the City’ (1971), Coventry Cathedral`), and the item page shows it as
+  "Source". It was filled in only where a caption already named maker and date (items 7, 10, 24 and 64). A later change
+  will use it for a "Cite this item" line.
+- **Public pages never show a missing field** (the publisher, 2026-11-23). Credit, rights and source appear on item
+  pages, in the Media Index and in captions only when they are filled in, and nothing public says "not evaluated",
+  "none", "unknown" or "missing". Only the editing view marks what is missing, in its checks beside each item.
 - **The Media Index** (`/media-index/`) is a page of the book that lists every item by number, with a thumbnail, its
   title, kind and address, where it appears (links to the item in its page), the version it entered with, where it
-  is stored and where it is served from. It can be filtered by kind and by where items are served from; without
-  JavaScript it is a plain list. It is the "List" view of "Plan: stable links", and the footer links to it.
+  is stored and where it is served from, and its credit and rights when it has them. It can be filtered by kind and by
+  where items are served from; without JavaScript it is a plain list. It is the "List" view of "Plan: stable links",
+  and the footer links to it.
 - **Search** finds the items of the Media Index (the publisher, 2026-11-23): each entry's title and address are in
   the latest text's search index, and a result leads to the entry (`/media-index/#item-37`), labelled "item 37" where
   a page shows "para. 12" (see "Plan: search"). Its other facts (where it appears, its version, where it is stored
@@ -670,18 +705,21 @@ waits for the print edition; how editors use it is in "The media register" above
   addresses and the editing view. The Media Index is shared by every version, so a frozen version's search does not
   have it.
 - **The editing view** (`/media-index/edit/`) is built on previews only, never on the public site. It is the same list
-  with fields for the name, the credit, the caption and alt text of each appearance, and a comment, and checks beside
-  each item: no alt text, alt text that repeats the caption, no credit, used on no page. Edits stay in the browser;
-  "Hand over changes" gives a change sheet that lists only what changed, which someone applies on a branch. Later,
-  perhaps: saving straight to GitHub, and lasting comments through a private Hypothesis group. The repository is
-  public, so permission letters and contact details stay out of it.
+  with fields for the name, the credit, the rights (a choice of the common rightsstatements.org statements and Creative
+  Commons licences, plus any other address typed in) and their note, how to cite the source, the caption and alt text
+  of each appearance, and a comment, and checks beside each item: no alt text, alt text that repeats the caption, no
+  credit, no rights, no source to cite, used on no page. Edits stay in the browser; "Hand over changes" gives a change
+  sheet that lists only what changed, which someone applies on a branch. Later, perhaps: saving straight to GitHub,
+  and lasting comments through a private Hypothesis group. The repository is public, so permission letters and
+  contact details stay out of it.
 - **Print** (one route, fixed): figures are numbered `Fig. 6.4` when the route is exported (the chapter's place in that
   route, then the item's place in the chapter), never stored. Links to items in the text become "(Fig. 6.4)", the
   item's short address and a QR code are printed with it, and the list of illustrations gives both numbers. Not built
   until the print edition.
-- **Checks.** The build stops when a registered item's file or address has changed or gone, and when an item of a
-  frozen version has no number. **Freezing** gains a step: number the version's new items and commit the register with
-  the version's entry in `versions.json`.
+- **Checks.** The build stops when a registered item's file or address has changed or gone, when an item of a frozen
+  version has no number, and when an item's rights are not a statement or licence address (or say Copyright Not
+  Evaluated or Copyright Undetermined). **Freezing** gains a step: number the version's new items and commit the
+  register with the version's entry in `versions.json`.
 
 ## Plan: the References page
 
