@@ -5,7 +5,9 @@
 // (its images and its tiles' info.json).
 // Root-absolute URLs ("/essays/…") are errors too, because the site must also work under a sub-path.
 // Frozen versions (v<id>/, each with its own publication.json) are checked too, with the media they share.
-// Every edition must also have its search page and search index (search/, pagefind/), with at least one page in it.
+// Every edition must also have its search page and search index (search/, pagefind/), with at least one page in it, and
+// its References page with the downloads of the bibliography (BibTeX, RIS, CSL-JSON) and the texts of its Copy menus
+// (formatted.json), each with every work of the bibliography.
 //   npm run check     (after npm run build)
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
@@ -44,7 +46,7 @@ for (const file of all) {
   const from = relative(SITE, file), base = dirname(file), text = readFileSync(file, 'utf8');
   if (file.endsWith('.html')) {
     const html = text.replace(/<!--.*?-->/gs, '');
-    for (const m of html.matchAll(/\s(?:href|src|poster|data|data-tiles|data-largest|data-document)="([^"]*)"/g)) check(m[1].replace(/&amp;/g, '&'), from, base);
+    for (const m of html.matchAll(/\s(?:href|src|poster|data|data-tiles|data-largest|data-document|data-copy)="([^"]*)"/g)) check(m[1].replace(/&amp;/g, '&'), from, base);
     // every width of a picture: srcset="images/x-w800.jpg 800w, images/x-1600.jpg 1600w, …"
     for (const m of html.matchAll(/\ssrcset="([^"]*)"/g)) for (const candidate of m[1].split(',')) check(candidate.trim().split(/\s+/)[0].replace(/&amp;/g, '&'), from, base);
     for (const m of html.matchAll(/url\(['"]?([^'")]+)['"]?\)/g)) check(m[1], from, base);
@@ -82,6 +84,14 @@ for (const root of new Set(all.filter((f) => f.endsWith('/publication.json')).ma
   for (const path of ['search/index.html', 'pagefind/pagefind.js', 'pagefind/pagefind-entry.json']) if (!existsSync(join(root, path))) problems.push(`${where}: no ${path}`);
   const entry = join(root, 'pagefind/pagefind-entry.json');
   if (existsSync(entry) && !Object.values(JSON.parse(readFileSync(entry, 'utf8')).languages || {}).some((l) => l.page_count > 0)) problems.push(`${where}: the search index has no pages`);
+  const refs = ['index.html', 'formatted.json', 'bibliography.json', 'bibliography.bib', 'bibliography.ris'].map((f) => join(root, 'references', f));
+  for (const file of refs.filter((f) => !existsSync(f))) problems.push(`${where}: no ${relative(root, file)}`);
+  if (refs.every((f) => existsSync(f))) {
+    const read = (i) => readFileSync(refs[i], 'utf8');
+    const keys = JSON.parse(read(2)).map((item) => item.id), works = JSON.parse(read(1)).works || {};
+    const counts = { 'formatted.json': keys.filter((k) => works[k]).length, 'bibliography.bib': (read(3).match(/^@\w+\{/gm) || []).length, 'bibliography.ris': (read(4).match(/^TY {2}- /gm) || []).length };
+    for (const [file, n] of Object.entries(counts)) if (n !== keys.length) problems.push(`${where}: references/${file} has ${n} of the ${keys.length} works of references/bibliography.json`);
+  }
 }
 for (const info of files(join(SITE, 'iiif')).filter((f) => f.endsWith('info.json'))) {
   const { width, height } = JSON.parse(readFileSync(info, 'utf8'));

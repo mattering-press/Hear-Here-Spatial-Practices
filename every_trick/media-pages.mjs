@@ -56,10 +56,12 @@ const storedInFull = (it) => stored(it) + (it.stored.copy
   ? `, which keeps the original. The pages shown here are a copy of the item’s page images, fetched on ${esc(longDate(it.stored.copy.fetched))} into this repository: <a href="${esc(it.stored.copy.url)}">${esc(it.stored.copy.folder)}/</a>`
   : '');
 
-// ---- A document's page: below the viewer, its text page by page, and its download -------------------------------
+// Plain text with its web addresses as links (a rights note, a document's text). Punctuation after an address is not
+// part of it.
+const linked = (text) => String(text ?? '').split(/(https?:\/\/[^\s<>"'‘’“”]*[^\s<>"'‘’“”.,;:!?)\]])/)
+  .map((part, i) => (i % 2 ? `<a href="${esc(part)}">${esc(part)}</a>` : esc(part))).join('');
 
-// Plain text as HTML, with its web addresses as links.
-const linked = (text) => esc(text).replace(/\b(https?:\/\/[^\s<]+[^\s<.,;:!?)’”'"])/g, '<a href="$1">$1</a>');
+// ---- A document's page: below the viewer, its text page by page, and its download -------------------------------
 
 export function documentText(it, { root }) {
   const doc = it.doc;
@@ -83,8 +85,15 @@ export function documentText(it, { root }) {
   return `<div class="document-about">\n${sections.join('\n')}\n</div>`;
 }
 
+// An item's rights, which public pages show only when they are filled in: the label of its statement or licence linked
+// to its address ("In Copyright", "CC BY 4.0"), and with note, its rights note after it.
+const rightsHtml = (it, { note = false } = {}) => [it.rights ? `<a href="${esc(it.rights)}">${esc(it.rightsLabel)}</a>` : '', note && it.rightsNote ? linked(it.rightsNote) : '']
+  .filter(Boolean).join(' · ');
+
 // ---- An item's page: the facts below the item ------------------------------------------------------------------
 
+// Credit, rights and source (how to cite the item's own source) are shown only when they are filled in: public pages
+// never show a missing field (the publisher, 2026-11-23). The editing view marks what is missing.
 export function itemFacts(it, { root, siteUrl }) {
   const rows = [];
   const row = (term, html) => rows.push(`<div><dt>${term}</dt><dd>${html}</dd></div>`);
@@ -94,8 +103,12 @@ export function itemFacts(it, { root, siteUrl }) {
   row('Address', `<a href="${href(root, it.url)}">/${esc(it.url)}</a> · ${it.kind}, ${KIND_NAMES[it.kind]}`);
   if (!it.block) row('Item', 'This item is on no page of the book.');
   if (it.doc) row('Pages', `${it.doc.pages.length}${it.doc.text ? `, with <a href="#text">their text</a>` : ''}`);
-  if (it.captions.length > 1) row('Captions', `<ul>${it.captions.map((c) => `<li>${esc(c.text) || '<i>no caption</i>'} <span class="item-facts__where">(${c.pages.map(esc).join(', ')})</span></li>`).join('')}</ul>`);
+  // the captions of an item captioned differently on different pages (a page that gives it none is not listed)
+  const captions = it.captions.filter((c) => c.text);
+  if (it.captions.length > 1 && captions.length) row('Captions', `<ul>${captions.map((c) => `<li>${esc(c.text)} <span class="item-facts__where">(${c.pages.map(esc).join(', ')})</span></li>`).join('')}</ul>`);
   if (it.credit) row('Credit', esc(it.credit));
+  if (it.rights || it.rightsNote) row('Rights', rightsHtml(it, { note: true }));
+  if (it.citeAs) row('Source', esc(it.citeAs));
   row('Appears in', places(it, root, { after: true }));
   if (it.alsoIn.length) row('Also in', it.alsoIn.map((v) => `${esc(v.label)}: ${v.places.map((a) => `<a href="${href(root, a.link)}">${esc(a.pageTitle)}</a>`).join(', ')}`).join('; '));
   row('Since', since(it, root, true));
@@ -113,7 +126,7 @@ export function itemFacts(it, { root, siteUrl }) {
 // An entry of the list. On the Media Index (searched), search finds an entry by its title and its address, and lists
 // it as a place of its own on the page: data-pagefind-meta gives its label in the results, "item 37" (assets/search.js).
 // Its number pill (the label says it), its thumbnail's box and its facts (page titles, versions, places) are left out
-// of the index.
+// of the index. Its credit and rights are among the facts only when they are filled in.
 function entry(it, root, inner = '', { searched = false } = {}) {
   const ignore = searched ? ' data-pagefind-ignore' : '';
   const label = searched ? ` data-pagefind-meta="${esc(`entry-${it.anchor}:${it.label ? `item ${it.label}` : 'new item'}`)}"` : '';
@@ -128,7 +141,7 @@ ${thumb(it, root, ignore)}
 <div><dt>Since</dt><dd>${since(it, root)}</dd></div>
 <div><dt>Stored</dt><dd>${stored(it)}</dd></div>
 <div><dt>Served from</dt><dd>${esc(it.served.label)}</dd></div>
-</dl>
+${it.credit ? `<div><dt>Credit</dt><dd>${esc(it.credit)}</dd></div>\n` : ''}${it.rights ? `<div><dt>Rights</dt><dd>${rightsHtml(it)}</dd></div>\n` : ''}</dl>
 ${inner}</div>
 </li>`;
 }
@@ -137,7 +150,7 @@ export function mediaIndexHtml(items, { root, script, preview }) {
   const numbered = items.filter((it) => it.label).length;
   return `<div class="media-index">
 <p class="media-index__intro">Every picture, recording, video and document in the book has a number of its own, the same on every page that shows it and in every version. Each has its own page, at the address below its title. ${numbered} items have their number; ${items.length - numbered ? `${items.length - numbered} new ${items.length - numbered === 1 ? 'one gets its number' : 'ones get theirs'} when the next version is frozen.` : 'new ones get theirs when the next version is frozen.'} The same list as data: <a href="${href(root, 'media.json')}">media.json</a>.</p>
-${preview ? `<p class="media-index__preview" data-pagefind-ignore>This preview also has an <a href="edit/">editing view</a> of the list, for checking names, credits, captions and alt text.</p>\n` : ''}<div class="media-filters" hidden></div>
+${preview ? `<p class="media-index__preview" data-pagefind-ignore>This preview also has an <a href="edit/">editing view</a> of the list, for checking names, credits, rights, sources, captions and alt text.</p>\n` : ''}<div class="media-filters" hidden></div>
 <ol class="media-list">
 ${items.map((it) => entry(it, root, '', { searched: true })).join('\n')}
 </ol>
@@ -148,16 +161,34 @@ ${items.map((it) => entry(it, root, '', { searched: true })).join('\n')}
 // ---- The editing view (previews only) ---------------------------------------------------------------------------
 
 function field({ label, kind = 'input', name, value, attrs = '', wide = false, placeholder = '' }) {
-  const common = `data-field="${name}" data-original="${esc(value)}"${placeholder ? ` placeholder="${esc(placeholder)}"` : ''} spellcheck="${name === 'name' ? 'false' : 'true'}" autocomplete="off"${attrs}`;
+  const common = `data-field="${name}" data-original="${esc(value)}"${placeholder ? ` placeholder="${esc(placeholder)}"` : ''} spellcheck="${name === 'name' || name === 'rights' ? 'false' : 'true'}" autocomplete="off"${attrs}`;
   const control = kind === 'textarea' ? `<textarea ${common} rows="2">${esc(value)}</textarea>` : `<input type="text" ${common} value="${esc(value)}">`;
   return `<label class="media-field${wide ? ' is-wide' : ''}"><span class="media-field__label">${label}</span>${control}</label>`;
 }
 
-export function mediaEditHtml(items, { root, script, names }) {
+// The rights: a choice of the common rightsstatements.org statements and Creative Commons licences (register.mjs, RIGHTS),
+// and the address itself, where any other statement or licence can be typed. assets/media-index.js writes the address
+// of what is chosen, and shows what an address typed in is. Then the note shown after the rights.
+function rightsFields(it, choices) {
+  const listed = choices.some((g) => g.options.some((o) => o.url === it.rights));
+  const option = (value, text, on) => `<option value="${esc(value)}"${on ? ' selected' : ''}>${esc(text)}</option>`;
+  const select = `<select data-rights-choice>${option('', 'Not given yet', !it.rights)}` +
+    choices.map((g) => `<optgroup label="${esc(g.group)}">${g.options.map((o) => option(o.url, o.label, o.url === it.rights)).join('')}</optgroup>`).join('') +
+    `${option('other', 'Another statement or licence: type its address', it.rights && !listed)}</select>`;
+  return [
+    `<label class="media-field"><span class="media-field__label">Rights</span>${select}</label>`,
+    field({ label: 'Rights: its address', name: 'rights', value: it.rights, attrs: ' inputmode="url"', placeholder: 'http://rightsstatements.org/vocab/InC/1.0/' }),
+    field({ label: 'Rights note, shown after the rights', name: 'rights_note', value: it.rightsNote, wide: true, placeholder: 'A few words or a link' }),
+  ];
+}
+
+export function mediaEditHtml(items, { root, script, names, rights }) {
   const list = items.map((it) => {
     const fields = [
       field({ label: 'Name', name: 'name', value: it.name }),
       field({ label: 'Credit', name: 'credit', value: it.credit, placeholder: 'Photo: …' }),
+      ...rightsFields(it, rights.choices),
+      field({ label: 'Source, how to cite it', name: 'cite_as', value: it.citeAs, wide: true, placeholder: 'Maker, ‘Title’ (year), holder' }),
     ];
     // a recording's title comes from its page's title, so it has no caption to edit here
     for (const a of it.kind === 'listen' ? [] : it.editable) {
@@ -171,7 +202,7 @@ export function mediaEditHtml(items, { root, script, names }) {
     return entry(it, root, inner).replace('<li class="media-entry"', `<li class="media-entry media-entry--edit" data-source="${esc(it.source)}" data-label="${esc(it.label || '')}" data-used="${it.appearances.length ? 'true' : 'false'}"`);
   });
   return `<div class="media-index media-edit">
-<p class="media-index__intro">The Media Index with fields for the name, the credit, and the caption and alt text of each place an item appears in the latest text, and a comment. The checks beside each item update as you type. Your edits stay in this browser, even when you reload the page, and nothing is saved anywhere else: when you are done, “Hand over changes” gives a sheet that lists only what you changed, for someone to apply on a branch. This view is on previews only, never on the public site.</p>
+<p class="media-index__intro">The Media Index with fields for the name, the credit, the rights, how to cite the item’s source, and the caption and alt text of each place an item appears in the latest text, and a comment. The checks beside each item update as you type. Credit, rights and source show on the public pages only when they are filled in, so only these checks say what is missing. Your edits stay in this browser, even when you reload the page, and nothing is saved anywhere else: when you are done, “Hand over changes” gives a sheet that lists only what you changed, for someone to apply on a branch. This view is on previews only, never on the public site.</p>
 <div class="media-filters" hidden></div>
 <ol class="media-list">
 ${list.join('\n')}
@@ -188,6 +219,7 @@ ${list.join('\n')}
 <div class="media-sheet__actions"><button type="button" class="media-button media-button--strong" data-action="copy">Copy</button><button type="button" class="media-button" data-action="download">Download (.md)</button><button type="button" class="media-button" data-action="clear">Clear all edits</button><span class="media-sheet__status" role="status"></span></div>
 </dialog>
 <script type="application/json" class="media-names">${JSON.stringify(names).replace(/</g, '\\u003c')}</script>
+<script type="application/json" class="media-rights">${JSON.stringify(rights).replace(/</g, '\\u003c')}</script>
 </div>
 <script src="${esc(script)}" defer></script>`;
 }

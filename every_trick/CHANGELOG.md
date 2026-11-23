@@ -47,13 +47,25 @@ reader sees. How to add a version: ‘Versions of the book and of every_trick’
 
 ## 1.12.0
 
-23 November 2026. A References page for the whole book.
+23 November 2026. A References page for the whole book, from which any reference can be copied in five styles or for
+a reference manager, and a header that keeps one row at every width.
 
 - The References page, `/references/`, lists every work in the book’s bibliography once, in the house style and in the
   order of its reference lists, alphabetical by author. Each work has an address of its own, made from its key:
   `/references/#hall2001`. Under each work are the passages that cite it, named by page and paragraph (‘Introduction,
   para. 12’), each leading to the citation itself, and the pages whose reference lists include it, each leading to the
   work in that list.
+- Beside each work, a Copy button opens a short menu that copies the reference as plain text in Mattering Press’ house
+  style, APA (7th edition), Chicago (author-date), MLA (9th edition) or Harvard (Cite Them Right), or as a BibTeX or
+  RIS entry for a reference manager. A short line at the foot of the window says what was copied (‘Copied: APA’). The
+  menu works with the keyboard (↓ and ↑, Enter, Escape) and by touch. The house style is the reference as the page
+  shows it; the other styles are made when the site is built, with Pandoc and the styles of the official Citation
+  Style Language repository, and give each work as it stands on its own, as a reference manager copies it, so without
+  the year letters (2005a) that only tell this book’s works apart. Without JavaScript there are no Copy buttons, and
+  search leaves them out.
+- The whole bibliography can be downloaded from the explainer at the top of the References page, as BibTeX, RIS or
+  CSL-JSON. Each version of the book has its own, beside its References page (`/references/bibliography.bib`,
+  `/v0.1/references/bibliography.ris`).
 - Each frozen version has its own References page, such as `/v0.1/references/`, because which passages cite a work,
   and their paragraph numbers, can differ from one version to the next.
 - Every footer links to the References page of its version, beside the Media Index.
@@ -73,6 +85,15 @@ reader sees. How to add a version: ‘Versions of the book and of every_trick’
   the popups alike. The reference lists typed in the pages show what their authors typed.
 - The build says, for each version, how many citations lead to their page’s own reference list and how many to the
   References page.
+- The menu in the header ends with ‘media index’ and ‘references’ on every page, leading to the Media Index and to the
+  References page of the version being read.
+- Where the whole menu does not fit beside the book’s title and the buttons (below about 1,000 pixels wide at the usual
+  text size, sooner at larger sizes), it folds into a menu button (☰) beside the other buttons, which opens a panel
+  with every entry. Escape, or a click or tap outside, closes it; without JavaScript it opens and closes all the same.
+- The Page / Markdown switch is smaller: a round-ended pill of two icons, each named for screen readers and in a
+  tooltip, made to take a third view, the Collage, later.
+- The header keeps one row at every width from 320 pixels: on phones about 376 to 415 pixels wide, ‘Aa’ no longer
+  drops to a second row. On the smallest phones the book’s title ends in an ellipsis.
 
 ## 1.11.0
 
@@ -88,16 +109,16 @@ Media Index.
   before the caption.
 - Each item has its own page, at an address made of its kind and a short name: `/see/boulder-font/`,
   `/listen/podcast-catherine-hahn/`, `/watch/family-talk/`, `/read/house-of-hope/`. It shows the item, its number, its
-  caption, its credit, every place it appears (with a link to it there), the version it entered the book with, where
-  it is stored and where it is served from, and its files to download. These pages are shared by every version of the
-  book, so a frozen version's numbers lead to the same pages.
+  caption, its credit, its rights and source, every place it appears (with a link to it there), the version it entered
+  the book with, where it is stored and where it is served from, and its files to download. These pages are shared by
+  every version of the book, so a frozen version's numbers lead to the same pages.
 - Every numbered item also has a short address to type from paper: `/37/` leads to item 37. When an item is renamed,
   its old address keeps leading to it.
 - The Media Index, `/media-index/`, lists every item by number, with a small picture, its title, its address, where it
-  appears, the version it entered with, and where it is stored and served from. It can be filtered by kind and by
-  where items are served from; without JavaScript it is a plain list. Every footer links to it, beside "All versions".
-  `media.json` at the root of the site holds the same list as data, and every page's `page.json` lists the items on that
-  page.
+  appears, the version it entered with, where it is stored and served from, and its credit and rights when it has
+  them. It can be filtered by kind and by where items are served from; without JavaScript it is a plain list. Every
+  footer links to it, beside "All versions". `media.json` at the root of the site holds the same list as data, and
+  every page's `page.json` lists the items on that page.
 - Search finds the items of the Media Index by their title or caption and by their address. The Media Index is then
   among the pages found, and each item found on it is shown as "item 37" (or "new item"), where a page of the book
   shows "para. 12", with a link straight to its entry. The rest of an entry (where it appears, its version, where it is
@@ -106,15 +127,28 @@ Media Index.
   short addresses and the editing view are not searched: the Media Index holds their words.
 - An item's credit is kept in the register, written exactly as it should show ("Photo: …"), and appears after its
   caption wherever the item is shown, and on its page.
+- The register can say what the rights of an item are, as the address of a standard statement: one of
+  rightsstatements.org's, such as In Copyright, or a Creative Commons licence, such as CC BY 4.0. The item's page shows
+  the statement's name, linked to it, followed by a short note where the register has one. Rights are filled in only
+  where they are clear: so far In Copyright for item 1, from the Historic England Archive, for House of Hope and for
+  the videos on YouTube, Vimeo and the BBC.
+- The register can also say how to cite an item's own source, its maker, title, date and holder, in the house style,
+  such as "Clarke Fitzgerald, ‘The Plumb Line and the City’ (1971), Coventry Cathedral". The item's page shows it as
+  "Source".
+- Credit, rights and source appear only when they are filled in: no public page says that one is missing, not
+  evaluated or unknown. `media.json` carries all three for every item.
 - Videos and embedded documents whose pages give them no caption now show their real title, from the register (for
   the films and zines on archive.org, their title there), instead of "Embedded content from archive.org".
 - Without JavaScript, clicking a picture opens its item page; on the item page, its largest image.
 - Previews, never the public site, have an editing view of the Media Index, `/media-index/edit/`: fields for each
-  item's name and credit, the caption and alt text of each place it appears, and a comment, with checks beside each item
-  (no alt text, alt text that repeats the caption, no credit, used on no page). Edits stay in the browser; "Hand over
+  item's name and credit, its rights (chosen from the common statements and licences, or another one's address typed
+  in) and their note, how to cite its source, the caption and alt text of each place it appears, and a comment, with
+  checks beside each item (no alt text, alt text that repeats the caption, no credit, no rights, no source to cite,
+  used on no page). These checks are the only place that says what is missing. Edits stay in the browser; "Hand over
   changes" gives a sheet listing only what changed, to copy or download and apply on a branch.
 - The build stops, saying what to do, when a registered item's file has gone or its address has changed, when two
-  items share a name, or when an item of a frozen version has no number. `npm run number-media -- <version>` numbers a
+  items share a name, when an item of a frozen version has no number, or when an item's rights are not the address of
+  a rightsstatements.org statement or a Creative Commons licence. `npm run number-media -- <version>` numbers a
   version's new items when it is frozen.
 - The page data is contract 0.5 (`CONTRACT.md`); its paragraph rule is unchanged, so no paragraph has a new number.
 

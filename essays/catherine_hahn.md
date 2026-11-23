@@ -28,7 +28,7 @@ The constant discomfort of reconciliation, reparation and representation present
 
 See the artist map drawn by Catherine Hahn accompanying this podcast.
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD06_CH_Podcast_Plan_page-0001.jpg caption="Artist map drawn by Catherine Hahn" alt="Artist map drawn by Catherine Hahn"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/POD06_CH_Podcast_Plan_page-0001.jpg wide caption="Artist map drawn by Catherine Hahn" alt="Artist map drawn by Catherine Hahn"
 
 # Biography
 

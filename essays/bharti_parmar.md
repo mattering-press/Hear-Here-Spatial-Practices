@@ -90,7 +90,7 @@ What’s really interesting to me as an artist is the cycle of reuse, recycling,
 
 **BHARTI PARMAR**: The _Plumb Line_ is one of my favourite pieces of work here. So, the plumb line is a mechanical device to determine whether a building is straight. As a printmaker, I've always been interested in geometry, shapes and patterns. Within this _Plumb Line_, we're looking at a series of metal shapes and pieces. I don't know how many there are—probably 200 or 300—all in different shapes of metal, different colours, patinated bronzes, browns, silvers, all made to look like a cityscape on a plinth.
 
-.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/Pod02_Plumbline_01.jpg caption="‘The Plumb Line and the City’ (1971) by Clarke Fitzgerald" alt="‘The Plumb Line and the City’ (1971) by Clarke Fitzgerald"
+.ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/Pod02_Plumbline_01.jpg wide caption="‘The Plumb Line and the City’ (1971) by Clarke Fitzgerald" alt="‘The Plumb Line and the City’ (1971) by Clarke Fitzgerald"
 
 I used to come in here regularly to look at the patterns and use those as inspiration in things I was doing in the studio. I was making paper, ceramic casts, prints, etchings, monoprints and some of the simple shapes like curves, arcs, spires, and diamonds. I was literally inspired by the spires.
 

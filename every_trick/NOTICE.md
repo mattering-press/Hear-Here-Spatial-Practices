@@ -20,6 +20,14 @@ text. Web addresses cannot contain underscores, so a domain for it would be `eve
   the writing conventions): Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0).
 - **The house citation style** (`csl/mattering-press.csl`): CC BY-SA 3.0, as required by the Citation Style
   Language styles it is adapted from; see the file's header.
+- **The other citation styles** in `csl/`, with which the References page offers each reference to copy: `apa.csl`
+  (APA, 7th edition), `chicago-author-date.csl` (Chicago, 18th edition, author-date),
+  `modern-language-association.csl` (MLA, 9th edition) and `harvard-cite-them-right.csl` (Harvard, Cite Them Right,
+  12th edition). They are unchanged copies of the styles of the official Citation Style Language repository,
+  https://github.com/citation-style-language/styles, taken at commit `edc263cf0e4b09ed184f8a9e1e1de23deb2a7a9e`
+  (23 November 2026), and are licensed by their authors, who are named in each file's header, under the Creative
+  Commons Attribution-ShareAlike 3.0 Unported licence (CC BY-SA 3.0), https://creativecommons.org/licenses/by-sa/3.0/.
+  The build switches off their year letters and repeated-author dashes in a working copy; the files stay as they are.
 - **`sjmch/styles`** (the designed reading, collage and other styles by Studio Julien McHardy, published
   separately): free for non-commercial use, with a paid licence for commercial use.
 - **Books made with the toolkit** keep their own licence; *Hear Here: Spatial Practices* is published by

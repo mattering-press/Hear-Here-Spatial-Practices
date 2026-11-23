@@ -2,9 +2,10 @@
 // Index" and "The media register" in DEVELOPMENT.md). Each line holds the item's permanent number (given when a version is
 // frozen, by scripts/number-media.mjs), its kind (the word of its address: see, listen, watch or read), its name (the
 // readable part of its address, /see/<name>/), its source (the repository path of its file, or its address
-// elsewhere, as filters/lib.lua's media_source writes it), the version it entered with, its credit, a title where its
-// pages give none, and its former names and sources. Nothing else is stored: captions, sizes and where an item appears
-// are read from the pages at every build.
+// elsewhere, as filters/lib.lua's media_source writes it), the version it entered with, its credit, its rights (the
+// address of a rightsstatements.org statement or a Creative Commons licence) with a note, how to cite its own source
+// (cite_as), a title where its pages give none, and its former names and sources. Nothing else is stored: captions,
+// sizes and where an item appears are read from the pages at every build.
 //
 //   readRegister(file)            -> { lines, problems }: the lines in the file's order, and what is wrong with them
 //   writeRegister(lines, file)    writes the register: the numbered lines by number, then the others in their order
@@ -12,6 +13,8 @@
 //   draftName(texts, taken, skip) a short name drafted from a caption or title, unique among taken (which it extends)
 //   resolveItems({ lines, editions, bookTitle, versions })  matches every item on the pages to its line; drafts names
 //                                 for items without one; -> { items, bySource, problems }
+//   rightsLabel(address)          the label of a rights address ("In Copyright", "CC BY 4.0"), or null
+//   RIGHTS                        the editing view's choices of rights, and what its script needs to label others
 //   servedFrom(item), storedAt(item)   where an item is served from and where it is stored, for people to read
 import { spawnSync } from 'node:child_process';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
@@ -21,7 +24,7 @@ import { fileURLToPath } from 'node:url';
 import { REPO, REPO_ROOT } from './convert.mjs';
 
 export const REGISTER = join(REPO_ROOT, 'media', 'register.csv');
-export const COLUMNS = ['number', 'kind', 'name', 'source', 'since', 'credit', 'title', 'former_names', 'former_sources'];
+export const COLUMNS = ['number', 'kind', 'name', 'source', 'since', 'credit', 'rights', 'rights_note', 'cite_as', 'title', 'former_names', 'former_sources'];
 export const KINDS = ['see', 'listen', 'watch', 'read'];
 const TOOLKIT_DIR = dirname(fileURLToPath(import.meta.url));
 const NAME = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -71,7 +74,8 @@ export function readRegister(file = REGISTER) {
     const number = get('number');
     return {
       line, number: /^\d+$/.test(number) ? Number(number) : null, numberText: number, kind: get('kind'), name: get('name'), source: get('source'),
-      since: get('since'), credit: get('credit'), title: get('title'), formerNames: splitList(get('former_names')), formerSources: splitList(get('former_sources')),
+      since: get('since'), credit: get('credit'), rights: get('rights'), rightsNote: get('rights_note'), citeAs: get('cite_as'), title: get('title'),
+      formerNames: splitList(get('former_names')), formerSources: splitList(get('former_sources')),
     };
   });
   const names = new Map(), sources = new Map(), numbers = new Map();
@@ -82,6 +86,12 @@ export function readRegister(file = REGISTER) {
     for (const n of l.formerNames) if (!NAME.test(n)) problems.push(`${where(l)}: the former name "${n}" is not a name (lower-case letters and digits, with hyphens)`);
     if (!l.source) problems.push(`${where(l)}: the source is empty: write the file's path in the repository, or the item's address`);
     if (l.number !== null && !l.since) problems.push(`${where(l)}: a numbered item needs "since", the version it entered with`);
+    if (l.rights && unknownRights(l.rights)) {
+      problems.push(`${where(l)}: the rights say “${unknownRights(l.rights)}”. Leave "rights" empty until the item's rights are known: public pages show rights only when they are filled in`);
+    } else if (l.rights && !rightsLabel(l.rights)) {
+      problems.push(`${where(l)}: the rights, ${l.rights}, are not the address of a rightsstatements.org statement or a Creative Commons licence, such as ` +
+        `http://rightsstatements.org/vocab/InC/1.0/ (In Copyright) or https://creativecommons.org/licenses/by/4.0/ (CC BY 4.0). Anything else about the item's rights goes in "rights_note"`);
+    }
     for (const n of [l.name, ...l.formerNames]) {
       if (names.has(n) && n) problems.push(`media/register.csv: two items share the name ${n} (lines ${names.get(n).line} and ${l.line}). Names, and former names, are each used once in the book`);
       else names.set(n, l);
@@ -106,8 +116,8 @@ export function readRegister(file = REGISTER) {
 export function writeRegister(lines, file = REGISTER) {
   const numbered = lines.filter((l) => l.number !== null).sort((a, b) => a.number - b.number);
   const others = lines.filter((l) => l.number === null);
-  const rows = [COLUMNS, ...[...numbered, ...others].map((l) => [l.number === null ? '' : String(l.number), l.kind, l.name, l.source, l.since || '', l.credit || '', l.title || '',
-    joinList(l.formerNames || []), joinList(l.formerSources || [])])];
+  const rows = [COLUMNS, ...[...numbered, ...others].map((l) => [l.number === null ? '' : String(l.number), l.kind, l.name, l.source, l.since || '', l.credit || '',
+    l.rights || '', l.rightsNote || '', l.citeAs || '', l.title || '', joinList(l.formerNames || []), joinList(l.formerSources || [])])];
   writeFileSync(file, rows.map((r) => r.map(csvField).join(',')).join('\n') + '\n');
 }
 
@@ -161,13 +171,14 @@ export function draftName(texts, taken, skip = new Set()) {
 // first, each with its pages in reading order and their items (listItems); versions: the ids of the frozen versions in
 // versions.json. Every item found on a page is matched to its line by its source (or a former source); an item without
 // a line is new, with a drafted name. Items with a line that are on no page are kept too.
-//   -> { items: [{ number, label, kind, name, source, since, credit, title, formerNames, formerSources, line,
-//                  appearances: [{ edition, file, title, found }] }], bySource: Map, problems: [] }
+//   -> { items: [{ number, label, kind, name, source, since, credit, rights, rightsLabel, rightsNote, citeAs, title,
+//                  formerNames, formerSources, line, appearances: [{ edition, file, title, found }] }], bySource: Map, problems: [] }
 // items: the numbered ones by number, then the others, in order of first appearance (the latest text first).
 export function resolveItems({ lines, editions, bookTitle = '', versions = [] }) {
   const bySource = new Map(), problems = [];
   const item = (l) => ({ number: l.number, label: l.number === null ? null : String(l.number), kind: l.kind, name: l.name, source: l.source, since: l.since,
-    credit: l.credit, title: l.title, formerNames: l.formerNames, formerSources: l.formerSources, line: l, appearances: [] });
+    credit: l.credit, rights: l.rights, rightsLabel: rightsLabel(l.rights) || '', rightsNote: l.rightsNote, citeAs: l.citeAs, title: l.title,
+    formerNames: l.formerNames, formerSources: l.formerSources, line: l, appearances: [] });
   const items = lines.map(item);
   items.forEach((it) => { for (const s of [it.source, ...it.formerSources]) bySource.set(s, it); });
   const taken = new Set(lines.flatMap((l) => [l.name, ...l.formerNames]));
@@ -177,7 +188,8 @@ export function resolveItems({ lines, editions, bookTitle = '', versions = [] })
     let it = bySource.get(found.source);
     if (!it) {
       it = { number: null, label: null, kind: found.kind, name: draftName([found.caption, found.title, found.alt, sourceWords(found.source)], taken, skip),
-        source: found.source, since: '', credit: '', title: '', formerNames: [], formerSources: [], line: null, appearances: [] };
+        source: found.source, since: '', credit: '', rights: '', rightsLabel: '', rightsNote: '', citeAs: '', title: '', formerNames: [], formerSources: [],
+        line: null, appearances: [] };
       bySource.set(found.source, it);
       fresh.push(it);
     }
@@ -213,6 +225,61 @@ export function resolveItems({ lines, editions, bookTitle = '', versions = [] })
   items.sort((a, b) => (a.number ?? Infinity) - (b.number ?? Infinity));
   return { items, bySource, problems };
 }
+
+// ---- Rights ----------------------------------------------------------------------------------------------------
+
+// An item's rights are a standard address: a statement of rightsstatements.org, or a Creative Commons licence (CC0 and
+// the Public Domain Mark included). Its page shows the label, linked to the address. Two statements are not used,
+// Copyright Not Evaluated and Copyright Undetermined: rights stay empty until they are known, because public pages never
+// show a missing field (the publisher, 2026-11-23); the editing view marks the items whose rights are empty.
+const STATEMENTS = {
+  InC: 'In Copyright', 'InC-EDU': 'In Copyright – Educational Use Permitted', 'InC-NC': 'In Copyright – Non-Commercial Use Permitted',
+  'InC-RUU': 'In Copyright – Rights-holder(s) Unlocatable or Unidentifiable', 'InC-OW-EU': 'In Copyright – EU Orphan Work',
+  'NoC-CR': 'No Copyright – Contractual Restrictions', 'NoC-NC': 'No Copyright – Non-Commercial Use Only',
+  'NoC-OKLR': 'No Copyright – Other Known Legal Restrictions', 'NoC-US': 'No Copyright – United States', NKC: 'No Known Copyright',
+};
+const NOT_KNOWN = { CNE: 'Copyright Not Evaluated', UND: 'Copyright Undetermined' };
+// http://rightsstatements.org/vocab/InC/1.0/ (the page about it, /page/InC/1.0/, too); https://creativecommons.org/licenses/
+// by-nc/4.0/ (any version, a country's version such as /by/2.0/uk/, legalcode or deed after it); /publicdomain/zero/1.0/
+const PATTERNS = {
+  statement: '^https?://(?:www\\.)?rightsstatements\\.org/(?:vocab|page)/([A-Za-z-]+)/1\\.0/?(?:\\?\\S*)?$',
+  licence: '^https?://(?:www\\.)?creativecommons\\.org/licenses/(by(?:-nc)?(?:-sa|-nd)?|by-nd-nc)/(\\d\\.\\d)(?:/([a-z]{2}(?:-[a-z]{2})?))?(?:/(?:(?:legalcode|deed)(?:\\.[\\w-]+)?)?)?$',
+  publicDomain: '^https?://(?:www\\.)?creativecommons\\.org/publicdomain/(zero|mark)/1\\.0(?:/(?:(?:legalcode|deed)(?:\\.[\\w-]+)?)?)?$',
+};
+const pattern = Object.fromEntries(Object.entries(PATTERNS).map(([k, source]) => [k, new RegExp(source, 'i')]));
+const statementCode = (address) => {
+  const m = pattern.statement.exec(String(address ?? '').trim());
+  return m ? [...Object.keys(STATEMENTS), ...Object.keys(NOT_KNOWN)].find((code) => code.toLowerCase() === m[1].toLowerCase()) ?? null : null;
+};
+
+// "In Copyright", "CC BY 4.0", "CC BY 2.0 UK", "CC0 1.0"; null for any other address (and for the two that are not used).
+// assets/media-index.js labels addresses the same way, from RIGHTS.
+export function rightsLabel(address) {
+  const a = String(address ?? '').trim();
+  if (pattern.statement.test(a)) return STATEMENTS[statementCode(a)] ?? null;
+  const cc = pattern.licence.exec(a);
+  if (cc) return `CC ${cc[1].toUpperCase()} ${cc[2]}${cc[3] ? ` ${cc[3].toUpperCase()}` : ''}`;
+  const pd = pattern.publicDomain.exec(a);
+  if (pd) return pd[1].toLowerCase() === 'zero' ? 'CC0 1.0' : 'Public Domain Mark 1.0';
+  return null;
+}
+// the label of Copyright Not Evaluated or Copyright Undetermined, which are not used; '' for any other address
+const unknownRights = (address) => NOT_KNOWN[statementCode(address)] ?? '';
+
+// For the editing view (media-pages.mjs, assets/media-index.js): the common statements and licences to choose from, and
+// the patterns and statements that label any other address typed in.
+const licence = (code) => ({ url: `https://creativecommons.org/licenses/${code}/4.0/`, label: `CC ${code.toUpperCase()} 4.0` });
+export const RIGHTS = {
+  choices: [
+    { group: 'rightsstatements.org', options: Object.entries(STATEMENTS).map(([code, label]) => ({ url: `http://rightsstatements.org/vocab/${code}/1.0/`, label })) },
+    { group: 'Creative Commons', options: [...['by', 'by-sa', 'by-nc', 'by-nc-sa', 'by-nd', 'by-nc-nd'].map(licence),
+      { url: 'https://creativecommons.org/publicdomain/zero/1.0/', label: 'CC0 1.0' },
+      { url: 'https://creativecommons.org/publicdomain/mark/1.0/', label: 'Public Domain Mark 1.0' }] },
+  ],
+  patterns: PATTERNS,
+  statements: Object.fromEntries(Object.entries(STATEMENTS).map(([code, label]) => [code.toLowerCase(), label])),
+  notKnown: Object.fromEntries(Object.entries(NOT_KNOWN).map(([code, label]) => [code.toLowerCase(), label])),
+};
 
 // ---- Where an item is stored and served from -------------------------------------------------------------------
 

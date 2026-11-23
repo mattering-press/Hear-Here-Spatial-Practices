@@ -18,22 +18,27 @@ one paragraph, and numbers each frozen version by the rule of the contract it wa
 `every_trick_in_the_book` in page.json, publication.json and the Markdown view's front matter (it was `kit`). 0.5 adds
 media items (below): every picture, recording, video and document has a number from the media register and a page
 of its own; `items` in page.json, `media.json` at the root of the site, and the items' anchors and number pills in
-the HTML. Media in the margin are items with their own numbers, no longer figures with the chapter's numbering. 0.5
-also gives each edition a References page, `references/`, which lists every work of the bibliography (see "Citations
-in the HTML"): a reference's `url` in page.json, like the citation's link, points at the work's entry there
+the HTML. Media in the margin are items with their own numbers, no longer figures with the chapter's numbering. An
+item may have a credit, rights (the address of a rightsstatements.org statement or a Creative Commons licence, with a
+note) and how to cite its own source, in the register and in `media.json`; empty ones are never shown. 0.5 also gives
+each edition a References page, `references/`, which lists every work of the bibliography (see "Citations in the
+HTML"): a reference's `url` in page.json, like the citation's link, points at the work's entry there
 (`references/#hall2001`) when the page's own typed list lacks the work, where it pointed at the first page in reading
-order whose list has it (every_trick_in_the_book 1.12.0). 0.5 also adds documents (every_trick_in_the_book 1.13.0; see
-"Documents"): a PDF of the repository, or a zine copied from archive.org, is shown as its pages, each with zoom tiles, and
-has `read/<name>/document.json`; media.json gains `pages` and `document`; and a document is no longer listed in
-page.json's `video`, where an archive.org reader was an `embed`. The paragraph rule of 0.5 is 0.4's, unchanged.
+order whose list has it, and puts beside it the edition's bibliography to download, as CSL-JSON, BibTeX and RIS, and
+`formatted.json`, every work in the styles of the page's Copy menus (every_trick_in_the_book 1.12.0). 0.5 also adds
+documents (every_trick_in_the_book 1.13.0; see "Documents"): a PDF of the repository, or a zine copied from
+archive.org, is shown as its pages, each with zoom tiles, and has `read/<name>/document.json`; media.json gains `pages`
+and `document`; and a document is no longer listed in page.json's `video`, where an archive.org reader was an `embed`.
+The paragraph rule of 0.5 is 0.4's, unchanged.
 
 ## Editions
 
 The root of the site is the working text, "latest, unreleased". Every version listed in `versions.json` at the
 root of the repository is built as well, from the text of its Git tag but with the current toolkit, into its own
 folder, `v<id>/` (for example `v0.9-review2/essays/aya_nassar/`). Each such edition has its own
-`publication.json`, `publication.md`, References page (`references/`) and pages. Images, tiles, video, PDF files, the
-documents' data, the stylesheet and the scripts are stored once, at the site's root, and shared by all editions, so inside a frozen version
+`publication.json`, `publication.md`, References page (`references/`, with the bibliography to download) and pages.
+Images, tiles, video, PDF files, the documents' data, the stylesheet and the scripts are stored once, at the site's
+root, and shared by all editions, so inside a frozen version
 their URLs start with `../` (`../images/x-1600.jpg`); resolved against the edition's root, they point at the shared
 copy. `versions/` at the site's root lists every edition.
 
@@ -166,7 +171,7 @@ its mark in the text, at the end of the paragraph before it, is `<a class="margi
 | `markdown` | the page's Markdown view, e.g. `"essays/walk/index.md"` |
 | `headings` | `{ level, text, id }` in page order; `level` is the HTML level (2 to 6), `id` the fragment for `url#id` |
 | `paragraphs` | the numbered paragraphs (see "Paragraph numbers"), `{ id, n, text_hash }` in page order: `id` is the fragment (`"p12"`), `n` the number (12), `text_hash` the hash of its normalised text, the same in every version where the paragraph's text is the same |
-| `items` | the media items on the page (see "Media items"), `{ number, kind, name, url, anchor, after }` in page order: `number` is the item's number (37), or `null` for an item not numbered yet; `kind` is `see`, `listen`, `watch` or `read`; `name` the readable part of its address; `url` its item page, relative to the edition's root (`"see/boulder-font/"`, `"../see/boulder-font/"` in a frozen version); `anchor` the fragment of the item on this page (`"item-37"`, for `url#anchor`); `after` the numbered paragraph before it (`"p76"`), or `null` |
+| `items` | the media items on the page (see "Media items"), `{ number, kind, name, url, anchor, after }` in page order: `number` is the item's number (37), or `null` for an item not numbered yet; `kind` is `see`, `listen`, `watch` or `read`; `name` the readable part of its address; `url` its item page, relative to the edition's root (`"see/boulder-font/"`, `"../see/boulder-font/"` in a frozen version); `anchor` the fragment of the item on this page (`"item-37"`, for `url#anchor`); `after` the numbered paragraph before it (`"p76"`), or `null`. An item's credit, rights and source are in `media.json` |
 | `figures` | `{ image, width, height, tiles, alt, caption }`: `image` is 1600 px on the long edge, `width` and `height` are its size, `tiles` is a IIIF `info.json` or `null`; `alt` and `caption` are `""` when missing |
 | `audio` | `{ url, title }`; `url` is the MP3 on GitHub, which supports range requests |
 | `video` | `{ url, title, kind }`; `kind` is `youtube`, `vimeo`, `file` (a video file in the site) or `embed` (any other embedded page, such as the Internet Archive or the BBC); `url` is the address given in the Markdown. A document whose pages the build shows (see "Documents") is not listed: `items` has it, with `kind` `read` |
@@ -187,6 +192,9 @@ register, `media/register.csv` in the repository (CSV with a header row, which G
 | `source` | what the item is: the repository path of its file (`media/podcasts/POD06_Boulder.jpg`), or its address elsewhere, normalised: `https://www.youtube.com/watch?v=<id>`, `https://vimeo.com/<id>/<hash>`, `https://archive.org/details/<identifier>` (for its embed and details addresses alike), any other address as given. The same source on several pages, or in several versions, is one item |
 | `since` | the version it entered with (`0.1`), set with its number |
 | `credit` | its credit, the whole text as it is shown (`Photo: …`), or empty |
+| `rights` | its rights, as the address of a statement of rightsstatements.org (`http://rightsstatements.org/vocab/InC/1.0/`, In Copyright) or of a Creative Commons licence (`https://creativecommons.org/licenses/by/4.0/`, CC BY 4.0; any version, CC0 and the Public Domain Mark too), or empty until they are clear. Copyright Not Evaluated and Copyright Undetermined are not used: the build stops on them, and on any other address |
+| `rights_note` | a few words or a link shown after the rights (a web address in it becomes a link), or empty |
+| `cite_as` | how to cite the item's own source, in the house style, with what is known of its maker, title, date and holder (`Clarke Fitzgerald, ‘The Plumb Line and the City’ (1971), Coventry Cathedral`), or empty |
 | `title` | a title, only for an item whose pages give it no caption (an embedded film, the zines) |
 | `former_names` | its earlier names, separated by spaces: their addresses forward to the current one |
 | `former_sources` | its earlier files or addresses, separated by spaces (a space inside a path is written `%20`), so that the versions that used them still find the item |
@@ -211,9 +219,10 @@ In the HTML of a page, an item's figure, or its player's `<div class="player">`,
 ```
 
 An item not numbered yet has `<a class="item-number is-new" href="…" aria-label="New item, not yet numbered">new</a>`.
-The credit follows the caption, as `<span class="item-credit"> · Photo: …</span>`. A picture without a caption gets a
-caption line for its pill; an audio player is followed by `<p class="media-caption">` with the pill and the recording's
-title. On the item's own page the pill is a `<span>`. In a frozen version the pills lead to the shared item pages
+The credit follows the caption, as `<span class="item-credit"> · Photo: …</span>`, when the item has one. The rights
+are shown on the item's page and in the Media Index, the source on the item's page, never in the caption line; an empty
+credit, rights or source is never shown. A picture without a caption gets a caption line for its pill; an audio player
+is followed by `<p class="media-caption">` with the pill and the recording's title. On the item's own page the pill is a `<span>`. In a frozen version the pills lead to the shared item pages
 (`../../../see/boulder-font/` from `v0.1/essays/catherine_hahn/`). Without JavaScript a picture links to its item page
 (`<a class="figure-picture" href="…/see/boulder-font/" data-largest="…">`; on the item page, to its largest image).
 
@@ -225,10 +234,13 @@ At the root of the site, every media item, for other frontends. Its URLs are rel
 |---|---|
 | `contract`, `every_trick_in_the_book` | as in publication.json |
 | `title`, `url` | the book's title, and where the site is published |
-| `items` | every item, the numbered ones by number, then the new ones in order of first appearance: `{ number, kind, name, source, since, credit, title, url, short, caption, former_names, former_sources, stored, served, pages, document, appearances }` |
+| `items` | every item, the numbered ones by number, then the new ones in order of first appearance: `{ number, kind, name, source, since, credit, rights, rights_label, rights_note, cite_as, title, url, short, caption, former_names, former_sources, stored, served, pages, document, appearances }` |
 
-- `number`, `kind`, `name`, `source`, `since`, `credit`, `title`, `former_names`, `former_sources`: as in the register
-  (`number` and `since` are `null` for a new item, `credit` and `title` are `""` when empty, the former ones are lists)
+- `number`, `kind`, `name`, `source`, `since`, `credit`, `rights`, `rights_note`, `cite_as`, `title`, `former_names`,
+  `former_sources`: as in the register (`number` and `since` are `null` for a new item, `credit`, `rights`,
+  `rights_note`, `cite_as` and `title` are `""` when empty, the former ones are lists)
+- `rights_label`: the name of its rights, as its page shows it: `"In Copyright"`, `"CC BY 4.0"`, `"CC BY 2.0 UK"`,
+  `"CC0 1.0"`; `""` when `rights` is empty
 - `url`: its item page (`"see/boulder-font/"`); `short`: its short address (`"37/"`), `null` for a new item
 - `caption`: its caption where it is shown (in the latest text, or else in the newest frozen version that has it), plain
   text
@@ -334,3 +346,23 @@ citation (`../essays/introduction/#cite-hall2001-1`; a paragraph that cites the 
 reading order. A row is left out when it would be empty. All the references of an edition are formatted in one
 citeproc run over its whole bibliography, so their year letters (`2005a`, `2005b`) are the same on every page and on
 the References page.
+
+Beside the References page, in the same folder, are the edition's bibliography and the texts of its Copy menus, every
+work in the page's order:
+
+- `bibliography.json`: the bibliography in CSL-JSON, as `references/bibliography.json` in the repository (or in the
+  version's tag) has it, without `custom`, which records for the build where each entry is typed in the pages;
+- `bibliography.bib`: the same in BibTeX, as Pandoc writes it, with `doi` and `urldate` added where a work has them;
+- `bibliography.ris`: the same in RIS, with the tags in the places Zotero's RIS translator reads them, the entry's key
+  as `ID`, UTF-8 and the specification's CRLF line ends;
+- `formatted.json`: `{ contract, every_trick_in_the_book, version, styles, works }`. `styles` lists the forms of the
+  Copy menu in its order, each `{ id, label, short }` (the menu's name and the confirmation's: `APA (7th edition)`,
+  `APA`), with the address of its CSL file and the `locale` it is formatted in for a citation style, and `entry: true`
+  for an entry of a reference manager. `works` holds, for each key, the work in each form as plain text: `house` (the
+  house style as the page shows it, with the book's year letters), `apa`, `chicago`, `mla` and `harvard` (each work
+  formatted on its own, without year letters or dashes for a repeated author, as a reference manager copies it), and
+  `bibtex` and `ris` (the entry as in the files above, with `\n` line ends).
+
+The list of the References page, `<div class="references">`, names `formatted.json` in `data-copy` and the forms of the
+menu in `data-copy-styles` (JSON); `assets/references.js` makes the Copy buttons from them, so they are not part of
+the page's HTML.
