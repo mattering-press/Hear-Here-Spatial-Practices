@@ -1,16 +1,16 @@
 // The References page's Copy buttons (references/ in each edition; referencesHtml and formatReferences in
-// citations.mjs). Beside each work a Copy button opens a short menu: the reference as plain text in the house style or
-// another citation style, or its BibTeX or RIS entry. Choosing one copies it and says so in the status line
-// ("Copied: APA"). The menu, the clipboard and the status line are copy.js's, shared with the citation popups and the
-// Cite panel (cite.js).
-//  * The menu's styles are in the list's data-copy-styles. The texts, made at build time with citeproc, are in the file
+// citations.mjs). Beside each work a Copy button copies its reference in the reader's citation style, as formatted or
+// plain text, both chosen in the settings ("Aa"; settings.js), and says so in the status line ("Copied: APA"). The
+// clipboard and the status line are copy.js's. BibTeX and RIS: the downloads at the top of the page, or the Cite panel
+// of a page (cite.js).
+//  * The page's styles are in the list's data-copy-styles. The texts, made at build time with citeproc, are in the file
 //    its data-copy names (formatted.json, beside the page), loaded when the reader first comes to a Copy button.
-//  * Without JavaScript, or in a browser without popovers, there are no Copy buttons; the downloads at the top of the
-//    page remain. The buttons are made here, so their words are neither in the page's text nor in its search index.
+//  * Without JavaScript there are no Copy buttons; the downloads at the top of the page remain. The buttons are made
+//    here, so their words are neither in the page's text nor in its search index.
 (function () {
   var list = document.querySelector('.references[data-copy]');
   var copy = window.everytrick && window.everytrick.copy;
-  if (!list || !copy || !copy.menu.ok) return;
+  if (!list || !copy) return;
   var styles = [];
   try { styles = JSON.parse(list.dataset.copyStyles || '[]'); } catch (e) { styles = []; }
   if (!styles.length) return;
@@ -27,38 +27,42 @@
     }
     return loading;
   }
-  function textOf(key, id) { return data && data.works && data.works[key] ? data.works[key][id] : null; }
-  function options(button) {
-    var key = button.dataset.key;
-    return {
-      styles: styles,
-      pick: function (style) {
-        return textOf(key, style.id) || load().then(function () {
-          var later = textOf(key, style.id);
-          if (!later) throw new Error('no ' + style.id + ' for ' + key);
-          return later;
-        });
-      },
-      done: function (style, ok) { copy.say(ok ? 'Copied: ' + style.short : 'The reference could not be copied. Please try again.'); },
-    };
+  function style() {
+    var id = copy.settings().style;
+    return styles.filter(function (s) { return s.id === id && !s.entry; })[0] || styles[0];
+  }
+  function partsOf(key, s) {
+    var work = data && data.works && data.works[key];
+    if (!work || !work[s.id]) return null;
+    return { text: work[s.id], html: work.html && work.html[s.id] };
   }
 
   // a Copy button for every work: "Copy Stengers 2005a" for screen readers
   list.querySelectorAll('li.reference[id]').forEach(function (work) {
     var meta = work.getAttribute('data-pagefind-meta') || '';
-    var button = copy.menu.button('Copy', meta.slice(meta.indexOf(':') + 1) || work.id, 'reference__copy');
+    var button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'reference__copy';
     button.dataset.key = work.id;
+    button.append('Copy');
+    var name = document.createElement('span');
+    name.className = 'visually-hidden';
+    name.textContent = ' ' + (meta.slice(meta.indexOf(':') + 1) || work.id);
+    button.append(name);
     work.appendChild(button);
     work.classList.add('has-copy');
   });
 
   list.addEventListener('click', function (event) {
     var button = event.target.closest('.reference__copy');
-    if (button) copy.menu.toggle(button, options(button));
-  });
-  list.addEventListener('keydown', function (event) {
-    var button = event.target.closest('.reference__copy');
-    if (button) copy.menu.keys(event, button, options(button));
+    if (!button) return;
+    var key = button.dataset.key, s = style(), parts = partsOf(key, s);
+    var job = parts ? copy.write(parts) : copy.later(load().then(function () {
+      var later = partsOf(key, s);
+      if (!later) throw new Error('no ' + s.id + ' for ' + key);
+      return later;
+    }));
+    job.then(function () { copy.say('Copied: ' + s.short); }, function () { copy.say('The reference could not be copied. Please try again.'); });
   });
   // the texts start loading as soon as the reader comes to a Copy button
   list.addEventListener('pointerover', function (event) { if (event.target.closest('.reference__copy')) load(); });

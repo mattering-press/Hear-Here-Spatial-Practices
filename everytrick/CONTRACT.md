@@ -226,23 +226,30 @@ transcript-editor:
 ## Citing the book
 
 Every page is cited as a chapter of the book, with its credits, and the home page as the book, edited by its
-`editors` (see "Plan: copying citations" in `DEVELOPMENT.md`; `cite.mjs`). The house style's in-text citation adds a
-passage's paragraph, `(Nassar 2026: para. 12)` or `(Nassar 2026: paras 12–14)`, and a media item's number, cited
-against the book, `(Puwar 2026: item 37)`. The reference names the version (`version 0.1`, or `latest text, unreleased`)
-and ends with the date accessed.
+`editors` (see "Plan: copying citations" in `DEVELOPMENT.md`; `cite.mjs`). Each is formatted in every citation style a
+reader can choose in the settings (`house`, `apa`, `chicago`, `mla`, `harvard`). The house style's in-text citation adds
+a passage's paragraph, `(Nassar 2026: para. 12)` or `(Nassar 2026: paras 12–14)`; a media item is cited against the
+book, `Item 37, ‘…’, in N. Puwar, ed., Hear Here: Spatial Practices, …`, and in the text `(Puwar 2026: item 37)`. The
+reference names the version (`version 0.1`, or `latest text, unreleased`) and ends with the date accessed.
 
 - **In the HTML** every page has, before `</body>`, `<script type="application/json" class="cite-data">`, which
-  `assets/cite.js` reads: `{ version, home, site, styles, page, book, releaseBook, formatted, release }`. `page` and
-  `book` are `{ cite, html, texts, url }`: `cite` as the text cites it; `html` the house style's reference as an HTML
-  fragment; `texts` the reference in each style of the References page's Copy menus (`house`, `apa`, `chicago`, `mla`,
-  `harvard`, `bibtex`, `ris`); `url` the page's or the edition's absolute address. Their date accessed is written as
-  31 December 9999 (`9999-12-31` in BibTeX, `9999/12/31/` in RIS), in each style's form, for the script to put in the
-  day the reader copies. On the latest text `releaseBook` is the newest release's book, and `release`, for a page that
-  is in it, `{ id, label, page, same }`: the page there, and `same`, which maps this page's paragraphs to those with the
-  same text there (`{ "p12": "p14" }`). `formatted` is the edition's `references/formatted.json`. An item's page has the
-  same element, with `book` and `item` (`{ number, title, credit, citeAs, short, url }`).
+  `assets/cite.js` reads: `{ version, home, site, styles, page, book, items, formatted, release }`. `styles` lists the
+  citation styles, `{ id, label, short, locale }`. `page` and `book` are `{ url, styles, bibtex, ris }`: `url` the
+  page's or the edition's absolute address; `styles`, for each style's id, `{ html, text, cite, one, range }`: the
+  reference as an HTML fragment and as plain text, the in-text citation (`"(Nassar 2026)"`), and the same with one
+  paragraph and with two, whose numbers are `999999`, and `999998` and `999999` (`"(Nassar 2026: para. 999999)"`);
+  `bibtex` and `ris` the page's entry for a reference manager. Their date accessed is written as 31 December 9999
+  (`9999-12-31` in BibTeX, `9999/12/31/` in RIS), in each style's form, for the script to put in the day the reader
+  copies. `items` has the media items on the page, by the address of their page (`"see/boulder-font/"`):
+  `{ url, styles, number, citeAs, intext }`, `styles` with only `html` and `text`, and `intext` the in-text citation
+  in each style. On the latest text `release`, for a page that is in the newest release, is `{ id, label, page, same }`:
+  the page there, and `same`, which maps this page's paragraphs to those with the same text there (`{ "p12": "p14" }`).
+  `formatted` is the edition's `references/formatted.json`. An item's page has the same element, with `item`.
+- **formatted.json** gives each work, beside its plain text in each style, `html`: `{ <style id>: html }`, the
+  reference formatted, for a reader who copies formatted text.
 - **How to cite this page**, `<section class="how-to-cite">` at the end of `<main>`, gives the in-text citation and the
-  reference without JavaScript; `<span class="cite-today">` holds the date accessed. It is left out of the search index.
+  reference in the house style without JavaScript (`assets/cite.js` shows the reader's style); `<span class="cite-today">`
+  holds the date accessed. It is left out of the search index.
 - **For Google Scholar** each page's `<head>` has `<meta name="citation_title">`, `citation_author` (or
   `citation_editor` for the book), `citation_publication_date`, `citation_inbook_title` and `citation_book_title`,
   `citation_publisher`, `citation_language` and `citation_fulltext_html_url`, and a JSON-LD block (schema.org `Chapter`

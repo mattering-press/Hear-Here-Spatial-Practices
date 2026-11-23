@@ -92,8 +92,8 @@ $if(whole-book)$
 $endif$
 $endif$
         <a class="search-link" href="$root$search/" title="Search"$if(search-page)$ aria-current="page"$endif$><svg aria-hidden="true" viewBox="0 0 16 16" width="14" height="14"><circle cx="6.5" cy="6.5" r="5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m10.3 10.3 4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span class="search-link__text">Search</span></a>
-        <button class="settings-button" type="button" popovertarget="settings" aria-label="Text size and colours" hidden><span aria-hidden="true">Aa</span></button>
-        <div class="settings" id="settings" popover role="dialog" aria-label="Text size and colours">
+        <button class="settings-button" type="button" popovertarget="settings" aria-label="Reading and citation settings" hidden><span aria-hidden="true">Aa</span></button>
+        <div class="settings" id="settings" popover role="dialog" aria-label="Reading and citation settings">
           <fieldset>
             <legend>Text size</legend>
             <div class="settings__choices settings__sizes">
@@ -109,6 +109,23 @@ $endif$
               <button type="button" data-theme="">System</button>
               <button type="button" data-theme="light">Light</button>
               <button type="button" data-theme="dark">Dark</button>
+            </div>
+          </fieldset>
+          <fieldset class="settings__citations">
+            <legend>Citation style</legend>
+            <div class="settings__choices settings__wrap">
+              <button type="button" data-citation-style="">Mattering Press</button>
+              <button type="button" data-citation-style="apa">APA</button>
+              <button type="button" data-citation-style="chicago">Chicago</button>
+              <button type="button" data-citation-style="mla">MLA</button>
+              <button type="button" data-citation-style="harvard">Harvard</button>
+            </div>
+          </fieldset>
+          <fieldset class="settings__citations">
+            <legend>Copy citations as</legend>
+            <div class="settings__choices">
+              <button type="button" data-citation-format="">Formatted</button>
+              <button type="button" data-citation-format="plain">Plain text</button>
             </div>
           </fieldset>
         </div>

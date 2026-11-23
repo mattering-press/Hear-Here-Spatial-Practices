@@ -30,7 +30,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { BIBLIOGRAPHY, COPY_DATA, COPY_STYLES, CSL_COMMIT, DOWNLOADS, formatReferences, locate, prepareReferences, referencesHtml, report as citationReport } from './citations.mjs';
 import { readBook, REPO, REPO_ROOT, repoPath } from './convert.mjs';
-import { ACCESSED, scholarMeta, selfReferences } from './cite.mjs';
+import { CITE_STYLES, ONE, scholarMeta, selfReferences } from './cite.mjs';
 import { mp3Duration, paragraphCues } from './audio.mjs';
 import { pagesOf, pdfText, renderPdf, requirePoppler, zinePages } from './documents.mjs';
 import { itemDates } from './history.mjs';
@@ -392,22 +392,40 @@ for (const edition of editions) {
 }
 
 // 4b''. The book's own references (cite.mjs; "Plan: copying citations" in DEVELOPMENT.md): every page of each edition
-//      and the book, in the house style and the References page's other styles, for each page's Cite panel, Copy quote
-//      bar and How to cite section (assets/cite.js), the media items, page.json and the tags for Google Scholar. A page
-//      is cited as a chapter of the book, by its credits (convert.mjs); one without them under the book's editors.
+//      the book and its media items, in every citation style a reader can choose in the settings, for each page's Cite
+//      panel, Copy quote button and How to cite section (assets/cite.js), the item pages and the zoom viewer, page.json
+//      and the tags for Google Scholar. A page is cited as a chapter of the book, by its credits (convert.mjs), one
+//      without them under the book's editors; a media item against the book, with its number.
 const citeKey = (file) => file.replace(/^essays\//, '').replace(/\.md$/, '').replace(/[^\w-]+/g, '-');
+const itemPath = (it) => `${it.kind}/${it.name}/`;
+const itemTitle = (it) => it.title || it.appearances.map((a) => a.found?.caption || a.found?.title).find(Boolean) || it.name;
 const bookOf = (edition) => ({ id: edition.home.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''), title: edition.home.title,
   editors: PUBLICATION.editors, publisher: PUBLICATION.publisher, year: edition.version.date.slice(0, 4), url: siteUrl + edition.dir, language: PUBLICATION.language });
 for (const edition of editions) {
   try {
     edition.self = selfReferences({ pandoc: PANDOC, work: join(edition.scratch, 'self'), book: bookOf(edition),
       version: edition === latest ? null : { id: edition.version.id, label: edition.version.label },
-      pages: edition.pages.filter((p) => p !== edition.home).map((p) => ({ key: p.file, id: citeKey(p.file), title: p.title, credits: p.credits, url: siteUrl + edition.dir + urlOf(p.file) })) });
+      pages: edition.pages.filter((p) => p !== edition.home).map((p) => ({ key: p.file, id: citeKey(p.file), title: p.title, credits: p.credits, url: siteUrl + edition.dir + urlOf(p.file) })),
+      items: media.items.filter((it) => it.appearances.some((a) => a.edition.edition === edition))
+        .map((it) => ({ key: itemPath(it), number: it.label || null, title: itemTitle(it), credit: it.credit || '', url: siteUrl + (it.label ? `${it.label}/` : itemPath(it)) })) });
   } catch (e) { fail(`${edition.name}: ${e.message}`); }
   if (edition === latest) warnings.push(...edition.self.warnings);
 }
-const citeStyles = COPY_STYLES.map(({ id, label, short, entry }) => ({ id, label, short, ...(entry ? { entry } : {}) }));
-const citeEntry = (e, url) => ({ cite: e.cite, html: e.html, texts: e.texts, url });
+const citeStyles = CITE_STYLES.map(({ id, label, short, locale }) => ({ id, label, short, locale: locale || 'en-GB' }));
+const citeEntry = (e) => ({ url: e.url, styles: e.styles, ...(e.bibtex ? { bibtex: e.bibtex, ris: e.ris } : {}) });
+// How a media item is cited: against the newest release where it is numbered and in it, otherwise against the latest
+// text (or a frozen version that has it): its reference in each style, and in each the book's in-text citation with its
+// number, "(Puwar 2026: item 37)"
+const itemCite = (it) => {
+  const key = itemPath(it);
+  const from = (it.label && newestRelease?.self.items.has(key) && newestRelease) || (latest.self.items.has(key) && latest) || editions.find((e) => e.self.items.has(key));
+  if (!from) return null;
+  const book = from.self.book;
+  return { ...citeEntry(from.self.items.get(key)), number: it.label || null, citeAs: it.citeAs || '',
+    intext: Object.fromEntries(CITE_STYLES.map((st) => [st.id, it.label ? book.styles[st.id].one.replace(new RegExp(`\\S+ ${ONE}`), `item ${it.label}`) : book.styles[st.id].cite])) };
+};
+// "(Nassar 2026)" -> "Nassar 2026", as page.json gives it
+const bare = (cite) => cite.replace(/^\((.*)\)$/s, '$1');
 // the data for assets/cite.js, in a script element; < and ` are written as escapes, so that it cannot end the element
 const citeScript = (value) => `<script type="application/json" class="cite-data">${JSON.stringify(value).replace(/</g, '\\u003c').replace(/`/g, '\\u0060')}</script>`;
 // a reference's date accessed, which the reader's browser fills in (assets/cite.js); without JavaScript it says what goes there
@@ -416,12 +434,13 @@ const accessedHtml = (html) => html.replace('31 December 9999', '<span class="ci
 const withoutAccessed = (text) => text.replace(/ \[accessed 31 December 9999\]/, '');
 // How to cite this page: at the end of every page, also without JavaScript, in print and in archives. The build keeps
 // one of its two in-text lines once it knows whether the page has numbered paragraphs.
+// assets/cite.js shows them in the reader's citation style.
 const howToCite = ({ entry, home, release, releaseUrl }) => `<section class="how-to-cite" aria-labelledby="how-to-cite" data-pagefind-ignore>
 <h2 id="how-to-cite">${home ? 'How to cite the book' : 'How to cite this page'}</h2>
-<p class="how-to-cite__intext" data-for="paragraphs">In the text, with the number of the paragraph, which is in the margin beside it: <span class="how-to-cite__example">(${esc(entry.cite)}: para. <var>n</var>)</span></p>
-<p class="how-to-cite__intext" data-for="page">In the text: <span class="how-to-cite__example">(${esc(entry.cite)})</span></p>
-<p class="how-to-cite__reference">${accessedHtml(entry.html)}</p>
-${release ? `<p class="how-to-cite__release">A passage that is unchanged since ${esc(lcFirst(release.version.label))}, is best cited there, where its number stays: <a href="${esc(releaseUrl)}">this page in ${esc(lcFirst(release.version.label))}</a>. Cite, under the page’s title, does this by itself.</p>\n` : ''}</section>`;
+<p class="how-to-cite__intext" data-for="paragraphs">In the text, with the number of the paragraph, which is in the margin beside it: <span class="how-to-cite__example">${esc(entry.styles.house.one).replace(ONE, '<var>n</var>')}</span></p>
+<p class="how-to-cite__intext" data-for="page">In the text: <span class="how-to-cite__example">${esc(entry.styles.house.cite)}</span></p>
+<p class="how-to-cite__reference">${accessedHtml(entry.styles.house.html)}</p>
+${release ? `<p class="how-to-cite__release">A passage that is unchanged since ${esc(lcFirst(release.version.label))}, is best cited there, where its number stays: <a href="${esc(releaseUrl)}">this page in ${esc(lcFirst(release.version.label))}</a>. Copy quote, which appears when you select words, does this by itself.</p>\n` : ''}</section>`;
 
 // 4c. Stage 2 of every page: HTML from its Markdown view (index.html), its Markdown view's page, and page.json.
 const report = { paragraphs: [], matching: [], citations: [], references: [] };
@@ -467,10 +486,12 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     const pageUrl = siteUrl + edition.dir + url;
     const inRelease = edition === latest && newestRelease && newestRelease.byFile.has(page.file) ? newestRelease : null;
     if (inRelease) page.citeRelease = { entry: page === edition.home ? inRelease.self.book : inRelease.self.pages.get(page.file), url: siteUrl + inRelease.dir + url, file: join(dir, 'index.html') };
+    // the page's media items, for the zoom viewer's Cite, by their item page's address (see/boulder-font/)
+    const pageItems = Object.fromEntries([...new Set(list(page.found).map((f) => media.bySource.get(f.source)).filter(Boolean))]
+      .map((it) => [itemPath(it), itemCite(it)]).filter(([, c]) => c));
     const citeData = {
-      version: edition.version, home: page === edition.home, site: siteUrl, styles: citeStyles, page: citeEntry(self, pageUrl), book: citeEntry(edition.self.book, siteUrl + edition.dir),
-      ...(edition === latest && newestRelease ? { releaseBook: citeEntry(newestRelease.self.book, siteUrl + newestRelease.dir) } : {}),
-      formatted: `${root}references/${COPY_DATA}`, release: inRelease ? '@@RELEASE@@' : null,
+      version: edition.version, home: page === edition.home, site: siteUrl, styles: citeStyles, page: citeEntry(self), book: citeEntry(edition.self.book),
+      items: pageItems, formatted: `${root}references/${COPY_DATA}`, release: inRelease ? '@@RELEASE@@' : null,
     };
     // the frame of this page as seen from `from`, the page's own folder ('') or its Markdown view ('markdown/')
     const frame = (from) => {
@@ -538,7 +559,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
       contract: CONTRACT, paragraphRule: edition.rule, id: page.file, url: page.url, title: page.title, subtitle: page.subtitle,
       version: edition.version, everytrickinthebook: TOOLKIT_VERSION,
       credits: page === edition.home ? { editor: PUBLICATION.editors } : page.credits || {},
-      citation: { text: self.cite, reference: withoutAccessed(self.texts.house) },
+      citation: { text: bare(self.styles.house.cite), reference: withoutAccessed(self.styles.house.text) },
       markdown: `${url}index.md`,
       headings: list(data.headings).map(({ level, text, id }) => ({ level, text, id })),
       paragraphs: paragraphs.map(({ id, n, text_hash }) => ({ id, n, text_hash })),
@@ -606,7 +627,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
   const versionsList = [latest, ...editions.slice(1).reverse()].map((e) => ({ ...e.version, url: e === edition ? './' : prefix + e.dir || './' }));
   writeFileSync(join(out, 'publication.json'), JSON.stringify({
     contract: CONTRACT, paragraphRule: edition.rule, title: home.title, subtitle: home.subtitle, ...PUBLICATION, url: siteUrl + edition.dir, markdown: 'publication.md',
-    citation: { text: edition.self.book.cite, reference: withoutAccessed(edition.self.book.texts.house) },
+    citation: { text: bare(edition.self.book.styles.house.cite), reference: withoutAccessed(edition.self.book.styles.house.text) },
     version: edition.version, everytrickinthebook: TOOLKIT_VERSION, versions: versionsList,
     readingOrder: edition.order.map((file) => ({ id: file, url: edition.byFile.get(file).url, title: edition.byFile.get(file).title })),
   }, null, 2) + '\n');
@@ -668,7 +689,7 @@ if (newestRelease) {
   for (const page of latest.pages.filter((p) => p.citeRelease)) {
     const { entry, url, file } = page.citeRelease;
     const { same } = matchParagraphs(latest.paragraphs.get(page.file) || [], newestRelease.paragraphs.get(page.file) || []);
-    const release = { id: newestRelease.version.id, label: newestRelease.version.label, page: citeEntry(entry, url), same };
+    const release = { id: newestRelease.version.id, label: newestRelease.version.label, page: citeEntry(entry), same };
     writeFileSync(file, readFileSync(file, 'utf8').replace('"@@RELEASE@@"', JSON.stringify(release).replace(/</g, '\\u003c').replace(/`/g, '\\u0060')));
   }
 }
@@ -808,13 +829,8 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
     };
   };
   const views = media.items.map(itemView);
-  // How each item is cited, against the book (media-pages.mjs, itemCite; assets/cite.js): the newest release where the
-  // item is in it, otherwise the latest text.
-  for (const it of views) {
-    const book = it.label && newestRelease && it.apps.some((a) => a.edition === newestRelease) ? newestRelease : latest;
-    it.cite = { book: citeEntry(book.self.book, siteUrl + book.dir),
-      item: { number: it.label || null, title: it.heading, credit: it.credit || '', citeAs: it.citeAs || '', short: it.short ? siteUrl + it.short : null, url: siteUrl + it.url } };
-  }
+  // How each item is cited, against the book (itemCite above; media-pages.mjs; assets/cite.js)
+  for (const it of views) it.cite = itemCite(it);
   // When each item was first published and last changed, from the Git history (history.mjs): two passes over it for
   // all the items. Without the whole history the item pages leave both out, and the build says so.
   {
@@ -849,7 +865,7 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
     // pages' text is indexed (documentText).
     const searched = !!it.doc?.text;
     if (it.doc) body += `\n${rawBlock(documentText(it, { root: '../../' }))}`;
-    body += `\n${rawBlock(itemFacts(it, { root: '../../', siteUrl }) + '\n' + citeScript({ version: latest.version, site: siteUrl, styles: citeStyles, book: it.cite.book, item: it.cite.item }))}`;
+    body += `\n${rawBlock(itemFacts(it, { root: '../../', siteUrl }) + '\n' + (it.cite ? citeScript({ version: latest.version, site: siteUrl, styles: citeStyles, item: it.cite }) : ''))}`;
     const html = await pandocAsync([...pageFrame('../../', { ...meta, pagetitle: `${it.label ? `Item ${it.label}` : 'New item'}: ${it.heading}`, 'item-page': 'true',
       'section-title': it.label ? `Item ${it.label}` : 'New item', 'section-url': `../../media-index/#${it.anchor}`, 'in-media-index': 'true', noindex: NOINDEX ? 'true' : '',
       'search-title': searched ? 'true' : '' }),

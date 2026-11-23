@@ -45,14 +45,8 @@
     place();
   }
 
-  // the Copy menu of a popup (cite.js, copy.js) keeps it open while it is open
-  const menuOpen = () => {
-    const menu = window.everytrick?.copy?.menu;
-    return !!(menu && menu.isOpen() && open && open.contains(menu.owner()));
-  };
   function hide() {
     clearTimeout(timer);
-    if (menuOpen()) return;
     if (isOpen(open)) open.hidePopover();
     open = owner = null;
   }
@@ -79,10 +73,8 @@
     popover.addEventListener('pointerenter', () => clearTimeout(timer));
     popover.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') hideSoon(); });
   }
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && open && !menuOpen()) hide(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && open) hide(); });
   document.addEventListener('pointerdown', (e) => {
-    const menu = window.everytrick?.copy?.menu?.element?.();
-    if (menu && menu.contains(e.target)) return;
     if (open && !open.contains(e.target) && !(owner && owner.contains(e.target))) hide();
   });
   window.addEventListener('scroll', place, { passive: true });

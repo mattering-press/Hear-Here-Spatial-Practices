@@ -14,39 +14,44 @@ reader sees. How to add a version: ‘Versions of the book and of everytrick’ 
 
 ## 1.16.0
 
-23 November 2026. Copying citations: quotes, paragraphs, pages, media items and references. The plan is "Plan: copying
-citations" in `DEVELOPMENT.md`.
+23 November 2026. Copying citations: quotes, pages, media items and references, in the reader's citation style. The
+plan is "Plan: copying citations" in `DEVELOPMENT.md`.
 
 - **The ¶ is unchanged.** It still copies the link to its paragraph in one click. Every new way of copying works like
   it: one click copies, and the status line at the foot of the window says what was copied.
-- **Copy quote.** Selecting words in the text shows a small bar at the foot of the window, with Copy quote and Copy
-  citation. Copy quote copies the words in single quotation marks with their citation, such as ‘Cairo is a very dusty
-  city’ (Nassar 2026: para. 55), then the page's reference in the house style, then the address of the words. Pasted
-  into a word processor, the citation is itself a link to the words, and the reference keeps its italics; pasted as
-  plain text, the address follows on a line of its own. The address highlights the quoted words when it is opened.
-  Copy citation copies the same without the words. A selection over several paragraphs is cited as paras 55–56. The
-  bar never sits beside the selection, where a phone's own menu and Hypothesis's Annotate button appear.
-- **Cite**, under every page's title, opens a panel: the citation of the paragraph being read (or the one in the
-  address; its number can be changed, or left empty to cite the whole page), the reference with a Copy menu of styles
-  (the house style, APA, Chicago, MLA, Harvard, BibTeX and RIS, as on the References page), and the link, each with
-  its Copy button, and a button that copies citation and reference together.
-- **The latest text cites the newest release.** Copied on the latest text, a passage whose paragraphs are unchanged in
-  version 0.1 is cited there, with its numbers and address in that version; a passage that is new or changed since is
-  cited as the latest text, unreleased, and the status line says that its number may still change.
-- **How to cite this page**, at the end of every page, gives the citation and the reference without JavaScript, in
-  print and in archives. On the latest text it points to the same page in the newest release.
-- **Media items** are cited against the book: (Puwar 2026: item 37), the item's title and credit, the book's reference
-  and the item's short address. Each item's page has it under To cite, with a Copy citation button, and the zoom
-  viewer has a Cite button in its top bar.
-- **Citation popups** have a Copy menu, with the same styles as the References page.
+- **Every copy is one block**: the quote, its citation and the reference in one paragraph, with the address inside the
+  reference, between angle brackets, as MHRA has it.
+- **Citation settings.** The settings ("Aa") have a citation style, Mattering Press (the preset), APA, Chicago, MLA or
+  Harvard, and "Copy citations as", Formatted (the preset; italics and links, for a word processor) or Plain text (for
+  an email, a form, or an app that would turn formatting into Markdown). Every copy on the site follows them.
+- **Copy quote.** Selecting words in the text shows a Copy quote button at the foot of the window. It copies the words
+  in quotation marks with their citation and the reference: ‘Cairo is a very dusty city’ (Nassar 2026: para. 55).
+  Nassar, A., ‘Hear Here Podcast: Aya Nassar’, … <…/v0.1/essays/aya_nassar/#p55> [accessed 23 November 2026].
+  Formatted, the citation is a link that highlights the quoted words when it is opened. A selection over several
+  paragraphs is cited as paras 55–56; a selection that starts or ends inside a word takes the whole word. The button
+  never sits beside the selection, where a phone's own menu and Hypothesis's Annotate button appear.
+- **Cite**, under every page's title, cites the page as a whole: its reference in the reader's style, its in-text
+  citation, a Copy button, the style with a link to the settings, and BibTeX and RIS for a reference manager.
+- **The latest text cites the newest release.** A quote copied on the latest text whose paragraphs are unchanged in
+  version 0.1 is cited there, with its numbers and address in that version; one that is new or changed since is cited
+  as the latest text, unreleased, and the status line says that its number may still change. Cite cites the page in
+  version 0.1.
+- **How to cite this page**, at the end of every page, gives the citation and the reference, also without JavaScript,
+  in print and in archives, in the reader's style.
+- **Media items** are cited against the book, in one block: Item 37, ‘The baptismal font in Coventry Cathedral’, in N.
+  Puwar, ed., Hear Here: Spatial Practices, version 0.1 (Mattering Press, 2026) <…/37/> [accessed …]. Each item's page
+  has it under To cite, with its in-text citation, (Puwar 2026: item 37), and a Copy button, and the zoom viewer has a
+  Cite button in its top bar.
+- **The References page and the citation popups** copy a work in the reader's style in one click. The References page's
+  Copy menu is gone; BibTeX and RIS are in its downloads.
 - **Who made each page** is written at the top of its Markdown file (see "Credits" in `CONTRACT.md`): authors, and for
   the podcasts the interviewer, producer and transcription editor. The house style names the authors first and the
   others after the title: ‘Hear Here Podcast: Aya Nassar’, interviewed by N. Puwar, prod. by D. Whitley, transcript ed.
   by P. Phung. The credits on the pages are a draft until Nirmal Puwar has confirmed them.
 - **For Google Scholar** every page has the `citation_…` tags and a JSON-LD block that describe it as a chapter of the
   book.
-- The page data is contract 0.8: page.json gains `credits` and `citation`, publication.json `editors` and `citation`.
-  The paragraph rule is unchanged, so no paragraph has a new number.
+- The page data is contract 0.8: page.json gains `credits` and `citation`, publication.json `editors` and `citation`,
+  and formatted.json each style's formatted text. The paragraph rule is unchanged, so no paragraph has a new number.
 
 ## 1.15.0
 

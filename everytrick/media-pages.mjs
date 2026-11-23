@@ -132,18 +132,16 @@ export function itemFacts(it, { root, siteUrl }) {
   return `<dl class="item-facts">\n${rows.join('\n')}\n</dl>`;
 }
 
-// How to cite an item, against the book ("Plan: copying citations" in DEVELOPMENT.md): (Puwar 2026: item 37), the item's
-// number, title and credit, the book's reference and the item's short address, and how to cite its own source where
-// the register says. assets/cite.js copies the same (itemParts there) and adds the Copy button; it fills in the date
-// accessed, which the build leaves as 31 December 9999 (cite.mjs).
+// How to cite an item, against the book ("Plan: copying citations" in DEVELOPMENT.md): one block, its reference in the
+// house style, "Item 37, ‘The baptismal font in Coventry Cathedral’, in N. Puwar, ed., Hear Here: Spatial Practices, …
+// <https://hearhere.matteringpress.org/37/> [accessed …]", ending with how to cite its own source where the register
+// says, and below it the in-text citation, (Puwar 2026: item 37). assets/cite.js shows both in the reader's citation
+// style, adds the Copy button and fills in the date accessed, which the build leaves as 31 December 9999 (cite.mjs).
+export const sourceText = (citeAs) => (citeAs ? ` Source: ${citeAs}${/[.!?]$/.test(citeAs) ? '' : '.'}` : '');
 function itemCite(it) {
-  const { book, item } = it.cite;
-  const cite = `(${book.cite}${item.number ? `: item ${item.number}` : ''})`;
-  const link = item.number && item.short ? item.short : item.url;
-  const line = `${item.number ? `Item ${item.number}` : 'A new item, not yet numbered'}${item.title ? `, ${item.title}` : ''}${item.credit ? ` (${item.credit})` : ''}`;
-  return `<div class="item-cite"><p class="item-cite__intext">${esc(cite)}</p><p>${esc(line)}</p>` +
-    `<p>${book.html.replace('31 December 9999', '<span class="cite-today">the day you read it</span>')}</p><p><a href="${esc(link)}">${esc(link)}</a></p>` +
-    `${item.citeAs ? `<p>Source: ${esc(item.citeAs)}</p>` : ''}</div>`;
+  const c = it.cite;
+  return `<div class="item-cite"><p class="item-cite__reference">${c.styles.house.html.replace('31 December 9999', '<span class="cite-today">the day you read it</span>')}${esc(sourceText(c.citeAs))}</p>` +
+    `<p class="item-cite__intext">In the text: <span class="item-cite__example">${esc(c.intext.house)}</span></p></div>`;
 }
 
 // ---- The Media Index ------------------------------------------------------------------------------------------

@@ -166,6 +166,9 @@ The frame of every page:
   System (the preset, which follows the reader's device), Light or Dark. The browser keeps the choice
   (`localStorage`), and a line in the template's `<head>` applies it before the page is drawn. The dark colours are
   set in `everytrick/assets/site.css`, below the light ones; the publisher's logo turns white in dark mode.
+  Below them, how citations are copied: the citation style (Mattering Press, the preset, APA, Chicago, MLA or Harvard)
+  and "Copy citations as" (Formatted, the preset, or Plain text); every Copy on the site follows them (see "Plan:
+  copying citations").
 - **Footer.** The publisher's logo (the long one; the icon alone on phones), a credit line with the licence, the
   book's version line (with links to all versions, to the Media Index and to the References page of the same version)
   and the toolkit's line. They are set in `FRAME` at the top of `everytrick/build.mjs`, with the logos in
@@ -194,7 +197,7 @@ What is in `everytrick/`:
 - `scripts/number-media.mjs` (`npm run number-media -- <version>`): numbers the media items of a frozen version that have no number yet, in its reading order, and writes the register (see "Freezing a version for review or release")
 - `scripts/fetch-zine.mjs` (`npm run fetch-zine -- <identifier>`): copies a zine's page images from archive.org into `media/zines/<identifier>/`, once, on the editor's computer (see "Documents and zines")
 - `template.html`: the HTML around every page. It links the stylesheet and scripts with `?v=` and a hash of their contents, so that browsers fetch them again after every change instead of keeping an old copy
-- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `search.js` (the search page; see "Plan: search"), `place.js` (keeps the reader's place for the search page's ×), `zoom.js` (the pictures' Zoom buttons, the zoom viewer and the pause button of animations, and the documents' Open buttons and their viewer, in a dialog or on the document's own page; see "Plan: image display and the zoom viewer" and "Documents and zines"), `player.js` (the podcast player and its docked bar; see "Plan: podcast player and transcript"), `citations.js` (the citations' popups), `copy.js` (copying for the scripts below: the clipboard, the status line and the Copy menu), `cite.js` (Cite, Copy quote and Copy citation, How to cite's date, the media items' citations and the popups' Copy menus; see "Plan: copying citations"), `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens), `media-index.js` (the Media Index's filters, and the editing view's fields, checks and change sheet), `menu.js` (the header's menu button), `references.js` (the References page's Copy buttons and their menu)
+- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `search.js` (the search page; see "Plan: search"), `place.js` (keeps the reader's place for the search page's ×), `zoom.js` (the pictures' Zoom buttons, the zoom viewer and the pause button of animations, and the documents' Open buttons and their viewer, in a dialog or on the document's own page; see "Plan: image display and the zoom viewer" and "Documents and zines"), `player.js` (the podcast player and its docked bar; see "Plan: podcast player and transcript"), `citations.js` (the citations' popups), `copy.js` (copying for the scripts below: the reader's citation settings, the clipboard and the status line), `cite.js` (Copy quote, Cite, How to cite in the reader's style, the media items' citations and the popups' Copy buttons; see "Plan: copying citations"), `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens), `media-index.js` (the Media Index's filters, and the editing view's fields, checks and change sheet), `menu.js` (the header's menu button), `references.js` (the References page's Copy buttons)
 - `images.mjs`: resized images (each zoomable picture in several widths for `srcset`) and the tiles for zooming; an animated GIF becomes an animated WebP and a still; each page of a document gets tiles and two widths (400 and 800 px)
 - `audio.mjs`: reads the length of an MP3 from the file, for the podcast players
 - `check.mjs`, `serve.mjs`: the link check (including every page of every document; it also confirms that every
@@ -530,20 +533,19 @@ book's, on the References page and in the popups alike; the typed lists show wha
 "Stengers (2005)" for 2005a). When generated lists replace the typed ones, they must keep the book's letters: citeproc
 run on one page's list alone gives 2005a no letter where 2005b is not on the same page.
 
-Copying and downloading (the publisher, 2026-11-23): beside each work on the References page a Copy button opens a short
-menu that copies the reference as plain text in Mattering Press' house style, APA (7th edition), Chicago (author-date),
-MLA (9th edition) or Harvard (Cite Them Right), or as a BibTeX or RIS entry, and the status line at the foot of the
-window says what was copied ("Copied: APA"). The house style is the reference as the page shows it, with the book's
+Copying and downloading (the publisher, 2026-11-23): beside each work on the References page a Copy button copies the
+reference in the citation style the reader has chosen in the settings ("Aa"): Mattering Press' house style (the
+preset), APA (7th edition), Chicago (author-date), MLA (9th edition) or Harvard (Cite Them Right), as formatted or
+plain text, also chosen there (see "Plan: copying citations"), and the status line at the foot of the window says
+what was copied ("Copied: APA"). BibTeX and RIS are in the downloads, and in each page's Cite panel for the page itself. The house style is the reference as the page shows it, with the book's
 year letters. The other four are made at build time by citeproc with the official CSL repository's styles in
 `everytrick/csl/` (`formatReferences` in `citations.mjs`), each in the locale its guide is written for (Harvard in
 British English, the others in American), with their year letters and their dashes for a repeated author switched
 off: each work is given as it stands on its own, as a reference manager copies one, because a letter such as 2005a only
 tells two works of this book apart. BibTeX is Pandoc's (`-t bibtex`, with the DOI and the date accessed added, which
 it leaves out), RIS comes from `everytrick/ris.mjs`. The texts are in `references/formatted.json` beside the page,
-which `everytrick/assets/references.js` loads only when the reader first comes to a Copy button; the buttons and their
-menu are made by that script, so the page stays light, they are in no search index, and without JavaScript there are
-none. The menu is a menu button: ↓ or Enter opens it, ↑ ↓ Home End move, Enter copies, Escape closes it, focus goes
-back to the button. The explainer at the top of the page links the whole bibliography to download, as
+which `everytrick/assets/references.js` loads only when the reader first comes to a Copy button; the buttons are made
+by that script, so the page stays light, they are in no search index, and without JavaScript there are none. The explainer at the top of the page links the whole bibliography to download, as
 `references/bibliography.bib` (BibTeX), `references/bibliography.ris` (RIS) and `references/bibliography.json`
 (CSL-JSON, without the build's `custom` field), in each edition's own `references/` folder, beside its References page:
 an edition's bibliography comes from its own tag, as its References page does. `npm run check` confirms that each has
@@ -878,9 +880,10 @@ is in "References and citations" above.
   from citeproc in the house style; its key if citeproc gives none), with a link to its entry
   (`/references/#stengers2005a`; see "Plan: search"). The lists of the passages and pages under each work are left
   out, so that searching a page's title does not list every work it cites.
-- **Copy a reference** (the publisher, 2026-11-23): beside each work a Copy button opens a short menu that copies it as
-  plain text in Mattering Press' house style (as the page shows it), APA (7th edition), Chicago (author-date), MLA
-  (9th edition) or Harvard (Cite Them Right), or as a BibTeX or RIS entry, and says what it copied ("Copied: APA").
+- **Copy a reference** (the publisher, 2026-11-23): beside each work a Copy button copies it in the citation style the
+  reader has chosen in the settings, Mattering Press' house style (as the page shows it), APA (7th edition), Chicago
+  (author-date), MLA (9th edition) or Harvard (Cite Them Right), and says what it copied ("Copied: APA"); see "Plan:
+  copying citations". Until everytrickinthebook 1.16.0 it opened a menu of the styles, with BibTeX and RIS.
   The other styles are made at build time by Pandoc's citeproc with the styles of the official CSL repository, pinned
   to a commit. It works with the keyboard and on phones; without JavaScript there are no buttons. The buttons are
   interface, not reading text, and are kept out of the search index.
@@ -924,58 +927,67 @@ item pages and the Media Index") and the house style's `(Nassar 2026: para. 12)`
   out).
   An event page is credited to Nirmal Puwar together with the event's collaborators (the publisher, 2026-11-23); the
   names for each page are being confirmed with Nirmal Puwar before they are entered.
-- **Quotes.** Selecting words in numbered paragraphs shows a small bar at the foot of the window, on every screen,
-  with two labelled buttons, "Copy quote" and "Copy citation". The bar never sits beside the selection, where the
-  phone's own menu and Hypothesis's Annotate button appear, so it works on any page that loads Hypothesis, including
-  latest-text or release pages if Hypothesis is later opened there, for teaching for example (the publisher,
-  2026-11-23). It leaves the right edge free for Hypothesis's sidebar and sits above the docked player. "Copy quote"
-  copies:
+- **Every copy is one block** (the publisher, 2026-11-23, after trying the first version): the quote, its in-text
+  citation and the reference in one paragraph, with the address inside the reference, between `< >`, where MHRA puts
+  it: no link on a line of its own, no gap. The address is the passage's for a quote (`#p55`), the page's for Cite and
+  the item's short address for a media item (`/37/`).
+- **The reader's citation settings** (the publisher, 2026-11-23): the settings ("Aa", beside text size and colours)
+  have a citation style, Mattering Press (the preset), APA, Chicago, MLA or Harvard, and "Copy citations as",
+  Formatted (the preset) or Plain text. Every copy on the site follows them: Copy quote, Cite, the media items, the
+  citation popups and the References page's Copy buttons; How to cite this page and an item's "To cite" show the
+  chosen style. Formatted puts formatted text (italics, links) on the clipboard beside the plain text, for a word
+  processor; Plain text puts the plain text alone, for an app that would turn formatting into Markdown. The choice is
+  kept in the reader's browser, as the text size is (`assets/settings.js`, `assets/copy.js`).
+- **Copy quote.** Selecting words in numbered paragraphs shows one button, "Copy quote", at the foot of the window, on
+  every screen. It never sits beside the selection, where the phone's own menu and Hypothesis's Annotate button appear,
+  so it works on any page that loads Hypothesis, including latest-text or release pages if Hypothesis is later opened
+  there, for teaching for example (the publisher, 2026-11-23). It leaves the right edge free for Hypothesis's sidebar
+  and sits above the docked player. In the house style it copies:
 
-  > ‘Cairo is a very dusty city’ (Nassar 2026: para. 55)
-  >
-  > Nassar, Aya, ‘Hear Here Podcast: Aya Nassar’, interviewed by Nirmal Puwar, in *Hear Here: Spatial Practices*,
-  > ed. by Nirmal Puwar, version 0.1 (Mattering Press, 2026) <https://hearhere.matteringpress.org/v0.1/essays/aya_nassar/>
-  > [accessed 23 November 2026]
+  > ‘Cairo is a very dusty city’ (Nassar 2026: para. 55). Nassar, A., ‘Hear Here Podcast: Aya Nassar’, interviewed by
+  > N. Puwar, prod. by D. Whitley, transcript ed. by P. Phung, in N. Puwar, ed., *Hear Here: Spatial Practices*,
+  > version 0.1 (Mattering Press, 2026) <https://hearhere.matteringpress.org/v0.1/essays/aya_nassar/#p55> [accessed 23
+  > November 2026].
 
-  "Copy citation" copies the same without the quote. A selection over several paragraphs gives "paras 55–56". The
-  quote is the words as selected, without paragraph numbers, ▸ or margin notes. The clipboard gets formatted text
-  (italics, live links) and plain text, so it pastes well into a word processor and into a plain field.
-- **The link to the exact words.** The address of the quoted words is the paragraph with a text fragment
-  (`…/v0.1/essays/aya_nassar/#p55:~:text=Cairo%20is%20a%20very%20dusty%20city`), so the browser highlights them;
-  browsers without text fragments land on the paragraph. In formatted text the in-text citation, "(Nassar 2026:
-  para. 55)", is itself that link, and the reference ends with the chapter's address, later its DOI, as a reference
-  should. Plain text cannot hold a hidden link, so there the passage's address follows on a line of its own (the
-  publisher, 2026-11-23).
-- **"Cite" under the page title** opens a panel (a popover, like the text size and colours): the in-text citation, set
-  to the paragraph in the address or the one being read (the reading position `paragraphs.js` already keeps for the
-  version notice), the reference, the link and a copy button for each. The reference's Copy button is the References
-  page's menu (house style, APA, Chicago, MLA, Harvard, BibTeX, RIS; see "Plan: the References page"), made the same
-  way at build time (`formatReferences` in `citations.mjs`, `ris.mjs`), so a reader can cite a page in the style they
-  need. Keyboard users cite a passage here. Without JavaScript the same reference stands in a "How to cite
-  this page" section at the end of the page, which also serves print and archives.
-- **From the latest text.** A citation always names a version. Copied on the latest text, it cites the newest release
-  wherever the passage is unchanged there (the build matches paragraphs by their words, as for the version notice),
-  with that release's paragraph number and address. A passage that is new or changed since is cited as "latest text,
-  unreleased", and the status line says that its number may still change (the publisher, 2026-11-23). The ¶ link is
-  unchanged.
-- **Media items** are cited against the book, since their numbers belong to the book (the publisher, 2026-11-23):
-  `(Puwar 2026: item 37)`, the item's title and credit, the book's reference, and the item's short address (`/37/`).
-  When the register's `cite_as` is filled in, the item's own source follows as well (the "Cite this item" line that
-  "How to cite the source" foresees).
-  "Cite" sits in the zoom viewer's top bar, and each item page has a "Cite this item" box. The number pill in a caption
-  stays a link to the item page. Later, perhaps: a recording cited at a moment (`#t=12:40`).
-- **Works in the bibliography.** The References page already copies each work in seven forms and downloads the whole
-  bibliography (everytrickinthebook 1.12.0). Each citation popup in the text gets the same Copy menu, reading the same
-  texts (`references/formatted.json`).
-- **Made at build time.** References are written by citeproc with the house style, so they match the reference lists;
-  the browser adds only the accessed date. `npm run test:csl` gains a chapter, a podcast with its interviewer and a
-  media item. The same data give every page Google Scholar `citation_*` tags and a JSON-LD block.
-- **Built together** in everytrickinthebook 1.16.0: the credits, the page data, the Cite panel, Copy quote and Copy
-  citation, How to cite this page, the media items and the citation popups' Copy menu (`everytrick/cite.mjs`,
-  `everytrick/assets/cite.js`, `everytrick/assets/copy.js`). The credits in the pages are the draft sent to Nirmal
-  Puwar; correct them in each page's block once she answers.
-- **Not built:** citing a recording at a moment (`#t=12:40`). Keyboard users reach a citation popup's Copy menu only on
-  the References page, since the popup shows on focus without taking it.
+  Each style writes its own in-text citation ("(Nassar, 2026, para. 55)" in APA) and quotation marks (double ones in
+  the American styles). A selection over several paragraphs gives "paras 55–56". The quote is the words selected,
+  whole words, without paragraph numbers, ▸ or margin notes. "Copy citation", which copied the same without the words,
+  was dropped (the publisher, 2026-11-23): the ¶ links to a paragraph, Copy quote cites words, Cite cites the page.
+- **The link to the exact words.** In formatted text the in-text citation, "(Nassar 2026: para. 55)", is a link to the
+  quoted words, the paragraph with a text fragment (`…/v0.1/essays/aya_nassar/#p55:~:text=Cairo%20is%20a%20very%20dusty%20city`),
+  so the browser highlights them; browsers without text fragments land on the paragraph.
+- **"Cite" under the page title** cites the page as a whole, the chapter, not a paragraph (the publisher, 2026-11-23):
+  a panel with the reference in the reader's style, its in-text citation ("In the text: (Nassar 2026)"), one Copy
+  button, the style's name with a link to the settings, and "For a reference manager: BibTeX · RIS", which copy the
+  page's entry. On the latest text it cites the newest release that has the page, and says so. Without JavaScript the
+  reference stands in a "How to cite this page" section at the end of the page, which also serves print and archives.
+- **From the latest text.** A citation always names a version. A quote copied on the latest text is cited in the
+  newest release wherever its paragraphs are unchanged there (the build matches paragraphs by their words, as for the
+  version notice), with that release's paragraph numbers and address. A passage that is new or changed since is cited
+  as "latest text, unreleased", and the status line says that its number may still change (the publisher,
+  2026-11-23). The ¶ link is unchanged.
+- **Media items** are cited against the book, since their numbers belong to the book (the publisher, 2026-11-23), in
+  one block that says "Item 37 … in" the book (the publisher, 2026-11-23): "Item 37, ‘The baptismal font in Coventry
+  Cathedral’, in N. Puwar, ed., *Hear Here: Spatial Practices*, version 0.1 (Mattering Press, 2026)
+  <https://hearhere.matteringpress.org/37/> [accessed …]." The item's credit follows its title, and when the
+  register's `cite_as` is filled in, "Source: …" ends the block. Each item page shows it under "To cite", with its
+  in-text citation, "(Puwar 2026: item 37)", below it and a Copy button; "Cite" in the zoom viewer's top bar copies
+  it. The number pill in a caption stays a link to the item page. Later, perhaps: a recording cited at a moment
+  (`#t=12:40`).
+- **Works in the bibliography.** The References page's Copy button beside each work copies it in the reader's style, in
+  one click; its Copy menu, which offered every style and the BibTeX and RIS entries, is gone (the publisher,
+  2026-11-23). BibTeX and RIS: the downloads of the whole bibliography at the top of the page. Each citation popup in
+  the text has the same Copy button, reading the same texts (`references/formatted.json`).
+- **Made at build time.** References and in-text citations are written by citeproc, the house style with the house
+  CSL and the others with the official styles the References page uses, so they match the reference lists; the
+  browser adds only the date accessed.
+  The same data give every page Google Scholar `citation_*` tags and a JSON-LD block.
+- **Built** in everytrickinthebook 1.16.0: the credits, the page data, the settings, Copy quote, Cite, How to cite this
+  page, the media items and the citation popups' Copy button (`everytrick/cite.mjs`, `everytrick/assets/cite.js`,
+  `everytrick/assets/copy.js`). The credits in the pages are the draft sent to Nirmal Puwar; correct them in each
+  page's block once she answers.
+- **Not built:** citing a recording at a moment (`#t=12:40`). Keyboard users reach a citation popup's Copy button only
+  on the References page, since the popup shows on focus without taking it.
 
 ## Plan: search
 

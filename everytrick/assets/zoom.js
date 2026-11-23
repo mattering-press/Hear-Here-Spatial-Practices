@@ -242,9 +242,8 @@
     var cite = control('cite', 'Cite this picture', '<span class="viewer__label">Cite</span>');
     cite.hidden = !(window.everytrick && window.everytrick.citeItem);
     cite.addEventListener('click', function () {
-      var item = items[current], number = item.number, numbered = number && !number.isNew;
-      window.everytrick.citeItem({ number: numbered ? number.text : null, title: item.caption || item.alt, credit: item.credit,
-        url: number && number.href ? new URL(number.href, document.baseURI).href : location.href.replace(/#.*$/, '') })
+      var number = items[current].number;
+      window.everytrick.citeItem(number && number.href ? number.href : location.href)
         .then(function (said) { live.textContent = said; flash(cite, 'Copied'); }, function () { live.textContent = 'The citation could not be copied.'; });
     });
     top.appendChild(count);

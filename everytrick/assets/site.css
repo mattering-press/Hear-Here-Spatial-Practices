@@ -533,15 +533,8 @@ a.citation:target { border-radius: 2px; background: var(--colour-highlight); box
 .reference.has-copy { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 0.75rem; }
 .reference.has-copy > * { grid-column: 1; }
 .reference.has-copy > .reference__copy { grid-column: 2; grid-row: 1 / span 2; align-self: start; }
-.reference__copy { display: inline-flex; align-items: center; gap: 0.3em; min-height: 2rem; padding: 0 0.6rem 0 0.75rem; border: 1px solid var(--colour-rule); border-radius: 999px; background: var(--colour-surface); color: var(--colour-text); font: inherit; font-size: 0.8125rem; font-weight: var(--weight-strong); line-height: 1.2; white-space: nowrap; cursor: pointer; }
-.reference__copy svg { flex: none; width: 0.75em; height: 0.75em; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.reference__copy { display: inline-flex; align-items: center; gap: 0.3em; min-height: 2rem; padding: 0 0.75rem; border: 1px solid var(--colour-rule); border-radius: 999px; background: var(--colour-surface); color: var(--colour-text); font: inherit; font-size: 0.8125rem; font-weight: var(--weight-strong); line-height: 1.2; white-space: nowrap; cursor: pointer; }
 @media (hover: hover) { .reference__copy:hover { border-color: var(--colour-accent); color: var(--colour-accent); } }
-.reference__copy[aria-expanded="true"] { border-color: var(--colour-text); background: var(--colour-text); color: var(--colour-surface); }
-.copy-menu { position: fixed; inset: auto; margin: 0; width: max-content; max-width: calc(100vw - 16px); padding: 0.3rem; border: 1px solid var(--colour-rule); border-radius: 6px; background: var(--colour-surface); color: var(--colour-text); box-shadow: var(--shadow); font-size: 0.9375rem; line-height: 1.3; }
-.copy-menu__item { display: flex; align-items: center; width: 100%; min-height: 2.5rem; padding: 0 0.85rem; border: 0; border-radius: 4px; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
-.copy-menu__item:is(:hover, :focus) { background: var(--colour-highlight); color: var(--colour-accent); }
-.copy-menu__item:focus-visible { outline: 2px solid var(--colour-accent); outline-offset: -2px; }
-.copy-menu__rule { height: 1px; margin: 0.3rem 0.6rem; background: var(--colour-rule); }
 @media print { .reference__copy { display: none; } }
 
 /* an item's page (/see/<name>/, /listen/, /watch/, /read/): the item, then what there is to know about it */
@@ -728,9 +721,8 @@ main h2.search-result__title::before { content: none; }
 .cite-button[hidden] { display: none; }
 /* a Copy button: in the Cite panel, a citation popup, an item's "To cite" */
 .copy-button { display: inline-flex; align-items: center; gap: 0.3em; min-height: 2rem; padding: 0 0.75rem; border: 1px solid var(--colour-rule); border-radius: 999px; background: var(--colour-surface); color: var(--colour-text); font: inherit; font-size: 0.8125rem; font-weight: var(--weight-strong); line-height: 1.2; white-space: nowrap; cursor: pointer; }
-.copy-button svg { flex: none; width: 0.75em; height: 0.75em; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 @media (hover: hover) { .copy-button:hover { border-color: var(--colour-accent); color: var(--colour-accent); } }
-.copy-button[aria-expanded="true"], .copy-button.is-strong { border-color: var(--colour-text); background: var(--colour-text); color: var(--colour-surface); }
+.copy-button.is-strong { border-color: var(--colour-text); background: var(--colour-text); color: var(--colour-surface); }
 @media (hover: hover) { .copy-button.is-strong:hover { border-color: var(--colour-accent); background: var(--colour-accent); color: #fff; } }
 /* the panel */
 .cite-panel { position: fixed; inset: auto; margin: 0; box-sizing: border-box; width: min(34rem, calc(100vw - 16px)); max-height: calc(100vh - 16px); overflow: auto; padding: 0.9rem 1.1rem 1.1rem; border: 1px solid var(--colour-rule); border-radius: 6px; background: var(--colour-surface); color: var(--colour-text); box-shadow: var(--shadow); font-size: 0.9375rem; line-height: 1.45; }
@@ -739,27 +731,21 @@ main h2.search-result__title::before { content: none; }
 .cite-panel__title:focus { outline: none; }
 .cite-panel__close { display: inline-grid; place-items: center; width: 2rem; height: 2rem; padding: 0; border: 0; border-radius: 999px; background: none; color: var(--colour-muted); cursor: pointer; }
 .cite-panel__close:is(:hover, :focus-visible) { color: var(--colour-text); background: var(--colour-highlight); }
-.cite-panel__para { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem 0.6rem; margin: 0 0 0.75rem; }
-.cite-panel__para label { font-weight: var(--weight-strong); }
-.cite-panel__para input { width: 5em; min-height: 2rem; padding: 0 0.5rem; border: 1px solid var(--colour-rule); border-radius: var(--radius); background: var(--colour-background); color: inherit; font: inherit; }
-.cite-panel__para input[aria-invalid="true"] { border-color: var(--colour-accent); }
-.cite-panel__hint { color: var(--colour-muted); font-size: 0.8125rem; }
-.cite-panel__about { margin: 0 0 0.75rem; padding: 0.5rem 0.75rem; border-radius: var(--radius); background: var(--colour-highlight); font-size: 0.875rem; }
-.cite-panel__about[hidden] { display: none; }
-.cite-panel__row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.15rem 0.75rem; padding: 0.6rem 0; border-top: 1px solid var(--colour-rule); }
-.cite-panel__row p { margin: 0; }
-.cite-panel__label { grid-column: 1 / -1; color: var(--colour-muted); font-size: 0.75rem; font-weight: var(--weight-strong); letter-spacing: 0.08em; text-transform: uppercase; }
-.cite-panel__value { overflow-wrap: anywhere; }
-.cite-panel__row.is-link .cite-panel__value { font-size: 0.8125rem; }
-.cite-panel__actions { align-self: start; }
-.cite-panel__all { margin: 0.75rem 0 0; }
+.cite-panel__version { margin: 0 0 0.6rem; color: var(--colour-muted); font-size: 0.8125rem; }
+.cite-panel__reference { margin: 0 0 0.6rem; overflow-wrap: anywhere; }
+.cite-panel__intext { margin: 0 0 0.9rem; color: var(--colour-muted); font-size: 0.875rem; }
+.cite-panel__intext-value { color: var(--colour-text); }
+.cite-panel__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.9rem; margin: 0; }
+.cite-panel__style { color: var(--colour-muted); font-size: 0.8125rem; }
+.cite-panel__change, .cite-panel__entry { padding: 0; border: 0; background: none; color: var(--colour-link); font: inherit; text-decoration: underline; text-underline-offset: 0.15em; cursor: pointer; }
+.cite-panel__managers { margin: 0.9rem 0 0; padding-top: 0.6rem; border-top: 1px solid var(--colour-rule); color: var(--colour-muted); font-size: 0.8125rem; }
 /* the bar for selected words, at the foot of the window (above a docked player), never beside the selection */
-.cite-bar { position: fixed; z-index: 25; left: 50%; bottom: calc(0.75rem + env(safe-area-inset-bottom)); display: flex; gap: 0.4rem; padding: 0.35rem; transform: translateX(-50%); border-radius: 999px; background: var(--colour-text); box-shadow: var(--shadow); }
+.cite-bar { position: fixed; z-index: 25; left: 50%; bottom: calc(0.75rem + env(safe-area-inset-bottom)); display: flex; gap: 0.4rem; padding: 0.3rem; transform: translateX(-50%); border-radius: 999px; background: var(--colour-text); box-shadow: var(--shadow); }
 .cite-bar[hidden] { display: none; }
 .has-docked-player .cite-bar { bottom: calc(var(--docked-player-height, 5rem) + 0.75rem); }
 .cite-bar__button { min-height: 2.25rem; padding: 0 0.95rem; border: 1px solid transparent; border-radius: 999px; background: none; color: var(--colour-surface); font: inherit; font-size: 0.875rem; font-weight: var(--weight-strong); white-space: nowrap; cursor: pointer; }
 .cite-bar__button:is(:hover, :focus-visible) { border-color: currentColor; }
-.cite-bar__button:first-child { background: var(--colour-surface); color: var(--colour-text); }
+.cite-bar__button::before { content: "❝ "; }
 .has-cite-bar .copy-status { bottom: calc(4rem + env(safe-area-inset-bottom)); }
 .has-docked-player .copy-status { bottom: calc(var(--docked-player-height, 5rem) + 1rem); }
 .has-docked-player.has-cite-bar .copy-status { bottom: calc(var(--docked-player-height, 5rem) + 4rem); }
@@ -771,8 +757,9 @@ main .how-to-cite h2 { margin-top: 0; font-size: 1.1rem; color: var(--colour-tex
 .how-to-cite var { font-style: italic; }
 /* an item's "To cite" (its page) */
 .item-cite p { margin: 0 0 0.35rem; }
-.item-cite__intext { font-weight: var(--weight-strong); }
+.item-cite__intext { color: var(--colour-muted); font-size: 0.9375rem; }
 .item-cite__copy { margin-top: 0.6rem !important; }
 /* the Copy button of a citation popup */
 .citation-popover .copy-button { min-height: 1.75rem; margin-right: 0.5rem; vertical-align: middle; }
-@media print { .page-cite, .cite-bar, .cite-panel, .copy-button, .item-cite__copy { display: none !important; } }
+@media print { .page-cite, .cite-bar, .cite-panel, .copy-button, .item-cite__copy, .reference__copy { display: none !important; } }
+.settings__wrap { flex-wrap: wrap; max-width: 17rem; }
