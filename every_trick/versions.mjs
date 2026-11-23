@@ -15,8 +15,9 @@ import { REPO_ROOT } from './convert.mjs';
 export const REGISTRY = join(REPO_ROOT, 'versions.json');
 const STATUS = ['review', 'release'], ANNOTATIONS = ['none', 'hypothesis'];
 // Contracts whose paragraph rule the build knows (CONTRACT.md, "Paragraph numbers"): a frozen version is numbered by its own.
-// Contract 0.5 changed the page data only; its paragraph rule is 0.4's.
-const RULES = ['0.3', '0.4', '0.5'];
+// Contract 0.5 changed the page data only; its paragraph rule is 0.4's. Contract 0.6's adds long descriptions to the
+// blocks that are not numbered.
+const RULES = ['0.3', '0.4', '0.5', '0.6'];
 
 function git(args, { binary = false, input } = {}) {
   const result = spawnSync('git', ['-C', REPO_ROOT, ...args], { encoding: binary ? 'buffer' : 'utf8', maxBuffer: 1 << 30, input });

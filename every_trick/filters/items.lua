@@ -4,18 +4,32 @@
 -- page titles and video posters are not items. It runs on the converted page (convert.mjs: the .twin-* divs, and any
 -- .video, .embed or .audio div written in Pandoc's syntax) at the start of stage 1, and on its own in
 -- scripts/number-media.mjs, and leaves the page as it is. The list goes as JSON to the file that -M items-out names:
---   [{ kind, source, src, caption, alt, title, rotation, poster, block }]
+--   [{ kind, source, src, caption, alt, title, rotation, poster, description, description_text, description_by, block }]
 -- kind     see, listen, watch or read: the word of the item's address (/see/<name>/)
 -- source   what the register calls the item (lib.media_source): a repository path, or a normalised address
 -- src      the address as the page gives it
 -- caption  the caption, plain text ("" when the page gives none); alt: a picture's alt text; title: the title the page
 --          gives a player or an embed (the audio's title, an iframe's title), "" when it gives none
 -- rotation a picture's turn (convert.mjs); poster: a video file's poster picture (a repository path), or nil
--- block    the item alone, as Markdown in the converted page's form, for its item page: not floated, a picture .wide
+-- description, description_by
+--          a picture's long description, the ::: {.description by="…"} block directly after it (after a gallery, it
+--          belongs to the gallery's last picture), as Markdown and as plain text (description_text, a blank line between
+--          paragraphs), and who wrote it; "" when there is none (CONTRACT.md, "Long descriptions")
+-- block    the item alone, as Markdown in the converted page's form, for its item page: not floated, a picture .wide,
+--          followed by its long description
 package.path = pandoc.path.directory(PANDOC_SCRIPT_FILE) .. '/?.lua;' .. package.path
 local lib = require 'lib'
 
 local items = {}
+local descriptions = {}   -- the long descriptions, in page order; a picture's div names its own in twin-description
+
+local function markdown(blocks) return (pandoc.write(pandoc.Pandoc(blocks), 'markdown-smart', { wrap_text = 'wrap-none' }):gsub('%s+$', '')) end
+-- plain text, a blank line between paragraphs
+local function paragraphs(blocks)
+  local texts = {}
+  for _, b in ipairs(blocks) do texts[#texts + 1] = pandoc.utils.stringify(b) end
+  return table.concat(texts, '\n\n')
+end
 
 local function plain(blocks) return (pandoc.utils.stringify(pandoc.Blocks(blocks)):gsub('%s+', ' '):gsub('^ ', ''):gsub(' $', '')) end
 
@@ -27,21 +41,53 @@ local function embed_kind(url)
   return 'watch'
 end
 
--- the item alone, for its item page: no side or share of the column; a picture as wide as the page's opening
-local function block_of(div, picture)
+-- the item alone, for its item page: no side or share of the column; a picture as wide as the page's opening, with its
+-- long description after it
+local function block_of(div, picture, description)
   local copy = div:clone()
-  copy.attributes.side, copy.attributes.width = nil, nil
+  copy.attributes.side, copy.attributes.width, copy.attributes['twin-description'] = nil, nil, nil
   if picture then copy.attributes.side = 'wide' end
   copy.classes = copy.classes:filter(function(c) return c ~= 'left' and c ~= 'right' end)
-  return pandoc.write(pandoc.Pandoc({ copy }), 'markdown-smart', { wrap_text = 'wrap-none' })
+  return pandoc.write(pandoc.Pandoc({ copy, description }), 'markdown-smart', { wrap_text = 'wrap-none' })
 end
 
 local function add(kind, src, fields, div, picture)
   -- a picture's src is already a repository path (convert.mjs); other addresses are links as the page has them
   local source = picture and src or lib.media_source(src, 'repo')
+  local description = descriptions[tonumber(div.attributes['twin-description'] or '')]
   local item = { kind = kind, src = src, source = source, caption = fields.caption or '', alt = fields.alt or '',
-    title = fields.title or '', rotation = fields.rotation or '0', poster = div.attributes.poster, block = block_of(div, picture) }
+    title = fields.title or '', rotation = fields.rotation or '0', poster = div.attributes.poster,
+    description = description and markdown(description.content) or '', description_text = description and paragraphs(description.content) or '',
+    description_by = description and (description.attributes.by or '') or '',
+    block = block_of(div, picture, description) }
   items[#items + 1] = item
+end
+
+-- A long description, ::: {.description by="…"}, belongs to the picture directly before it: its div (.twin-figure), or
+-- the last picture of a gallery (.twin-gallery). The picture's div is marked with the description's place in the list.
+local function attach(blocks)
+  local changed = false
+  for i, b in ipairs(blocks) do
+    if b.t == 'Div' and b.classes:includes('description') and i > 1 then
+      local before = blocks[i - 1]
+      local figure, k = nil, nil
+      if before.t == 'Div' and before.classes:includes('twin-figure') then figure = before
+      elseif before.t == 'Div' and before.classes:includes('twin-gallery') then
+        for j = #before.content, 1, -1 do
+          local c = before.content[j]
+          if c.t == 'Div' and c.classes:includes('twin-figure') then figure, k = c, j break end
+        end
+      end
+      if figure then
+        descriptions[#descriptions + 1] = b
+        figure.attributes['twin-description'] = tostring(#descriptions)
+        if k then before.content[k] = figure end
+        blocks[i - 1] = k and before or figure
+        changed = true
+      end
+    end
+  end
+  return changed and blocks or nil
 end
 
 -- A .video, .embed or .audio div in Pandoc's syntax: its first link is the item, the rest its caption.
@@ -58,6 +104,7 @@ function Pandoc(doc)
   lib.init(doc.meta)
   doc.blocks:walk {
     traverse = 'topdown',
+    Blocks = attach,
     Div = function(div)
       local a, c = div.attributes, div.classes
       if c:includes('twin-figure') then

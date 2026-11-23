@@ -99,7 +99,10 @@ const rightsHtml = (it, { note = false } = {}) => [it.rights ? `<a href="${esc(i
 // ---- An item's page: the facts below the item ------------------------------------------------------------------
 
 // Credit, rights and source (how to cite the item's own source) are shown only when they are filled in: public pages
-// never show a missing field (the publisher, 2026-11-23). The editing view marks what is missing.
+// never show a missing field (the publisher, 2026-11-23). The editing view marks what is missing. First published and
+// last changed come from the Git history (history.mjs): an item served from elsewhere has no file of ours, so no "Last
+// changed", and without the history neither row is there. A long description is shown above, below the item
+// (filters/figures.lua), only where one is written: it is optional, and nothing says when there is none.
 export function itemFacts(it, { root, siteUrl }) {
   const rows = [];
   const row = (term, html) => rows.push(`<div><dt>${term}</dt><dd>${html}</dd></div>`);
@@ -118,6 +121,8 @@ export function itemFacts(it, { root, siteUrl }) {
   row('Appears in', places(it, root, { after: true }));
   if (it.alsoIn.length) row('Also in', it.alsoIn.map((v) => `${esc(v.label)}: ${v.places.map((a) => `<a href="${href(root, a.link)}">${esc(a.pageTitle)}</a>`).join(', ')}`).join('; '));
   row('Since', since(it, root, true));
+  if (it.firstPublished) row('First published', esc(longDate(it.firstPublished)));
+  if (it.lastChanged) row('Last changed', esc(longDate(it.lastChanged)));
   row('Stored', storedInFull(it));
   row('Served from', esc(it.served.label));
   if (it.files.length) row('Files', `<ul>${it.files.map((f) => `<li><a href="${f.external ? esc(f.url) : href(root, f.url)}"${f.download ? ' download' : ''}>${esc(f.label)}</a>${f.note ? ` <span class="item-facts__where">${esc(f.note)}</span>` : ''}</li>`).join('')}</ul>`);
@@ -166,9 +171,9 @@ ${items.map((it) => entry(it, root, '', { searched: true })).join('\n')}
 
 // ---- The editing view (previews only) ---------------------------------------------------------------------------
 
-function field({ label, kind = 'input', name, value, attrs = '', wide = false, placeholder = '' }) {
+function field({ label, kind = 'input', name, value, attrs = '', wide = false, placeholder = '', rows = 2 }) {
   const common = `data-field="${name}" data-original="${esc(value)}"${placeholder ? ` placeholder="${esc(placeholder)}"` : ''} spellcheck="${name === 'name' || name === 'rights' ? 'false' : 'true'}" autocomplete="off"${attrs}`;
-  const control = kind === 'textarea' ? `<textarea ${common} rows="2">${esc(value)}</textarea>` : `<input type="text" ${common} value="${esc(value)}">`;
+  const control = kind === 'textarea' ? `<textarea ${common} rows="${rows}">${esc(value)}</textarea>` : `<input type="text" ${common} value="${esc(value)}">`;
   return `<label class="media-field${wide ? ' is-wide' : ''}"><span class="media-field__label">${label}</span>${control}</label>`;
 }
 
@@ -201,14 +206,19 @@ export function mediaEditHtml(items, { root, script, names, rights }) {
       const on = `on ${esc(a.pageTitle)}${a.repeat ? ` (${a.repeat})` : ''}`;
       const attrs = ` data-appearance="${esc(a.key)}" data-page="${esc(a.pageTitle)}" data-file="${esc(a.file)}"`;
       fields.push(field({ label: `Caption, ${on}`, name: 'caption', value: a.shownCaption, attrs, wide: true }));
-      if (it.kind === 'see') fields.push(field({ label: `Alt text, ${on}`, kind: 'textarea', name: 'alt', value: a.alt, attrs, wide: true }));
+      if (it.kind !== 'see') continue;
+      fields.push(field({ label: `Alt text, ${on}`, kind: 'textarea', name: 'alt', value: a.alt, attrs, wide: true }));
+      // optional, for a picture that carries an argument: no check ever asks for one
+      fields.push(field({ label: `Long description (optional), ${on}`, kind: 'textarea', name: 'description', value: a.description, attrs, wide: true, rows: 4,
+        placeholder: 'For a picture that carries an argument: what a reader who cannot see it needs to follow it. A blank line between paragraphs' }));
+      fields.push(field({ label: `Long description written by, ${on}`, name: 'description_by', value: a.descriptionBy, attrs, placeholder: 'Name' }));
     }
     fields.push(field({ label: 'Comment', kind: 'textarea', name: 'comment', value: '', wide: true, placeholder: 'A question or a note for whoever applies the changes' }));
     const inner = `<ul class="media-checks" aria-label="Checks"></ul>\n<div class="media-fields">\n${fields.join('\n')}\n</div>\n`;
     return entry(it, root, inner).replace('<li class="media-entry"', `<li class="media-entry media-entry--edit" data-source="${esc(it.source)}" data-label="${esc(it.label || '')}" data-used="${it.appearances.length ? 'true' : 'false'}"`);
   });
   return `<div class="media-index media-edit">
-<p class="media-index__intro">The Media Index with fields for the name, the credit, the rights, how to cite the item’s source, and the caption and alt text of each place an item appears in the latest text, and a comment. The checks beside each item update as you type. Credit, rights and source show on the public pages only when they are filled in, so only these checks say what is missing. Your edits stay in this browser, even when you reload the page, and nothing is saved anywhere else: when you are done, “Hand over changes” gives a sheet that lists only what you changed, for someone to apply on a branch. This view is on previews only, never on the public site.</p>
+<p class="media-index__intro">The Media Index with fields for the name, the credit, the rights, how to cite the item’s source, and the caption and alt text of each place an item appears in the latest text (for a picture also an optional long description, and who wrote it), and a comment. The checks beside each item update as you type. Credit, rights and source show on the public pages only when they are filled in, so only these checks say what is missing. Your edits stay in this browser, even when you reload the page, and nothing is saved anywhere else: when you are done, “Hand over changes” gives a sheet that lists only what you changed, for someone to apply on a branch. This view is on previews only, never on the public site.</p>
 <div class="media-filters" hidden></div>
 <ol class="media-list">
 ${list.join('\n')}

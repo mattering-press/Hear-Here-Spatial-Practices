@@ -11,6 +11,25 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of every_trick’ in `DEVELOPMENT.md`.
 
+## 1.14.0
+
+23 November 2026. Item pages say when an item was first published and last changed; pictures may have a long
+description. Both follow a reviewer’s suggestions. The page data is now contract 0.6.
+
+- Every item page says when the item was **first published**, the day of the earliest change to the book’s pages that
+  shows it (under its present file or address, or a former one), and, for an item whose file is ours, when that file
+  **last changed**. A video on YouTube, Vimeo or the BBC, or a film on archive.org, shows only the first. Both come from
+  the repository’s history at every build, and `media.json` has them too (`first_published`, `last_changed`). A build
+  without the whole history leaves them out and says so.
+- A picture that carries an argument, such as an artist’s map or an archive photograph, may have a **long
+  description**, written directly after it as `::: {.description by="Name"}` … `:::` (after a `.ve-media` line too).
+  On the page it is a quiet “Description” under the caption, “Description by Name” when it is credited, which opens to
+  the text and which the picture names for screen readers; on the item’s page it is shown in full below the picture.
+  It is never numbered as a paragraph (the paragraph rule of contract 0.6; no paragraph’s number changes). It is
+  optional: nothing anywhere says that a picture has none, not even the editing view’s checks.
+- The editing view of the Media Index has a field for a long description, and one for who wrote it, at each place a
+  picture appears. The change sheet lists them only when they are filled in, as the block to write after the picture.
+
 ## 1.13.0
 
 23 November 2026. Documents in the zoom viewer, with their text.

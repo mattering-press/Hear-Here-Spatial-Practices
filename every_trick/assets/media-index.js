@@ -5,7 +5,8 @@
 //    both. A line says how many items are shown.
 //  * The editing view: fields for each item's name, credit, rights (a choice of the common statements and licences,
 //    which writes their address, or any other address typed in) with its note, and how to cite its source; the caption
-//    (and for a picture the alt text) of each place it appears in the latest text; and a comment. The checks beside each
+//    (and for a picture the alt text, and an optional long description with who wrote it) of each place it appears in
+//    the latest text; and a comment. A long description is optional: no check asks for one. The checks beside each
 //    item follow the fields as they change: no alt text, alt text that repeats the caption, no credit, no rights (or an
 //    address that is not a statement or licence), no source to cite, used on no page, and a name that is not allowed or
 //    is already taken. Public pages never show a missing field, so these checks are the only place that says what is
@@ -165,7 +166,7 @@
       fields(entry).forEach(function (f) {
         if (f.dataset.field === 'comment') { comment = f.value.trim(); return; }
         if (same(f.value, f.dataset.original)) return;
-        lines.push({ field: f.dataset.field, page: f.dataset.page, file: f.dataset.file, place: (f.dataset.appearance || '').split('|')[1], was: f.dataset.original.trim(), now: f.value.trim() });
+        lines.push({ field: f.dataset.field, appearance: f.dataset.appearance, page: f.dataset.page, file: f.dataset.file, place: (f.dataset.appearance || '').split('|')[1], was: f.dataset.original.trim(), now: f.value.trim() });
       });
       return { entry: entry, lines: lines, comment: comment };
     }).filter(function (c) { return c.lines.length || c.comment; });
@@ -183,6 +184,16 @@
   var inSheet = function (field, s) { var label = field === 'rights' && s ? rightsLabel(s) : ''; return quote(s) + (label ? ' (' + label + ')' : ''); };
   // each field as the sheet names it, with its column in media/register.csv where the name alone does not say it
   var FIELDS = { name: 'name', credit: 'credit', rights: 'rights', rights_note: 'rights note (rights_note)', cite_as: 'source to cite (cite_as)', caption: 'caption', alt: 'alt text' };
+  // A long description, and who wrote it, are one block of the page, directly after the picture: the sheet gives the
+  // block as it is to be written, once for both fields (CONTRACT.md, "Long descriptions").
+  var descriptionBlock = function (entry, appearance) {
+    var field = function (name) { return entry.querySelector('[data-field="' + name + '"][data-appearance="' + appearance + '"]'); };
+    var text = field('description').value.trim().replace(/\r\n?/g, '\n').replace(/\n{3,}/g, '\n\n'), by = field('description_by').value.trim();
+    return {
+      had: !!field('description').dataset.original.trim(),
+      lines: text ? ['::: {.description' + (by ? ' by="' + by.replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '"' : '') + '}'].concat(text.split('\n'), [':::']) : null,
+    };
+  };
   var sheetText = function () {
     var list = changes();
     var when = new Date().toISOString().slice(0, 10);
@@ -191,14 +202,28 @@
     list.forEach(function (c) {
       var e = c.entry, label = e.dataset.label, name = e.querySelector('[data-field="name"]').dataset.original;
       out.push('', '## ' + (label ? 'Item ' + label + ', ' + name : 'New item, ' + name + ' (' + e.dataset.source + ')'), '');
+      var described = {};
       c.lines.forEach(function (l) {
         var where = l.page ? ' on ' + l.page + (l.place && l.place !== '1' ? ' (place ' + l.place + ' on the page)' : '') + ' (' + l.file + ')' : '';
+        if (l.field === 'description' || l.field === 'description_by') {
+          if (described[l.appearance]) return;
+          described[l.appearance] = true;
+          var block = descriptionBlock(e, l.appearance);
+          if (!block.lines) {
+            out.push('- long description' + where + (block.had ? ': remove the ::: {.description} block after the picture' : ': a writer without a description, so nothing to write yet'));
+            return;
+          }
+          out.push('- long description' + where + ', the block to write directly after the picture' + (block.had ? ', in place of the one there' : '') + ':', '');
+          block.lines.forEach(function (line) { out.push(line ? '    ' + line : ''); });
+          out.push('');
+          return;
+        }
         var note = l.field === 'name' ? ' (the old address, /' + e.dataset.kind + '/' + l.was + '/, keeps forwarding: add it to former_names)' : '';
         out.push('- ' + FIELDS[l.field] + where + ': ' + inSheet(l.field, l.was) + ' → ' + inSheet(l.field, l.now) + note);
       });
       if (c.comment) out.push('- comment: ' + c.comment.replace(/\s*\n\s*/g, ' '));
     });
-    return out.join('\n') + '\n';
+    return out.join('\n').replace(/\n{3,}/g, '\n\n') + '\n';
   };
 
   // restore the stored edits, then keep them as the fields change

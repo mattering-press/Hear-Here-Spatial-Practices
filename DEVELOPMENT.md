@@ -225,8 +225,8 @@ register holds only what the pages cannot.
 What readers see: every caption starts with the item's number, a small pill that leads to the item's own page
 (`/see/boulder-font/`); a recording has a small caption line below its player with its number and title. The zoom
 viewer shows the number before the caption. Each item's page shows the item, its caption, its credit, its rights and
-how to cite its source, every place it appears, the version it entered with, where it is stored and served from, and
-its files. `/37/` forwards to item 37's page. The Media Index, `/media-index/` (linked in every footer), lists every
+how to cite its source, every place it appears, the version it entered with, when it was first published and when its
+file last changed, where it is stored and served from, and its files. `/37/` forwards to item 37's page. The Media Index, `/media-index/` (linked in every footer), lists every
 item, with its credit and rights, and filters by kind and by where items are served from; `media.json` holds the same
 list as data. Credit, rights and source are shown only when they are filled in: no public page says that one is
 missing, not evaluated or unknown (the publisher, 2026-11-23). Only the editing view's checks say what is missing.
@@ -257,6 +257,20 @@ How editors change it, on a branch like any other change:
   still find it.
 - **New items** need no line: the build drafts a name from the caption and shows a dashed "new" pill until the next
   version is frozen. To choose a name before then, add a line with `number` and `since` left empty.
+- **Describe a picture at length** (optional): for a picture that carries an argument, such as an artist's map or an
+  archive photograph, write a block directly after it in the page (after its `.ve-media` line too), with one or more
+  paragraphs, and who wrote it in `by` (which may be left out):
+
+  ```markdown
+  ::: {.description by="Jane Doe"}
+  What a reader who cannot see the picture needs to follow its argument.
+  :::
+  ```
+
+  The page shows a quiet "Description by Jane Doe" under the caption, which opens to the text; the item's page shows it
+  in full below the picture. It is never numbered as a paragraph. A picture without one shows nothing, and no check
+  asks for one. After a gallery it belongs to the gallery's last picture; after anything that is not a picture the
+  build stops.
 - **Numbers** are never typed by hand: `npm run number-media -- <version>` gives them when a version is frozen (see
   "Freezing a version for review or release"). A number never changes and is never given again, also when its item
   is withdrawn: never delete a line.
@@ -269,14 +283,24 @@ rightsstatements.org statement or a Creative Commons licence.
 **The editing view** (`/media-index/edit/`, on previews only, never on the public site) is the Media Index with fields
 for each item's name and credit, its rights (a choice of the common rightsstatements.org statements and Creative
 Commons licences, which writes the address, or any other such address typed in) and their note, how to cite its
-source, the caption and alt text of each place it appears in the latest text, and a comment. Beside each item, checks
+source, the caption and alt text of each place it appears in the latest text (for a picture also a long description and
+who wrote it, both optional), and a comment. Beside each item, checks
 follow what you type: no alt text, alt text that repeats the caption, no credit, no rights (or an address that is not
 a statement or a licence), no source to cite, used on no page, and a name that is not allowed or already taken. These
-checks are the only place that marks what is missing. Your edits stay in your browser, also when you reload the page;
+checks are the only place that marks what is missing; a long description is never asked for. Your edits stay in your browser, also when you reload the page;
 nothing is saved anywhere else. When you are done, "Hand over changes" opens a sheet that lists only what changed, item
 by item ("caption on Hear Here Podcast: Catherine Hahn (essays/catherine_hahn.md): “…” → “…”", "rights: (empty) →
 “http://rightsstatements.org/vocab/InC/1.0/” (In Copyright)", and the comments), with Copy and Download (.md); someone
-applies it on a branch. "Clear all edits" puts every field back as the pages and the register have it.
+applies it on a branch; a long description is in it only when one is filled in, as the block to write after the
+picture. "Clear all edits" puts every field back as the pages and the register have it.
+
+**First published and last changed.** Each item's page says when the item was first published, the day of the earliest
+commit in which a page (`README.md`, `essays/*.md`) refers to its file or address, current or former, and when its file
+last changed, the day of the latest commit that changed it (current or former; for a zine, the folder of its copied
+pages). An item served from elsewhere (YouTube, Vimeo, the BBC, archive.org) has only the first. Both are read from
+the Git history at every build (`every_trick/history.mjs`, two passes over the history for all items); GitHub Actions
+fetches the whole history. A shallow clone has no dates: the item pages leave the rows out and the build says so in its
+warnings. To date an item's earlier file correctly, list it in `former_sources`.
 
 ### Documents and zines
 
@@ -326,15 +350,17 @@ site is rebuilt:
 - every paragraph of text gets the next number, including paragraphs in quotations and each turn of speech in a
   transcript;
 - a list counts as one paragraph and gets one number, however many items it has;
-- headings, pictures and their captions, audio and video players, picture galleries, the cards that lead to other
-  pages, notes in the margin, the reference list at the end of a chapter, and the header and footer get no number;
+- headings, pictures and their captions (and their long descriptions), audio and video players, picture galleries, the
+  cards that lead to other pages, notes in the margin, the reference list at the end of a chapter, and the header and
+  footer get no number;
 - a paragraph that holds only a timecode such as `[00:10:13]`, or only a picture, gets no number;
 - a short line on its own, such as **Addendum** or `[music]`, is a paragraph like any other and gets a number.
 
 The precise rule is in `every_trick/CONTRACT.md` ("Paragraph numbers"). A rule never changes once a version has been
 frozen with it, because that version would be renumbered: a new rule comes with a new contract version, and each
 frozen version keeps the rule it was frozen under (`contract` in `versions.json`). Version 0.1 is numbered by
-contract 0.3, which gave each list item its own number. The build prints how many paragraphs each page has. To hide the
+contract 0.3, which gave each list item its own number. Contract 0.6 (every_trick_in_the_book 1.14.0) added long
+descriptions to the blocks that get no number; no page had one before, so no number changed. The build prints how many paragraphs each page has. To hide the
 numbers (the ¶ link stays), set `--paragraph-numbers: 0` at the top of `every_trick/assets/site.css`.
 
 ### Versions and the version stamp
@@ -367,7 +393,7 @@ Each entry in `versions.json` has:
 | `label` | how pages name it, e.g. `Version 0.9, second peer review` |
 | `date` | the day it was frozen or released, e.g. `2026-11-20` |
 | `status` | `review` (frozen for peer review) or `release` (published) |
-| `contract` | the contract current when it was frozen (`CONTRACT` in `every_trick/build.mjs`, e.g. `0.5`): its paragraph rule numbers this version, so its numbers never change |
+| `contract` | the contract current when it was frozen (`CONTRACT` in `every_trick/build.mjs`, e.g. `0.6`): its paragraph rule numbers this version, so its numbers never change |
 | `annotations` | `hypothesis` to open its pages for annotation with Hypothesis (below), otherwise `none` |
 | `hypothesisGroup` | the ID of the private Hypothesis group for its reviewers |
 
@@ -432,7 +458,7 @@ Freezing a version gives its text a permanent address. The text is taken from a 
      "label": "Version 0.9, second peer review",
      "date": "2026-11-20",
      "status": "review",
-     "contract": "0.5",
+     "contract": "0.6",
      "annotations": "hypothesis",
      "hypothesisGroup": "<group ID>"
    }
@@ -805,6 +831,19 @@ waits for the print edition; how editors use it is in "The media register" above
   route, then the item's place in the chapter), never stored. Links to items in the text become "(Fig. 6.4)", the
   item's short address and a QR code are printed with it, and the list of illustrations gives both numbers. Not built
   until the print edition.
+- **First published and last changed** (a reviewer's suggestion, accepted by the publisher, 2026-11-23; built in
+  every_trick_in_the_book 1.14.0): item pages say when the item was first published and, for an item whose file is the
+  book's, when that file last changed, both from the Git history, in the house style ("27 August 2025"); an item served
+  from elsewhere (YouTube, Vimeo, the BBC, archive.org) shows only the first. `media.json` has both (contract 0.6).
+  Without the whole history the rows are left out and the build warns.
+- **Long descriptions** (a reviewer's suggestion, accepted by the publisher, 2026-11-23; built in
+  every_trick_in_the_book 1.14.0): a picture that carries an argument (an artist's map, an archive photograph) may have
+  a longer description, written by an author or an editor and credited to them, as `::: {.description by="Name"}` …
+  `:::` directly after the picture. The page shows it as a quiet "Description" disclosure under the caption, linked to
+  the picture for screen readers (`aria-details`); the item page shows it in full under the picture. It is never
+  numbered (the paragraph rule of contract 0.6). It is optional: never shown or flagged as missing anywhere, not even in
+  the editing view's checks; the editing view has an optional field for it, and for its writer, at each appearance.
+  None is written yet.
 - **Checks.** The build stops when a registered item's file or address has changed or gone, when an item of a frozen
   version has no number, and when an item's rights are not a statement or licence address (or say Copyright Not
   Evaluated or Copyright Undetermined). **Freezing** gains a step: number the version's new items and commit the
