@@ -2,13 +2,17 @@
 --   ![caption](images/x-1600.jpg){.zoom .right width="75%" alt="…"}
 -- where the class says where it sits: .left or .right, half the text column (width= sets another share); none, the
 -- text column; .wide, as wide as the page's opening and its footer; .full, the whole window. It becomes a plain image
--- in several widths, linked to the largest of them (what a reader without JavaScript gets when they click it):
---   <figure class="zoom right" style="--figure-width: 75%; --ratio: 1.3333" data-tiles="../../iiif/x/info.json">
---     <a class="figure-picture" href="../../images/x-w2400.jpg"><img src="../../images/x-1600.jpg"
+-- in several widths, linked to its media item's page (what a reader without JavaScript gets when they click it; on the
+-- item's own page, and for a picture that is not an item, the link goes to its largest image, data-largest):
+--   <figure id="item-37" class="zoom right" style="--figure-width: 75%; --ratio: 1.3333" data-tiles="../../iiif/x/info.json">
+--     <a class="figure-picture" href="../../see/boulder-font/" data-largest="../../images/x-w2400.jpg"><img src="../../images/x-1600.jpg"
 --       srcset="../../images/x-w800.jpg 800w, …, ../../images/x-w2400.jpg 2400w" sizes="…" width="1600" height="1200"
 --       alt="…" loading="lazy"></a>
---     <figcaption>…</figcaption>
+--     <figcaption><a class="item-number" href="../../see/boulder-font/" aria-label="Item 37">37</a> …</figcaption>
 --   </figure>
+-- Every picture is a media item (register.mjs): the figure's id is its anchor (item-37, or item-<name> before it has a
+-- number), and its caption line starts with its number pill and ends with its credit (lib.caption_line); a picture
+-- without a caption gets a caption line for the pill.
 -- --ratio, the picture's width divided by its height, lets the stylesheet keep a tall picture within about 80% of the
 -- window's height, with its caption as wide as the picture, without JavaScript. sizes tells the browser how wide the
 -- picture is shown, so that it takes the right width from srcset. assets/zoom.js puts a Zoom button at the end of the
@@ -24,7 +28,7 @@
 package.path = pandoc.path.directory(PANDOC_SCRIPT_FILE) .. '/?.lua;' .. package.path
 local lib = require 'lib'
 
-local figures = {}
+local figures, items = {}, {}
 
 -- The page's measures in rem, as assets/site.css sets them: the text column (--measure less the gutters), the wide
 -- width (--wide less the gutters) and the gap between the pictures of a gallery (--gap). On phones (40rem and less)
@@ -81,6 +85,9 @@ local function figure(img, shown, narrow)
   local alt = img.attributes.alt or ''
   local caption = pandoc.utils.stringify(img.caption)
   figures[#figures + 1] = { image = entry.url, width = entry.width, height = entry.height, tiles = entry.tiles, alt = alt, caption = caption }
+  local item = lib.item(entry.src)
+  local anchor = item and lib.anchor(item)
+  if item then items[#items + 1] = { anchor = anchor, source = entry.src, label = item.label, kind = item.kind, name = item.name, url = item.url } end
   local place = not shown and place_of(img) or nil
   local ratio = entry.width / entry.height
   local width = not shown and place ~= 'wide' and place ~= 'full' and img.attributes.width or nil
@@ -98,15 +105,18 @@ local function figure(img, shown, narrow)
     local candidates = {}
     for _, c in ipairs(entry.srcset) do candidates[#candidates + 1] = lib.join(lib.root, c.url) .. ' ' .. math.floor(c.width) .. 'w' end
     local shown_at = shown and (PHONE .. ', ' .. css) or sizes(place, css, ratio)
-    picture = '<a class="figure-picture" href="' .. lib.esc(lib.join(lib.root, entry.largest)) .. '">' ..
+    local largest = lib.esc(lib.join(lib.root, entry.largest))
+    local target = (item and not lib.item_page) and lib.esc(lib.join(lib.root, item.url)) or largest
+    picture = '<a class="figure-picture" href="' .. target .. '" data-largest="' .. largest .. '">' ..
       '<img src="' .. lib.esc(lib.join(lib.root, entry.url)) .. '" srcset="' .. lib.esc(table.concat(candidates, ', ')) .. '" sizes="' .. lib.esc(shown_at) .. '"' .. size .. '></a>'
   end
   local classes = (animated and 'animated' or 'zoom') .. (place and (' ' .. place) or '') .. (narrow and ' narrow' or '')
+  local line = lib.caption_line(item, caption ~= '' and lib.esc(caption) or '')
   return pandoc.RawBlock('html', table.concat {
-    '<figure class="', classes, '" style="', lib.esc(table.concat(style, '; ')), '"',
+    '<figure', anchor and (' id="' .. anchor .. '"') or '', ' class="', classes, '" style="', lib.esc(table.concat(style, '; ')), '"',
     animated and '' or (' data-tiles="' .. lib.esc(lib.join(lib.root, entry.tiles)) .. '"'), '>\n',
     picture, '\n',
-    caption ~= '' and ('<figcaption>' .. lib.esc(caption) .. '</figcaption>\n') or '',
+    line ~= '' and ('<figcaption>' .. line .. '</figcaption>\n') or '',
     '</figure>' })
 end
 
@@ -198,5 +208,6 @@ function Pandoc(doc)
     end,
   }
   lib.add(doc, 'figures', figures)
+  lib.add(doc, 'items', items)
   return doc
 end

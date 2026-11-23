@@ -10,24 +10,35 @@
 // built too, from the text of its Git tag but always with this toolkit, into _site/v<id>/; its pages carry a notice that
 // links to the same passage in the newest text (versions.mjs). Images, tiles and other media are stored once, at the
 // root, and shared by all editions. _site/versions/ lists them all.
-//   npm run build      needs Pandoc 3.8 on the PATH (or its path in the PANDOC environment variable)
-import { spawnSync } from 'node:child_process';
+// Media items: every picture, recording, video and document has a line in the media register (media/register.csv,
+// register.mjs), with its permanent number and its name. Each gets its own page at the site's root, shared by all
+// editions (/see/<name>/, /listen/, /watch/, /read/), a short address (/37/), and a place in the Media Index
+// (/media-index/, media.json); captions start with the item's number (filters/figures.lua, filters/embeds.lua).
+//   npm run build            needs Pandoc 3.8 on the PATH (or its path in the PANDOC environment variable)
+//   npm run build:preview    the same, with the Media Index's editing view (/media-index/edit/), which only previews
+//                            have: the workflow sets EVERY_TRICK_PREVIEW=true on every branch but main
+import { spawn, spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { BIBLIOGRAPHY, locate, prepareReferences, report as citationReport } from './citations.mjs';
-import { convert, REPO, REPO_ROOT, repoPath } from './convert.mjs';
+import { readBook, REPO, REPO_ROOT, repoPath } from './convert.mjs';
 import { mp3Duration, paragraphCues } from './audio.mjs';
 import { makeImages } from './images.mjs';
+import { forwardHtml, itemFacts, mediaEditHtml, mediaIndexHtml } from './media-pages.mjs';
+import { readRegister, resolveItems, servedFrom, storedAt } from './register.mjs';
 import { checkout, longDate, matchParagraphs, readRegistry } from './versions.mjs';
 
 // ---- Settings ------------------------------------------------------------------------------------------
 const NOINDEX = false;  // true hides every page from search engines (it was true while Juncture served the public site)
+// A build for a preview adds the Media Index's editing view, /media-index/edit/; the public site never has it.
+const PREVIEW = process.argv.includes('--preview') || /^(1|true|yes)$/i.test(process.env.EVERY_TRICK_PREVIEW || '');
 const PUBLICATION = { creators: ['Nirmal Puwar'], publisher: 'Mattering Press', language: 'en' };
-const CONTRACT = '0.4';  // version of the page.json / publication.json format, and of the paragraph rule for new text
-// A frozen version keeps the paragraph rule of the contract it was frozen under ("contract" in versions.json).
+const CONTRACT = '0.5';  // version of the page.json / publication.json / media.json format, and of the paragraph rule for new text
+// A frozen version keeps the paragraph rule of the contract it was frozen under ("contract" in versions.json). The
+// paragraph rule of contract 0.5 is the rule of 0.4, unchanged.
 // every_trick_in_the_book, the toolkit in this folder. Every footer names it with its version (every_trick/package.json),
 // and links the name to its home and the version to the list of what changed in each version.
 const TOOLKIT_HOME = 'https://github.com/every-trick/every_trick_in_the_book';
@@ -96,30 +107,20 @@ const releases = editions.filter((e) => e.version.status === 'release');
 const newestRelease = releases.at(-1);
 for (const edition of editions.slice(1)) edition.target = edition.version.status === 'release' && edition !== newestRelease ? newestRelease : latest;
 
-// 2. Pages of each edition: the home page (README.md) and every essay. test.md is a scratch page and stays out.
+// 2. Pages of each edition: the home page (README.md) and every essay, in reading order (convert.mjs, readBook). test.md
+//    is a scratch page and stays out.
 const urlOf = (file) => (file === 'README.md' ? '' : file.replace(/\.md$/, '/').split('/').map(encodeURIComponent).join('/'));
 for (const edition of editions) {
-  const root = edition.contentRoot;
-  const files = ['README.md', ...readdirSync(join(root, 'essays')).filter((f) => f.endsWith('.md')).sort().map((f) => `essays/${f}`)];
-  edition.pages = files.map((file) => ({ file, ...convert(readFileSync(join(root, file), 'utf8'), file, { exists: edition.has }) }));
+  const book = readBook(edition.contentRoot, { exists: edition.has });
+  edition.pages = book.pages;
   const unhandled = edition.pages.flatMap((page) => page.unhandled);
   if (unhandled.length) {
     fail(`The static twin cannot render these Juncture constructs in ${edition.name} yet:\n` +
       unhandled.map((u) => `  ${u.file}:${u.line}  ${u.why}\n      ${u.text}`).join('\n'));
   }
-  edition.home = edition.pages[0];
-  // Reading order: the home page, then the pages of its menu in order, each followed by the pages its cards lead to
-  // (depth first), then any page not reached that way, alphabetically.
-  edition.byFile = new Map(edition.pages.map((page) => [page.file, page]));
-  const order = [];
-  const visit = (file) => {
-    if (order.includes(file) || !edition.byFile.has(file)) return;
-    order.push(file);
-    edition.byFile.get(file).cards.forEach(visit);
-  };
-  order.push(edition.home.file);
-  for (const item of edition.home.menu) visit(repoPath(/\]\(([^)\s]+)\)/.exec(item)?.[1] ?? '', edition.home.file).replace(/^\.$/, 'README.md'));
-  files.forEach(visit);
+  edition.home = book.home;
+  edition.byFile = book.byFile;
+  const order = book.order;
   edition.order = order;
   // Every page shows the home page's menu, its links made root-absolute so that they work from any page.
   edition.menu = edition.home.menu.map((item) => item.replace(/\]\(([^)\s]+)\)/g, (m, target) =>
@@ -178,7 +179,8 @@ const audio = {};
 }
 
 // 4. Pandoc, twice per page. Stage 1 writes the page's Markdown view (index.md), and once more with absolute
-//    URLs for publication.md. Stage 2 turns index.md into HTML (index.html) and page.json.
+//    URLs for publication.md (4a); then the media register is read (4b); stage 2 turns index.md into HTML
+//    (index.html) and page.json (4c).
 const warnings = editions.flatMap((edition) => edition.pages.flatMap((page) => page.warnings.map((w) => `${edition.dir}${w.file}:${w.line}  ${w.text}`)));
 const list = (value) => (Array.isArray(value) ? value : []);
 const filterArgs = (names) => names.flatMap((f) => ['--lua-filter', join(TOOLKIT_DIR, 'filters', `${f}.lua`)]);
@@ -200,7 +202,7 @@ const versionLine = (edition, shared) => {
   const v = edition.version;
   const what = v.status === 'latest' ? `${esc(v.label)} · last changed ${longDate(v.date)}`
     : `${esc(v.label)} · ${v.status === 'review' ? 'frozen' : 'released'} on ${longDate(v.date)}`;
-  return `<p class="site-footer__version">${what} · <a href="${shared}versions/">All versions</a></p>`;
+  return `<p class="site-footer__version">${what} · <a href="${shared}versions/">All versions</a> · <a href="${shared}media-index/">Media Index</a></p>`;
 };
 // The toolkit's line in every footer (template.html), below the book's version line.
 const toolkitMeta = { 'toolkit-version': TOOLKIT_VERSION, 'toolkit-home': TOOLKIT_HOME, 'toolkit-changes': TOOLKIT_CHANGES };
@@ -231,22 +233,74 @@ const writeYaml = (file, menu, extra) => writeFileSync(file, [
   ...Object.entries(extra).map(([key, html]) => `${key.replace(/_/g, '-')}: ${rawHtml(html)}\n`),
 ].join(''));
 
+// The manifest that the filters read (filters/lib.lua): the resized images (each with the repository file it was made
+// from, src, which is the source of its media item), the copied files and the recordings, with the URLs of one edition
+// (prefix: from its root to the shared media), and from step 4b the media items.
+const manifestOf = (prefix, files) => {
+  const shift = (entry) => ({ ...entry, url: prefix + entry.url, ...(entry.tiles ? { tiles: prefix + entry.tiles } : {}), ...(entry.still ? { still: prefix + entry.still } : {}),
+    ...(entry.srcset ? { srcset: entry.srcset.map((c) => ({ ...c, url: prefix + c.url })), largest: prefix + entry.largest } : {}) });
+  const editionImages = Object.fromEntries(Object.entries(images).map(([key, entry]) => [key, { ...shift(entry), src: key.slice(key.indexOf('|') + 1, key.lastIndexOf('|')) }]));
+  const byUrl = {};
+  for (const entry of Object.values(editionImages)) if (!byUrl[entry.url] || entry.tiles) byUrl[entry.url] = entry;
+  return { images: editionImages, by_url: byUrl, audio, files: Object.fromEntries(files.map((path) => [path, prefix + path])) };
+};
+for (const edition of editions) {
+  edition.prefix = edition.dir ? '../' : '';     // from the edition's root to the shared media
+  edition.scratch = join(work, edition.dir || 'latest');
+  mkdirSync(edition.scratch, { recursive: true });
+  edition.manifest = join(edition.scratch, 'manifest.json');
+  edition.manifestData = manifestOf(edition.prefix, edition.files);
+  writeFileSync(edition.manifest, JSON.stringify(edition.manifestData));
+}
+
+// 4a. Stage 1 of every page of every edition: its Markdown view (index.md), and once more with absolute URLs for
+//     publication.md. It also lists the page's media items (filters/items.lua), which the register needs before any
+//     page is made.
+const toMarkdown = (names) => ['-f', 'markdown-smart-implicit_figures', '-t', 'markdown-smart', '--wrap=none', '--markdown-headings=atx', ...filterArgs(names)];
+for (const edition of editions) for (const page of edition.pages) {
+  const url = urlOf(page.file);
+  const dir = join(SITE, edition.dir, decodeURIComponent(url));
+  const root = url ? '../'.repeat(url.split('/').length - 1) : './';
+  const itemsOut = join(edition.scratch, page.file.replace(/\W/g, '_') + '.items.json');
+  const meta = { page: page.file, repo: REPO, manifest: edition.manifest, lang: PUBLICATION.language, title: page.title, subtitle: page.subtitle };
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(join(dir, 'index.md'), bracedDivs(pandoc([...toMarkdown(['items', 'to-markdown']), '-s', ...metaArgs({ ...meta, ...versionMeta(edition), root, 'items-out': itemsOut })], page.markdown, page.file)));
+  page.found = JSON.parse(readFileSync(itemsOut, 'utf8'));
+  page.markdownBody = bracedDivs(pandoc([...toMarkdown(['to-markdown']), ...metaArgs({ ...meta, root: siteUrl + edition.dir, 'title-heading': 'true' })], page.markdown, page.file)).trim();
+}
+
+// 4b. The media register (register.mjs): every item on the pages matched to its line in media/register.csv by its file
+//     or address, a name drafted for an item that has no line yet, and the checks: the build stops when a registered
+//     item's file has gone or its address has changed, when two items share a name, or when an item of a frozen
+//     version has no number. The manifests then get the items, for the captions' number pills.
+const register = readRegister();
+if (register.problems.length) fail(`The media register, media/register.csv, has problems:\n${register.problems.map((p) => `  ${p}`).join('\n')}`);
+const byNewest = [latest, ...editions.slice(1).reverse()];   // the latest text, then the frozen versions, newest first
+const media = resolveItems({
+  lines: register.lines, bookTitle: latest.home.title, versions: registry.map((v) => v.id),
+  editions: byNewest.map((e) => ({ id: e.version.id, label: e.version.label, frozen: e !== latest, has: e.has, edition: e,
+    pages: e.order.map((file) => ({ file, title: e.byFile.get(file).title, found: e.byFile.get(file).found })) })),
+});
+if (media.problems.length) fail(`The media register and the pages do not agree:\n${media.problems.map((p) => `  ${p}`).join('\n')}`);
+const itemUrl = (it) => `${it.kind}/${it.name}/`;
+// (an item not numbered yet has no label: JSON's null would reach the filters as a value that is not nil)
+const itemsFor = (prefix) => Object.fromEntries([...media.bySource].map(([source, it]) => [source,
+  { ...(it.label ? { label: it.label } : {}), kind: it.kind, name: it.name, url: prefix + itemUrl(it), credit: it.credit || '', title: it.title || '' }]));
+for (const edition of editions) {
+  edition.manifestData.items = itemsFor(edition.prefix);
+  writeFileSync(edition.manifest, JSON.stringify(edition.manifestData));
+}
+
+// 4c. Stage 2 of every page: HTML from its Markdown view (index.html), its Markdown view's page, and page.json.
 const report = { paragraphs: [], matching: [], citations: [] };
 // An edition is built after the one its notice points to, whose paragraphs it is matched against.
 for (const edition of editions) edition.paragraphs = new Map();
 for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...editions.slice(1).filter((e) => e !== newestRelease)]) {
   const out = join(SITE, edition.dir);
-  const prefix = edition.dir ? '../' : '';     // from the edition's root to the shared media
-  const shift = (entry) => ({ ...entry, url: prefix + entry.url, ...(entry.tiles ? { tiles: prefix + entry.tiles } : {}), ...(entry.still ? { still: prefix + entry.still } : {}),
-    ...(entry.srcset ? { srcset: entry.srcset.map((c) => ({ ...c, url: prefix + c.url })), largest: prefix + entry.largest } : {}) });
-  const editionImages = Object.fromEntries(Object.entries(images).map(([key, entry]) => [key, shift(entry)]));
-  const byUrl = {};
-  for (const entry of Object.values(editionImages)) if (!byUrl[entry.url] || entry.tiles) byUrl[entry.url] = entry;
-  const scratch = join(work, edition.dir || 'latest');
-  mkdirSync(scratch, { recursive: true });
-  const manifest = join(scratch, 'manifest.json');
-  writeFileSync(manifest, JSON.stringify({ images: editionImages, by_url: byUrl, audio, files: Object.fromEntries(edition.files.map((path) => [path, prefix + path])) }));
-  edition.manifest = manifest;
+  const prefix = edition.prefix;
+  const editionImages = edition.manifestData.images;
+  const scratch = edition.scratch;
+  const manifest = edition.manifest;
   // The bibliography, formatted once in the house style; citations.lua links each page's citations to it.
   let bibliography = join(edition.contentRoot, 'references', 'bibliography.json');
   if (!existsSync(bibliography)) {
@@ -264,12 +318,6 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     const shared = join2(root, prefix) || './';   // the site's root, where assets/ and versions/ are
     const contractOut = join(scratch, page.file.replace(/\W/g, '_') + '.json');
     const meta = { page: page.file, repo: REPO, manifest, 'contract-out': contractOut, lang: PUBLICATION.language, title: page.title, subtitle: page.subtitle };
-
-    // stage 1: the Markdown view
-    const toMarkdown = ['-f', 'markdown-smart-implicit_figures', '-t', 'markdown-smart', '--wrap=none', '--markdown-headings=atx', ...filterArgs(['to-markdown'])];
-    mkdirSync(dir, { recursive: true });
-    writeFileSync(join(dir, 'index.md'), bracedDivs(pandoc([...toMarkdown, '-s', ...metaArgs({ ...meta, ...versionMeta(edition), root })], page.markdown, page.file)));
-    page.markdownBody = bracedDivs(pandoc([...toMarkdown, ...metaArgs({ ...meta, root: siteUrl + edition.dir, 'title-heading': 'true' })], page.markdown, page.file)).trim();
 
     // stage 2: HTML from the Markdown view, with the menu, the page's header band, the footer and the version
     // notice as metadata. The same frame, with the page's Markdown as its text, makes the Markdown view's page.
@@ -319,6 +367,13 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     writeFileSync(join(dir, 'index.html'), html);
     edition.paragraphs.set(page.file, paragraphs);
     report.paragraphs.push({ edition, file: page.file, paragraphs });
+    // where each media item is on the page (its anchor, and the paragraph before it), for its item page and the index
+    const items = list(data.items);
+    for (const d of items) {
+      const it = media.bySource.get(d.source);
+      const a = it && it.appearances.find((x) => x.edition.edition === edition && x.file === page.file && !x.anchor);
+      if (a) Object.assign(a, { anchor: d.anchor, after: d.after || null });
+    }
 
     page.url = url || './';
     writeFileSync(join(dir, 'page.json'), JSON.stringify({
@@ -327,6 +382,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
       markdown: `${url}index.md`,
       headings: list(data.headings).map(({ level, text, id }) => ({ level, text, id })),
       paragraphs: paragraphs.map(({ id, n, text_hash }) => ({ id, n, text_hash })),
+      items: items.map(({ label, kind, name, url, anchor, after }) => ({ number: label ? Number(label) : null, kind, name, url, anchor, after: after || null })),
       figures: list(data.figures).map(({ image, width, height, tiles, alt, caption }) => ({ image, width, height, tiles, alt, caption })),
       audio: list(data.audio).map(({ url, title }) => ({ url, title })),
       video: list(data.video).map(({ url, title, kind }) => ({ url, title, kind })),
@@ -399,7 +455,173 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
   writeFileSync(join(dir, 'index.html'), html);
 }
 
-// 6. Stylesheet, scripts, the Roboto font and OpenSeadragon (the deep-zoom viewer), shared by all editions.
+// 6. Media items, at the site's root and shared by all editions: a page for every item (/see/<name>/, /listen/,
+//    /watch/, /read/), the short address of every numbered item (/37/), a page that forwards each former name's address
+//    to the current one, the Media Index (/media-index/) and media.json; and on a preview the Media Index's editing view
+//    (/media-index/edit/). See "Plan: media register, item pages and the Media Index" in DEVELOPMENT.md.
+const pandocAsync = (args, input, file) => new Promise((resolve) => {
+  const child = spawn(PANDOC, args);
+  let out = '', err = '';
+  child.stdout.setEncoding('utf8').on('data', (d) => { out += d; });
+  child.stderr.setEncoding('utf8').on('data', (d) => { err += d; });
+  child.on('error', (e) => fail(`Pandoc could not run for ${file}: ${e.message}`));
+  child.on('close', (code) => {
+    if (code !== 0) fail(`Pandoc failed on ${file}:\n${err}`);
+    warnings.push(...err.split('\n').filter(Boolean).map((line) => line.replace(/^warning /, '')));
+    resolve(out);
+  });
+  child.stdin.end(input);
+});
+const inParallel = async (list, task) => {
+  const queue = [...list];
+  await Promise.all(Array.from({ length: 6 }, async () => { for (let x; (x = queue.shift()) !== undefined;) await task(x); }));
+};
+// raw HTML as a block of the Markdown that stage 2 reads
+const rawBlock = (html) => {
+  const fence = '`'.repeat(Math.max(3, ...[...html.matchAll(/`+/g)].map((m) => m[0].length + 1)));
+  return `${fence}{=html}\n${html}\n${fence}\n`;
+};
+const ordinal = (n) => ['first', 'second', 'third', 'fourth', 'fifth'][n - 1] || `${n}th`;
+const rawGitHub = (path) => `https://raw.githubusercontent.com/${REPO}/main/${path.split('/').map(encodeURIComponent).join('/')}`;
+const mediaReport = { pages: 0, short: 0, forwards: 0 };
+{
+  const versionById = new Map(editions.slice(1).map((e) => [e.version.id, e]));
+  const image = (role, src, rotation) => images[`${role}|${src}|${Math.floor(Number(rotation) || 0)}`];
+  // An item as its page, the Media Index and media.json show it. URLs are relative to the site's root.
+  const itemView = (it) => {
+    const url = itemUrl(it);
+    const apps = it.appearances.map((a) => {
+      const e = a.edition.edition;
+      return { edition: e, frozen: e !== latest, editionLabel: e.version.label, file: a.file, pageTitle: a.title, caption: a.found.caption, alt: a.found.alt,
+        found: a.found, anchor: a.anchor, after: a.after, link: `${e.dir}${urlOf(a.file)}${a.anchor ? `#${a.anchor}` : ''}` };
+    });
+    // where it is shown: the latest text, or else the newest frozen version that has it
+    const frozenWith = editions.slice(1).reverse().filter((e) => apps.some((a) => a.edition === e));
+    let shown = apps.filter((a) => a.edition === latest);
+    if (!shown.length && frozenWith.length) shown = apps.filter((a) => a.edition === frozenWith[0]);
+    const first = shown[0] || null;
+    const captions = [];
+    for (const a of shown) {
+      let c = captions.find((x) => x.text === a.caption);
+      if (!c) captions.push(c = { text: a.caption, pages: [] });
+      if (!c.pages.includes(a.pageTitle)) c.pages.push(a.pageTitle);
+    }
+    let thumb = null, files = [], duration = null, docType = '';
+    const source = first?.found.source || it.source;
+    if (it.kind === 'see' && first) {
+      const entry = image('figure', source, first.found.rotation);
+      if (entry?.animated) {
+        thumb = { url: entry.still, width: entry.width, height: entry.height };
+        files = [{ label: 'The animation (WebP)', url: entry.url, download: true }, { label: 'Its first frame (JPEG)', url: entry.still, download: true }];
+      } else if (entry) {
+        const small = entry.srcset[0], big = entry.srcset.at(-1), tall = (w) => Math.round((w * entry.height) / entry.width);
+        thumb = { url: small.url, width: small.width, height: tall(small.width) };
+        files = [{ label: 'The largest image', url: entry.largest, note: `(${big.width} × ${tall(big.width)} pixels, JPEG)`, download: true },
+          { label: 'Its zoom tiles: IIIF info.json', url: entry.tiles }];
+      }
+    } else if (!/^[a-z][\w+.-]*:/i.test(source)) {
+      if (it.kind === 'listen') {
+        duration = audio[source]?.duration ?? null;
+        files = [{ label: 'The recording (MP3)', url: rawGitHub(source), external: true }];
+        if (audio[source]?.cueFile) files.push({ label: 'When each paragraph is heard (WebVTT)', url: rawGitHub(audio[source].cueFile), external: true });
+      } else {
+        files = [{ label: `The ${it.kind === 'watch' ? 'video' : 'document'} (${source.split('.').pop().toUpperCase()})`, url: source, download: true }];
+        const poster = first?.found.poster && image('poster', first.found.poster, 0);
+        if (poster) thumb = { url: poster.url, width: poster.width, height: poster.height };
+      }
+      docType = source.split('.').pop().toUpperCase();
+    } else {
+      const where = storedAt(it);
+      files = [{ label: `On ${where.id === 'archive' ? 'archive.org' : where.id === 'bbc' ? 'the BBC’s site' : where.label}`, url: it.source, external: true }];
+      docType = 'document';
+    }
+    // the fields of the editing view: each place in the latest text, keyed by page and place on the page
+    const counts = {};
+    const editable = apps.filter((a) => a.edition === latest).map((a) => {
+      counts[a.file] = (counts[a.file] || 0) + 1;
+      const n = counts[a.file], twice = apps.filter((b) => b.edition === latest && b.file === a.file).length > 1;
+      // what readers see as the caption: a video's or an embed's caption, or the title its page gives it
+      return { ...a, key: `${a.file}|${n}`, repeat: twice ? `${ordinal(n)} place` : '', shownCaption: a.caption || (it.kind === 'see' ? '' : a.found.title) };
+    });
+    const since = it.since ? versionById.get(it.since) : null;
+    return {
+      ...it, url, short: it.label ? `${it.label}/` : null, anchor: `item-${it.label || it.name}`, apps, shown, captions, editable,
+      heading: it.title || first?.caption || first?.found.title || apps[0]?.caption || it.name,
+      alsoIn: frozenWith.filter((e) => !(first && first.edition === e)).map((e) => ({ label: e.version.label, places: apps.filter((a) => a.edition === e) })),
+      sinceLabel: since ? since.version.label : it.since ? `Version ${it.since}` : '', sinceUrl: since ? since.dir : null,
+      stored: storedAt(it), served: servedFrom(it), thumb, files, duration, docType,
+      block: first?.found.block || null, blockPage: first?.file || 'README.md',
+    };
+  };
+  const views = media.items.map(itemView);
+
+  // The items' pages, through both stages like the book's own pages: the item alone (the converted page's block, as
+  // items.lua recorded it), then the facts below it.
+  const allFiles = [...new Set(editions.flatMap((e) => e.files))];
+  const itemManifest = join(work, 'items-manifest.json');
+  writeFileSync(itemManifest, JSON.stringify({ ...manifestOf('', allFiles), items: itemsFor('') }));
+  const pageFrame = (root, extra = {}) => {
+    const yaml = join(work, `frame-${root.length}.yaml`);
+    if (!existsSync(yaml)) writeYaml(yaml, latest.menu, { version_line: versionLine(latest, root) });
+    return ['-f', 'markdown-implicit_figures', '-t', 'html5', '--wrap=none', '-s', '--template', join(TOOLKIT_DIR, 'template.html'), '--metadata-file', yaml,
+      ...metaArgs({ repo: REPO, lang: PUBLICATION.language, ...toolkitMeta, ...frameMeta(latest, root), root, shared: root, 'asset-version': ASSET_VERSION,
+        'site-title': latest.home.title, ...extra })];
+  };
+  await inParallel(views, async (it) => {
+    const name = `${it.url} (the page of ${it.label ? `item ${it.label}` : 'a new item'})`;
+    const meta = { page: it.blockPage, manifest: itemManifest, title: it.heading };
+    let body = '';
+    if (it.block) {
+      body = bracedDivs(await pandocAsync([...toMarkdown(['to-markdown']), ...metaArgs({ ...meta, repo: REPO, lang: PUBLICATION.language, root: '../../' })], it.block, name));
+    }
+    body += `\n${rawBlock(itemFacts(it, { root: '../../', siteUrl }))}`;
+    const html = await pandocAsync([...pageFrame('../../', { ...meta, pagetitle: `${it.label ? `Item ${it.label}` : 'New item'}: ${it.heading}`, 'item-page': 'true',
+      'section-title': it.label ? `Item ${it.label}` : 'New item', 'section-url': `../../media-index/#${it.anchor}`, noindex: NOINDEX ? 'true' : '' }),
+      ...filterArgs(['figures', 'embeds', 'links'])], body, name);
+    mkdirSync(join(SITE, it.url), { recursive: true });
+    writeFileSync(join(SITE, it.url, 'index.html'), html);
+    mediaReport.pages++;
+  });
+
+  // Short addresses, /37/, and the former names' addresses: small pages that forward to the item's page.
+  const forward = (dir, it, text) => {
+    const depth = dir.split('/').filter(Boolean).length, up = '../'.repeat(depth);
+    mkdirSync(join(SITE, dir), { recursive: true });
+    writeFileSync(join(SITE, dir, 'index.html'), forwardHtml({ lang: PUBLICATION.language, title: `${it.label ? `Item ${it.label}` : it.name} · ${latest.home.title}`,
+      target: up + it.url, canonical: siteUrl + it.url, stylesheet: `${up}assets/site.css?v=${ASSET_VERSION}`, text }));
+  };
+  for (const it of views) {
+    if (it.short) { forward(it.short, it, `Item ${it.label} is at`); mediaReport.short++; }
+    for (const old of it.formerNames) { forward(`${it.kind}/${old}/`, it, `This item has a new address:`); mediaReport.forwards++; }
+  }
+
+  // The Media Index, and on a preview its editing view.
+  const indexHtml = mediaIndexHtml(views, { root: '../', script: `../assets/media-index.js?v=${ASSET_VERSION}`, preview: PREVIEW });
+  mkdirSync(join(SITE, 'media-index'), { recursive: true });
+  writeFileSync(join(SITE, 'media-index', 'index.html'), pandoc([...pageFrame('../', { page: 'media-index', title: 'Media Index', noindex: NOINDEX ? 'true' : '' }),
+    ...filterArgs(['links'])], rawBlock(indexHtml), 'the Media Index'));
+  if (PREVIEW) {
+    const names = Object.fromEntries(views.flatMap((it) => [it.name, ...it.formerNames].map((n) => [n, it.source])));
+    const editHtml = mediaEditHtml(views, { root: '../../', script: `../../assets/media-index.js?v=${ASSET_VERSION}`, names });
+    mkdirSync(join(SITE, 'media-index', 'edit'), { recursive: true });
+    writeFileSync(join(SITE, 'media-index', 'edit', 'index.html'), pandoc([...pageFrame('../../', { page: 'media-index/edit', title: 'Editing view',
+      pagetitle: 'Media Index: editing view', 'section-title': 'Media Index', 'section-url': '../', noindex: 'true' }), ...filterArgs(['links'])], rawBlock(editHtml), 'the editing view'));
+  }
+
+  // media.json: every item, for other frontends (CONTRACT.md). URLs are relative to the site's root.
+  writeFileSync(join(SITE, 'media.json'), JSON.stringify({
+    contract: CONTRACT, every_trick_in_the_book: TOOLKIT_VERSION, title: latest.home.title, url: siteUrl,
+    items: views.map((it) => ({
+      number: it.number, kind: it.kind, name: it.name, source: it.source, since: it.since || null, credit: it.credit || '', title: it.title || '',
+      url: it.url, short: it.short, caption: it.shown[0]?.caption ?? '', former_names: it.formerNames, former_sources: it.formerSources,
+      stored: it.stored.label, served: it.served.label,
+      appearances: it.apps.map((a) => ({ edition: a.edition.version.id, page: a.file, url: /^#|^$/.test(a.link) ? `./${a.link}` : a.link, anchor: a.anchor || null,
+        after: a.after || null, caption: a.caption, alt: a.alt })),
+    })),
+  }, null, 2) + '\n');
+}
+
+// 7. Stylesheet, scripts, the Roboto font and OpenSeadragon (the deep-zoom viewer), shared by all editions.
 const modules = join(TOOLKIT_DIR, 'node_modules');
 cpSync(join(TOOLKIT_DIR, 'assets'), join(SITE, 'assets'), { recursive: true });
 for (const style of ['normal', 'italic']) cpSync(join(modules, `@fontsource-variable/roboto/files/roboto-latin-wght-${style}.woff2`), join(SITE, `assets/fonts/roboto-latin-wght-${style}.woff2`));
@@ -408,7 +630,7 @@ cpSync(join(modules, 'openseadragon/build/openseadragon/openseadragon.min.js'), 
 cpSync(join(modules, 'openseadragon/build/openseadragon/images'), join(SITE, 'assets/osd/images'), { recursive: true });
 cpSync(join(modules, 'openseadragon/LICENSE.txt'), join(SITE, 'assets/osd/LICENSE.txt'));
 
-// 7. Report.
+// 8. Report.
 const size = (dir) => readdirSync(dir, { withFileTypes: true }).reduce((sum, e) => sum + (e.isDirectory() ? size(join(dir, e.name)) : statSync(join(dir, e.name)).size), 0);
 const mb = (bytes) => `${(bytes / 1e6).toFixed(1)} MB`;
 const total = size(SITE), imageBytes = size(join(SITE, 'images')), tileBytes = size(join(SITE, 'iiif'));
@@ -416,6 +638,12 @@ const pageCount = editions.reduce((n, e) => n + e.pages.length, 0);
 console.log(`Built ${pageCount} pages${editions.length > 1 ? ` in ${editions.length} editions` : ''} into _site/ in ${((Date.now() - started) / 1000).toFixed(1)} s: ${mb(total)} ` +
   `(images ${mb(imageBytes)}, tiles ${mb(tileBytes)}, other ${mb(total - imageBytes - tileBytes)}); ` +
   `${sources} source images, ${tiles} tiles; every_trick_in_the_book ${TOOLKIT_VERSION}, contract ${CONTRACT}${NOINDEX ? '; pages carry noindex' : ''}.`);
+{
+  const counted = (list) => ['see', 'listen', 'watch', 'read'].map((k) => `${list.filter((it) => it.kind === k).length} ${k}`).join(', ');
+  const numbered = media.items.filter((it) => it.number !== null), fresh = media.items.filter((it) => it.number === null);
+  console.log(`  Media items: ${media.items.length}, ${numbered.length} with a number (${counted(numbered)})${fresh.length ? `, ${fresh.length} new, not numbered yet (${fresh.map((it) => it.name).join(', ')})` : ''}; ` +
+    `${mediaReport.pages} item pages, ${mediaReport.short} short addresses, ${mediaReport.forwards} former name${mediaReport.forwards === 1 ? '' : 's'} forwarded. The editing view ${PREVIEW ? 'is built: a preview build' : 'is not built: it is for previews only'}.`);
+}
 // what the zoomable pictures' widths for srcset add to the images (the files made for nothing else)
 console.log(`  Of the images, ${mb(widths.bytes)} are the ${widths.files} extra widths of the zoomable pictures (srcset); ` +
   `without them the images would be ${mb(imageBytes - widths.bytes)}.`);

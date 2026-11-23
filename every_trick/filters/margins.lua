@@ -9,7 +9,8 @@
 -- with a matching mark, <a class="margin-mark" id="n1-mark" href="#n1">1</a>, at the end of the paragraph before the note.
 -- A note that holds only media (pictures, animated GIFs, galleries, video, audio: what figures.lua and embeds.lua have
 -- made of them) is not a text note: it gets no number and no mark, as <aside id="m1" class="margin margin-media">,
--- counted m1, m2 … on its own. (Media in the margin will take figure numbers, Fig. 2.3, once figures are numbered.)
+-- counted m1, m2 … on its own. Media in the margin are media items like any other: each shows its own number from the
+-- media register in its caption line (figures.lua, embeds.lua).
 -- On wide screens the stylesheet sets the note in the right-hand margin, level with that paragraph; elsewhere
 -- (phones, print) it stays in reading order after the paragraph.
 -- Runs after paragraphs.lua, which does not number anything inside a note, so paragraph numbers ignore the margin.

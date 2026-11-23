@@ -11,8 +11,9 @@
 -- With -M paragraph-numbers=false (the versions page) nothing is numbered.
 --
 -- -M paragraph-rule=<contract> numbers a frozen version by the rule of the contract it was frozen under, so that its
--- numbers never change (versions.json, "contract"). Rules: 0.3 numbers each item of a list; 0.4 (the current one)
--- numbers a whole list as one paragraph, <div id="p12" class="para para-list"><a class="para-link" …></a><ul>…</ul></div>.
+-- numbers never change (versions.json, "contract"). Rules: 0.3 numbers each item of a list; 0.4 numbers a whole list
+-- as one paragraph, <div id="p12" class="para para-list"><a class="para-link" …></a><ul>…</ul></div>; 0.5 (the current
+-- contract) has the rule of 0.4, unchanged.
 package.path = pandoc.path.directory(PANDOC_SCRIPT_FILE) .. '/?.lua;' .. package.path
 local lib = require 'lib'
 
@@ -81,8 +82,8 @@ function Pandoc(doc)
   lib.init(doc.meta)
   local setting = doc.meta['paragraph-numbers']   -- -M paragraph-numbers=false arrives as a boolean
   if setting == false or (setting and pandoc.utils.stringify(setting) == 'false') then return nil end
-  local rule = doc.meta['paragraph-rule'] and pandoc.utils.stringify(doc.meta['paragraph-rule']) or '0.4'
-  if rule ~= '0.3' and rule ~= '0.4' then error('paragraphs.lua: unknown paragraph rule ' .. rule .. ' (known: 0.3, 0.4)') end
+  local rule = doc.meta['paragraph-rule'] and pandoc.utils.stringify(doc.meta['paragraph-rule']) or '0.5'
+  if rule ~= '0.3' and rule ~= '0.4' and rule ~= '0.5' then error('paragraphs.lua: unknown paragraph rule ' .. rule .. ' (known: 0.3, 0.4, 0.5)') end
   local whole_lists = rule ~= '0.3'
   local paragraphs = {}
   local references_level = nil   -- inside a "References" section: the level of its heading

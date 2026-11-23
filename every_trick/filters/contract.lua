@@ -1,6 +1,6 @@
--- The page's data for page.json (see CONTRACT.md): its headings and links, plus the figures, audio, video,
--- references and paragraphs that the other filters recorded (and the citations and typed references for the build's
--- report).
+-- The page's data for page.json (see CONTRACT.md): its headings and links, plus the figures, audio, video, media
+-- items, references and paragraphs that the other filters recorded (and the citations and typed references for the
+-- build's report).
 -- Written as JSON to the file given with -M contract-out; build.mjs adds the fields it knows itself and writes
 -- page.json. Runs last, so headings have their ids.
 package.path = pandoc.path.directory(PANDOC_SCRIPT_FILE) .. '/?.lua;' .. package.path
@@ -34,6 +34,27 @@ function Pandoc(doc)
     data[key] = lib.get(doc, key)
     doc.meta['twin-' .. key] = nil
   end
+  -- The media items that figures.lua and embeds.lua recorded, in page order (the order of their anchors in the page),
+  -- each with the numbered paragraph before it (after: "p76"), so that an item's page can say where it is.
+  local recorded, by_anchor, done, last = lib.get(doc, 'items'), {}, {}, nil
+  doc.meta['twin-items'] = nil
+  for _, it in ipairs(recorded) do by_anchor[it.anchor] = it end
+  data.items = {}
+  doc.blocks:walk {
+    traverse = 'topdown',
+    Div = function(div) if div.classes:includes('para') then last = div.identifier end end,
+    RawBlock = function(raw)
+      if raw.format ~= 'html' then return end
+      for anchor in raw.text:gmatch(' id="(item%-[^"]+)"') do
+        local it = by_anchor[anchor]
+        if it and not done[anchor] then
+          done[anchor], it.after = true, last
+          data.items[#data.items + 1] = it
+        end
+      end
+    end,
+  }
+  for _, it in ipairs(recorded) do if not done[it.anchor] then data.items[#data.items + 1] = it end end
   local f = assert(io.open(lib.contract_path, 'w'))
   f:write(pandoc.json.encode(data))
   f:close()

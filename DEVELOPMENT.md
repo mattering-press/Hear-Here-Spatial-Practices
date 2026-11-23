@@ -119,6 +119,7 @@ To build and preview it locally you need Node.js 20.11 or later and Pandoc 3.8:
 cd every_trick
 npm ci          # once, and again after package-lock.json changes
 npm run build   # writes ../_site/ in about ten seconds
+npm run build:preview  # the same, with the Media Index's editing view, as on the previews
 npm run check   # every internal link and local file in _site/ exists
 npm run test:csl  # the house citation style against the style guide's examples
 npm run serve   # http://localhost:8080/
@@ -151,25 +152,29 @@ The frame of every page:
   (`localStorage`), and a line in the template's `<head>` applies it before the page is drawn. The dark colours are
   set in `every_trick/assets/site.css`, below the light ones; the publisher's logo turns white in dark mode.
 - **Footer.** The publisher's logo (the long one; the icon alone on phones), a credit line with the licence, the
-  book's version line and the toolkit's line. They are set in `FRAME` at the top of `every_trick/build.mjs`, with the
-  logos in `media/publisher/`; the `.ve-footer` lines in the pages are ignored.
+  book's version line (with links to all versions and to the Media Index) and the toolkit's line. They are set in
+  `FRAME` at the top of `every_trick/build.mjs`, with the logos in `media/publisher/`; the `.ve-footer` lines in the
+  pages are ignored.
 
 What is in `every_trick/`:
 
 - `build.mjs`: the build, with its few settings at the top
 - `versions.mjs`: reads the version registry (`versions.json` at the repository root), takes each version's text from its Git tag, and matches paragraphs between versions
-- `convert.mjs`: turns Juncture's `.ve-*` lines and its raw HTML (audio, iframes, videos) into Pandoc Markdown
-- `filters/`: Lua filters, one job each. `to-markdown.lua` is stage 1 (writes the Markdown view); `figures`, `embeds`, `cards`, `transcript`, `links`, `citations`, `paragraphs`, `cues` (marks transcript paragraphs with their times from a recording's cue file), `margins` and `contract` are stage 2 (Markdown view to HTML and `page.json`)
+- `convert.mjs`: turns Juncture's `.ve-*` lines and its raw HTML (audio, iframes, videos) into Pandoc Markdown, and works out each edition's reading order
+- `register.mjs`: reads and writes the media register (`media/register.csv`), matches every item on the pages to its line, drafts names for new items and makes the build's checks of the register (see "The media register")
+- `media-pages.mjs`: the HTML of the item pages' facts, the Media Index, its editing view and the pages that forward short and former addresses
+- `filters/`: Lua filters, one job each. `items.lua` and `to-markdown.lua` are stage 1 (`items` lists the page's media items for the register; `to-markdown` writes the Markdown view); `figures`, `embeds`, `cards`, `transcript`, `links`, `citations`, `paragraphs`, `cues` (marks transcript paragraphs with their times from a recording's cue file), `margins` and `contract` are stage 2 (Markdown view to HTML and `page.json`)
 - `citations.mjs`: prepares the bibliography for `filters/citations.lua` and writes the build's report on citations
 - `csl/`: `mattering-press.csl`, the house citation style, and its test (`csl/test/`)
 - `scripts/to-citation-keys.mjs`: for the switch, shows how the plain-text citations would become Pandoc citations
 - `scripts/align.mjs`: times a podcast transcript's paragraphs against its recordings with whisper.cpp, on the editor's computer, and writes the cue files and a report (see "Plan: podcast player and transcript")
+- `scripts/number-media.mjs` (`npm run number-media -- <version>`): numbers the media items of a frozen version that have no number yet, in its reading order, and writes the register (see "Freezing a version for review or release")
 - `template.html`: the HTML around every page. It links the stylesheet and scripts with `?v=` and a hash of their contents, so that browsers fetch them again after every change instead of keeping an old copy
-- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `zoom.js` (the pictures' Zoom buttons, the zoom viewer and the pause button of animations; see "Plan: image display and the zoom viewer"), `player.js` (the podcast player and its docked bar; see "Plan: podcast player and transcript"), `citations.js`, `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens)
+- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `zoom.js` (the pictures' Zoom buttons, the zoom viewer and the pause button of animations; see "Plan: image display and the zoom viewer"), `player.js` (the podcast player and its docked bar; see "Plan: podcast player and transcript"), `citations.js`, `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens), `media-index.js` (the Media Index's filters, and the editing view's fields, checks and change sheet)
 - `images.mjs`: resized images (each zoomable picture in several widths for `srcset`) and the tiles for zooming; an animated GIF becomes an animated WebP and a still
 - `audio.mjs`: reads the length of an MP3 from the file, for the podcast players
 - `check.mjs`, `serve.mjs`: the link check and the local server
-- `CONTRACT.md`: the `page.json` and `publication.json` files that other frontends can read, and the paragraph rule
+- `CONTRACT.md`: the `page.json`, `publication.json` and `media.json` files that other frontends can read, the paragraph rule and the media items
 - `package.json`: the toolkit's name and version (see "Versions of the book and of every_trick" below)
 - `CHANGELOG.md`: every version of the toolkit and what changed in it
 
@@ -177,7 +182,58 @@ GitHub Actions (`.github/workflows/static-twin.yml`) builds and checks the twin 
 request, and uploads every pushed branch as a preview (see "Previews"). It fetches the whole
 history with its tags, so that it can build the frozen versions. On `main` it also deploys `_site/` to GitHub
 Pages, which serves it at `https://hearhere.matteringpress.org/` (the deploy is skipped if Pages is not enabled
-with "GitHub Actions" as its source). `_site/` is never committed.
+with "GitHub Actions" as its source). `_site/` is never committed. On every branch but `main` its build step sets
+`EVERY_TRICK_PREVIEW=true`, which adds the Media Index's editing view (`/media-index/edit/`, see "The media
+register") to the build; a build of `main`, which is what GitHub Pages publishes, never has it. `npm run
+build:preview` (or `EVERY_TRICK_PREVIEW=true npm run build`) does the same locally.
+
+### The media register
+
+Every picture, recording, video and document of the book is a media item with a permanent number (the plan:
+"Plan: media register, item pages and the Media Index"; the details: "Media items" in `every_trick/CONTRACT.md`).
+The items are listed in `media/register.csv`, one line each, which GitHub shows as a table you can search. The
+columns are `number`, `kind` (`see`, `listen`, `watch` or `read`), `name`, `source` (the file in the repository, or the
+address elsewhere), `since` (the version it entered with), `credit`, `title`, `former_names` and `former_sources`.
+Captions and alt text stay in the pages; the register holds only what the pages cannot.
+
+What readers see: every caption starts with the item's number, a small pill that leads to the item's own page
+(`/see/boulder-font/`); a recording has a small caption line below its player with its number and title. The zoom
+viewer shows the number before the caption. Each item's page shows the item, its caption, its credit, every place it
+appears, the version it entered with, where it is stored and served from, and its files. `/37/` forwards to item
+37's page. The Media Index, `/media-index/` (linked in every footer), lists every item, with filters by kind and by
+where items are served from, and `media.json` holds the same list as data.
+
+How editors change it, on a branch like any other change:
+
+- **Rename an item:** change its `name` and add the old name to `former_names` (separate several with spaces). The old
+  address keeps forwarding to the new one. A name is lower-case letters and digits with hyphens (`boulder-font`), and
+  each name, current or former, is used once in the book.
+- **Credit an item:** write the whole credit in `credit`, exactly as it should show, for example `Photo: Jane Doe`. It
+  appears after the caption wherever the item is shown, and on its page. Permission letters and contact details stay
+  out of the repository, which is public.
+- **Title an item:** only for an item whose pages give it no caption (an embedded film, the zines on archive.org): its
+  `title` names it in the Media Index and on its page, and for a video or an embed also in its caption line.
+- **Replace a file or an address:** write the new one in `source` and add the old one to `former_sources` (a space
+  inside a path is written `%20`). The item keeps its number and its address, and the versions that used the old file
+  still find it.
+- **New items** need no line: the build drafts a name from the caption and shows a dashed "new" pill until the next
+  version is frozen. To choose a name before then, add a line with `number` and `since` left empty.
+- **Numbers** are never typed by hand: `npm run number-media -- <version>` gives them when a version is frozen (see
+  "Freezing a version for review or release"). A number never changes and is never given again, also when its item
+  is withdrawn: never delete a line.
+
+The build stops, with a message saying what to do, when a registered item's file has gone from the repository and
+from every frozen version, when a numbered item is on no page any more (its file or address changed), when two items
+share a name, or when an item of a frozen version has no number.
+
+**The editing view** (`/media-index/edit/`, on previews only, never on the public site) is the Media Index with fields
+for each item's name and credit, the caption and alt text of each place it appears in the latest text, and a
+comment. Beside each item, checks follow what you type: no alt text, alt text that repeats the caption, no credit,
+used on no page, and a name that is not allowed or already taken. Your edits stay in your browser, also when you
+reload the page; nothing is saved anywhere else. When you are done, "Hand over changes" opens a sheet that lists only
+what changed, item by item ("caption on Hear Here Podcast: Catherine Hahn (essays/catherine_hahn.md): “…” → “…”",
+and the comments), with Copy and Download (.md); someone applies it on a branch. "Clear all edits" puts every field
+back as the pages have it.
 
 ### Paragraph numbers
 
@@ -233,7 +289,7 @@ Each entry in `versions.json` has:
 | `label` | how pages name it, e.g. `Version 0.9, second peer review` |
 | `date` | the day it was frozen or released, e.g. `2026-11-20` |
 | `status` | `review` (frozen for peer review) or `release` (published) |
-| `contract` | the contract current when it was frozen (`CONTRACT` in `every_trick/build.mjs`, e.g. `0.4`): its paragraph rule numbers this version, so its numbers never change |
+| `contract` | the contract current when it was frozen (`CONTRACT` in `every_trick/build.mjs`, e.g. `0.5`): its paragraph rule numbers this version, so its numbers never change |
 | `annotations` | `hypothesis` to open its pages for annotation with Hypothesis (below), otherwise `none` |
 | `hypothesisGroup` | the ID of the private Hypothesis group for its reviewers |
 
@@ -298,13 +354,19 @@ Freezing a version gives its text a permanent address. The text is taken from a 
      "label": "Version 0.9, second peer review",
      "date": "2026-11-20",
      "status": "review",
-     "contract": "0.4",
+     "contract": "0.5",
      "annotations": "hypothesis",
      "hypothesisGroup": "<group ID>"
    }
    ```
 
-4. Push the branch, open a pull request, and merge it when the build is green. Once GitHub Pages is enabled, the
+4. Number the version's new media items. In `every_trick/`, run `npm run number-media -- 0.9-review2` (with
+   `--dry-run` first to see what it will do, without writing). Every item of the version that has no number yet gets
+   the next one, in the version's reading order, with `since` set to the version; an item without a line in
+   `media/register.csv` gets one, with a name drafted from its caption: check those names now, since they become
+   permanent addresses (see "The media register"). Build and check again (the build stops if an item of a frozen
+   version has no number), and commit `media/register.csv` together with the version's entry in `versions.json`.
+5. Push the branch, open a pull request, and merge it when the build is green. Once GitHub Pages is enabled, the
    version appears at `/v0.9-review2/`.
 
 For a review with Hypothesis, before step 3:
@@ -363,6 +425,8 @@ Previews are throwaway: they are not versions, never enter `versions.json`, and 
   project's Access list: a visitor enters their email and receives a one-time code; no account or password is needed.
 - **Search engines:** every preview is sent with `X-Robots-Tag: noindex, nofollow` (a `_headers` file uploaded with
   it, never with the public site), so search engines leave previews out even if a link to one is posted somewhere.
+- **Editing view:** a preview also has the Media Index's editing view, `/media-index/edit/` (see "The media
+  register"), which the public site never has: the workflow builds it only for branches other than `main`.
 - **Cleanup:** deleting a branch on GitHub deletes its previews (`.github/workflows/preview-cleanup.yml`). Old
   previews of a branch that is kept can be deleted by running that workflow by hand.
 - **Setup:** the repository secrets `CLOUDFLARE_API_TOKEN` (an account token with only "Cloudflare Pages: Edit",
@@ -478,7 +542,7 @@ to listen.
 
 ## Plan: margin notes
 
-Agreed with the publisher on 2026-11-19. Text notes and media in the margin are built (`every_trick/filters/margins.lua`, `every_trick/assets/margins.js`): a margin note may hold pictures, animated GIFs, video and audio players, and one that holds only media has no number (example: the cover beside para. 1 of the home page). Figure numbers for margin media and the print and EPUB forms are not built yet.
+Agreed with the publisher on 2026-11-19. Text notes and media in the margin are built (`every_trick/filters/margins.lua`, `every_trick/assets/margins.js`): a margin note may hold pictures, animated GIFs, video and audio players, and one that holds only media has no note number (example: the cover beside para. 1 of the home page). Media in the margin are media items with their own numbers, like any other (every_trick_in_the_book 1.10.0). The print and EPUB forms are not built yet.
 
 - **What:** short notes, links and small media thumbnails in a right-hand margin column. Paragraph numbers keep the left margin.
 - **Where they live in the source:** directly after the paragraph they belong to (`::: {.margin}` … `:::`), or attached to a word (`[given by Germany in 1962]{.margin}`). They are never stored by paragraph number, so they move with their paragraph from version to version. While Juncture still renders the site, write them as `<aside class="margin" markdown="1">…</aside>`, which the build converts.
@@ -505,7 +569,8 @@ stays as "Plan: media data decisions" fixes it. Built in every_trick_in_the_book
 - **Nothing covers the picture.** "⤢ Zoom" sits at the right end of the caption line (in a gallery whose pictures are
   too narrow for a caption and the button side by side, it has the line below each picture to itself). Clicking the
   picture also opens the viewer (with a zoom cursor); the button is the figure's only keyboard stop. Without JavaScript
-  the picture links to its largest image, and to its item page once item pages exist.
+  the picture links to its largest image, and to its item page once item pages exist (it does since
+  every_trick_in_the_book 1.10.0; on the item page itself it links to the largest image).
 - **Tall pictures** are never taller than about 80% of the window. The build writes each picture's proportions into
   the page, so the stylesheet sizes the picture and its caption without JavaScript.
 - **Galleries** are justified rows: every picture keeps its proportions, its share of the row follows its shape, and
@@ -555,7 +620,8 @@ Not built yet.
 
 Agreed with the publisher on 2026-11-22. Every media item has one permanent number, kept in a register, and every
 number a reader sees is made from it. It replaces chapter-based figure numbers (`Fig. 2.3`) on the web; print keeps
-them, worked out for the printed route. Not built yet.
+them, worked out for the printed route. Built in every_trick_in_the_book 1.10.0 (23 November 2026), except print, which
+waits for the print edition; how editors use it is in "The media register" above.
 
 - **The register** is one table in the repository with a line per item: its number, its kind (`see`, `listen`,
   `watch` or `read`, the words of its address), its name, its file or address, the version it entered with, its

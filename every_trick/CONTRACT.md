@@ -1,9 +1,10 @@
-# Page data, contract 0.4
+# Page data, contract 0.5
 
 The build writes JSON beside the HTML so that other frontends (the collage index, a Tapestry export) can
-read the book without parsing HTML: `publication.json` at the root of each edition and a `page.json` beside every
-`index.html`. `contract` gives the version of this format and of the paragraph rule below. Later 0.x versions may
-add fields; a field will not change its meaning without a new version.
+read the book without parsing HTML: `publication.json` at the root of each edition, a `page.json` beside every
+`index.html`, and `media.json` at the root of the site, with every media item. `contract` gives the version of this
+format and of the paragraph rule below. Later 0.x versions may add fields; a field will not change its meaning
+without a new version.
 
 URLs that stay inside the site are relative to the edition's root, the folder that holds its `publication.json`
 (resolve them with `new URL(url, editionRoot)`), even inside a `page.json`. Other URLs are absolute.
@@ -14,7 +15,11 @@ page.json), the version stamp (`version` and the toolkit's version in page.json,
 matter), `versions` in publication.json, and frozen versions, each an edition of its own. 0.4 numbers a whole list as
 one paragraph, and numbers each frozen version by the rule of the contract it was frozen under (`contract` in
 `versions.json`, `paragraphRule` in page.json and publication.json); the toolkit's version is
-`every_trick_in_the_book` in page.json, publication.json and the Markdown view's front matter (it was `kit`).
+`every_trick_in_the_book` in page.json, publication.json and the Markdown view's front matter (it was `kit`). 0.5 adds
+media items (below): every picture, recording, video and document has a number from the media register and a page
+of its own; `items` in page.json, `media.json` at the root of the site, and the items' anchors and number pills in
+the HTML. Media in the margin are items with their own numbers, no longer figures with the chapter's numbering. The
+paragraph rule of 0.5 is 0.4's, unchanged.
 
 ## Editions
 
@@ -36,7 +41,8 @@ depends only on the page's content, as its Markdown view (`index.md`) has it, ne
 stylesheet. Every version is rebuilt with the current toolkit, so a frozen version is numbered by the rule of the
 contract it was frozen under (`contract` in its entry in `versions.json`), and a rule never changes within a contract
 version: changing it would renumber the paragraphs of frozen versions and break every citation of them. The rule
-below is contract 0.4's. Contract 0.3, which numbers version 0.1, differs only for lists (see the list item below).
+below is contract 0.4's; contract 0.5 kept it unchanged. Contract 0.3, which numbers version 0.1, differs only for
+lists (see the list item below).
 
 Numbered, wherever they are (at the top level, in block quotes, in the transcript, in any other div that is not
 listed below):
@@ -113,24 +119,24 @@ Poetry is cited by line, not by paragraph ("ll. 12–14"), so poems have their o
 
 A margin note is written directly after its paragraph as `::: {.margin}` … `:::`. It may hold text, or media:
 pictures, animated GIFs, galleries, video and audio players, written as anywhere else on the page. A note that holds
-only media is `<aside id="m1" class="margin margin-media">` (`m1`, `m2` … in page order), with no number and no mark
-in the text; figure numbers for them are not built yet. In the HTML a text note is `<aside id="n1" class="margin" aria-label="Note 1">`, and
+only media is `<aside id="m1" class="margin margin-media">` (`m1`, `m2` … in page order), with no note number and no
+mark in the text; the media in it are media items, each with its own number (see "Media items"). In the HTML a text note is `<aside id="n1" class="margin" aria-label="Note 1">`, and
 its mark in the text, at the end of the paragraph before it, is `<a class="margin-mark" id="n1-mark" href="#n1">1</a>`.
 
 - Paragraph numbers ignore the margin entirely: adding, moving or removing a margin item never changes them.
 - Text notes in the margin are numbered from 1 in each chapter, in order of their place in the text, as `n1`, `n2`
   and so on, with a small matching mark in the text. In print and EPUB a margin note becomes an endnote, and house
   style numbers endnotes per chapter, so "note 3" means the same note online and in print.
-- Images, audio and video in the margin are figures: they take the chapter's figure numbering (`Fig. 2.3`) and
-  their own item address (`/see/<name>`, `/listen/<name>`, `/watch/<name>`).
+- Images, audio and video in the margin are media items like any other: each shows its own number from the media
+  register in its caption line and has its own item page (`/see/<name>/`, `/listen/<name>/`, `/watch/<name>/`).
 - Plain links in the margin are not numbered.
 
 ## publication.json
 
 | field | value |
 |---|---|
-| `contract` | `"0.4"`, the version of this format |
-| `paragraphRule` | the contract whose paragraph rule numbered this edition: `"0.4"` for the latest text, the `contract` of its entry in `versions.json` for a frozen version (`"0.3"` for version 0.1) |
+| `contract` | `"0.5"`, the version of this format |
+| `paragraphRule` | the contract whose paragraph rule numbered this edition: `"0.5"` for the latest text (whose rule is 0.4's), the `contract` of its entry in `versions.json` for a frozen version (`"0.3"` for version 0.1) |
 | `title`, `subtitle` | from the header of the home page (`README.md`) |
 | `creators` | list of names |
 | `publisher` | name |
@@ -154,11 +160,78 @@ its mark in the text, at the end of the paragraph before it, is `<a class="margi
 | `markdown` | the page's Markdown view, e.g. `"essays/walk/index.md"` |
 | `headings` | `{ level, text, id }` in page order; `level` is the HTML level (2 to 6), `id` the fragment for `url#id` |
 | `paragraphs` | the numbered paragraphs (see "Paragraph numbers"), `{ id, n, text_hash }` in page order: `id` is the fragment (`"p12"`), `n` the number (12), `text_hash` the hash of its normalised text, the same in every version where the paragraph's text is the same |
+| `items` | the media items on the page (see "Media items"), `{ number, kind, name, url, anchor, after }` in page order: `number` is the item's number (37), or `null` for an item not numbered yet; `kind` is `see`, `listen`, `watch` or `read`; `name` the readable part of its address; `url` its item page, relative to the edition's root (`"see/boulder-font/"`, `"../see/boulder-font/"` in a frozen version); `anchor` the fragment of the item on this page (`"item-37"`, for `url#anchor`); `after` the numbered paragraph before it (`"p76"`), or `null` |
 | `figures` | `{ image, width, height, tiles, alt, caption }`: `image` is 1600 px on the long edge, `width` and `height` are its size, `tiles` is a IIIF `info.json` or `null`; `alt` and `caption` are `""` when missing |
 | `audio` | `{ url, title }`; `url` is the MP3 on GitHub, which supports range requests |
 | `video` | `{ url, title, kind }`; `kind` is `youtube`, `vimeo`, `file` (a video file in the site) or `embed` (any other embedded page, such as the Internet Archive or the BBC); `url` is the address given in the Markdown |
 | `links` | links in the page's text (not its menu or footer) to other pages, as `{ id, url, text }`, each target once, in order of first appearance; citation links are not included |
 | `references` | works from the book's bibliography (`references/bibliography.json`) that the page cites or lists, as `{ key, html, url, citations }`: first those cited, in order of first citation, then the rest of the page's typed reference list. `key` is the entry's id in the bibliography (`hall2001`); `html` is the reference formatted in the house style, as an HTML fragment (`<em>`, `<span>`, `<a>`); `url` is the entry in a typed reference list, on this page if its list has it, otherwise on the first page in reading order that does (`essays/introduction/#ref-hall2001`); `citations` are the ids of the citation links in this page's text that point to it (`cite-hall2001-1`), `[]` when the page only lists it |
+
+## Media items
+
+Every picture (zoomable or animated, in a gallery or not), recording, video and document of the book is a media item;
+card thumbnails, the pictures behind page titles and video posters are not. Each item has one line in the media
+register, `media/register.csv` in the repository (CSV with a header row, which GitHub shows as a table):
+
+| column | value |
+|---|---|
+| `number` | the item's permanent number, given when a version is frozen (`npm run number-media -- <version>`), in that version's reading order and page order, the first appearance of an item winning; empty until then. A number never changes and is never given again, also when its item is withdrawn, so the numbers run from 1 without gaps |
+| `kind` | `see` (pictures), `listen` (recordings), `watch` (video files, YouTube, Vimeo, archive.org films, the BBC's player) or `read` (documents: PDFs, archive.org's book reader): the first word of its address |
+| `name` | the readable part of its address, `/see/<name>/`: lower-case letters (a–z) and digits, with hyphens between words. Each name, and each former name, is used once in the book |
+| `source` | what the item is: the repository path of its file (`media/podcasts/POD06_Boulder.jpg`), or its address elsewhere, normalised: `https://www.youtube.com/watch?v=<id>`, `https://vimeo.com/<id>/<hash>`, `https://archive.org/details/<identifier>` (for its embed and details addresses alike), any other address as given. The same source on several pages, or in several versions, is one item |
+| `since` | the version it entered with (`0.1`), set with its number |
+| `credit` | its credit, the whole text as it is shown (`Photo: …`), or empty |
+| `title` | a title, only for an item whose pages give it no caption (an embedded film, the zines) |
+| `former_names` | its earlier names, separated by spaces: their addresses forward to the current one |
+| `former_sources` | its earlier files or addresses, separated by spaces (a space inside a path is written `%20`), so that the versions that used them still find the item |
+
+Captions, alt text, sizes and where an item appears are read from the pages at every build. An item without a line is
+"new": the build drafts its name from its caption until a line gives it one. The build stops when a registered item's
+file is neither in the repository nor in any frozen version, when a numbered item is on no page of any version (its file
+or address changed without `former_sources` saying so), when two items share a name, or when an item of a frozen
+version has no number.
+
+Item pages are at the root of the site, shared by every edition: `/<kind>/<name>/` (`/see/boulder-font/`). Every
+numbered item has a short address, `/<number>/` (`/37/`), and every former name keeps its address,
+`/<kind>/<former name>/`: small pages that forward to the item's page (a `<meta http-equiv="refresh">`, a canonical
+link, `noindex` and a visible link). `/media-index/` lists every item.
+
+In the HTML of a page, an item's figure, or its player's `<div class="player">`, has the item's anchor as its id:
+`item-<number>` (`item-37`), or `item-<name>` while it has no number; the same item a second time on a page is
+`item-37-2`. Its caption line starts with its number pill:
+
+```html
+<figcaption><a class="item-number" href="../../see/boulder-font/" aria-label="Item 37">37</a> The baptismal font in Coventry Cathedral</figcaption>
+```
+
+An item not numbered yet has `<a class="item-number is-new" href="…" aria-label="New item, not yet numbered">new</a>`.
+The credit follows the caption, as `<span class="item-credit"> · Photo: …</span>`. A picture without a caption gets a
+caption line for its pill; an audio player is followed by `<p class="media-caption">` with the pill and the recording's
+title. On the item's own page the pill is a `<span>`. In a frozen version the pills lead to the shared item pages
+(`../../../see/boulder-font/` from `v0.1/essays/catherine_hahn/`). Without JavaScript a picture links to its item page
+(`<a class="figure-picture" href="…/see/boulder-font/" data-largest="…">`; on the item page, to its largest image).
+
+## media.json
+
+At the root of the site, every media item, for other frontends. Its URLs are relative to the site's root.
+
+| field | value |
+|---|---|
+| `contract`, `every_trick_in_the_book` | as in publication.json |
+| `title`, `url` | the book's title, and where the site is published |
+| `items` | every item, the numbered ones by number, then the new ones in order of first appearance: `{ number, kind, name, source, since, credit, title, url, short, caption, former_names, former_sources, stored, served, appearances }` |
+
+- `number`, `kind`, `name`, `source`, `since`, `credit`, `title`, `former_names`, `former_sources`: as in the register
+  (`number` and `since` are `null` for a new item, `credit` and `title` are `""` when empty, the former ones are lists)
+- `url`: its item page (`"see/boulder-font/"`); `short`: its short address (`"37/"`), `null` for a new item
+- `caption`: its caption where it is shown (in the latest text, or else in the newest frozen version that has it), plain
+  text
+- `stored`, `served`: where it is kept and where readers' browsers get it from, for people: `"this repository"`,
+  `"Internet Archive"`, `"YouTube"` …; `"our own site"`, `"GitHub, as a raw file"`, `"archive.org"` …
+- `appearances`: every place it appears, in every edition, `{ edition, page, url, anchor, after, caption, alt }`:
+  `edition` is `"latest"` or a version's id, `page` the page's Markdown file, `url` the page with the item's anchor
+  (`"v0.1/essays/catherine_hahn/#item-37"`), `after` the numbered paragraph before it, `caption` and `alt` as that page
+  has them
 
 ## Zoom tiles
 

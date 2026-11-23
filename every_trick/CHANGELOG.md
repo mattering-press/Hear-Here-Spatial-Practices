@@ -11,6 +11,44 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of every_trick’ in `DEVELOPMENT.md`.
 
+## 1.10.0
+
+23 November 2026. Every picture, recording, video and document has a number and a page of its own, and the book has a
+Media Index.
+
+- Every media item of the book – each picture, recording, video and document – has a permanent number, kept in the
+  media register, `media/register.csv`, which GitHub shows as a table. Numbers are given when a version is frozen, in
+  its reading order, and never change: the 70 items of version 0.1 are numbered 1 to 70. An item added since shows
+  "new" until the next version is frozen.
+- Every caption starts with the item's number, in a small pill that leads to the item's own page. A recording has a
+  small caption line of its own below its player, with its number and its title. In the zoom viewer the number stands
+  before the caption.
+- Each item has its own page, at an address made of its kind and a short name: `/see/boulder-font/`,
+  `/listen/podcast-catherine-hahn/`, `/watch/family-talk/`, `/read/house-of-hope/`. It shows the item, its number, its
+  caption, its credit, every place it appears (with a link to it there), the version it entered the book with, where
+  it is stored and where it is served from, and its files to download. These pages are shared by every version of the
+  book, so a frozen version's numbers lead to the same pages.
+- Every numbered item also has a short address to type from paper: `/37/` leads to item 37. When an item is renamed,
+  its old address keeps leading to it.
+- The Media Index, `/media-index/`, lists every item by number, with a small picture, its title, its address, where it
+  appears, the version it entered with, and where it is stored and served from. It can be filtered by kind and by
+  where items are served from; without JavaScript it is a plain list. Every footer links to it, beside "All versions".
+  `media.json` at the root of the site holds the same list as data, and every page's `page.json` lists the items on that
+  page.
+- An item's credit is kept in the register, written exactly as it should show ("Photo: …"), and appears after its
+  caption wherever the item is shown, and on its page.
+- Videos and embedded documents whose pages give them no caption now show their real title, from the register (for
+  the films and zines on archive.org, their title there), instead of "Embedded content from archive.org".
+- Without JavaScript, clicking a picture opens its item page; on the item page, its largest image.
+- Previews, never the public site, have an editing view of the Media Index, `/media-index/edit/`: fields for each
+  item's name and credit, the caption and alt text of each place it appears, and a comment, with checks beside each item
+  (no alt text, alt text that repeats the caption, no credit, used on no page). Edits stay in the browser; "Hand over
+  changes" gives a sheet listing only what changed, to copy or download and apply on a branch.
+- The build stops, saying what to do, when a registered item's file has gone or its address has changed, when two
+  items share a name, or when an item of a frozen version has no number. `npm run number-media -- <version>` numbers a
+  version's new items when it is frozen.
+- The page data is contract 0.5 (`CONTRACT.md`); its paragraph rule is unchanged, so no paragraph has a new number.
+
 ## 1.9.0
 
 22 November 2026. Pictures in several widths, Zoom on the caption line and a new zoom viewer.

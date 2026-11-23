@@ -18,7 +18,7 @@
 //   raw <figure class="video-embed"> (Vimeo or a repository video) -> ::: {.twin-video …} with the caption inside
 //   raw <figure data-repo-pdf>                 ->  ::: {.twin-embed …} with the caption inside
 // .ve-header and .ve-footer become page data (title, menu, footer); .ve-style and .ve-script are dropped.
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { dirname, join, posix } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -262,6 +262,29 @@ export function convert(source, file, { exists = inWorkingTree } = {}) {
   const exceptions = [];
   lines.forEach((text, k) => { if (/<(script|smartframe-embed)/.test(text)) { exceptions.push({ file, line: k + 1, text: text.slice(0, 80) }); handled.push({ line: k + 1, kind: 'raw HTML kept (third-party embed)' }); } });
   return { ...page, markdown, handled, warnings, unhandled, exceptions };
+}
+
+// The pages of one edition of the book, converted, and their reading order (readingOrder in CONTRACT.md): the home page
+// (README.md) and every essay; test.md is a scratch page and stays out. root is the folder that holds them (the
+// repository, or a frozen version's text from its tag).
+//   readBook(root, { exists }) -> { pages, home, byFile, order }
+// order: the home page, then the pages of its menu in order, each followed by the pages its cards lead to (depth
+// first), then any page not reached that way, alphabetically.
+export function readBook(root, { exists = inWorkingTree } = {}) {
+  const files = ['README.md', ...readdirSync(join(root, 'essays')).filter((f) => f.endsWith('.md')).sort().map((f) => `essays/${f}`)];
+  const pages = files.map((file) => ({ file, ...convert(readFileSync(join(root, file), 'utf8'), file, { exists }) }));
+  const home = pages[0];
+  const byFile = new Map(pages.map((page) => [page.file, page]));
+  const order = [];
+  const visit = (file) => {
+    if (order.includes(file) || !byFile.has(file)) return;
+    order.push(file);
+    byFile.get(file).cards.forEach(visit);
+  };
+  order.push(home.file);
+  for (const item of home.menu) visit(repoPath(/\]\(([^)\s]+)\)/.exec(item)?.[1] ?? '', home.file).replace(/^\.$/, 'README.md'));
+  files.forEach(visit);
+  return { pages, home, byFile, order };
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url) && process.argv[2]) {

@@ -233,6 +233,15 @@ figure img { display: block; width: 100%; height: auto; }
 figcaption { padding: 0.5rem 0 0; color: var(--colour-muted); font-size: 0.875rem; line-height: 1.45; overflow-wrap: anywhere; }
 figcaption a { color: inherit; }
 
+/* media items (the media register): every caption line starts with the item's number, a small pill that links to the
+   item's page (filters/figures.lua, filters/embeds.lua); an item not numbered yet has a dashed "new" pill. The item's
+   credit follows the caption. An audio player has a caption line of its own, below it, with the pill and the title. */
+.item-number { display: inline-block; min-width: 2.2em; margin-right: 0.2em; padding: 0 0.45em; border: 1px solid currentColor; border-radius: 999px; color: var(--colour-accent); font-size: 0.75rem; font-style: normal; font-weight: var(--weight-strong); font-variant-numeric: tabular-nums; line-height: 1.5; text-align: center; text-decoration: none; text-indent: 0; vertical-align: 0.06em; white-space: nowrap; }
+a.item-number:hover { background: var(--colour-highlight); text-decoration: none; }
+.item-number.is-new { border-style: dashed; color: var(--colour-muted); font-weight: var(--weight-text); }
+.media-caption { margin: calc(0.4rem - var(--gap)) 0 var(--gap); color: var(--colour-muted); font-size: 0.875rem; line-height: 1.45; overflow-wrap: anywhere; }
+aside.margin.margin-media .media-caption { margin: -0.4rem 0 0.75rem; }
+
 /* pictures (filters/figures.lua): a plain image, which the browser takes in the width it needs (srcset). A picture is
    never taller than about 80% of the window: the build writes its proportions into the page (--ratio, its width
    divided by its height), so a tall picture is narrower, and its caption as wide as the picture. Nothing covers the
@@ -296,6 +305,10 @@ smartframe-embed:not(:defined) { aspect-ratio: auto !important; }   /* third-par
 .viewer__top { padding-top: max(0.5rem, env(safe-area-inset-top)); }
 .viewer__bottom { flex-wrap: wrap; justify-content: center; padding-bottom: max(0.6rem, env(safe-area-inset-bottom)); }
 .viewer__count { flex: none; margin: 0 0.25rem; color: rgb(255 255 255 / 0.7); font-size: 0.875rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+/* the item's number before the caption, a pill like the one in the page's caption line */
+.viewer__number { flex: none; min-width: 2.2em; padding: 0 0.45em; border: 1px solid rgb(255 255 255 / 0.75); border-radius: 999px; color: #fff; font-size: 0.8125rem; font-weight: var(--weight-strong); font-variant-numeric: tabular-nums; line-height: 1.6; text-align: center; text-decoration: none; }
+.viewer__number.is-new { border-style: dashed; color: rgb(255 255 255 / 0.8); font-weight: var(--weight-text); }
+@media (hover: hover) { a.viewer__number[href]:hover { background: rgb(255 255 255 / 0.16); } }
 .viewer__caption { flex: 1; min-width: 0; padding: 0.35rem 0; border: 0; border-radius: var(--radius); background: none; color: inherit; font: inherit; font-size: 0.9375rem; line-height: 1.4; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: default; }
 .viewer__caption:is(.is-cut, .is-expanded) { cursor: pointer; }
 .viewer__caption.is-expanded { max-height: 40vh; overflow-y: auto; white-space: normal; }
@@ -368,6 +381,8 @@ main [id] { scroll-margin-top: var(--space); }
 /* the passage being heard: its stretch of the transcript's rule in the accent colour. Transcript paragraphs are
    positioned for that mark, so their numbers are placed from them, where the others are placed from main. */
 .transcript > :is(.para, p) { position: relative; }
+/* a picture floated beside them stays above them, so that its Zoom button and its number pill can be clicked */
+.transcript > :is(figure, .gallery) { position: relative; z-index: 1; }
 .transcript .para-link { right: calc(100% + 1.25rem + 2px + 0.9rem); }   /* clear of the ▸ on the rule */
 /* the ▸ on the rule beside a timed paragraph (assets/player.js), shown on hover and focus, always on touch screens */
 .para-play { position: absolute; z-index: 1; top: calc((var(--font-size) * var(--line-height) - 1.5rem) / 2); left: calc(-1.25rem - 1px - 0.75rem); display: grid; place-items: center; width: 1.5rem; height: 1.5rem; padding: 0; border: 1px solid var(--colour-transcript); border-radius: 999px; background: var(--colour-background); color: var(--colour-accent); cursor: pointer; opacity: 0; }
@@ -398,6 +413,75 @@ a.citation { text-decoration-thickness: 1px; text-underline-offset: 0.15em; }
 .citation-popover:popover-open { display: block; position: fixed; inset: auto; margin: 0; width: max-content; max-width: min(28rem, calc(100vw - 16px)); padding: 0.75rem 1rem; border: 1px solid var(--colour-rule); border-radius: 6px; background: var(--colour-surface); color: var(--colour-text); box-shadow: var(--shadow); font-size: 0.9375rem; line-height: 1.45; overflow-wrap: anywhere; }
 .citation-popover p { margin: 0; }
 .citation-popover .citation-popover__more { margin-top: 0.5rem; font-size: 0.875rem; }
+
+/* an item's page (/see/<name>/, /listen/, /watch/, /read/): the item, then what there is to know about it */
+.item-facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 0.5rem 1.25rem; margin: calc(var(--space) * 1.5) 0 0; padding-top: var(--space); border-top: 1px solid var(--colour-rule); font-size: 0.9375rem; line-height: 1.5; }
+.item-facts > div { display: contents; }
+.item-facts dt { color: var(--colour-muted); }
+.item-facts dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.item-facts ul { margin: 0; padding: 0; list-style: none; }
+.item-facts li + li { margin-top: 0.2rem; }
+.item-facts__where { color: var(--colour-muted); }
+
+/* the Media Index (/media-index/) and its editing view: every item by number, with its pill, a thumbnail, its title
+   and address and where it is; chips filter the list (assets/media-index.js) */
+.media-index__intro { margin-top: 0; color: var(--colour-muted); font-size: 0.9375rem; }
+.media-index__preview { padding: 0.6rem 0.9rem; border-left: 3px solid var(--colour-accent); background: var(--colour-surface); font-size: 0.9375rem; }
+.media-filters { display: grid; gap: 0.45rem; margin: var(--space) 0 0; padding-bottom: 0.75rem; border-bottom: 1px solid var(--colour-rule); font-size: 0.8125rem; }
+.media-filters[hidden] { display: none; }
+.media-filters__group { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem; }
+.media-filters__by { min-width: 5.5rem; color: var(--colour-muted); }
+.media-chip { padding: 0.15rem 0.65rem; border: 1px solid var(--colour-rule); border-radius: 999px; background: var(--colour-surface); color: var(--colour-text); font: inherit; line-height: 1.5; white-space: nowrap; cursor: pointer; }
+@media (hover: hover) { .media-chip:hover { border-color: var(--colour-accent); } }
+.media-chip[aria-pressed="true"] { border-color: var(--colour-text); background: var(--colour-text); color: var(--colour-surface); }
+.media-filters__count { margin: 0.1rem 0 0; color: var(--colour-muted); }
+.media-list { margin: 0; padding: 0; list-style: none; }
+.media-entry { display: grid; grid-template-columns: 2.6rem 5rem minmax(0, 1fr); gap: 0.3rem 0.9rem; align-items: start; padding: 1rem 0; border-bottom: 1px solid var(--colour-rule); }
+.media-entry[hidden] { display: none; }
+.media-entry > .item-number { justify-self: start; margin: 0.1rem 0 0; }
+.media-entry__thumb { display: block; width: 5rem; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 3px; background: var(--colour-rule); }
+.media-entry__thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.media-entry__box { display: grid; place-content: center; color: var(--colour-muted); font-size: 0.75rem; font-variant-numeric: tabular-nums; line-height: 1.25; text-align: center; }
+.media-entry__icon { font-size: 1rem; }
+main h2.media-entry__title { margin: 0; font-size: 1rem; line-height: 1.35; }
+main h2.media-entry__title::before { content: none; }
+.media-entry__title a { color: var(--colour-text); text-decoration: none; }
+.media-entry__title a:hover { color: var(--colour-accent); text-decoration: underline; }
+.media-entry__address { margin: 0.15rem 0 0; color: var(--colour-muted); font-size: 0.8125rem; overflow-wrap: anywhere; }
+.media-entry__address a { color: inherit; }
+.media-entry__kind, .media-entry__address a { font-family: var(--font-mono); font-size: 0.95em; }
+.media-entry__facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr)); gap: 0.15rem 1rem; margin: 0.45rem 0 0; font-size: 0.8125rem; line-height: 1.45; }
+.media-entry__facts div { display: flex; gap: 0.4rem; min-width: 0; }
+.media-entry__facts dt { flex: none; color: var(--colour-muted); }
+.media-entry__facts dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+/* the editing view: checks, fields, and the bar that hands the changes over */
+.media-checks { display: flex; flex-wrap: wrap; gap: 0.3rem; margin: 0.6rem 0 0; padding: 0; list-style: none; font-size: 0.75rem; }
+.media-checks li { padding: 0.05rem 0.55rem; border-radius: 999px; }
+.media-checks .is-warning { background: color-mix(in srgb, #d99a2b 30%, var(--colour-surface)); color: var(--colour-text); }
+.media-checks .is-ok { background: color-mix(in srgb, #4f9a55 26%, var(--colour-surface)); color: var(--colour-text); }
+.media-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(11rem, 100%), 1fr)); gap: 0.6rem 0.9rem; margin-top: 0.75rem; }
+.media-field { display: block; min-width: 0; color: var(--colour-muted); font-size: 0.8125rem; }
+.media-field.is-wide { grid-column: 1 / -1; }
+.media-field input, .media-field textarea { display: block; width: 100%; margin-top: 0.2rem; padding: 0.35rem 0.5rem; border: 1px solid var(--colour-rule); border-radius: var(--radius); background: var(--colour-surface); color: var(--colour-text); font: inherit; font-size: 0.875rem; line-height: 1.4; }
+.media-field textarea { min-height: 3.2em; resize: vertical; }
+.media-field.is-changed input, .media-field.is-changed textarea { border-color: var(--colour-accent); box-shadow: inset 3px 0 0 var(--colour-accent); }
+.media-handover { position: sticky; bottom: 0; z-index: 5; display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.9rem; margin: var(--space) calc(-1 * var(--gap)) 0; padding: 0.7rem var(--gap) calc(0.7rem + env(safe-area-inset-bottom)); border-top: 1px solid var(--colour-rule); background: var(--colour-background); font-size: 0.875rem; }
+.media-handover__count { flex: 1 1 8rem; color: var(--colour-muted); }
+.media-button { padding: 0.3rem 0.95rem; border: 1px solid var(--colour-rule); border-radius: 999px; background: var(--colour-surface); color: var(--colour-text); font: inherit; font-size: 0.875rem; font-weight: var(--weight-strong); white-space: nowrap; cursor: pointer; }
+@media (hover: hover) { .media-button:hover { border-color: var(--colour-accent); color: var(--colour-accent); } }
+.media-button--strong { border-color: var(--colour-text); background: var(--colour-text); color: var(--colour-surface); }
+@media (hover: hover) { .media-button--strong:hover { border-color: var(--colour-accent); background: var(--colour-accent); color: #fff; } }
+.media-sheet { width: min(44rem, calc(100vw - 2rem)); max-height: calc(100vh - 2rem); padding: 1.25rem; border: 1px solid var(--colour-rule); border-radius: 6px; background: var(--colour-background); color: var(--colour-text); box-shadow: var(--shadow); }
+.media-sheet::backdrop { background: rgb(0 0 0 / 0.45); }
+.media-sheet__head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+main .media-sheet h2 { margin: 0; font-size: 1.15rem; }
+main .media-sheet h2::before { content: none; }
+.media-sheet__about { margin: 0.5rem 0 0.75rem; color: var(--colour-muted); font-size: 0.875rem; }
+.media-sheet__text { max-height: 55vh; margin: 0; padding: 0.9rem 1rem; overflow: auto; border: 1px solid var(--colour-rule); border-radius: var(--radius); background: var(--colour-surface); font: 0.8125rem / 1.55 var(--font-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+.media-sheet__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-top: 0.75rem; }
+.media-sheet__status { color: var(--colour-muted); font-size: 0.875rem; }
+/* a page that forwards an old or short address to an item's page */
+main.forward { padding-top: 3rem; }
 
 /* the Markdown view: the page's Markdown at a reading width, lines wrapped */
 .markdown-view__about { margin: 0 0 1.25rem; color: var(--colour-muted); font-size: 0.9375rem; }
@@ -447,6 +531,14 @@ a.toolkit-name, a .toolkit-name, .toolkit-name a, .built-with a { text-underline
   .gallery__row { display: block; }
   .gallery__row > figure + figure { margin-top: var(--gap); }
   .site-footer__logo img { height: 2.5rem; }
+  /* the Media Index: the thumbnail with the number below it, beside the title and the facts */
+  .media-entry { grid-template-columns: 4rem minmax(0, 1fr); grid-template-rows: auto 1fr; column-gap: 0.75rem; }
+  .media-handover [data-action="clear"] { display: none; }   /* on a phone, Clear is in the change sheet */
+  .media-entry > .item-number { grid-column: 1; grid-row: 2; }
+  .media-entry__thumb { grid-column: 1; grid-row: 1; width: 4rem; }
+  .media-entry__body { grid-column: 2; grid-row: 1 / span 2; }
+  .item-facts { grid-template-columns: minmax(0, 1fr); gap: 0.1rem; }
+  .item-facts dd { margin-bottom: 0.6rem; }
 }
 
 /* small phones: a smaller title and switch, so that both still fit on the bar's first row */

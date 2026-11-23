@@ -1,6 +1,7 @@
 // Checks the built site without a browser: every internal link and every local file that a page (including every
-// width in a picture's srcset), the stylesheet or a JSON file refers to must exist in _site/, and links to #fragments
-// must find their id.
+// width in a picture's srcset), the stylesheet or a JSON file (page.json, publication.json, media.json) refers to must
+// exist in _site/, and links to #fragments must find their id. The links of the media items (their pages, short
+// addresses and anchors) are checked with the rest.
 // Root-absolute URLs ("/essays/…") are errors too, because the site must also work under a sub-path.
 // Frozen versions (v<id>/, each with its own publication.json) are checked too, with the media they share.
 //   npm run check     (after npm run build)
@@ -41,7 +42,7 @@ for (const file of all) {
   const from = relative(SITE, file), base = dirname(file), text = readFileSync(file, 'utf8');
   if (file.endsWith('.html')) {
     const html = text.replace(/<!--.*?-->/gs, '');
-    for (const m of html.matchAll(/\s(?:href|src|poster|data|data-tiles)="([^"]*)"/g)) check(m[1].replace(/&amp;/g, '&'), from, base);
+    for (const m of html.matchAll(/\s(?:href|src|poster|data|data-tiles|data-largest)="([^"]*)"/g)) check(m[1].replace(/&amp;/g, '&'), from, base);
     // every width of a picture: srcset="images/x-w800.jpg 800w, images/x-1600.jpg 1600w, …"
     for (const m of html.matchAll(/\ssrcset="([^"]*)"/g)) for (const candidate of m[1].split(',')) check(candidate.trim().split(/\s+/)[0].replace(/&amp;/g, '&'), from, base);
     for (const m of html.matchAll(/url\(['"]?([^'")]+)['"]?\)/g)) check(m[1], from, base);
@@ -62,12 +63,12 @@ for (const file of all) {
     }
   } else if (file.endsWith('.css')) {
     for (const m of text.matchAll(/url\(['"]?([^'")]+)['"]?\)/g)) check(m[1], from, base);
-  } else if (file.endsWith('page.json') || file.endsWith('publication.json')) {
+  } else if (file.endsWith('page.json') || file.endsWith('publication.json') || from === 'media.json') {
     // URLs in page.json and publication.json are relative to the edition's root (see CONTRACT.md), except the
-    // published address of publication.json itself.
-    const root = editionRoot(file), data = JSON.parse(text);
+    // published address of publication.json itself; in media.json, to the site's root (its own address, url, aside).
+    const root = from === 'media.json' ? SITE : editionRoot(file), data = JSON.parse(text);
     JSON.stringify(data, (key, value) => {
-      if (['url', 'image', 'tiles', 'markdown'].includes(key) && typeof value === 'string' && !(from.endsWith('publication.json') && value === data.url)) check(value, from, root);
+      if (['url', 'image', 'tiles', 'markdown', 'short'].includes(key) && typeof value === 'string' && !((from.endsWith('publication.json') || from === 'media.json') && value === data.url)) check(value, from, root);
       return value;
     });
   }
