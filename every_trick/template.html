@@ -18,12 +18,16 @@ $endif$
   <script src="$shared$assets/paragraphs.js?v=$asset-version$" defer></script>
   <script src="$shared$assets/margins.js?v=$asset-version$" defer></script>
   <script src="$shared$assets/settings.js?v=$asset-version$" defer></script>
+  <script src="$shared$assets/menu.js?v=$asset-version$" defer></script>
   <script src="$shared$assets/place.js?v=$asset-version$" defer></script>
 $if(has-citations)$
   <script src="$shared$assets/citations.js?v=$asset-version$" defer></script>
 $endif$
 $if(search-page)$
   <script src="$shared$assets/search.js?v=$asset-version$" defer></script>
+$endif$
+$if(references-page)$
+  <script src="$shared$assets/references.js?v=$asset-version$" defer></script>
 $endif$
 $if(annotations)$
   $annotations$
@@ -37,50 +41,72 @@ $endif$
   <header class="site-header">
     <div class="site-bar">
       <a class="site-title" href="$root$">$book-title$</a>
-$if(menu)$
       <nav class="site-menu" aria-label="Sections">
         <ul>
 $for(menu)$
           <li>$menu$</li>
 $endfor$
+$if(menu-media-index)$
+          <li><a href="$shared$media-index/"$if(on-media-index)$ aria-current="page"$elseif(in-media-index)$ aria-current="true"$endif$>$menu-media-index$</a></li>
+$endif$
+$if(menu-references)$
+          <li><a href="$root$references/"$if(on-references)$ aria-current="page"$endif$>$menu-references$</a></li>
+$endif$
         </ul>
       </nav>
+      <div class="site-tools">
+        <details class="menu-button">
+          <summary class="menu-button__toggle" title="Menu"><svg aria-hidden="true" viewBox="0 0 16 16" width="16" height="16"><path d="M2.5 4h11M2.5 8h11M2.5 12h11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span class="visually-hidden">Menu</span></summary>
+          <nav class="menu-panel" aria-label="Sections">
+            <ul>
+$for(menu)$
+              <li>$menu$</li>
+$endfor$
+$if(menu-media-index)$
+              <li><a href="$shared$media-index/"$if(on-media-index)$ aria-current="page"$elseif(in-media-index)$ aria-current="true"$endif$>$menu-media-index$</a></li>
 $endif$
+$if(menu-references)$
+              <li><a href="$root$references/"$if(on-references)$ aria-current="page"$endif$>$menu-references$</a></li>
+$endif$
+            </ul>
+          </nav>
+        </details>
 $if(views)$
-      <nav class="view-switcher" aria-label="Views of this page">
-        <ul>
-          <li><a href="$view-page$"$if(on-page)$ aria-current="page"$endif$>Page</a></li>
-          <li><a href="$view-markdown$"$if(on-markdown)$ aria-current="page"$endif$>Markdown</a></li>
-<!-- Later, site-level views of the whole book, once they exist:
-          <li><a href="$root$collage/">Collage</a></li>
-          The List view is the Media Index, $shared$media-index/, which the footer's version line links to.
+        <nav class="view-switcher" aria-label="Views of this page">
+          <ul>
+            <li><a href="$view-page$" title="Page"$if(on-page)$ aria-current="page"$endif$><svg aria-hidden="true" viewBox="0 0 16 16" width="16" height="16"><path d="M3.75 1.75h5.5l3 3v9.5h-8.5z M9.25 1.75v3h3 M6 8.25h4 M6 11h4"/></svg><span class="visually-hidden">Page</span></a></li>
+            <li><a href="$view-markdown$" title="Markdown"$if(on-markdown)$ aria-current="page"$endif$><svg aria-hidden="true" viewBox="0 0 16 16" width="16" height="16"><rect x="1" y="3.5" width="14" height="9" rx="1.75"/><path d="M3.5 10V6l1.75 2 1.75-2v4 M11 6v4 M9.5 8.5 11 10l1.5-1.5"/></svg><span class="visually-hidden">Markdown</span></a></li>
+<!-- Later, site-level views of the whole book, once they exist. The switch is made for a third segment:
+            <li><a href="$root$collage/" title="Collage"><svg aria-hidden="true" viewBox="0 0 16 16" width="16" height="16"><rect x="1.75" y="1.75" width="5.5" height="7" rx="0.75"/><rect x="8.75" y="1.75" width="5.5" height="4.5" rx="0.75"/><rect x="8.75" y="7.75" width="5.5" height="6.5" rx="0.75"/><rect x="1.75" y="10.25" width="5.5" height="4" rx="0.75"/></svg><span class="visually-hidden">Collage</span></a></li>
+            The List view is the Media Index, $shared$media-index/, which the menu and the footer's version line link to.
 -->
-        </ul>
-      </nav>
+          </ul>
+        </nav>
 $if(whole-book)$
-      <script>/* the whole book in Markdown: "Page" leads back to the page the reader came from (without JavaScript, to the home page) */try{var from=new URL(document.referrer),home=new URL('../',location.href),page=from.pathname.replace(/markdown\/(index\.html)?$$/,'');if(from.origin===location.origin&&page.indexOf(home.pathname)===0&&page!==location.pathname)document.querySelector('.view-switcher a').href=page}catch(e){}</script>
+        <script>/* the whole book in Markdown: "Page" leads back to the page the reader came from (without JavaScript, to the home page) */try{var from=new URL(document.referrer),home=new URL('../',location.href),page=from.pathname.replace(/markdown\/(index\.html)?$$/,'');if(from.origin===location.origin&&page.indexOf(home.pathname)===0&&page!==location.pathname)document.querySelector('.view-switcher a').href=page}catch(e){}</script>
 $endif$
 $endif$
-      <a class="search-link" href="$root$search/" title="Search"$if(search-page)$ aria-current="page"$endif$><svg aria-hidden="true" viewBox="0 0 16 16" width="14" height="14"><circle cx="6.5" cy="6.5" r="5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m10.3 10.3 4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span class="search-link__text">Search</span></a>
-      <button class="settings-button" type="button" popovertarget="settings" aria-label="Text size and colours" hidden><span aria-hidden="true">Aa</span></button>
-      <div class="settings" id="settings" popover role="dialog" aria-label="Text size and colours">
-        <fieldset>
-          <legend>Text size</legend>
-          <div class="settings__choices settings__sizes">
-            <button type="button" data-text-size="small" aria-label="Smaller">A</button>
-            <button type="button" data-text-size="" aria-label="Normal">A</button>
-            <button type="button" data-text-size="large" aria-label="Larger">A</button>
-            <button type="button" data-text-size="largest" aria-label="Largest">A</button>
-          </div>
-        </fieldset>
-        <fieldset>
-          <legend>Colours</legend>
-          <div class="settings__choices">
-            <button type="button" data-theme="">System</button>
-            <button type="button" data-theme="light">Light</button>
-            <button type="button" data-theme="dark">Dark</button>
-          </div>
-        </fieldset>
+        <a class="search-link" href="$root$search/" title="Search"$if(search-page)$ aria-current="page"$endif$><svg aria-hidden="true" viewBox="0 0 16 16" width="14" height="14"><circle cx="6.5" cy="6.5" r="5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m10.3 10.3 4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span class="search-link__text">Search</span></a>
+        <button class="settings-button" type="button" popovertarget="settings" aria-label="Text size and colours" hidden><span aria-hidden="true">Aa</span></button>
+        <div class="settings" id="settings" popover role="dialog" aria-label="Text size and colours">
+          <fieldset>
+            <legend>Text size</legend>
+            <div class="settings__choices settings__sizes">
+              <button type="button" data-text-size="small" aria-label="Smaller">A</button>
+              <button type="button" data-text-size="" aria-label="Normal">A</button>
+              <button type="button" data-text-size="large" aria-label="Larger">A</button>
+              <button type="button" data-text-size="largest" aria-label="Largest">A</button>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Colours</legend>
+            <div class="settings__choices">
+              <button type="button" data-theme="">System</button>
+              <button type="button" data-theme="light">Light</button>
+              <button type="button" data-theme="dark">Dark</button>
+            </div>
+          </fieldset>
+        </div>
       </div>
     </div>
     <div class="page-opener$if(page-band)$ has-band$endif$">

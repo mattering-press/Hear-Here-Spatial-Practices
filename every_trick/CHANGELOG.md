@@ -13,13 +13,25 @@ reader sees. How to add a version: ‘Versions of the book and of every_trick’
 
 ## 1.12.0
 
-23 November 2026. A References page for the whole book.
+23 November 2026. A References page for the whole book, from which any reference can be copied in five styles or for
+a reference manager, and a header that keeps one row at every width.
 
 - The References page, `/references/`, lists every work in the book’s bibliography once, in the house style and in the
   order of its reference lists, alphabetical by author. Each work has an address of its own, made from its key:
   `/references/#hall2001`. Under each work are the passages that cite it, named by page and paragraph (‘Introduction,
   para. 12’), each leading to the citation itself, and the pages whose reference lists include it, each leading to the
   work in that list.
+- Beside each work, a Copy button opens a short menu that copies the reference as plain text in Mattering Press’ house
+  style, APA (7th edition), Chicago (author-date), MLA (9th edition) or Harvard (Cite Them Right), or as a BibTeX or
+  RIS entry for a reference manager. A short line at the foot of the window says what was copied (‘Copied: APA’). The
+  menu works with the keyboard (↓ and ↑, Enter, Escape) and by touch. The house style is the reference as the page
+  shows it; the other styles are made when the site is built, with Pandoc and the styles of the official Citation
+  Style Language repository, and give each work as it stands on its own, as a reference manager copies it, so without
+  the year letters (2005a) that only tell this book’s works apart. Without JavaScript there are no Copy buttons, and
+  search leaves them out.
+- The whole bibliography can be downloaded from the explainer at the top of the References page, as BibTeX, RIS or
+  CSL-JSON. Each version of the book has its own, beside its References page (`/references/bibliography.bib`,
+  `/v0.1/references/bibliography.ris`).
 - Each frozen version has its own References page, such as `/v0.1/references/`, because which passages cite a work,
   and their paragraph numbers, can differ from one version to the next.
 - Every footer links to the References page of its version, beside the Media Index.
@@ -39,6 +51,15 @@ reader sees. How to add a version: ‘Versions of the book and of every_trick’
   the popups alike. The reference lists typed in the pages show what their authors typed.
 - The build says, for each version, how many citations lead to their page’s own reference list and how many to the
   References page.
+- The menu in the header ends with ‘media index’ and ‘references’ on every page, leading to the Media Index and to the
+  References page of the version being read.
+- Where the whole menu does not fit beside the book’s title and the buttons (below about 1,000 pixels wide at the usual
+  text size, sooner at larger sizes), it folds into a menu button (☰) beside the other buttons, which opens a panel
+  with every entry. Escape, or a click or tap outside, closes it; without JavaScript it opens and closes all the same.
+- The Page / Markdown switch is smaller: a round-ended pill of two icons, each named for screen readers and in a
+  tooltip, made to take a third view, the Collage, later.
+- The header keeps one row at every width from 320 pixels: on phones about 376 to 415 pixels wide, ‘Aa’ no longer
+  drops to a second row. On the smallest phones the book’s title ends in an ellipsis.
 
 ## 1.11.0
 

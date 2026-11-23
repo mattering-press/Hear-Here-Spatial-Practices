@@ -24,14 +24,16 @@ note) and how to cite its own source, in the register and in `media.json`; empty
 each edition a References page, `references/`, which lists every work of the bibliography (see "Citations in the
 HTML"): a reference's `url` in page.json, like the citation's link, points at the work's entry there
 (`references/#hall2001`) when the page's own typed list lacks the work, where it pointed at the first page in reading
-order whose list has it (every_trick_in_the_book 1.12.0). The paragraph rule of 0.5 is 0.4's, unchanged.
+order whose list has it, and puts beside it the edition's bibliography to download, as CSL-JSON, BibTeX and RIS, and
+`formatted.json`, every work in the styles of the page's Copy menus (every_trick_in_the_book 1.12.0). The paragraph
+rule of 0.5 is 0.4's, unchanged.
 
 ## Editions
 
 The root of the site is the working text, "latest, unreleased". Every version listed in `versions.json` at the
 root of the repository is built as well, from the text of its Git tag but with the current toolkit, into its own
 folder, `v<id>/` (for example `v0.9-review2/essays/aya_nassar/`). Each such edition has its own
-`publication.json`, `publication.md`, References page (`references/`) and pages. Images, tiles, video, PDF files, the
+`publication.json`, `publication.md`, References page (`references/`, with the bibliography to download) and pages. Images, tiles, video, PDF files, the
 stylesheet and the scripts are stored once, at the site's root, and shared by all editions, so inside a frozen version
 their URLs start with `../` (`../images/x-1600.jpg`); resolved against the edition's root, they point at the shared
 copy. `versions/` at the site's root lists every edition.
@@ -307,3 +309,23 @@ citation (`../essays/introduction/#cite-hall2001-1`; a paragraph that cites the 
 reading order. A row is left out when it would be empty. All the references of an edition are formatted in one
 citeproc run over its whole bibliography, so their year letters (`2005a`, `2005b`) are the same on every page and on
 the References page.
+
+Beside the References page, in the same folder, are the edition's bibliography and the texts of its Copy menus, every
+work in the page's order:
+
+- `bibliography.json`: the bibliography in CSL-JSON, as `references/bibliography.json` in the repository (or in the
+  version's tag) has it, without `custom`, which records for the build where each entry is typed in the pages;
+- `bibliography.bib`: the same in BibTeX, as Pandoc writes it, with `doi` and `urldate` added where a work has them;
+- `bibliography.ris`: the same in RIS, with the tags in the places Zotero's RIS translator reads them, the entry's key
+  as `ID`, UTF-8 and the specification's CRLF line ends;
+- `formatted.json`: `{ contract, every_trick_in_the_book, version, styles, works }`. `styles` lists the forms of the
+  Copy menu in its order, each `{ id, label, short }` (the menu's name and the confirmation's: `APA (7th edition)`,
+  `APA`), with the address of its CSL file and the `locale` it is formatted in for a citation style, and `entry: true`
+  for an entry of a reference manager. `works` holds, for each key, the work in each form as plain text: `house` (the
+  house style as the page shows it, with the book's year letters), `apa`, `chicago`, `mla` and `harvard` (each work
+  formatted on its own, without year letters or dashes for a repeated author, as a reference manager copies it), and
+  `bibtex` and `ris` (the entry as in the files above, with `\n` line ends).
+
+The list of the References page, `<div class="references">`, names `formatted.json` in `data-copy` and the forms of the
+menu in `data-copy-styles` (JSON); `assets/references.js` makes the Copy buttons from them, so they are not part of
+the page's HTML.

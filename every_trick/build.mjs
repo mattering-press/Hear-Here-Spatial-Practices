@@ -26,7 +26,7 @@ import { tmpdir } from 'node:os';
 import { gunzipSync } from 'node:zlib';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { BIBLIOGRAPHY, locate, prepareReferences, referencesHtml, report as citationReport } from './citations.mjs';
+import { BIBLIOGRAPHY, COPY_DATA, COPY_STYLES, CSL_COMMIT, DOWNLOADS, formatReferences, locate, prepareReferences, referencesHtml, report as citationReport } from './citations.mjs';
 import { readBook, REPO, REPO_ROOT, repoPath } from './convert.mjs';
 import { mp3Duration, paragraphCues } from './audio.mjs';
 import { makeImages } from './images.mjs';
@@ -52,13 +52,15 @@ const TOOLKIT_CHANGES = 'https://github.com/mattering-press/Hear-Here-Spatial-Pr
 const siteUrl = 'https://hearhere.matteringpress.org/';
 const LATEST_LABEL = 'Latest text, unreleased';
 // What frames every page (template.html): in every footer the publisher's logo (the long one, the icon alone on
-// phones), a credit line and the licence. Paths are files in the repository.
+// phones), a credit line and the licence. Paths are files in the repository. menu: the entries the header's menu adds
+// after the home page's own, written as those are (here in lower case); an empty one leaves its entry out.
 const FRAME = {
   credit: 'convened by Nirmal Puwar',
   publisherUrl: 'https://www.matteringpress.org/',
   logo: 'media/publisher/mattering-press-logo.svg',
   icon: 'media/publisher/mattering-press-icon.svg',
   licence: { name: 'CC BY 4.0', url: 'https://creativecommons.org/licenses/by/4.0/' },
+  menu: { mediaIndex: 'media index', references: 'references' },
 };
 // ---------------------------------------------------------------------------------------------------------
 
@@ -242,10 +244,12 @@ const wrapMarkdown = (source, about) => {
 };
 // One folder further from the site's root: from a page to its Markdown view.
 const deeper = (root) => (root === './' ? '../' : root + '../');
-// The parts of the frame that are the same on every page of an edition (template.html); s is the site's root.
+// The parts of the frame that are the same on every page of an edition (template.html); s is the site's root. The menu
+// ends with the Media Index (shared, at the site's root) and the edition's References page.
 const frameMeta = (edition, s) => ({
   'book-title': edition.home.title, credit: FRAME.credit, publisher: PUBLICATION.publisher, 'publisher-url': FRAME.publisherUrl,
   licence: FRAME.licence?.name, 'licence-url': FRAME.licence?.url, logo: FRAME.logo && s + FRAME.logo, icon: FRAME.icon && s + FRAME.icon,
+  'menu-media-index': FRAME.menu?.mediaIndex, 'menu-references': FRAME.menu?.references,
 });
 // The metadata file that stage 2 reads: the menu, and values of raw HTML (version notice, footer line, picture).
 const writeYaml = (file, menu, extra) => writeFileSync(file, [
@@ -422,6 +426,8 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
   // The References page of this edition, references/ (referencesHtml in citations.mjs): every work of its bibliography
   // once, in the order of the house style's reference list, each with the passages that cite it and the pages whose
   // typed lists include it, in reading order. A citation whose page does not list its work links to it there.
+  // Beside it, the whole bibliography to download as BibTeX, RIS and CSL-JSON, and formatted.json, every work in each
+  // style of the page's Copy menus (formatReferences; assets/references.js).
   {
     const rank = (file) => (edition.order.includes(file) ? edition.order.indexOf(file) : edition.order.length);
     const byPage = (a, b) => rank(a.file) - rank(b.file);   // (stable: a page's citations stay in their order)
@@ -444,10 +450,22 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     // It is searched, in this edition's index (step 7), each work a place of its own in the results ("Stengers 2005a").
     const referencesPage = pandoc(['-f', 'markdown', '-t', 'html5', '--wrap=none', '-s', '--template', join(TOOLKIT_DIR, 'template.html'), '--metadata-file', yaml,
       ...metaArgs({ page: 'references', repo: REPO, manifest, lang: PUBLICATION.language, title: 'References', ...toolkitMeta, ...frameMeta(edition, s),
-        root: '../', shared: s, 'asset-version': ASSET_VERSION, 'site-title': edition.home.title, noindex: NOINDEX ? 'true' : '', searchable: 'true' }), ...filterArgs(['links'])],
+        root: '../', shared: s, 'asset-version': ASSET_VERSION, 'site-title': edition.home.title, noindex: NOINDEX ? 'true' : '', searchable: 'true',
+        'references-page': 'true', 'on-references': 'true' }), ...filterArgs(['links'])],
       rawBlock(referencesHtml(works, { root: '../' })), `${edition.name}: references/`);
     mkdirSync(join(out, 'references'), { recursive: true });
     writeFileSync(join(out, 'references', 'index.html'), referencesPage);
+    let formats;
+    try { formats = formatReferences({ pandoc: PANDOC, work: scratch, references }); } catch (e) { fail(`${edition.name}: ${e.message}`); }
+    if (edition === latest) warnings.push(...formats.warnings);
+    writeFileSync(join(out, 'references', DOWNLOADS.bibtex), formats.bibtex);
+    writeFileSync(join(out, 'references', DOWNLOADS.ris), formats.ris);
+    writeFileSync(join(out, 'references', DOWNLOADS.csljson), formats.csljson);
+    writeFileSync(join(out, 'references', COPY_DATA), JSON.stringify({
+      contract: CONTRACT, every_trick_in_the_book: TOOLKIT_VERSION, version: edition.version,
+      styles: COPY_STYLES.map(({ id, label, short, csl, locale, entry }) => ({ id, label, short, ...(csl ? { csl: `https://github.com/citation-style-language/styles/blob/${CSL_COMMIT}/${csl}`, locale } : {}), ...(entry ? { entry } : {}) })),
+      works: formats.texts,
+    }) + '\n');
     edition.searchable.push({ url: '/references/', content: referencesPage });
     report.references.push({ edition, works: works.length, cited: works.filter((w) => w.cited.length).length,
       citations: edition.citing.length, inPage: edition.citing.filter((c) => c.inPage).length });
@@ -659,7 +677,7 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
     }
     body += `\n${rawBlock(itemFacts(it, { root: '../../', siteUrl }))}`;
     const html = await pandocAsync([...pageFrame('../../', { ...meta, pagetitle: `${it.label ? `Item ${it.label}` : 'New item'}: ${it.heading}`, 'item-page': 'true',
-      'section-title': it.label ? `Item ${it.label}` : 'New item', 'section-url': `../../media-index/#${it.anchor}`, noindex: NOINDEX ? 'true' : '' }),
+      'section-title': it.label ? `Item ${it.label}` : 'New item', 'section-url': `../../media-index/#${it.anchor}`, 'in-media-index': 'true', noindex: NOINDEX ? 'true' : '' }),
       ...filterArgs(['figures', 'embeds', 'links'])], body, name);
     mkdirSync(join(SITE, it.url), { recursive: true });
     writeFileSync(join(SITE, it.url, 'index.html'), html);
@@ -682,7 +700,7 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
   // (step 7), each entry a place of its own in the results ("item 37"; mediaIndexHtml). The item pages, which hold the
   // same words, the short and former addresses and the editing view are in no index.
   const indexHtml = mediaIndexHtml(views, { root: '../', script: `../assets/media-index.js?v=${ASSET_VERSION}`, preview: PREVIEW });
-  const indexPage = pandoc([...pageFrame('../', { page: 'media-index', title: 'Media Index', noindex: NOINDEX ? 'true' : '', searchable: 'true' }),
+  const indexPage = pandoc([...pageFrame('../', { page: 'media-index', title: 'Media Index', noindex: NOINDEX ? 'true' : '', searchable: 'true', 'on-media-index': 'true' }),
     ...filterArgs(['links'])], rawBlock(indexHtml), 'the Media Index');
   mkdirSync(join(SITE, 'media-index'), { recursive: true });
   writeFileSync(join(SITE, 'media-index', 'index.html'), indexPage);
@@ -692,7 +710,7 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
     const editHtml = mediaEditHtml(views, { root: '../../', script: `../../assets/media-index.js?v=${ASSET_VERSION}`, names, rights: RIGHTS });
     mkdirSync(join(SITE, 'media-index', 'edit'), { recursive: true });
     writeFileSync(join(SITE, 'media-index', 'edit', 'index.html'), pandoc([...pageFrame('../../', { page: 'media-index/edit', title: 'Editing view',
-      pagetitle: 'Media Index: editing view', 'section-title': 'Media Index', 'section-url': '../', noindex: 'true' }), ...filterArgs(['links'])], rawBlock(editHtml), 'the editing view'));
+      pagetitle: 'Media Index: editing view', 'section-title': 'Media Index', 'section-url': '../', 'in-media-index': 'true', noindex: 'true' }), ...filterArgs(['links'])], rawBlock(editHtml), 'the editing view'));
   }
 
   // media.json: every item, for other frontends (CONTRACT.md). URLs are relative to the site's root.

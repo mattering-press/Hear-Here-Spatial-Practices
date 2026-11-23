@@ -114,32 +114,50 @@ img, iframe, video, object { max-width: 100%; }
 }
 .site-bar { view-transition-name: site-bar; }
 
-/* the header: the same bar on every page (book title, menu, views of this page), then the page's opening */
+/* the header: the same bar on every page, then the page's opening. The bar is one row at every width: the book's title,
+   the menu (the home page's entries, then media index and references), and at its right end the tools: the views of
+   this page, search and the reader's settings. Where the whole menu does not fit beside the title and the tools, it
+   folds into a menu button (☰) at the start of the tools, which opens it as a panel (assets/menu.js; without
+   JavaScript the button opens and closes it all the same). The widths are container queries on body in rem, so they
+   follow the reader's text size; the one for the menu button is set by measuring the bar (below, "the menu button"). */
 .site-header { background: var(--colour-header); color: var(--colour-header-text); }
 .site-header :focus-visible { outline-color: currentColor; }
-.site-bar { --bar-gap: 2rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem var(--bar-gap); max-width: var(--wide); margin: 0 auto; padding: 0.85rem var(--gap); font-size: 0.9375rem; line-height: 1.3; }
-.site-title { display: inline-flex; align-items: center; min-height: 1.8rem; color: inherit; font-weight: 700; letter-spacing: 0.01em; text-decoration: none; }   /* as tall as the switch, which not every page has */
+.site-bar { --control: 1.75rem; position: relative; z-index: 26; display: flex; align-items: center; gap: 2rem; max-width: var(--wide); margin: 0 auto; padding: 0.85rem var(--gap); font-size: 0.9375rem; line-height: 1.3; }
+.site-title { display: inline-flex; align-items: center; flex: none; min-height: var(--control); color: inherit; font-weight: 700; letter-spacing: 0.01em; text-decoration: none; white-space: nowrap; }   /* as tall as the tools */
 .site-title:hover { text-decoration: underline; text-underline-offset: 0.3em; }
-.site-menu ul, .view-switcher ul { display: flex; margin: 0; padding: 0; list-style: none; }
-.site-menu ul { gap: 0.25rem 1.4rem; }
-.site-menu a { color: var(--colour-header-muted); text-decoration: none; text-underline-offset: 0.45em; }
+.site-menu { min-width: 0; }
+.site-menu ul, .menu-panel ul, .view-switcher ul { display: flex; margin: 0; padding: 0; list-style: none; }
+.site-menu ul { flex-wrap: wrap; gap: 0.25rem 1.25rem; }
+.site-menu a { color: var(--colour-header-muted); text-decoration: none; text-underline-offset: 0.45em; white-space: nowrap; }
 .site-menu a:hover, .site-menu a[aria-current] { color: var(--colour-header-text); text-decoration: underline; text-decoration-thickness: 2px; }
-/* the views of this page (Page, Markdown; later the Collage), as a switch */
-.view-switcher { margin-left: auto; }
-.view-switcher ul { padding: 2px; border: 1px solid rgb(255 255 255 / 0.3); border-radius: 999px; }
-.view-switcher a { display: block; padding: 0.2rem 0.8rem; border-radius: 999px; color: var(--colour-header-muted); font-size: 0.8125rem; text-decoration: none; }
+/* the tools, one group at the bar's right end; every tool is a round-ended button as tall as the others */
+.site-tools { display: flex; flex: none; align-items: center; gap: 0.3rem; margin-left: auto; }
+.menu-button__toggle, .search-link, .settings-button { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; min-width: calc(var(--control) + 0.25rem); height: var(--control); padding: 0 0.5rem; border: 1px solid rgb(255 255 255 / 0.3); border-radius: 999px; background: none; color: var(--colour-header-muted); font: inherit; font-size: 0.8125rem; line-height: 1; text-decoration: none; cursor: pointer; }
+:is(.menu-button__toggle, .search-link, .settings-button):is(:hover, :focus-visible) { color: var(--colour-header-text); }
+/* the menu button (a <details>), shown only where the menu does not fit: its panel lists every entry of the menu */
+.menu-button { display: none; }
+.menu-button__toggle { list-style: none; }
+.menu-button__toggle::-webkit-details-marker { display: none; }
+.menu-button[open] > .menu-button__toggle { background: var(--colour-header-text); color: var(--colour-header); }
+.menu-button__toggle svg { flex: none; }
+.menu-panel { position: absolute; top: calc(100% - 0.35rem); right: var(--gap); width: max-content; min-width: 13rem; max-width: calc(100% - 2 * var(--gap)); padding: 0.35rem; border: 1px solid rgb(255 255 255 / 0.2); border-radius: 6px; background: var(--colour-header); box-shadow: 0 8px 24px rgb(0 0 0 / 0.35); font-size: 1rem; }
+.menu-panel ul { flex-direction: column; }
+.menu-panel a { display: flex; align-items: center; min-height: 2.75rem; padding: 0 0.85rem; border-radius: 4px; color: var(--colour-header-muted); text-decoration: none; }
+.menu-panel a:hover { background: rgb(255 255 255 / 0.1); color: var(--colour-header-text); }
+.menu-panel a[aria-current] { color: var(--colour-header-text); box-shadow: inset 3px 0 0 var(--colour-header-text); }
+.menu-panel :focus-visible { outline-offset: -3px; }
+/* the views of this page (Page, Markdown; later the Collage), a switch of round-ended segments, each an icon with its
+   name for screen readers and as a tooltip; it is made for three */
+.view-switcher ul { box-sizing: border-box; height: var(--control); padding: 2px; border: 1px solid rgb(255 255 255 / 0.3); border-radius: 999px; }
+.view-switcher a { display: grid; place-items: center; width: 1.85rem; height: 100%; border-radius: 999px; color: var(--colour-header-muted); text-decoration: none; }
 .view-switcher a:hover { color: var(--colour-header-text); }
 .view-switcher a[aria-current] { background: var(--colour-header-text); color: var(--colour-header); }
-/* the reader's settings: an "Aa" button beside the switch, opening a small panel (assets/settings.js) */
-.settings-button { margin-left: auto; padding: 0.2rem 0.55rem; border: 1px solid rgb(255 255 255 / 0.3); border-radius: 999px; background: none; color: var(--colour-header-muted); font: inherit; font-size: 0.8125rem; font-weight: var(--weight-strong); line-height: 1.3; cursor: pointer; }
-.view-switcher + .settings-button { margin-left: calc(0.5rem - var(--bar-gap)); }   /* close to the switch, whatever the bar's spacing */
-.settings-button:hover, .settings-button:focus-visible { color: var(--colour-header-text); }
+.view-switcher svg { display: block; width: 1rem; height: 1rem; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+/* the reader's settings: an "Aa" button at the end of the bar, opening a small panel (assets/settings.js) */
+.settings-button { font-weight: var(--weight-strong); }
 /* the search page's link before the settings: a magnifier, its name "Search" for screen readers and as a tooltip */
-.search-link { display: inline-flex; align-items: center; margin-left: auto; padding: 0.2rem 0.5rem; border: 1px solid rgb(255 255 255 / 0.3); border-radius: 999px; color: var(--colour-header-muted); font-size: 0.8125rem; line-height: 1.3; text-decoration: none; }
-.view-switcher + .search-link, .search-link + .settings-button { margin-left: calc(0.3rem - var(--bar-gap)); }   /* the switch, search and settings as one group */
-.search-link:hover, .search-link:focus-visible { color: var(--colour-header-text); }
 .search-link[aria-current] { background: var(--colour-header-text); color: var(--colour-header); }
-.search-link svg { flex: none; margin: 0.12rem 0; }
+.search-link svg { flex: none; }
 .search-link__text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .settings { position: fixed; inset: auto; margin: 0; width: max-content; max-width: calc(100vw - 16px); padding: 0.9rem 1rem 1rem; border: 1px solid var(--colour-rule); border-radius: 6px; background: var(--colour-surface); color: var(--colour-text); box-shadow: var(--shadow); font-size: 0.875rem; }
 .settings fieldset { margin: 0; padding: 0; border: 0; }
@@ -438,6 +456,20 @@ a.citation:target { border-radius: 2px; background: var(--colour-highlight); box
 .reference__where > div { display: contents; }
 .reference__where dt { color: var(--colour-muted); }
 .reference__where dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+/* the Copy button beside each work, in a column of its own, and the menu it opens (assets/references.js) */
+.reference.has-copy { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 0.75rem; }
+.reference.has-copy > * { grid-column: 1; }
+.reference.has-copy > .reference__copy { grid-column: 2; grid-row: 1 / span 2; align-self: start; }
+.reference__copy { display: inline-flex; align-items: center; gap: 0.3em; min-height: 2rem; padding: 0 0.6rem 0 0.75rem; border: 1px solid var(--colour-rule); border-radius: 999px; background: var(--colour-surface); color: var(--colour-text); font: inherit; font-size: 0.8125rem; font-weight: var(--weight-strong); line-height: 1.2; white-space: nowrap; cursor: pointer; }
+.reference__copy svg { flex: none; width: 0.75em; height: 0.75em; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+@media (hover: hover) { .reference__copy:hover { border-color: var(--colour-accent); color: var(--colour-accent); } }
+.reference__copy[aria-expanded="true"] { border-color: var(--colour-text); background: var(--colour-text); color: var(--colour-surface); }
+.copy-menu { position: fixed; inset: auto; margin: 0; width: max-content; max-width: calc(100vw - 16px); padding: 0.3rem; border: 1px solid var(--colour-rule); border-radius: 6px; background: var(--colour-surface); color: var(--colour-text); box-shadow: var(--shadow); font-size: 0.9375rem; line-height: 1.3; }
+.copy-menu__item { display: flex; align-items: center; width: 100%; min-height: 2.5rem; padding: 0 0.85rem; border: 0; border-radius: 4px; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.copy-menu__item:is(:hover, :focus) { background: var(--colour-highlight); color: var(--colour-accent); }
+.copy-menu__item:focus-visible { outline: 2px solid var(--colour-accent); outline-offset: -2px; }
+.copy-menu__rule { height: 1px; margin: 0.3rem 0.6rem; background: var(--colour-rule); }
+@media print { .reference__copy { display: none; } }
 
 /* an item's page (/see/<name>/, /listen/, /watch/, /read/): the item, then what there is to know about it */
 .item-facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 0.5rem 1.25rem; margin: calc(var(--space) * 1.5) 0 0; padding-top: var(--space); border-top: 1px solid var(--colour-rule); font-size: 0.9375rem; line-height: 1.5; }
@@ -536,11 +568,15 @@ a.toolkit-name, a .toolkit-name, .toolkit-name a, .built-with a { text-underline
   .has-annotations main { padding-right: calc(var(--gap) + 1.75rem); }
 }
 
-/* tablets and phones: the menu takes a row of its own below the title and the views */
-@media (max-width: 56rem) {
-  .site-bar { --bar-gap: 1rem; row-gap: 0.4rem; padding-bottom: 0.75rem; }
-  .site-menu { order: 3; flex-basis: 100%; font-size: 0.875rem; }
-  .site-menu ul { flex-wrap: wrap; gap: 0.2rem 1rem; }
+/* the menu button: below the width at which the title, the whole menu and the tools stop fitting on one row, the menu
+   folds into the menu button. For this book's menu, with the views switch, the bar needs 62.2rem (995 px at the usual
+   text size, measured in Chromium on 2026-11-23), so the menu shows from 63rem (1008 px) and folds below; in rem, the
+   width grows with the reader's text size. Measure again, and change the width here, when the menu changes. */
+@container (max-width: 63rem) {
+  .site-bar { gap: 1rem; }
+  .site-menu { display: none; }
+  .menu-button { display: block; }
+  .site-title { display: block; flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; line-height: var(--control); }
 }
 
 /* phones: the title in line with the bar; figures stop floating, and every picture is as wide as the text column
@@ -566,20 +602,24 @@ a.toolkit-name, a .toolkit-name, .toolkit-name a, .built-with a { text-underline
   .item-facts dd { margin-bottom: 0.6rem; }
 }
 
-/* small phones: a smaller title and switch, so that the title, switch, search and settings still fit on the bar's first row */
-@media (max-width: 30rem) {
+/* small phones: a smaller title and tools, so that the bar keeps one row (on the smallest the title ends in an
+   ellipsis); the menu's panel is as wide as the bar */
+@container (max-width: 30rem) {
+  .site-bar { --control: 1.625rem; gap: 0.6rem; }
+  .menu-panel { left: var(--gap); right: var(--gap); width: auto; max-width: none; }
   .site-title { font-size: 0.875rem; }
-  .view-switcher a { padding: 0.15rem 0.5rem; font-size: 0.75rem; }
-  .settings-button { padding: 0.15rem 0.4rem; font-size: 0.75rem; }
-  .site-bar { --bar-gap: 0.6rem; }
-  .view-switcher + .settings-button { margin-left: 0; }
-  .search-link { padding: 0.15rem 0.38rem; }
+  .site-tools { gap: 0.25rem; }
+  .menu-button__toggle, .search-link, .settings-button { min-width: var(--control); padding: 0 0.4rem; font-size: 0.75rem; }
+  .view-switcher a { width: 1.6rem; }
 }
-/* the smallest phones: a smaller title and switch still, so that the first row holds the title, the switch, search and the settings */
-@media (max-width: 23.5rem) {
-  .site-title { font-size: 0.75rem; letter-spacing: 0; }
-  .view-switcher a { padding: 0.15rem 0.3rem; font-size: 0.6875rem; }
-  .view-switcher + .search-link, .search-link + .settings-button { margin-left: calc(0.2rem - var(--bar-gap)); }
+/* below 24rem (384 px; 360 px is a common phone) the title is smaller and the tools closer, so that the whole title
+   still fits at 360 px; at 320 px it ends in an ellipsis */
+@container (max-width: 24rem) {
+  .site-bar { gap: 0.5rem; padding-left: 0.75rem; padding-right: 0.75rem; }
+  .site-title { font-size: 0.8125rem; letter-spacing: 0; }
+  .site-tools { gap: 0.2rem; }
+  .menu-button__toggle, .search-link, .settings-button { padding: 0 0.3rem; }
+  .menu-panel { left: 0.75rem; right: 0.75rem; }
 }
 
 /* the search page (assets/search.js): the box (results follow the typing, so it has no button; Enter also searches),
