@@ -143,22 +143,30 @@ The frame of every page:
 
 - **Header.** A bar that is the same on every page and keeps one row at every width from 320 px: the book's title (a
   link to the home page), the menu, and at the right end the tools: the views switch, search and "Aa". The menu is the
-  home page's (`README.md`), followed by "media index" and "references" (the Media Index, shared by all versions,
-  and the References page of the version being read; their words are `FRAME.menu` at the top of
-  `everytrick/build.mjs`); the menus in the other pages' `.ve-header` lines are ignored. Where the whole menu does
-  not fit beside the title and the tools, it folds into a menu button (☰, named "Menu") at the start of the tools,
-  which opens a panel listing every entry (`everytrick/assets/menu.js`): opening it moves the focus to its first
-  entry, Escape closes it and puts the focus back on the button, and a click or tap outside, or Tab past its last
-  entry, closes it. The button is a `<details>`, so without JavaScript it opens and closes all the same. The width at
-  which the menu folds is a container query in `everytrick/assets/site.css` ("the menu button"), in rem, so that it
-  follows the reader's text size: this book's bar needs 62.2rem (995 px at the usual size, measured on 2026-11-23),
-  so the menu shows from 63rem (1008 px) and folds below; measure again and change it when the menu changes. On phones
+  home page's (`README.md`), followed by one entry for the back matter, "about" (its word is `FRAME.menu.backmatter`
+  at the top of `everytrick/build.mjs`; see "Plan: back matter"), so five entries for this book; the menus in the
+  other pages' `.ve-header` lines are ignored. On wide screens "about" is a menu button that opens a short list: About
+  this book (the overview), Contributors & acknowledgements, Colophon, References and media
+  (`everytrick/assets/menu.js`): a click, Enter, Space or ↓ opens it on the first entry (↑ on the last), ↑ ↓ Home
+  End move, Enter follows a link, and Escape closes it and puts the focus back on the button, as Tab, a click outside
+  or the focus leaving do; without JavaScript "about" is a plain link to the overview, `about/`. While one of these
+  pages is open, "about" is marked, and in its list that page. Where the whole menu
+  does not fit beside the title and the tools, it folds into a menu button (☰, named "Menu") at the start of the tools,
+  which opens a panel listing every entry, the list of "about" as an indented group under it (itself a link to the
+  overview): opening it moves the focus to its first entry, Escape closes it and puts the focus back on the
+  button, and a click or tap outside, or Tab past its last entry, closes it. The button is a `<details>`, so without
+  JavaScript it opens and closes all the same. The width at which the menu folds is a container query in
+  `everytrick/assets/site.css` ("the menu button"), in rem, so that it follows the reader's text size: this book's bar
+  needs 54.7rem with the five entries (875 px at the usual size, measured in Chromium on 2026-11-23; it needed 62.2rem
+  with six), so the menu shows from 55.5rem (888 px) and folds below; measure again and change it when the menu
+  changes. On phones
   the title and the tools get smaller; at 320 px the title ends in an ellipsis. The views switch is a round-ended pill
   of icons, each a plain link with its name for screen readers and in a tooltip: Page (a sheet) and Markdown (the
   Markdown mark), and later Collage, the third segment it is made for (its icon waits in a comment in
   `everytrick/template.html`). Below the bar, the page's title, over the picture of its own `.ve-header` line,
   cropped to a band of the same height on every page. A page reached through a card names its section above its title
-  (Podcasts, Events), and that section is marked in the menu. To give a page its own header picture, change the
+  (Podcasts, Events), and that section is marked in the menu; a page of the back matter names "About this book", which
+  leads to the overview. To give a page its own header picture, change the
   picture in its `.ve-header` line.
 - **Search.** A magnifier beside "Aa" leads to the edition's search page, `search/` (see "Plan: search").
 - **Settings.** The "Aa" button at the end of the bar opens the reader's settings (`everytrick/assets/settings.js`):
@@ -169,9 +177,10 @@ The frame of every page:
   Below them, how citations are copied: the citation style (Mattering Press, the preset, APA, Chicago, MLA or Harvard)
   and "Copy citations as" (Formatted, the preset, or Plain text); every Copy on the site follows them (see "Plan:
   copying citations").
-- **Footer.** The publisher's logo (the long one; the icon alone on phones), a credit line with the licence, the
-  book's version line (with links to all versions, to the Media Index and to the References page of the same version)
-  and the toolkit's line. They are set in `FRAME` at the top of `everytrick/build.mjs`, with the logos in
+- **Footer.** The publisher's logo (the long one; the icon alone on phones), a credit line with the book's title and
+  licence, the book's version line with one link, "About this book" (the edition's overview, `about/`, from which the
+  colophon with the versions and data, and References and media, are a click away; the publisher, 2026-11-23, in place
+  of the links to all versions, the Media Index and the References page), and the toolkit's line. They are set in `FRAME` at the top of `everytrick/build.mjs`, with the logos in
   `media/publisher/`; the `.ve-footer` lines in the pages are ignored.
 
 What is in `everytrick/`:
@@ -197,11 +206,11 @@ What is in `everytrick/`:
 - `scripts/number-media.mjs` (`npm run number-media -- <version>`): numbers the media items of a frozen version that have no number yet, in its reading order, and writes the register (see "Freezing a version for review or release")
 - `scripts/fetch-zine.mjs` (`npm run fetch-zine -- <identifier>`): copies a zine's page images from archive.org into `media/zines/<identifier>/`, once, on the editor's computer (see "Documents and zines")
 - `template.html`: the HTML around every page. It links the stylesheet and scripts with `?v=` and a hash of their contents, so that browsers fetch them again after every change instead of keeping an old copy
-- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `search.js` (the search page; see "Plan: search"), `place.js` (keeps the reader's place for the search page's ×), `zoom.js` (the pictures' Zoom buttons, the zoom viewer and the pause button of animations, and the documents' Open buttons and their viewer, in a dialog or on the document's own page; see "Plan: image display and the zoom viewer" and "Documents and zines"), `player.js` (the podcast player and its docked bar; see "Plan: podcast player and transcript"), `citations.js` (the citations' popups), `copy.js` (copying for the scripts below: the reader's citation settings, the clipboard and the status line), `cite.js` (Copy quote, Cite, How to cite in the reader's style, the media items' citations and the popups' Copy buttons; see "Plan: copying citations"), `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens), `media-index.js` (the Media Index's filters, and the editing view's fields, checks and change sheet), `menu.js` (the header's menu button), `references.js` (the References page's Copy buttons)
+- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `search.js` (the search page; see "Plan: search"), `place.js` (keeps the reader's place for the search page's ×), `zoom.js` (the pictures' Zoom buttons, the zoom viewer and the pause button of animations, and the documents' Open buttons and their viewer, in a dialog or on the document's own page; see "Plan: image display and the zoom viewer" and "Documents and zines"), `player.js` (the podcast player and its docked bar; see "Plan: podcast player and transcript"), `citations.js` (the citations' popups), `copy.js` (copying for the scripts below: the reader's citation settings, the clipboard and the status line), `cite.js` (Copy quote, Cite, How to cite in the reader's style, the media items' citations and the popups' Copy buttons; see "Plan: copying citations"), `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens), `media-index.js` (the Media Index's filters, and the editing view's fields, checks and change sheet), `menu.js` (the header's menu button, and the back matter's entry and its list), `references.js` (the References page's Copy buttons and their menu)
 - `images.mjs`: resized images (each zoomable picture in several widths for `srcset`) and the tiles for zooming; an animated GIF becomes an animated WebP and a still; each page of a document gets tiles and two widths (400 and 800 px)
 - `audio.mjs`: reads the length of an MP3 from the file, for the podcast players
 - `check.mjs`, `serve.mjs`: the link check (including every page of every document; it also confirms that every
-  edition has its search index, and its References page with the downloads and the Copy menus' texts, each with every
+  edition has its search index, its overview of About this book and its References and media, and its References' downloads, with the downloads and the Copy menus' texts, each with every
   work) and the local server
 - `CONTRACT.md`: the `page.json`, `publication.json` and `media.json` files that other frontends can read, the paragraph rule and the media items
 - `package.json`: the toolkit's name and version (see "Versions of the book and of everytrick" below)
@@ -230,7 +239,7 @@ What readers see: every caption starts with the item's number, a small pill that
 (`/see/boulder-font/`); a recording has a small caption line below its player with its number and title. The zoom
 viewer shows the number before the caption. Each item's page shows the item, its caption, its credit, its rights and
 how to cite its source, every place it appears, the version it entered with, when it was first published and when its
-file last changed, where it is stored and served from, and its files. `/37/` forwards to item 37's page. The Media Index, `/media-index/` (linked in every footer), lists every
+file last changed, where it is stored and served from, and its files. `/37/` forwards to item 37's page. The Media Index, the second part of References and media (`/about/references-and-media/#media`, shared by every edition and shown on each edition's page; `/media-index/` forwards there), lists every
 item, with its credit and rights, and filters by kind and by where items are served from; `media.json` holds the same
 list as data. Credit, rights and source are shown only when they are filled in: no public page says that one is
 missing, not evaluated or unknown (the publisher, 2026-11-23). Only the editing view's checks say what is missing.
@@ -364,7 +373,8 @@ The precise rule is in `everytrick/CONTRACT.md` ("Paragraph numbers"). A rule ne
 frozen with it, because that version would be renumbered: a new rule comes with a new contract version, and each
 frozen version keeps the rule it was frozen under (`contract` in `versions.json`). Version 0.1 is numbered by
 contract 0.3, which gave each list item its own number. Contract 0.6 (every_trick_in_the_book 1.14.0) added long
-descriptions to the blocks that get no number; no page had one before, so no number changed. The build prints how many paragraphs each page has. To hide the
+descriptions to the blocks that get no number; no page had one before, so no number changed. Contracts 0.7 and 0.8
+(everytrickinthebook 1.15.0 and 1.16.0) keep 0.6's rule. The build prints how many paragraphs each page has. To hide the
 numbers (the ¶ link stays), set `--paragraph-numbers: 0` at the top of `everytrick/assets/site.css`.
 
 ### Versions and the version stamp
@@ -383,7 +393,8 @@ paragraph to the newer text by its words (the same text, or text that shares mos
 link follows the paragraph in the address or the one the reader last scrolled to. A paragraph that was deleted
 or rewritten beyond recognition leads to the nearest paragraph before it that was matched.
 
-Every page's footer shows the book's version and its date, with a link to `/versions/`, which lists every version.
+Every page's footer shows the book's version and its date, with a link to the edition's "About this book" (`about/`),
+whose "Versions and data" names the version and links to `/versions/`, which lists every version.
 The line below it names the version of everytrickinthebook that built the page (see "Versions of the book and
 of everytrick"). The same stamp, `version` for the book and `everytrickinthebook` for the toolkit, is in `publication.json`, every
 `page.json` and the front matter of the Markdown view.
@@ -397,7 +408,7 @@ Each entry in `versions.json` has:
 | `label` | how pages name it, e.g. `Version 0.9, second peer review` |
 | `date` | the day it was frozen or released, e.g. `2026-11-20` |
 | `status` | `review` (frozen for peer review) or `release` (published) |
-| `contract` | the contract current when it was frozen (`CONTRACT` in `everytrick/build.mjs`, e.g. `0.7`): its paragraph rule numbers this version, so its numbers never change |
+| `contract` | the contract current when it was frozen (`CONTRACT` in `everytrick/build.mjs`, e.g. `0.8`): its paragraph rule numbers this version, so its numbers never change |
 | `annotations` | `hypothesis` to open its pages for annotation with Hypothesis (below), otherwise `none` |
 | `hypothesisGroup` | the ID of the private Hypothesis group for its reviewers |
 
@@ -470,7 +481,7 @@ Freezing a version gives its text a permanent address. The text is taken from a 
      "label": "Version 0.9, second peer review",
      "date": "2026-11-20",
      "status": "review",
-     "contract": "0.7",
+     "contract": "0.8",
      "annotations": "hypothesis",
      "hypothesisGroup": "<group ID>"
    }
@@ -522,12 +533,14 @@ During the parallel run the essays keep their typed citations and reference list
   cites; and, for each version, how many citations lead to their page's own list and how many to the References page.
   Correct the essay, or add the work to the bibliography, and build again.
 
-The References page, `/references/`, lists every work in the bibliography once, formatted in the house style and in
-the order of its reference lists (by author, then year), each with an anchor made from its key (`/references/#hall2001`).
+The References, the first part of References and media (`/about/references-and-media/`; `/references/` forwards there,
+keeping the fragment), list every work in the bibliography once, formatted in the house style and in
+the order of its reference lists (by author, then year), each with an anchor made from its key
+(`/about/references-and-media/#hall2001`).
 Under each work: every passage that cites it, as page title and paragraph ("Introduction, para. 12"), linked to the
 citation itself (`/essays/introduction/#cite-hall2001-1`), and every page whose typed list includes it, linked to the
-entry there. Each frozen version has its own (`/v0.1/references/`), because which passages cite a work, and their
-numbers, differ between versions. Every footer links to the References page of its version. All the references are
+entry there. Each frozen version has its own (`/v0.1/about/references-and-media/`), because which passages cite a work, and their
+numbers, differ between versions. The menu's "about" leads to References and media of the version being read. All the references are
 formatted in one citeproc run over the whole bibliography, so the year letters (Stengers 2005a and 2005b) are the
 book's, on the References page and in the popups alike; the typed lists show what their authors typed (Podcasts types
 "Stengers (2005)" for 2005a). When generated lists replace the typed ones, they must keep the book's letters: citeproc
@@ -554,6 +567,37 @@ every work. The formats of these files are in `everytrick/CONTRACT.md`.
 At the switch to the static edition, `node scripts/to-citation-keys.mjs` prints the change that turns the typed
 citations into Pandoc citations (`[@becker2007, p. 74]`, `[-@fryer1984]` where the author is named in the sentence) and
 replaces each typed list with the list that citeproc generates. It is a dry run: it prints a diff and changes nothing.
+
+### Back matter: About this book
+
+The back matter closes the book in every edition (the plan: "Plan: back matter"; the data: "Back matter" in
+`everytrick/CONTRACT.md`). Readers know it as About this book, and never see the words "back matter", which stay the
+term in the code and these notes. Its overview, `/about/` (and `/v0.1/about/`), has a short paragraph and a line for
+each of its three parts; the build writes it from `BACKMATTER` at the top of `everytrick/build.mjs`. Its sources are in
+`about/` at the root of the repository:
+
+- `contributors.md`: Contributors & acknowledgements, `/about/contributors/`, a page of the book like the essays,
+  numbered and searched. It was `essays/contributors.md` until 23 November 2026; `/essays/contributors/` forwards to
+  it, and version 0.1 keeps it where it was.
+- `acknowledgements.md`: the author's own thanks, added to that page under the heading "Acknowledgements", numbered and
+  searched with it. Write them below the comment in the file; while it holds only the comment, the page has no such
+  section.
+- `colophon.md`: the Colophon, `/about/colophon/`: "Making this book", Mattering Press' standard opening ("Books contain
+  multitudes. … We would like to thank", for the author to finish), and "Mattering Press", the publisher's statement,
+  both numbered and searched. The build adds below them the book's licence and "Versions and kit". It gives its title
+  in a YAML front matter (`title: Colophon` between two `---` lines at its start), which any page may use instead of a
+  `.ve-header` line.
+- `colophon-note.md`: the publisher's own sentences for "Versions and kit", optional. Write them below the comment in
+  the file; while it holds only the comment, they show nothing.
+
+References and media, `/about/references-and-media/`, is made by the build from the bibliography and the media
+register (see "References and citations" and "The media register"). The addresses used before 1.16.0 forward to the
+new ones, keeping the fragment where there is one: `/references/` (whose downloads stay where they are),
+`/media-index/` (to `#media`; its editing view stays at `/media-index/edit/`), and the preview's `/back-matter/…`.
+
+To add a page to About this book, put it in `about/` and add it, with its line for the overview, to `BACKMATTER.pages`
+in `everytrick/build.mjs`, which sets the order. To change the menu's word, change `FRAME.menu.backmatter` there, and
+measure the bar again (see "Header" above).
 
 ## Previews
 
@@ -592,7 +636,7 @@ Previews are throwaway: they are not versions, never enter `versions.json`, and 
 
 Agreed with the publisher on 2026-11-19. The static twin does not implement all of this yet; it is the plan the build must follow.
 
-- **Views.** Every page is offered as plain links that work without JavaScript: the rendered page, a Markdown view of its converted Pandoc Markdown, and later site-level Collage and List views. The header's switch holds them as a pill of icons with their names, Page and Markdown now, made for a third segment, Collage (the publisher, 2026-11-23; see "Header" above); the List view is the Media Index, which the menu and every footer link to. Media appear in the Markdown view as standard image syntax and `:::` blocks containing ordinary links.
+- **Views.** Every page is offered as plain links that work without JavaScript: the rendered page, a Markdown view of its converted Pandoc Markdown, and later site-level Collage and List views. The header's switch holds them as a pill of icons with their names, Page and Markdown now, made for a third segment, Collage (the publisher, 2026-11-23; see "Header" above); the List view is the Media Index, which the menu's back matter entry leads to. Media appear in the Markdown view as standard image syntax and `:::` blocks containing ordinary links.
 - **Versioned text links.** Each public release lives at a frozen address, for example `/v1/essays/aya_nassar/#p12`. Paragraphs are numbered cleanly in every release. Links that people copy or share always carry the version; plain addresses such as `/essays/aya_nassar/` mean "latest". A page in an older version shows a short notice linking to the same passage in the newest version, matched by its text. Only releases are public: corrections collect on GitHub until the next release. Paragraphs are numbered per chapter, the same unit as the chapter DOIs.
 - **Exact quotes.** Links can add a text fragment (`#p12:~:text=…`) so the browser highlights the quoted words. The stylesheet styles `:target` and `::target-text`.
 - **Media addresses are unversioned.** Every image, audio and video item gets its own page at a permanent, word-based address, such as `/see/plumbline`, `/listen/boulder` or `/watch/<name>`. Audio and video addresses may carry a start time (`#t=12:40`). If a file is replaced, the address stays and the item page notes the change.
@@ -816,21 +860,23 @@ waits for the print edition; how editors use it is in "The media register" above
   source in the house style, with its maker, title, date and holder
   (`Clarke Fitzgerald, ‘The Plumb Line and the City’ (1971), Coventry Cathedral`), and the item page shows it as
   "Source". It was filled in only where a caption already named maker and date (items 7, 10, 24 and 64). Each item's
-  citation ends with it (everytrickinthebook 1.16.0; see "Plan: copying citations").
+  citation ends with it (everytrickinthebook 1.17.0; see "Plan: copying citations").
 - **Public pages never show a missing field** (the publisher, 2026-11-23). Credit, rights and source appear on item
   pages, in the Media Index and in captions only when they are filled in, and nothing public says "not evaluated",
   "none", "unknown" or "missing". Only the editing view marks what is missing, in its checks beside each item.
-- **The Media Index** (`/media-index/`) is a page of the book that lists every item by number, with a thumbnail, its
+- **The Media Index** (`/media-index/`; since everytrickinthebook 1.16.0 the second part of References and media,
+  `/about/references-and-media/#media`, see "Plan: back matter") is a page of the book that lists every item by number, with a thumbnail, its
   title, kind and address, where it appears (links to the item in its page), the version it entered with, where it
   is stored and where it is served from, and its credit and rights when it has them. It can be filtered by kind and by
   where items are served from; without JavaScript it is a plain list. It is the "List" view of "Plan: stable links",
-  and the footer links to it.
+  and the menu's "about" leads to it (see "Plan: back matter").
 - **Search** finds the items of the Media Index (the publisher, 2026-11-23): each entry's title and address are in
-  the latest text's search index, and a result leads to the entry (`/media-index/#item-37`), labelled "item 37" where
+  the latest text's search index, and a result leads to the entry (`/about/references-and-media/#item-37`), labelled "item 37" where
   a page shows "para. 12" (see "Plan: search"). Its other facts (where it appears, its version, where it is stored
   and served from) are left out, and so are the item pages, whose words the Media Index holds (except the text of a
   document's pages, see "Plan: documents and zines"), the short and former addresses and the editing view. The Media
-  Index and the item pages are shared by every version, so a frozen version's search does not have them.
+  Index and the item pages are shared by every version, so a frozen version's search does not have them (its References
+  and media shows the Media Index, but leaves it out of its index).
 - **The editing view** (`/media-index/edit/`) is built on previews only, never on the public site. It is the same list
   with fields for the name, the credit, the rights (a choice of the common rightsstatements.org statements and Creative
   Commons licences, plus any other address typed in) and their note, how to cite the source, the caption and alt text
@@ -868,9 +914,10 @@ with a permanent key. Built in everytrickinthebook 1.12.0 (23 November 2026), wi
 downloading the bibliography (the publisher, 2026-11-23), except the Zotero library, which is for later; how it works
 is in "References and citations" above.
 
-- **One page for the whole book**, `/references/`, lists every work in the bibliography once, formatted in the house
-  style, each with an anchor made from its key (`/references/#hall2001`). Under each work: every passage that cites it
-  (page and paragraph) and every page whose reference list includes it. The footer links to it.
+- **One page for the whole book**, `/references/` (since everytrickinthebook 1.16.0 the first part of References and
+  media, `/about/references-and-media/`, see "Plan: back matter"), lists every work in the bibliography once, formatted
+  in the house style, each with an anchor made from its key (`#hall2001`). Under each work: every passage that cites it
+  (page and paragraph) and every page whose reference list includes it. The menu's "about" leads to it.
 - **Citations** link to the work in their page's own reference list when the page lists it, and otherwise to its entry
   on the References page, no longer to the first page in reading order that lists it. The popups stay.
 - **Year letters** (Stengers 2005a and 2005b) are fixed for the whole book, also once reference lists are generated
@@ -878,12 +925,12 @@ is in "References and citations" above.
 - **Search** finds the works of the References page (the publisher, 2026-11-23): each edition's index has its own
   References page, and a work found there is listed by itself, labelled as the text cites it ("Stengers 2005a",
   from citeproc in the house style; its key if citeproc gives none), with a link to its entry
-  (`/references/#stengers2005a`; see "Plan: search"). The lists of the passages and pages under each work are left
+  (`/about/references-and-media/#stengers2005a`; see "Plan: search"). The lists of the passages and pages under each work are left
   out, so that searching a page's title does not list every work it cites.
 - **Copy a reference** (the publisher, 2026-11-23): beside each work a Copy button copies it in the citation style the
   reader has chosen in the settings, Mattering Press' house style (as the page shows it), APA (7th edition), Chicago
   (author-date), MLA (9th edition) or Harvard (Cite Them Right), and says what it copied ("Copied: APA"); see "Plan:
-  copying citations". Until everytrickinthebook 1.16.0 it opened a menu of the styles, with BibTeX and RIS.
+  copying citations". Until everytrickinthebook 1.17.0 it opened a menu of the styles, with BibTeX and RIS.
   The other styles are made at build time by Pandoc's citeproc with the styles of the official CSL repository, pinned
   to a commit. It works with the keyboard and on phones; without JavaScript there are no buttons. The buttons are
   interface, not reading text, and are kept out of the search index.
@@ -893,8 +940,9 @@ is in "References and citations" above.
   which lead to the citation in the text, and the pages whose reference lists include it. Copy any reference in
   another style with the Copy button beside it, or download them all as BibTeX, RIS or CSL-JSON." (the number is
   counted at every build; the page names the house style "Mattering Press’ house style" throughout).
-- **In the menu** (the publisher, 2026-11-23): the header's menu ends with "media index" and "references" on every
-  page (see "Header" above).
+- **In the menu** (the publisher, 2026-11-23): the header's menu ended with "media index" and "references" on every
+  page; later that day the publisher replaced both with one entry, "about", whose list leads to References and media,
+  where the References and the Media Index are one page (see "Plan: back matter").
 - **Later, perhaps** (the publisher, 2026-11-22: "keep it for later"): references edited in a Zotero group library and
   handed over to `references/bibliography.json` on a branch.
 
@@ -903,7 +951,7 @@ is in "References and citations" above.
 Agreed with the publisher on 2026-11-23. It gathers what earlier plans
 promised: a "Cite this" panel and "copy quote with citation" (notes of 19 November), exact quotes as text fragments
 ("Plan: stable links, versions and print companions"), citing a media item like a paragraph ("Plan: media register,
-item pages and the Media Index") and the house style's `(Nassar 2026: para. 12)`. Built in everytrickinthebook 1.16.0
+item pages and the Media Index") and the house style's `(Nassar 2026: para. 12)`. Built in everytrickinthebook 1.17.0
 (23 November 2026); the credits on the pages are a draft until Nirmal Puwar confirms them. The data are in
 `everytrick/CONTRACT.md` ("Credits", "Citing the book").
 
@@ -914,7 +962,7 @@ item pages and the Media Index") and the house style's `(Nassar 2026: para. 12)`
   in `interviewer:`, so a podcast credits both the person interviewed and the interviewer (the publisher, 2026-11-23).
   Everyone who made a page is named in its citation (the publisher, 2026-11-23): the podcasts' producer in `producer:`
   and their transcription editor in `transcript-editor:`. Names are written "Family, Given". `convert.mjs` reads the
-  block and leaves it out of the page's text. The names go into `page.json` (contract 0.8; the paragraph rule does not
+  block and leaves it out of the page's text. The names go into `page.json` (contract 0.9; the paragraph rule does not
   change) and later to Thoth. The book's own data (editors, publisher, year, licence) stay in `build.mjs`. The build
   warns about a page that has numbered paragraphs but no author. A page of a frozen version takes the credits of the
   same page in the latest text when its own text has none.
@@ -984,7 +1032,7 @@ item pages and the Media Index") and the house style's `(Nassar 2026: para. 12)`
   CSL and the others with the official styles the References page uses, so they match the reference lists; the
   browser adds only the date accessed.
   The same data give every page Google Scholar `citation_*` tags and a JSON-LD block.
-- **Built** in everytrickinthebook 1.16.0: the credits, the page data, the settings, Copy quote, Cite, How to cite this
+- **Built** in everytrickinthebook 1.17.0: the credits, the page data, the settings, Copy quote, Cite, How to cite this
   page, the media items and the citation popups' Copy button (`everytrick/cite.mjs`, `everytrick/assets/cite.js`,
   `everytrick/assets/copy.js`). The credits in the pages are the draft sent to Nirmal Puwar; correct them in each
   page's block once she answers.
@@ -1011,11 +1059,16 @@ dependency of `everytrick/`; MIT licence).
   colours. A list page lists its entries instead, each labelled in the page's Pagefind meta (`entry-<id>`): the
   Media Index's results are its items, "item 37", with a link to `#item-37`, and the References page's its works,
   as the text cites them ("Stengers 2005a"), with a link to `#stengers2005a`.
+- **About this book** (the back matter; the publisher, 2026-11-23): Contributors & acknowledgements and the Colophon's
+  Making this book and publisher's statement are in each edition's index like any page; what the build writes on the
+  Colophon (the licence, versions and kit: `data-pagefind-ignore`) and the overview are in none; References and media
+  is in each edition's index with its References, and in the latest text's with its Media Index too (see "Plan: back
+  matter").
 - **Only the reading text.** The template marks `<main>` of real pages for indexing (`data-pagefind-body`) and the
   page's title as the result's title. The Markdown views, `publication/`, `versions/` and `search/` are not indexed.
   Cards are left out (`data-pagefind-ignore`, set by `filters/cards.lua`), so the words in a card are found on the
   page it leads to; a page with only cards (Events) has nothing to find. Transcripts, captions and alt text are in.
-  Each edition's References page is in its index, and the Media Index in the latest text's; the media items' own
+  Each edition's References are in its index, and the Media Index in the latest text's (both on References and media); the media items' own
   pages, their short and former addresses and the editing view are in none (see "Plan: media register, item pages
   and the Media Index" and "Plan: the References page"). The References page's Copy buttons are interface, made by its
   script, so no index has them; the header, the menu panel included, is outside `<main>`. The text of a document's
@@ -1032,6 +1085,65 @@ dependency of `everytrick/`; MIT licence).
 - **Later.** WebVTT captions join the index when they exist (the media item pages stay out: the Media Index holds
   their words); filters (by section, or by route once "several routes" is settled) can be added with
   `data-pagefind-filter`.
+
+## Plan: back matter
+
+Agreed with the publisher on 2026-11-23, restructured the same day as below, and built in everytrickinthebook 1.16.0
+(contract 0.8). The book's structure gets a back matter: the parts that follow its text, as in EPUB (`backmatter`),
+LaTeX (`\backmatter`) and JATS and BITS (`<back>`, `<book-back>`), which pairs with front matter; British usage (Oxford
+style) calls it end matter. The code, classes, data and these notes say `backmatter`; readers never see the term: they
+see "About this book".
+
+- **One menu entry.** "about" (the publisher's word, lower case like the other entries; first proposed as "end
+  matter") replaces "media index" and "references", so the menu has five entries again, and the width at which it folds
+  into the menu button was measured again and lowered from 63rem to 55.5rem. It is one setting,
+  `FRAME.menu.backmatter` in `everytrick/build.mjs`. On wide screens it opens a small list: About this book (the
+  overview), Contributors & acknowledgements, Colophon, References and media (the menu button pattern; Escape closes
+  it); in the phone panel the list is an indented group under it; without JavaScript it is a plain link to the
+  overview (see "Header" above). Each of these pages names "About this book" above its title, leading to the overview.
+- **The overview**, `/about/`, one in every edition (the latest text and each frozen version): a short paragraph, then
+  the three parts, each with its link and a line. Not numbered, not indexed.
+- **Contributors & acknowledgements**, `/about/contributors/`: the contributors page, moved from
+  `essays/contributors.md` to `about/contributors.md` (`/essays/contributors/` forwards to it; version 0.1 keeps its
+  page where it was), followed by an "Acknowledgements" section for the author's own thanks, from
+  `about/acknowledgements.md`, which is empty now and then shows nothing.
+- **Colophon**, `/about/colophon/` (from `about/colophon.md`), in this order: "Making this book", Mattering Press'
+  standard opening, "Books contain multitudes. … We would like to thank", left unfinished for the author; "Mattering
+  Press", the publisher's statement in full (three paragraphs, the wording as the publisher's copy has it, "The Press’"
+  included, with matteringpress.org a link); then, built, the book's licence (CC BY 4.0, linked) and a sentence that
+  media items may carry other rights, which the Media Index gives item by item; and "Versions and kit", built: this
+  edition's version and date and a link to all versions; the open data (`publication.json`, `media.json`, the Markdown
+  views, the whole book in Markdown, the bibliography's downloads) in the format of the data contract, with its version;
+  the publisher's own sentences, if `about/colophon-note.md` holds any (it is empty now); everytrickinthebook with its
+  version, linked to its home and its list of changes; the typeface (Roboto), Pandoc, Pagefind, OpenSeadragon and the
+  CSL citation styles with their licences (as `everytrick/NOTICE.md` lists them); and where the site is hosted (GitHub
+  Pages). Making this book and the statement are the publisher's, not the book's text: a version frozen before they
+  existed (version 0.1) shows the latest text's.
+- **References and media**, `/about/references-and-media/` (and `/v0.1/about/references-and-media/`): the References
+  page and the Media Index on one page, the References first, with a small "References | Media" switch at the top that
+  leads to either part (`#references`, `#media`). Each entry keeps its anchor (`#hall2001`, `#item-37`), the Copy
+  menus, the downloads (still in `references/`), the filters, the labels in search results and the indexing they had:
+  the References in each edition's index, the Media Index in the latest text's only (a frozen version shows it but
+  leaves it out of its index). Citations, the "Cited in" links, the item pages and the captions' pills lead to the new
+  page directly. `/references/` (in each edition) and `/media-index/` (to `#media`) forward to it, keeping the fragment
+  (a script with `location.replace`; a meta refresh without JavaScript); the editing view stays at
+  `/media-index/edit/`.
+- **Former addresses.** Besides those above, the preview's `/back-matter/` forwards to `/about/`,
+  `/back-matter/contributors/` to `/about/contributors/` and `/back-matter/acknowledgements/` to the Colophon's
+  `#making-this-book`.
+- **The footer is lighter**: the book's title and licence, its version, and one link, "About this book", to the
+  overview, in place of the links to all versions, the Media Index and the References page; the toolkit's credit line
+  stays.
+- **Routes, search and numbers.** The back matter belongs to no route and closes every route (see the note in "Plan,
+  not yet confirmed: several routes through a book"). Contributors & acknowledgements and the Colophon's Making this
+  book and statement are reading text: numbered by the paragraph rule and in the edition's search index. What the build
+  writes (the licence, versions and kit) and the overview are not numbered and not indexed.
+- **Reading order and data.** The back matter's pages (Contributors & acknowledgements, the Colophon's own text) close
+  `readingOrder` in `publication.json` and the whole book in Markdown, `publication.md`, each marked
+  `part: "backmatter"`, the others `part: "body"`, also in its `page.json`; `publication.json` gains `backmatter`, the
+  overview and its parts. Citations whose page does not list their work, and `references` in `page.json`, lead to
+  `about/references-and-media/#<key>`. That is contract 0.8, whose paragraph rule is 0.7's, unchanged; no paragraph
+  of an existing page changed its number.
 
 ## Plan, not yet confirmed: several routes through a book
 
@@ -1062,6 +1174,10 @@ The idea: a book can have more than one table of contents. Each is a route of it
 - **Extracts are named, not numbered** (note added 2026-11-22). An extract should point at its passage by a name given to that passage in its source page, not by paragraph numbers (`#p12-p18`), because those move when the source changes above the passage, and the chapter would then silently show other paragraphs. The build works out the numbers for the extract's label ("Nassar, paras 12–18") at every build. This matters only if chapters show extracts (open question 2).
 - **References.** Stay at the end of each page. An extract brings the references cited in its paragraphs. A citation whose work its page does not list links to its entry on the References page (see "Plan: the References page").
 - **Media.** Every media item keeps its one number from the media register on every route; lists of media follow the route's order (see "Plan: media register, item pages and the Media Index").
+- **Back matter** (note added 2026-11-23): the back matter, which readers know as About this book (Contributors &
+  acknowledgements, Colophon, References and media; see "Plan: back matter"), belongs to no route and closes every
+  route: each route's reading order and
+  its `publication.md` end with it.
 - **Build and contract.** `publication.json` gets `routes`, each with its own reading order; `readingOrder` stays and means the starting route. Each route gets its own `publication.md`. An extract block (`::: {.extract from="essays/aya_nassar.md#p12-p18"}`) is filled in from the source page. The contract and the toolkit's version go up.
 
 Open questions:

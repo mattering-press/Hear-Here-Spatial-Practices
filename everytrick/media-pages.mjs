@@ -1,5 +1,5 @@
 // The HTML of the media items' own pages (the facts below the item, and below a document's viewer its text and its
-// download), the Media Index (/media-index/), its editing view (/media-index/edit/, built for previews only) and the small
+// download), the Media Index (on about/references-and-media/, after the References), its editing view (/media-index/edit/, built for previews only) and the small
 // pages that forward a short address (/37/) or a former name to an item's page. build.mjs prepares the items (see
 // itemView there) and puts this HTML into the site's template; assets/media-index.js adds the filters, and the editing
 // view's fields, checks and change sheet.
@@ -157,7 +157,7 @@ function entry(it, root, inner = '', { searched = false } = {}) {
 ${pill(it, root, ignore)}
 ${thumb(it, root, ignore)}
 <div class="media-entry__body">
-<h2 class="media-entry__title"><a href="${href(root, it.url)}">${esc(it.heading)}</a></h2>
+<h3 class="media-entry__title"><a href="${href(root, it.url)}">${esc(it.heading)}</a></h3>
 <p class="media-entry__address"><span class="media-entry__kind">${it.kind}</span> · <a href="${href(root, it.url)}">/${esc(it.url)}</a>${it.short ? ` · <a href="${href(root, it.short)}">/${esc(it.short)}</a>` : ''}</p>
 <dl class="media-entry__facts"${ignore}>
 <div><dt>Appears in</dt><dd>${places(it, root)}</dd></div>
@@ -169,11 +169,11 @@ ${inner}</div>
 </li>`;
 }
 
-export function mediaIndexHtml(items, { root, script, preview }) {
+export function mediaIndexHtml(items, { root, script, preview, edit = 'edit/' }) {
   const numbered = items.filter((it) => it.label).length;
   return `<div class="media-index">
 <p class="media-index__intro">Every picture, recording, video and document in the book has a number of its own, the same on every page that shows it and in every version. Each has its own page, at the address below its title. ${numbered} items have their number; ${items.length - numbered ? `${items.length - numbered} new ${items.length - numbered === 1 ? 'one gets its number' : 'ones get theirs'} when the next version is frozen.` : 'new ones get theirs when the next version is frozen.'} The same list as data: <a href="${href(root, 'media.json')}">media.json</a>.</p>
-${preview ? `<p class="media-index__preview" data-pagefind-ignore>This preview also has an <a href="edit/">editing view</a> of the list, for checking names, credits, rights, sources, captions and alt text.</p>\n` : ''}<div class="media-filters" hidden></div>
+${preview ? `<p class="media-index__preview" data-pagefind-ignore>This preview also has an <a href="${esc(edit)}">editing view</a> of the list, for checking names, credits, rights, sources, captions and alt text.</p>\n` : ''}<div class="media-filters" hidden></div>
 <ol class="media-list">
 ${items.map((it) => entry(it, root, '', { searched: true })).join('\n')}
 </ol>
@@ -254,7 +254,10 @@ ${list.join('\n')}
 
 // ---- A page that forwards an old or short address ---------------------------------------------------------------
 
-export function forwardHtml({ lang, title, target, canonical, stylesheet, text }) {
+// keepFragment: a script forwards with the fragment of the address the reader came to (#hall2001 instead of the target's
+// own, if it has one); the meta refresh, only for readers without JavaScript, leads to the target as it is.
+export function forwardHtml({ lang, title, target, canonical, stylesheet, text, keepFragment = false }) {
+  const script = keepFragment ? `\n  <script>try{var t=${JSON.stringify(target).replace(/</g, '\\u003c')},h=location.hash;location.replace(h?t.split('#')[0]+h:t)}catch(e){}</script>` : '';
   return `<!DOCTYPE html>
 <html lang="${esc(lang)}">
 <head>
@@ -262,8 +265,8 @@ export function forwardHtml({ lang, title, target, canonical, stylesheet, text }
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex">
   <title>${esc(title)}</title>
-  <link rel="canonical" href="${esc(canonical)}">
-  <meta http-equiv="refresh" content="0; url=${esc(target)}">
+  <link rel="canonical" href="${esc(canonical)}">${script}
+  ${keepFragment ? '<noscript>' : ''}<meta http-equiv="refresh" content="0; url=${esc(target)}">${keepFragment ? '</noscript>' : ''}
   <link rel="stylesheet" href="${esc(stylesheet)}">
 </head>
 <body>

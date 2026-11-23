@@ -51,11 +51,8 @@ $endif$
 $for(menu)$
           <li>$menu$</li>
 $endfor$
-$if(menu-media-index)$
-          <li><a href="$shared$media-index/"$if(on-media-index)$ aria-current="page"$elseif(in-media-index)$ aria-current="true"$endif$>$menu-media-index$</a></li>
-$endif$
-$if(menu-references)$
-          <li><a href="$root$references/"$if(on-references)$ aria-current="page"$endif$>$menu-references$</a></li>
+$if(backmatter-menu)$
+          $backmatter-menu$
 $endif$
         </ul>
       </nav>
@@ -67,11 +64,8 @@ $endif$
 $for(menu)$
               <li>$menu$</li>
 $endfor$
-$if(menu-media-index)$
-              <li><a href="$shared$media-index/"$if(on-media-index)$ aria-current="page"$elseif(in-media-index)$ aria-current="true"$endif$>$menu-media-index$</a></li>
-$endif$
-$if(menu-references)$
-              <li><a href="$root$references/"$if(on-references)$ aria-current="page"$endif$>$menu-references$</a></li>
+$if(backmatter-panel)$
+              $backmatter-panel$
 $endif$
             </ul>
           </nav>
@@ -83,7 +77,7 @@ $if(views)$
             <li><a href="$view-markdown$" title="Markdown"$if(on-markdown)$ aria-current="page"$endif$><svg aria-hidden="true" viewBox="0 0 16 16" width="16" height="16"><rect x="1" y="3.5" width="14" height="9" rx="1.75"/><path d="M3.5 10V6l1.75 2 1.75-2v4 M11 6v4 M9.5 8.5 11 10l1.5-1.5"/></svg><span class="visually-hidden">Markdown</span></a></li>
 <!-- Later, site-level views of the whole book, once they exist. The switch is made for a third segment:
             <li><a href="$root$collage/" title="Collage"><svg aria-hidden="true" viewBox="0 0 16 16" width="16" height="16"><rect x="1.75" y="1.75" width="5.5" height="7" rx="0.75"/><rect x="8.75" y="1.75" width="5.5" height="4.5" rx="0.75"/><rect x="8.75" y="7.75" width="5.5" height="6.5" rx="0.75"/><rect x="1.75" y="10.25" width="5.5" height="4" rx="0.75"/></svg><span class="visually-hidden">Collage</span></a></li>
-            The List view is the Media Index, $shared$media-index/, which the menu and the footer's version line link to.
+            The List view is the Media Index, on $root$about/references-and-media/, which the menu’s "about" leads to.
 -->
           </ul>
         </nav>

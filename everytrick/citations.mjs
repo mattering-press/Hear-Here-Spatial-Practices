@@ -11,7 +11,7 @@
 //   report(...)                 the build's summary: per page counts, unmatched citations, uncited entries
 //   formatReferences(options)   every work in the styles of the References page's Copy menus, as plain text, and as
 //                               BibTeX and RIS; and the whole bibliography as BibTeX, RIS and CSL-JSON, for its downloads
-//   referencesHtml(works, …)    the References page of an edition (/references/): every work once, with the passages
+//   referencesHtml(works, …)    the References of an edition (about/references-and-media/): every work once, with the passages
 //                               that cite it and the pages whose reference lists include it
 import { spawnSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -246,8 +246,9 @@ export function report(pages, index, warnings) {
   return out;
 }
 
-// The References page of an edition (references/ at its root): every work of the bibliography once, in the order of
-// the house style's reference list, as <li id="<key>" class="reference">, so that /references/#hall2001 finds it. Under
+// The References of an edition (the first part of about/references-and-media/ at its root): every work of the
+// bibliography once, in the order of the house style's reference list, as <li id="<key>" class="reference">, so that
+// about/references-and-media/#hall2001 finds it. files: the way from the page to its downloads (references/). Under
 // the formatted reference: the passages that cite it ("Introduction, para. 12", each a link to the citation,
 // #cite-hall2001-1) and the pages whose typed reference lists include it (a link to #ref-hall2001 there).
 // Search finds each work by its formatted reference and lists it as a place of its own on the page: data-pagefind-meta
@@ -265,7 +266,7 @@ export function report(pages, index, warnings) {
 export const DOWNLOADS = { bibtex: 'bibliography.bib', ris: 'bibliography.ris', csljson: 'bibliography.json' };
 export const COPY_DATA = 'formatted.json';
 const escHtml = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-export function referencesHtml(works, { root }) {
+export function referencesHtml(works, { root, files = '' }) {
   const place = (c) => (c.para ? `para. ${c.para.slice(1)}` : c.note ? `note ${c.note.slice(1)}` : c.after ? `after para. ${c.after.slice(1)}` : '');
   const link = (url, text) => `<a href="${escHtml(root + url)}">${escHtml(text)}</a>`;
   const entry = (w) => {
@@ -275,9 +276,9 @@ export function referencesHtml(works, { root }) {
     return `<li id="${escHtml(w.key)}" class="reference" data-pagefind-meta="${escHtml(`entry-${w.key}:${w.cite || w.key}`)}">\n<p class="reference__text">${w.html}</p>\n` +
       (rows.length ? `<dl class="reference__where" data-pagefind-ignore>\n${rows.join('\n')}\n</dl>\n` : '') + '</li>';
   };
-  const download = (file, name) => `<a href="${escHtml(file)}" download>${name}</a>`;
+  const download = (file, name) => `<a href="${escHtml(files + file)}" download>${name}</a>`;
   const styles = COPY_STYLES.map(({ id, label, short, entry }) => ({ id, label, short, ...(entry ? { entry } : {}) }));
-  return `<div class="references" data-copy="${escHtml(COPY_DATA)}" data-copy-styles="${escHtml(JSON.stringify(styles))}">
+  return `<div class="references" data-copy="${escHtml(files + COPY_DATA)}" data-copy-styles="${escHtml(JSON.stringify(styles))}">
 <p class="references__intro">All ${works.length} works in the book’s bibliography, in ${escHtml(HOUSE_STYLE)}. Under each work are the passages that cite it, which lead to the citation in the text, and the pages whose reference lists include it. Copy any reference in another style with the Copy button beside it, or download them all as ${download(DOWNLOADS.bibtex, 'BibTeX')}, ${download(DOWNLOADS.ris, 'RIS')} or ${download(DOWNLOADS.csljson, 'CSL-JSON')}.</p>
 <ul class="reference-list">
 ${works.map(entry).join('\n')}

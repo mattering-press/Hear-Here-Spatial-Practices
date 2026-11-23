@@ -20,9 +20,12 @@
 //                                                  the PDF itself (a document's caption line has its download)
 // .ve-header and .ve-footer become page data (title, menu, footer); .ve-style and .ve-script are dropped.
 //
-// A page may start with a block of credits, who made it, for its citations ("Plan: copying citations" in
-// DEVELOPMENT.md; "Credits" in CONTRACT.md). It is read here and left out of the Markdown:
+// A page may start with a front matter: its title and subtitle, for a page written in Pandoc's conventions (in place of
+// a .ve-header line), and its credits, who made it, for its citations ("Plan: copying citations" in DEVELOPMENT.md;
+// "Credits" in CONTRACT.md). It is read here and left out of the Markdown, its lines left empty, so that line numbers
+// in warnings stay the file's:
 //   ---
+//   title: Acknowledgements
 //   author:
 //     - Nassar, Aya
 //   interviewer: Puwar, Nirmal
@@ -79,12 +82,13 @@ const inWorkingTree = (path) => existsSync(join(REPO_ROOT, path));
 // The roles a page's credits may name, in the order its citations name them.
 export const CREDIT_ROLES = ['author', 'interviewer', 'producer', 'transcript-editor'];
 
-// The block of credits at the top of a page (lines[0] is ---), as { credits, end }: end is the index of its closing
-// line. A name "Family, Given" -> { family, given }; a name without a comma -> { literal }.
+// The front matter at the top of a page (lines[0] is ---), as { title, subtitle, credits, end }: end is the index of
+// its closing line. A name "Family, Given" -> { family, given }; a name without a comma -> { literal }.
+const FRONT_TEXTS = ['title', 'subtitle'];
 function readCredits(lines, file, fail) {
   const end = lines.findIndex((l, i) => i > 0 && /^(---|\.\.\.)\s*$/.test(l));
-  if (end < 0) { fail(1, lines[0], 'the block of credits at the top of the page has no closing ---'); return { credits: null, end: -1 }; }
-  const credits = {};
+  if (end < 0) { fail(1, lines[0], 'the front matter at the top of the page has no closing ---'); return { credits: null, end: -1 }; }
+  const credits = {}, texts = {};
   let key = null;
   const name = (text) => {
     const value = text.trim().replace(/^(["'])(.*)\1$/, '$2');
@@ -95,18 +99,21 @@ function readCredits(lines, file, fail) {
     const line = lines[i];
     if (!line.trim() || /^\s*#/.test(line)) continue;
     const entry = /^([\w-]+):\s*(.*)$/.exec(line), item = /^\s+-\s+(.+)$/.exec(line);
-    if (entry) {
+    if (entry && FRONT_TEXTS.includes(entry[1])) {
+      texts[entry[1]] = entry[2].trim().replace(/^(["'])(.*)\1$/, '$2') || null;
+      key = null;
+    } else if (entry) {
       key = entry[1];
-      if (!CREDIT_ROLES.includes(key)) { fail(i + 1, line, `credits can name ${CREDIT_ROLES.join(', ')}, not "${key}"`); key = null; continue; }
+      if (!CREDIT_ROLES.includes(key)) { fail(i + 1, line, `a front matter can give ${[...FRONT_TEXTS, ...CREDIT_ROLES].join(', ')}, not "${key}"`); key = null; continue; }
       credits[key] = entry[2].trim() ? [name(entry[2])] : [];
     } else if (item && key) {
       credits[key].push(name(item[1]));
     } else {
-      fail(i + 1, line, 'a line of the credits that is neither "role:" nor "  - Family, Given"');
+      fail(i + 1, line, 'a line of the front matter that is neither "key: value", "role:" nor "  - Family, Given"');
     }
   }
   for (const [role, names] of Object.entries(credits)) if (!names.length) delete credits[role];
-  return { credits: Object.keys(credits).length ? credits : null, end };
+  return { title: texts.title || null, subtitle: texts.subtitle || null, credits: Object.keys(credits).length ? credits : null, end };
 }
 
 export function convert(source, file, { exists = inWorkingTree } = {}) {
@@ -118,10 +125,10 @@ export function convert(source, file, { exists = inWorkingTree } = {}) {
 
   const warn = (line, text) => warnings.push({ file, line, text });
   const fail = (line, text, why) => unhandled.push({ file, line, text: text.trim(), why });
-  // the credits are read and their lines left empty, so that every other line keeps its number
+  // the front matter is read and its lines left empty, so that every other line keeps its number
   if (/^---\s*$/.test(lines[0] || '')) {
-    const { credits, end } = readCredits(lines, file, fail);
-    page.credits = credits;
+    const { title, subtitle, credits, end } = readCredits(lines, file, fail);
+    Object.assign(page, { title, subtitle, credits });
     for (let i = 0; i <= end; i++) lines[i] = '';
   }
   const needFile = (line, path, what) => { if (!exists(path)) fail(line, path, `${what} not found in the repository`); };
@@ -309,7 +316,7 @@ export function convert(source, file, { exists = inWorkingTree } = {}) {
     out.push(line);
   }
 
-  if (!page.title) fail(1, '', 'page has no .ve-header title');
+  if (!page.title) fail(1, '', 'page has no title: no .ve-header line and no title: in a front matter');
   const markdown = out.join('\n');
   // What stays as raw HTML in the Markdown view: third-party script embeds that cannot be a link.
   const exceptions = [];
@@ -318,26 +325,37 @@ export function convert(source, file, { exists = inWorkingTree } = {}) {
 }
 
 // The pages of one edition of the book, converted, and their reading order (readingOrder in CONTRACT.md): the home page
-// (README.md) and every essay; test.md is a scratch page and stays out. root is the folder that holds them (the
-// repository, or a frozen version's text from its tag).
-//   readBook(root, { exists }) -> { pages, home, byFile, order }
+// (README.md), every essay and the pages of the back matter; test.md is a scratch page and stays out. root is the
+// folder that holds them (the repository, or a frozen version's text from its tag).
+//   readBook(root, { exists, backmatter, borrowed, extend }) -> { pages, home, byFile, order, backmatter }
+// backmatter: the repository paths of the back matter's pages, in their order (a page the edition does not have is left
+// out); borrowed: { path: folder } for a back matter page that this edition takes from another folder because it has
+// none of its own (the colophon, for a version frozen before it existed); extend(file, source, folder): a page's
+// Markdown with what the build adds to it (the author's acknowledgements, after the contributors).
 // order: the home page, then the pages of its menu in order, each followed by the pages its cards lead to (depth
-// first), then any page not reached that way, alphabetically.
-export function readBook(root, { exists = inWorkingTree } = {}) {
-  const files = ['README.md', ...readdirSync(join(root, 'essays')).filter((f) => f.endsWith('.md')).sort().map((f) => `essays/${f}`)];
-  const pages = files.map((file) => ({ file, ...convert(readFileSync(join(root, file), 'utf8'), file, { exists }) }));
+// first), then any page not reached that way, alphabetically, and last the back matter, which closes every reading
+// order: a card or the menu that leads to a back matter page does not move it.
+export function readBook(root, { exists = inWorkingTree, backmatter = [], borrowed = {}, extend = (file, source) => source } = {}) {
+  const folderOf = (file) => (existsSync(join(root, file)) ? root : borrowed[file]);
+  const late = backmatter.filter((file) => folderOf(file));
+  const files = ['README.md', ...readdirSync(join(root, 'essays')).filter((f) => f.endsWith('.md')).sort().map((f) => `essays/${f}`).filter((f) => !late.includes(f)), ...late];
+  const pages = files.map((file) => {
+    const folder = folderOf(file) ?? root;
+    return { file, ...convert(extend(file, readFileSync(join(folder, file), 'utf8'), folder), file, { exists }) };
+  });
   const home = pages[0];
   const byFile = new Map(pages.map((page) => [page.file, page]));
   const order = [];
-  const visit = (file) => {
-    if (order.includes(file) || !byFile.has(file)) return;
+  const visit = (file, last = false) => {
+    if (order.includes(file) || !byFile.has(file) || (late.includes(file) && !last)) return;
     order.push(file);
-    byFile.get(file).cards.forEach(visit);
+    byFile.get(file).cards.forEach((target) => visit(target));
   };
   order.push(home.file);
   for (const item of home.menu) visit(repoPath(/\]\(([^)\s]+)\)/.exec(item)?.[1] ?? '', home.file).replace(/^\.$/, 'README.md'));
-  files.forEach(visit);
-  return { pages, home, byFile, order };
+  files.forEach((file) => visit(file));
+  late.forEach((file) => visit(file, true));
+  return { pages, home, byFile, order, backmatter: late };
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url) && process.argv[2]) {
