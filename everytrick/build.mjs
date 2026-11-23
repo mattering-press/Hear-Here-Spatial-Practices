@@ -58,7 +58,7 @@ const CONTRACT = '0.9';  // version of the page.json / publication.json / media.
 // and 0.7, 0.8 and 0.9 keep 0.6's.
 // everytrickinthebook, the toolkit in this folder. Every footer names it with its version (everytrick/package.json),
 // and links the name to its home and the version to the list of what changed in each version.
-const TOOLKIT_HOME = 'https://github.com/everytrick/everytrickinthebook';
+const TOOLKIT_HOME = 'https://everytrick.org/';
 const TOOLKIT_CHANGES = 'https://github.com/mattering-press/Hear-Here-Spatial-Practices/blob/main/everytrick/CHANGELOG.md';
 // The description of the book's data (page.json, publication.json, media.json), which "About this book" links to.
 const TOOLKIT_CONTRACT = 'https://github.com/mattering-press/Hear-Here-Spatial-Practices/blob/main/everytrick/CONTRACT.md';

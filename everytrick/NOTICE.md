@@ -2,7 +2,7 @@
 
 everytrickinthebook by SJMcH, a Mattering toolkit: every trick in the book for making books.
 
-Its home is https://github.com/everytrick/everytrickinthebook. Its versions, and what changed in each, are listed in
+Its home is https://everytrick.org/, its code https://github.com/everytrick/everytrickinthebook. Its versions, and what changed in each, are listed in
 `CHANGELOG.md`.
 
 Copyright © 2026 Studio Julien McHardy (SJMcH). Made for Mattering Press, its first publisher.

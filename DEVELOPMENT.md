@@ -424,7 +424,7 @@ shows one without saying which it is: the book's version is written with its lab
 
 The toolkit's name is one word in lower case, everytrickinthebook, and everytrick for short, the same in prose, in
 its web address (`everytrick.org`, with `everytrickinthebook.org` leading to it) and on GitHub
-(`github.com/everytrick/everytrickinthebook`). Agreed with the publisher on 2026-11-23, because hyphens are ugly in
+(`github.com/everytrick/everytrickinthebook`); the footer credit links to `everytrick.org`. Agreed with the publisher on 2026-11-23, because hyphens are ugly in
 an address and confusing beside the underscores the name had; until 1.14.0 it was every_trick_in_the_book, in
 `every_trick/`. The history keeps the old name: the changelog's earlier entries, the contract's earlier versions and
 frozen versions such as version 0.1. The keys under which a reader's browser keeps their settings and place still
