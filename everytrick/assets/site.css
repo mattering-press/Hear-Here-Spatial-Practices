@@ -718,3 +718,61 @@ main h2.search-result__title::before { content: none; }
 .search-result__where { margin-right: 0.35rem; font-weight: var(--weight-strong); white-space: nowrap; }
 .search-result__excerpt mark { padding: 0 0.1em; border-radius: 2px; background: var(--colour-highlight); color: inherit; font-weight: var(--weight-strong); }
 .search-result__more { margin: 0.5rem 0 0; color: var(--colour-muted); font-size: 0.875rem; }
+
+/* ---- Copying citations (assets/cite.js, assets/copy.js; "Plan: copying citations" in DEVELOPMENT.md) ---------------- */
+/* Cite, under the page's title, in the page's opening: a button like the bar's */
+.page-cite { margin: 1rem 0 0; }
+.cite-button { display: inline-flex; align-items: center; gap: 0.35em; min-height: 2rem; padding: 0 0.85rem; border: 1px solid rgb(255 255 255 / 0.45); border-radius: 999px; background: none; color: var(--colour-header-text); font: inherit; font-size: 0.8125rem; font-weight: var(--weight-strong); letter-spacing: 0.04em; cursor: pointer; }
+.cite-button::before { content: "❝"; font-size: 1.05em; line-height: 1; }
+.cite-button:is(:hover, :focus-visible), .cite-button[aria-expanded="true"] { border-color: var(--colour-header-text); background: rgb(255 255 255 / 0.12); }
+.cite-button[hidden] { display: none; }
+/* a Copy button: in the Cite panel, a citation popup, an item's "To cite" */
+.copy-button { display: inline-flex; align-items: center; gap: 0.3em; min-height: 2rem; padding: 0 0.75rem; border: 1px solid var(--colour-rule); border-radius: 999px; background: var(--colour-surface); color: var(--colour-text); font: inherit; font-size: 0.8125rem; font-weight: var(--weight-strong); line-height: 1.2; white-space: nowrap; cursor: pointer; }
+.copy-button svg { flex: none; width: 0.75em; height: 0.75em; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+@media (hover: hover) { .copy-button:hover { border-color: var(--colour-accent); color: var(--colour-accent); } }
+.copy-button[aria-expanded="true"], .copy-button.is-strong { border-color: var(--colour-text); background: var(--colour-text); color: var(--colour-surface); }
+@media (hover: hover) { .copy-button.is-strong:hover { border-color: var(--colour-accent); background: var(--colour-accent); color: #fff; } }
+/* the panel */
+.cite-panel { position: fixed; inset: auto; margin: 0; box-sizing: border-box; width: min(34rem, calc(100vw - 16px)); max-height: calc(100vh - 16px); overflow: auto; padding: 0.9rem 1.1rem 1.1rem; border: 1px solid var(--colour-rule); border-radius: 6px; background: var(--colour-surface); color: var(--colour-text); box-shadow: var(--shadow); font-size: 0.9375rem; line-height: 1.45; }
+.cite-panel__head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0.6rem; }
+.cite-panel__title { margin: 0; font-size: 1rem; font-weight: var(--weight-heading); }
+.cite-panel__title:focus { outline: none; }
+.cite-panel__close { display: inline-grid; place-items: center; width: 2rem; height: 2rem; padding: 0; border: 0; border-radius: 999px; background: none; color: var(--colour-muted); cursor: pointer; }
+.cite-panel__close:is(:hover, :focus-visible) { color: var(--colour-text); background: var(--colour-highlight); }
+.cite-panel__para { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem 0.6rem; margin: 0 0 0.75rem; }
+.cite-panel__para label { font-weight: var(--weight-strong); }
+.cite-panel__para input { width: 5em; min-height: 2rem; padding: 0 0.5rem; border: 1px solid var(--colour-rule); border-radius: var(--radius); background: var(--colour-background); color: inherit; font: inherit; }
+.cite-panel__para input[aria-invalid="true"] { border-color: var(--colour-accent); }
+.cite-panel__hint { color: var(--colour-muted); font-size: 0.8125rem; }
+.cite-panel__about { margin: 0 0 0.75rem; padding: 0.5rem 0.75rem; border-radius: var(--radius); background: var(--colour-highlight); font-size: 0.875rem; }
+.cite-panel__about[hidden] { display: none; }
+.cite-panel__row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.15rem 0.75rem; padding: 0.6rem 0; border-top: 1px solid var(--colour-rule); }
+.cite-panel__row p { margin: 0; }
+.cite-panel__label { grid-column: 1 / -1; color: var(--colour-muted); font-size: 0.75rem; font-weight: var(--weight-strong); letter-spacing: 0.08em; text-transform: uppercase; }
+.cite-panel__value { overflow-wrap: anywhere; }
+.cite-panel__row.is-link .cite-panel__value { font-size: 0.8125rem; }
+.cite-panel__actions { align-self: start; }
+.cite-panel__all { margin: 0.75rem 0 0; }
+/* the bar for selected words, at the foot of the window (above a docked player), never beside the selection */
+.cite-bar { position: fixed; z-index: 25; left: 50%; bottom: calc(0.75rem + env(safe-area-inset-bottom)); display: flex; gap: 0.4rem; padding: 0.35rem; transform: translateX(-50%); border-radius: 999px; background: var(--colour-text); box-shadow: var(--shadow); }
+.cite-bar[hidden] { display: none; }
+.has-docked-player .cite-bar { bottom: calc(var(--docked-player-height, 5rem) + 0.75rem); }
+.cite-bar__button { min-height: 2.25rem; padding: 0 0.95rem; border: 1px solid transparent; border-radius: 999px; background: none; color: var(--colour-surface); font: inherit; font-size: 0.875rem; font-weight: var(--weight-strong); white-space: nowrap; cursor: pointer; }
+.cite-bar__button:is(:hover, :focus-visible) { border-color: currentColor; }
+.cite-bar__button:first-child { background: var(--colour-surface); color: var(--colour-text); }
+.has-cite-bar .copy-status { bottom: calc(4rem + env(safe-area-inset-bottom)); }
+.has-docked-player .copy-status { bottom: calc(var(--docked-player-height, 5rem) + 1rem); }
+.has-docked-player.has-cite-bar .copy-status { bottom: calc(var(--docked-player-height, 5rem) + 4rem); }
+/* How to cite this page, at its end */
+.how-to-cite { clear: both; margin-top: 3rem; padding-top: 0.25rem; color: var(--colour-muted); font-size: 0.9375rem; }
+main .how-to-cite h2 { margin-top: 0; font-size: 1.1rem; color: var(--colour-text); }
+.how-to-cite p { margin: 0 0 0.6rem; }
+.how-to-cite__example, .how-to-cite__reference { color: var(--colour-text); }
+.how-to-cite var { font-style: italic; }
+/* an item's "To cite" (its page) */
+.item-cite p { margin: 0 0 0.35rem; }
+.item-cite__intext { font-weight: var(--weight-strong); }
+.item-cite__copy { margin-top: 0.6rem !important; }
+/* the Copy button of a citation popup */
+.citation-popover .copy-button { min-height: 1.75rem; margin-right: 0.5rem; vertical-align: middle; }
+@media print { .page-cite, .cite-bar, .cite-panel, .copy-button, .item-cite__copy { display: none !important; } }

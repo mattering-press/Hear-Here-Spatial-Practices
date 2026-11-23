@@ -12,6 +12,42 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of everytrick’ in `DEVELOPMENT.md`.
 
+## 1.16.0
+
+23 November 2026. Copying citations: quotes, paragraphs, pages, media items and references. The plan is "Plan: copying
+citations" in `DEVELOPMENT.md`.
+
+- **The ¶ is unchanged.** It still copies the link to its paragraph in one click. Every new way of copying works like
+  it: one click copies, and the status line at the foot of the window says what was copied.
+- **Copy quote.** Selecting words in the text shows a small bar at the foot of the window, with Copy quote and Copy
+  citation. Copy quote copies the words in single quotation marks with their citation, such as ‘Cairo is a very dusty
+  city’ (Nassar 2026: para. 55), then the page's reference in the house style, then the address of the words. Pasted
+  into a word processor, the citation is itself a link to the words, and the reference keeps its italics; pasted as
+  plain text, the address follows on a line of its own. The address highlights the quoted words when it is opened.
+  Copy citation copies the same without the words. A selection over several paragraphs is cited as paras 55–56. The
+  bar never sits beside the selection, where a phone's own menu and Hypothesis's Annotate button appear.
+- **Cite**, under every page's title, opens a panel: the citation of the paragraph being read (or the one in the
+  address; its number can be changed, or left empty to cite the whole page), the reference with a Copy menu of styles
+  (the house style, APA, Chicago, MLA, Harvard, BibTeX and RIS, as on the References page), and the link, each with
+  its Copy button, and a button that copies citation and reference together.
+- **The latest text cites the newest release.** Copied on the latest text, a passage whose paragraphs are unchanged in
+  version 0.1 is cited there, with its numbers and address in that version; a passage that is new or changed since is
+  cited as the latest text, unreleased, and the status line says that its number may still change.
+- **How to cite this page**, at the end of every page, gives the citation and the reference without JavaScript, in
+  print and in archives. On the latest text it points to the same page in the newest release.
+- **Media items** are cited against the book: (Puwar 2026: item 37), the item's title and credit, the book's reference
+  and the item's short address. Each item's page has it under To cite, with a Copy citation button, and the zoom
+  viewer has a Cite button in its top bar.
+- **Citation popups** have a Copy menu, with the same styles as the References page.
+- **Who made each page** is written at the top of its Markdown file (see "Credits" in `CONTRACT.md`): authors, and for
+  the podcasts the interviewer, producer and transcription editor. The house style names the authors first and the
+  others after the title: ‘Hear Here Podcast: Aya Nassar’, interviewed by N. Puwar, prod. by D. Whitley, transcript ed.
+  by P. Phung. The credits on the pages are a draft until Nirmal Puwar has confirmed them.
+- **For Google Scholar** every page has the `citation_…` tags and a JSON-LD block that describe it as a chapter of the
+  book.
+- The page data is contract 0.8: page.json gains `credits` and `citation`, publication.json `editors` and `citation`.
+  The paragraph rule is unchanged, so no paragraph has a new number.
+
 ## 1.15.0
 
 23 November 2026. A new name: everytrickinthebook, and everytrick for short.

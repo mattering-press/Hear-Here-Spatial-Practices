@@ -183,6 +183,7 @@ What is in `everytrick/`:
 - `citations.mjs`: prepares the bibliography for `filters/citations.lua`, writes the build's report on citations, the
   HTML of the References page, its downloads and the texts of its Copy menus (see "References and citations")
 - `ris.mjs`: turns a CSL-JSON entry into RIS, which Pandoc cannot write, for the References page
+- `cite.mjs`: the book's own references, every page and the book in the house style and the other styles, for the pages' Cite panel and How to cite section, the media items, page.json and the tags for Google Scholar (see "Plan: copying citations")
 - `csl/`: `mattering-press.csl`, the house citation style, and its test (`csl/test/`); and four styles of the official
   CSL repository, unchanged, for the References page's Copy menus: `apa.csl`, `chicago-author-date.csl`,
   `modern-language-association.csl` and `harvard-cite-them-right.csl` (source, commit and licence in
@@ -193,7 +194,7 @@ What is in `everytrick/`:
 - `scripts/number-media.mjs` (`npm run number-media -- <version>`): numbers the media items of a frozen version that have no number yet, in its reading order, and writes the register (see "Freezing a version for review or release")
 - `scripts/fetch-zine.mjs` (`npm run fetch-zine -- <identifier>`): copies a zine's page images from archive.org into `media/zines/<identifier>/`, once, on the editor's computer (see "Documents and zines")
 - `template.html`: the HTML around every page. It links the stylesheet and scripts with `?v=` and a hash of their contents, so that browsers fetch them again after every change instead of keeping an old copy
-- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `search.js` (the search page; see "Plan: search"), `place.js` (keeps the reader's place for the search page's ×), `zoom.js` (the pictures' Zoom buttons, the zoom viewer and the pause button of animations, and the documents' Open buttons and their viewer, in a dialog or on the document's own page; see "Plan: image display and the zoom viewer" and "Documents and zines"), `player.js` (the podcast player and its docked bar; see "Plan: podcast player and transcript"), `citations.js`, `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens), `media-index.js` (the Media Index's filters, and the editing view's fields, checks and change sheet), `menu.js` (the header's menu button), `references.js` (the References page's Copy buttons and their menu)
+- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `search.js` (the search page; see "Plan: search"), `place.js` (keeps the reader's place for the search page's ×), `zoom.js` (the pictures' Zoom buttons, the zoom viewer and the pause button of animations, and the documents' Open buttons and their viewer, in a dialog or on the document's own page; see "Plan: image display and the zoom viewer" and "Documents and zines"), `player.js` (the podcast player and its docked bar; see "Plan: podcast player and transcript"), `citations.js` (the citations' popups), `copy.js` (copying for the scripts below: the clipboard, the status line and the Copy menu), `cite.js` (Cite, Copy quote and Copy citation, How to cite's date, the media items' citations and the popups' Copy menus; see "Plan: copying citations"), `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens), `media-index.js` (the Media Index's filters, and the editing view's fields, checks and change sheet), `menu.js` (the header's menu button), `references.js` (the References page's Copy buttons and their menu)
 - `images.mjs`: resized images (each zoomable picture in several widths for `srcset`) and the tiles for zooming; an animated GIF becomes an animated WebP and a still; each page of a document gets tiles and two widths (400 and 800 px)
 - `audio.mjs`: reads the length of an MP3 from the file, for the podcast players
 - `check.mjs`, `serve.mjs`: the link check (including every page of every document; it also confirms that every
@@ -812,8 +813,8 @@ waits for the print edition; how editors use it is in "The media register" above
 - **How to cite the source** (the publisher, 2026-11-23): `cite_as` in the register says how to cite the item's own
   source in the house style, with its maker, title, date and holder
   (`Clarke Fitzgerald, ‘The Plumb Line and the City’ (1971), Coventry Cathedral`), and the item page shows it as
-  "Source". It was filled in only where a caption already named maker and date (items 7, 10, 24 and 64). A later change
-  will use it for a "Cite this item" line.
+  "Source". It was filled in only where a caption already named maker and date (items 7, 10, 24 and 64). Each item's
+  citation ends with it (everytrickinthebook 1.16.0; see "Plan: copying citations").
 - **Public pages never show a missing field** (the publisher, 2026-11-23). Credit, rights and source appear on item
   pages, in the Media Index and in captions only when they are filled in, and nothing public says "not evaluated",
   "none", "unknown" or "missing". Only the editing view marks what is missing, in its checks beside each item.
@@ -899,20 +900,28 @@ is in "References and citations" above.
 Agreed with the publisher on 2026-11-23. It gathers what earlier plans
 promised: a "Cite this" panel and "copy quote with citation" (notes of 19 November), exact quotes as text fragments
 ("Plan: stable links, versions and print companions"), citing a media item like a paragraph ("Plan: media register,
-item pages and the Media Index") and the house style's `(Nassar 2026: para. 12)`. Not built yet.
+item pages and the Media Index") and the house style's `(Nassar 2026: para. 12)`. Built in everytrickinthebook 1.16.0
+(23 November 2026); the credits on the pages are a draft until Nirmal Puwar confirms them. The data are in
+`everytrick/CONTRACT.md` ("Credits", "Citing the book").
 
 - **The ¶ stays as it is.** One click copies the link to the paragraph, with the version in it on a frozen version
   (see "Paragraph numbers"). Every new way of copying works like it: one click copies, and the status line says what
   was copied. Nothing is added to the left margin, which already holds the number, the ¶ and, in transcripts, the ▸.
-- **Who wrote a page.** Each page names its authors in its front matter, in Pandoc's `author:` field, and its
-  interviewers in `interviewer:` (the role CSL and MHRA 7.11 give the person who conducts a published interview), so a
-  podcast credits both the person interviewed and the interviewer (the publisher, 2026-11-23). Everyone who made a
-  page is named in its citation (the publisher, 2026-11-23): the podcasts' producer in `producer:` (a CSL role) and
-  their transcription editor in `transcript-editor:`, which the house style renders as "transcript ed. by", a role
-  CSL lacks; `npm run test:csl` checks both. `convert.mjs` keeps a
-  front-matter block at the top of a legacy page. The names go into `page.json` (a new contract version; the paragraph
-  rule does not change) and later to Thoth. The book's own data (editor, publisher, year, licence) stay in `build.mjs`.
-  The build warns about a page that has numbered paragraphs but no author.
+- **Who wrote a page.** Each page names its authors in a block of credits at its top, `author:`, and its interviewers
+  in `interviewer:`, so a podcast credits both the person interviewed and the interviewer (the publisher, 2026-11-23).
+  Everyone who made a page is named in its citation (the publisher, 2026-11-23): the podcasts' producer in `producer:`
+  and their transcription editor in `transcript-editor:`. Names are written "Family, Given". `convert.mjs` reads the
+  block and leaves it out of the page's text. The names go into `page.json` (contract 0.8; the paragraph rule does not
+  change) and later to Thoth. The book's own data (editors, publisher, year, licence) stay in `build.mjs`. The build
+  warns about a page that has numbered paragraphs but no author. A page of a frozen version takes the credits of the
+  same page in the latest text when its own text has none.
+- **The guest first.** The house style's CSL follows MHRA 7.11, which lists a published interview under its
+  interviewer ("Puwar 2026"). This book lists a podcast under the person interviewed, with the interviewer after the
+  title, as the publisher agreed and the email to Nirmal Puwar shows: `everytrick/cite.mjs` formats the house style's
+  reference without the other credits and puts them in after the title ("interviewed by N. Puwar, prod. by D. Whitley,
+  transcript ed. by P. Phung"), so the house CSL is unchanged. The other styles get them as CSL's `interviewer`,
+  `producer` and `contributor` and write them in their own way (APA leaves the producer and the transcript's editor
+  out).
   An event page is credited to Nirmal Puwar together with the event's collaborators (the publisher, 2026-11-23); the
   names for each page are being confirmed with Nirmal Puwar before they are entered.
 - **Quotes.** Selecting words in numbered paragraphs shows a small bar at the foot of the window, on every screen,
@@ -961,9 +970,12 @@ item pages and the Media Index") and the house style's `(Nassar 2026: para. 12)`
 - **Made at build time.** References are written by citeproc with the house style, so they match the reference lists;
   the browser adds only the accessed date. `npm run test:csl` gains a chapter, a podcast with its interviewer and a
   media item. The same data give every page Google Scholar `citation_*` tags and a JSON-LD block.
-- **Order of work:** 1. authors in the pages, the page metadata, the Cite panel, Copy quote and Copy citation; 2. media
-  items and the citation popups' Copy menu. The names wait for Nirmal Puwar's answers; the rest can be built before,
-  with the names filled in once they come. Each step is a minor version of everytrickinthebook.
+- **Built together** in everytrickinthebook 1.16.0: the credits, the page data, the Cite panel, Copy quote and Copy
+  citation, How to cite this page, the media items and the citation popups' Copy menu (`everytrick/cite.mjs`,
+  `everytrick/assets/cite.js`, `everytrick/assets/copy.js`). The credits in the pages are the draft sent to Nirmal
+  Puwar; correct them in each page's block once she answers.
+- **Not built:** citing a recording at a moment (`#t=12:40`). Keyboard users reach a citation popup's Copy menu only on
+  the References page, since the popup shows on focus without taking it.
 
 ## Plan: search
 

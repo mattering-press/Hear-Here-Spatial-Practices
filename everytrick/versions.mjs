@@ -16,8 +16,8 @@ export const REGISTRY = join(REPO_ROOT, 'versions.json');
 const STATUS = ['review', 'release'], ANNOTATIONS = ['none', 'hypothesis'];
 // Contracts whose paragraph rule the build knows (CONTRACT.md, "Paragraph numbers"): a frozen version is numbered by its own.
 // Contract 0.5 changed the page data only; its paragraph rule is 0.4's. Contract 0.6's adds long descriptions to the
-// blocks that are not numbered. Contract 0.7 changed the page data only; its paragraph rule is 0.6's.
-const RULES = ['0.3', '0.4', '0.5', '0.6', '0.7'];
+// blocks that are not numbered. Contracts 0.7 and 0.8 changed the page data only; their paragraph rule is 0.6's.
+const RULES = ['0.3', '0.4', '0.5', '0.6', '0.7', '0.8'];
 
 function git(args, { binary = false, input } = {}) {
   const result = spawnSync('git', ['-C', REPO_ROOT, ...args], { encoding: binary ? 'buffer' : 'utf8', maxBuffer: 1 << 30, input });
@@ -102,7 +102,7 @@ function similarity(a, b) {
 export const SIMILAR_NEARBY = 0.5, SIMILAR_ANYWHERE = 0.75;
 
 // older, newer: the paragraphs of one page in two versions, [{ id, text_hash, text }] in page order.
-// -> { map: { p12: 'p14', … }, counts: { same, similar, nearby } }
+// -> { map: { p12: 'p14', … }, same: the part of map whose paragraphs have the same text, counts: { same, similar, nearby } }
 //   same     the same normalised text, in the same order (the longest common sequence of text hashes, so that a
 //            paragraph that occurs twice, such as "Yes.", goes to the right one);
 //   similar  edited: at least half its word pairs shared with a paragraph between the neighbouring matches, or
@@ -147,7 +147,7 @@ export function matchParagraphs(older, newer) {
     match[i] = k >= 0 && k < n ? match[k] : 0;
     how[i] = 'nearby';
   }
-  const map = {}, counts = { same: 0, similar: 0, nearby: 0 };
-  older.forEach((p, i) => { if (match[i] !== null) { map[p.id] = newer[match[i]].id; counts[how[i]]++; } });
-  return { map, counts };
+  const map = {}, same = {}, counts = { same: 0, similar: 0, nearby: 0 };
+  older.forEach((p, i) => { if (match[i] !== null) { map[p.id] = newer[match[i]].id; counts[how[i]]++; if (how[i] === 'same') same[p.id] = newer[match[i]].id; } });
+  return { map, same, counts };
 }

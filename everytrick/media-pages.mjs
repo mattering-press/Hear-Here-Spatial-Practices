@@ -128,8 +128,22 @@ export function itemFacts(it, { root, siteUrl }) {
   if (it.files.length) row('Files', `<ul>${it.files.map((f) => `<li><a href="${f.external ? esc(f.url) : href(root, f.url)}"${f.download ? ' download' : ''}>${esc(f.label)}</a>${f.note ? ` <span class="item-facts__where">${esc(f.note)}</span>` : ''}</li>`).join('')}</ul>`);
   if (it.formerNames.length) row('Former addresses', it.formerNames.map((n) => `/${esc(it.kind)}/${esc(n)}/`).join(', ') + ', which lead here');
   if (it.formerSources.length) row('Earlier files', `${it.formerSources.map(esc).join(', ')}: replaced, and still shown in the versions that used them`);
-  row('To cite', it.label ? `item ${it.label}, ${esc(siteUrl + it.short)}` : `${esc(siteUrl + it.url)} (until it has its number)`);
+  row('To cite', it.cite ? itemCite(it) : it.label ? `item ${it.label}, ${esc(siteUrl + it.short)}` : `${esc(siteUrl + it.url)} (until it has its number)`);
   return `<dl class="item-facts">\n${rows.join('\n')}\n</dl>`;
+}
+
+// How to cite an item, against the book ("Plan: copying citations" in DEVELOPMENT.md): (Puwar 2026: item 37), the item's
+// number, title and credit, the book's reference and the item's short address, and how to cite its own source where
+// the register says. assets/cite.js copies the same (itemParts there) and adds the Copy button; it fills in the date
+// accessed, which the build leaves as 31 December 9999 (cite.mjs).
+function itemCite(it) {
+  const { book, item } = it.cite;
+  const cite = `(${book.cite}${item.number ? `: item ${item.number}` : ''})`;
+  const link = item.number && item.short ? item.short : item.url;
+  const line = `${item.number ? `Item ${item.number}` : 'A new item, not yet numbered'}${item.title ? `, ${item.title}` : ''}${item.credit ? ` (${item.credit})` : ''}`;
+  return `<div class="item-cite"><p class="item-cite__intext">${esc(cite)}</p><p>${esc(line)}</p>` +
+    `<p>${book.html.replace('31 December 9999', '<span class="cite-today">the day you read it</span>')}</p><p><a href="${esc(link)}">${esc(link)}</a></p>` +
+    `${item.citeAs ? `<p>Source: ${esc(item.citeAs)}</p>` : ''}</div>`;
 }
 
 // ---- The Media Index ------------------------------------------------------------------------------------------

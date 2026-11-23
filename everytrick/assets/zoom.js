@@ -54,6 +54,7 @@
     pause: '<path class="is-solid" d="M4 2.5h2.75v11H4zM9.25 2.5H12v11H9.25z"/>',
     play: '<path class="is-solid" d="M4.5 2.25v11.5l9-5.75z"/>',
     close: '<path d="M3.5 3.5l9 9M12.5 3.5l-9 9"/>',
+    cite: '<path d="M6.75 3.5C4.25 4.5 3 6.6 3 9.25v3.25h3.75V9H4.6M13 3.5c-2.5 1-3.75 3.1-3.75 5.75v3.25H13V9h-2.15"/>',   // quotation marks
     zoomIn: '<path d="M8 2.75v10.5M2.75 8h10.5"/>',
     zoomOut: '<path d="M2.75 8h10.5"/>',
     fullscreen: '<path d="M2.5 6V2.5H6M10 2.5h3.5V6M13.5 10v3.5H10M6 13.5H2.5V10"/>',
@@ -190,6 +191,15 @@
     (map || buttons)[name] = b;
     return b;
   }
+  // a button's words for a moment ("Copied"), then its own again
+  function flash(b, words) {
+    var label = b.querySelector('.viewer__label');
+    if (!label) return;
+    var own = label.dataset.own || (label.dataset.own = label.textContent);
+    label.textContent = words;
+    clearTimeout(b.flashTimer);
+    b.flashTimer = setTimeout(function () { label.textContent = own; }, 2000);
+  }
   function quietly(promise) { if (promise && promise.catch) promise.catch(function () {}); }
   function group(className, list) {
     var g = document.createElement('div');
@@ -227,10 +237,20 @@
     var close = control('close', 'Close', '<span class="viewer__label">Close</span>');
     close.autofocus = true;
     close.addEventListener('click', function () { dialog.close(); });
+    // Cite copies the citation of the picture's media item (cite.js, everytrick.citeItem), and says so here, since the
+    // page's status line is behind the viewer
+    var cite = control('cite', 'Cite this picture', '<span class="viewer__label">Cite</span>');
+    cite.hidden = !(window.everytrick && window.everytrick.citeItem);
+    cite.addEventListener('click', function () {
+      var item = items[current], number = item.number, numbered = number && !number.isNew;
+      window.everytrick.citeItem({ number: numbered ? number.text : null, title: item.caption || item.alt, credit: item.credit,
+        url: number && number.href ? new URL(number.href, document.baseURI).href : location.href.replace(/#.*$/, '') })
+        .then(function (said) { live.textContent = said; flash(cite, 'Copied'); }, function () { live.textContent = 'The citation could not be copied.'; });
+    });
     top.appendChild(count);
     top.appendChild(numberLink);
     top.appendChild(captionButton);
-    top.appendChild(group('', [close]));
+    top.appendChild(group('', [cite, close]));
     // the picture: OpenSeadragon's canvas, and the picture from the page over it until the tiles have arrived
     stage = document.createElement('div');
     stage.className = 'viewer__stage';

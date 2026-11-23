@@ -1,4 +1,4 @@
-# Page data, contract 0.7
+# Page data, contract 0.8
 
 The build writes JSON beside the HTML so that other frontends (the collage index, a Tapestry export) can
 read the book without parsing HTML: `publication.json` at the root of each edition, a `page.json` beside every
@@ -35,7 +35,11 @@ The paragraph rule of 0.5 is 0.4's, unchanged. 0.6 (every_trick_in_the_book 1.14
 `first_published` and `last_changed` for each item. No frozen version was numbered by contract 0.5's rule. 0.7
 renames the toolkit's version `everytrickinthebook` in page.json, publication.json, media.json, document.json,
 formatted.json and the Markdown view's front matter, with the toolkit's new name (everytrickinthebook 1.15.0); it
-changes nothing else, and its paragraph rule is 0.6's, unchanged.
+changes nothing else, and its paragraph rule is 0.6's, unchanged. 0.8 (everytrickinthebook 1.16.0) adds credits, who
+made each page, written at the top of its Markdown (see "Credits"), and how each page and the book are cited:
+`credits` and `citation` in page.json, `editors` and `citation` in publication.json, and in the HTML the page's
+citation data, its How to cite section and the tags for Google Scholar (see "Citing the book"); its paragraph rule is
+0.6's, unchanged.
 
 ## Editions
 
@@ -58,7 +62,7 @@ depends only on the page's content, as its Markdown view (`index.md`) has it, ne
 stylesheet. Every version is rebuilt with the current toolkit, so a frozen version is numbered by the rule of the
 contract it was frozen under (`contract` in its entry in `versions.json`), and a rule never changes within a contract
 version: changing it would renumber the paragraphs of frozen versions and break every citation of them. The rule
-below is contract 0.6's, which 0.7 kept unchanged: contract 0.4's, which 0.5 kept unchanged, with long descriptions added to the blocks that are
+below is contract 0.6's, which 0.7 and 0.8 kept unchanged: contract 0.4's, which 0.5 kept unchanged, with long descriptions added to the blocks that are
 not numbered (no page of 0.4 or 0.5 had one). Contract 0.3, which numbers version 0.1, differs only for lists (see the
 list item below).
 
@@ -154,10 +158,12 @@ its mark in the text, at the end of the paragraph before it, is `<a class="margi
 
 | field | value |
 |---|---|
-| `contract` | `"0.7"`, the version of this format |
-| `paragraphRule` | the contract whose paragraph rule numbered this edition: `"0.7"` for the latest text, the `contract` of its entry in `versions.json` for a frozen version (`"0.3"` for version 0.1) |
+| `contract` | `"0.8"`, the version of this format |
+| `paragraphRule` | the contract whose paragraph rule numbered this edition: `"0.8"` for the latest text, the `contract` of its entry in `versions.json` for a frozen version (`"0.3"` for version 0.1) |
 | `title`, `subtitle` | from the header of the home page (`README.md`) |
 | `creators` | list of names |
+| `editors` | the book's editors as its citations name them ("ed. by"), CSL names: `{ family, given }` (`PUBLICATION` in `build.mjs`) |
+| `citation` | how this edition of the book is cited: `{ text, reference }`, `text` as the text cites it, without brackets (`"Puwar 2026"`), and `reference` its reference in the house style, as plain text, without the date accessed (see "Citing the book") |
 | `publisher` | name |
 | `language` | language code, `"en"` |
 | `url` | where this edition is published: the `siteUrl` setting in `build.mjs`, followed by `v<id>/` for a frozen version; the Markdown view `publication.md` uses it for its absolute URLs |
@@ -176,6 +182,8 @@ its mark in the text, at the end of the paragraph before it, is `<a class="margi
 | `url` | e.g. `"essays/walk/"`; `"./"` for the home page |
 | `title`, `subtitle` | from the page's header; `subtitle` is `null` when there is none |
 | `version`, `everytrickinthebook` | as in publication.json |
+| `credits` | who made the page (see "Credits"): `{ author, interviewer, producer, transcript-editor }`, each a list of CSL names (`{ family, given }`, or `{ literal }` for a group), the roles it has; `{}` for a page without credits. The home page's are the book's editors, `{ editor }` |
+| `citation` | how the page is cited: `{ text, reference }` as in publication.json (`"Nassar 2026"`; a passage adds its paragraph, "(Nassar 2026: para. 12)") |
 | `markdown` | the page's Markdown view, e.g. `"essays/walk/index.md"` |
 | `headings` | `{ level, text, id }` in page order; `level` is the HTML level (2 to 6), `id` the fragment for `url#id` |
 | `paragraphs` | the numbered paragraphs (see "Paragraph numbers"), `{ id, n, text_hash }` in page order: `id` is the fragment (`"p12"`), `n` the number (12), `text_hash` the hash of its normalised text, the same in every version where the paragraph's text is the same |
@@ -185,6 +193,60 @@ its mark in the text, at the end of the paragraph before it, is `<a class="margi
 | `video` | `{ url, title, kind }`; `kind` is `youtube`, `vimeo`, `file` (a video file in the site) or `embed` (any other embedded page, such as the Internet Archive or the BBC); `url` is the address given in the Markdown. A document whose pages the build shows (see "Documents") is not listed: `items` has it, with `kind` `read` |
 | `links` | links in the page's text (not its menu or footer) to other pages, as `{ id, url, text }`, each target once, in order of first appearance; citation links are not included |
 | `references` | works from the book's bibliography (`references/bibliography.json`) that the page cites or lists, as `{ key, html, url, citations }`: first those cited, in order of first citation, then the rest of the page's typed reference list. `key` is the entry's id in the bibliography (`hall2001`); `html` is the reference formatted in the house style, as an HTML fragment (`<em>`, `<span>`, `<a>`); `url` is the entry in this page's typed reference list if the list has it (`essays/introduction/#ref-hall2001`), otherwise the work's entry on the edition's References page (`references/#hall2001`); `citations` are the ids of the citation links in this page's text that point to it (`cite-hall2001-1`), `[]` when the page only lists it |
+
+## Credits
+
+Who made a page, for its citations, is written in a block at the very top of its Markdown file, before anything
+else; `convert.mjs` reads it and leaves it out of the page's text, so it is not numbered and does not show:
+
+```markdown
+---
+author:
+  - Nassar, Aya
+interviewer:
+  - Puwar, Nirmal
+producer:
+  - Whitley, Duncan
+transcript-editor:
+  - Phung, Phavine
+---
+```
+
+- The roles are `author`, `interviewer`, `producer` and `transcript-editor`, in any order; a role may list several
+  names, one a line (`  - Family, Given`), or one name on its own line (`producer: Whitley, Duncan`). Any other role
+  stops the build. Lines starting with `#` are comments.
+- A name is written family name first, then a comma and the given names (`Alami Fariman, Mahsa`), so that compound
+  family names are never guessed; a name without a comma is a group's and is kept as it is written.
+- The authors are cited ("Nassar 2026"); the house style names the others after the page's title ("interviewed by
+  N. Puwar, prod. by D. Whitley, transcript ed. by P. Phung"), and the other styles each in their own way.
+- A page without credits is cited under the book's editors, and the build warns about it when it has numbered
+  paragraphs. A frozen version's text cannot change, so a page of a frozen version without credits takes those of
+  the same page in the latest text.
+
+## Citing the book
+
+Every page is cited as a chapter of the book, with its credits, and the home page as the book, edited by its
+`editors` (see "Plan: copying citations" in `DEVELOPMENT.md`; `cite.mjs`). The house style's in-text citation adds a
+passage's paragraph, `(Nassar 2026: para. 12)` or `(Nassar 2026: paras 12–14)`, and a media item's number, cited
+against the book, `(Puwar 2026: item 37)`. The reference names the version (`version 0.1`, or `latest text, unreleased`)
+and ends with the date accessed.
+
+- **In the HTML** every page has, before `</body>`, `<script type="application/json" class="cite-data">`, which
+  `assets/cite.js` reads: `{ version, home, site, styles, page, book, releaseBook, formatted, release }`. `page` and
+  `book` are `{ cite, html, texts, url }`: `cite` as the text cites it; `html` the house style's reference as an HTML
+  fragment; `texts` the reference in each style of the References page's Copy menus (`house`, `apa`, `chicago`, `mla`,
+  `harvard`, `bibtex`, `ris`); `url` the page's or the edition's absolute address. Their date accessed is written as
+  31 December 9999 (`9999-12-31` in BibTeX, `9999/12/31/` in RIS), in each style's form, for the script to put in the
+  day the reader copies. On the latest text `releaseBook` is the newest release's book, and `release`, for a page that
+  is in it, `{ id, label, page, same }`: the page there, and `same`, which maps this page's paragraphs to those with the
+  same text there (`{ "p12": "p14" }`). `formatted` is the edition's `references/formatted.json`. An item's page has the
+  same element, with `book` and `item` (`{ number, title, credit, citeAs, short, url }`).
+- **How to cite this page**, `<section class="how-to-cite">` at the end of `<main>`, gives the in-text citation and the
+  reference without JavaScript; `<span class="cite-today">` holds the date accessed. It is left out of the search index.
+- **For Google Scholar** each page's `<head>` has `<meta name="citation_title">`, `citation_author` (or
+  `citation_editor` for the book), `citation_publication_date`, `citation_inbook_title` and `citation_book_title`,
+  `citation_publisher`, `citation_language` and `citation_fulltext_html_url`, and a JSON-LD block (schema.org `Chapter`
+  in a `Book`, or the `Book`).
 
 ## Media items
 

@@ -30,6 +30,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { BIBLIOGRAPHY, COPY_DATA, COPY_STYLES, CSL_COMMIT, DOWNLOADS, formatReferences, locate, prepareReferences, referencesHtml, report as citationReport } from './citations.mjs';
 import { readBook, REPO, REPO_ROOT, repoPath } from './convert.mjs';
+import { ACCESSED, scholarMeta, selfReferences } from './cite.mjs';
 import { mp3Duration, paragraphCues } from './audio.mjs';
 import { pagesOf, pdfText, renderPdf, requirePoppler, zinePages } from './documents.mjs';
 import { itemDates } from './history.mjs';
@@ -43,10 +44,13 @@ import { checkout, longDate, matchParagraphs, readRegistry } from './versions.mj
 const NOINDEX = false;  // true hides every page from search engines (it was true while Juncture served the public site)
 // A build for a preview adds the Media Index's editing view, /media-index/edit/; the public site never has it.
 const PREVIEW = process.argv.includes('--preview') || /^(1|true|yes)$/i.test(process.env.EVERYTRICK_PREVIEW || '');
-const PUBLICATION = { creators: ['Nirmal Puwar'], publisher: 'Mattering Press', language: 'en' };
-const CONTRACT = '0.7';  // version of the page.json / publication.json / media.json format, and of the paragraph rule for new text
+// editors: how the book's citations name the people who made the book as a whole, "Family, Given" ("ed. by N. Puwar";
+// see "Plan: copying citations" in DEVELOPMENT.md). A page names its own in its credits (convert.mjs).
+const PUBLICATION = { creators: ['Nirmal Puwar'], editors: [{ family: 'Puwar', given: 'Nirmal' }], publisher: 'Mattering Press', language: 'en' };
+const CONTRACT = '0.8';  // version of the page.json / publication.json / media.json format, and of the paragraph rule for new text
 // A frozen version keeps the paragraph rule of the contract it was frozen under ("contract" in versions.json). The
-// paragraph rule of contract 0.5 is the rule of 0.4, unchanged; 0.6's adds long descriptions to the blocks not numbered, and 0.7 keeps 0.6's.
+// paragraph rule of contract 0.5 is the rule of 0.4, unchanged; 0.6's adds long descriptions to the blocks not numbered,
+// and 0.7 and 0.8 keep 0.6's.
 // everytrickinthebook, the toolkit in this folder. Every footer names it with its version (everytrick/package.json),
 // and links the name to its home and the version to the list of what changed in each version.
 const TOOLKIT_HOME = 'https://github.com/everytrick/everytrickinthebook';
@@ -139,6 +143,10 @@ for (const edition of editions) {
   edition.section = new Map();
   for (const file of order) for (const target of edition.byFile.get(file).cards) if (!edition.section.has(target)) edition.section.set(target, file);
 }
+
+// A page's credits (convert.mjs) say who made it, for its citations. A frozen version's text cannot change, so a page
+// of a version frozen before its credits were written takes them from the same page in the latest text.
+for (const edition of editions.slice(1)) for (const page of edition.pages) if (!page.credits) page.credits = latest.byFile.get(page.file)?.credits || null;
 
 // 3. Images, zoom tiles, and the repository files that pages embed (data-repo-* in essays/walk.md), made once for
 //    all editions. A file is taken from the working tree; only one that is no longer there comes from the tag.
@@ -383,6 +391,38 @@ for (const edition of editions) {
   writeFileSync(edition.manifest, JSON.stringify(edition.manifestData));
 }
 
+// 4b''. The book's own references (cite.mjs; "Plan: copying citations" in DEVELOPMENT.md): every page of each edition
+//      and the book, in the house style and the References page's other styles, for each page's Cite panel, Copy quote
+//      bar and How to cite section (assets/cite.js), the media items, page.json and the tags for Google Scholar. A page
+//      is cited as a chapter of the book, by its credits (convert.mjs); one without them under the book's editors.
+const citeKey = (file) => file.replace(/^essays\//, '').replace(/\.md$/, '').replace(/[^\w-]+/g, '-');
+const bookOf = (edition) => ({ id: edition.home.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''), title: edition.home.title,
+  editors: PUBLICATION.editors, publisher: PUBLICATION.publisher, year: edition.version.date.slice(0, 4), url: siteUrl + edition.dir, language: PUBLICATION.language });
+for (const edition of editions) {
+  try {
+    edition.self = selfReferences({ pandoc: PANDOC, work: join(edition.scratch, 'self'), book: bookOf(edition),
+      version: edition === latest ? null : { id: edition.version.id, label: edition.version.label },
+      pages: edition.pages.filter((p) => p !== edition.home).map((p) => ({ key: p.file, id: citeKey(p.file), title: p.title, credits: p.credits, url: siteUrl + edition.dir + urlOf(p.file) })) });
+  } catch (e) { fail(`${edition.name}: ${e.message}`); }
+  if (edition === latest) warnings.push(...edition.self.warnings);
+}
+const citeStyles = COPY_STYLES.map(({ id, label, short, entry }) => ({ id, label, short, ...(entry ? { entry } : {}) }));
+const citeEntry = (e, url) => ({ cite: e.cite, html: e.html, texts: e.texts, url });
+// the data for assets/cite.js, in a script element; < and ` are written as escapes, so that it cannot end the element
+const citeScript = (value) => `<script type="application/json" class="cite-data">${JSON.stringify(value).replace(/</g, '\\u003c').replace(/`/g, '\\u0060')}</script>`;
+// a reference's date accessed, which the reader's browser fills in (assets/cite.js); without JavaScript it says what goes there
+const accessedHtml = (html) => html.replace('31 December 9999', '<span class="cite-today">the day you read it</span>');
+// the house style's reference as page.json and publication.json give it: without the date accessed
+const withoutAccessed = (text) => text.replace(/ \[accessed 31 December 9999\]/, '');
+// How to cite this page: at the end of every page, also without JavaScript, in print and in archives. The build keeps
+// one of its two in-text lines once it knows whether the page has numbered paragraphs.
+const howToCite = ({ entry, home, release, releaseUrl }) => `<section class="how-to-cite" aria-labelledby="how-to-cite" data-pagefind-ignore>
+<h2 id="how-to-cite">${home ? 'How to cite the book' : 'How to cite this page'}</h2>
+<p class="how-to-cite__intext" data-for="paragraphs">In the text, with the number of the paragraph, which is in the margin beside it: <span class="how-to-cite__example">(${esc(entry.cite)}: para. <var>n</var>)</span></p>
+<p class="how-to-cite__intext" data-for="page">In the text: <span class="how-to-cite__example">(${esc(entry.cite)})</span></p>
+<p class="how-to-cite__reference">${accessedHtml(entry.html)}</p>
+${release ? `<p class="how-to-cite__release">A passage that is unchanged since ${esc(lcFirst(release.version.label))}, is best cited there, where its number stays: <a href="${esc(releaseUrl)}">this page in ${esc(lcFirst(release.version.label))}</a>. Cite, under the page’s title, does this by itself.</p>\n` : ''}</section>`;
+
 // 4c. Stage 2 of every page: HTML from its Markdown view (index.html), its Markdown view's page, and page.json.
 const report = { paragraphs: [], matching: [], citations: [], references: [] };
 // An edition is built after the one its notice points to, whose paragraphs it is matched against.
@@ -421,6 +461,17 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     const there = target && target.paragraphs.get(page.file);   // this page in the edition the notice points to
     const section = edition.section.get(page.file);
     const band = page.header.image && editionImages[`header|${page.header.image}|0`];
+    // how the page is cited: its reference, the book's, and on the latest text the newest release's, whose paragraphs
+    // with the same text are filled in once that release is built (below)
+    const self = page === edition.home ? edition.self.book : edition.self.pages.get(page.file);
+    const pageUrl = siteUrl + edition.dir + url;
+    const inRelease = edition === latest && newestRelease && newestRelease.byFile.has(page.file) ? newestRelease : null;
+    if (inRelease) page.citeRelease = { entry: page === edition.home ? inRelease.self.book : inRelease.self.pages.get(page.file), url: siteUrl + inRelease.dir + url, file: join(dir, 'index.html') };
+    const citeData = {
+      version: edition.version, home: page === edition.home, site: siteUrl, styles: citeStyles, page: citeEntry(self, pageUrl), book: citeEntry(edition.self.book, siteUrl + edition.dir),
+      ...(edition === latest && newestRelease ? { releaseBook: citeEntry(newestRelease.self.book, siteUrl + newestRelease.dir) } : {}),
+      formatted: `${root}references/${COPY_DATA}`, release: inRelease ? '@@RELEASE@@' : null,
+    };
     // the frame of this page as seen from `from`, the page's own folder ('') or its Markdown view ('markdown/')
     const frame = (from) => {
       const r = from ? deeper(root) : root, s = join2(r, prefix) || './';
@@ -430,6 +481,11 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
       // to the passage they are reading, with the map of this page's paragraphs to that page's added below.
       if (target) extra.version_notice = versionNotice(edition, join2(s, target.dir + (there ? url : '')));
       if (band) extra.page_band = `<img src="${esc(join2(r, band.url))}" width="${band.width}" height="${band.height}" alt="" fetchpriority="high">`;
+      if (!from) {
+        extra.cite_data = citeScript(citeData);
+        extra.cite_section = howToCite({ entry: self, home: page === edition.home, release: inRelease, releaseUrl: inRelease && join2(r, join2(prefix, inRelease.dir) + url) });
+        extra.scholar = scholarMeta({ entry: self, book: bookOf(edition), url: pageUrl, licence: FRAME.licence?.url, isBook: page === edition.home });
+      }
       const yaml = join(scratch, page.file.replace(/\W/g, '_') + (from ? '.markdown' : '') + '.yaml');
       writeYaml(yaml, edition.menu, extra);
       return ['--metadata-file', yaml, ...metaArgs({ ...meta, ...toolkitMeta, ...frameMeta(edition, s), root: r, shared: s, 'paragraph-rule': edition.rule, 'asset-version': ASSET_VERSION, views: 'true',
@@ -448,6 +504,9 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
       ...frame('markdown/'), ...filterArgs(['links'])], markdownView, `${page.file} (Markdown view)`));
     const data = JSON.parse(readFileSync(contractOut, 'utf8'));
     const paragraphs = list(data.paragraphs);
+    // How to cite this page keeps the in-text line that fits the page
+    html = html.replace(new RegExp(`<p class="how-to-cite__intext" data-for="${paragraphs.length ? 'page' : 'paragraphs'}">.*?</p>\\n?`), '');
+    if (edition === latest && !page.credits && page !== edition.home && paragraphs.length) warnings.push(`${page.file}: no credits, so its citations name the book's editors as its authors (see "Credits" in everytrick/CONTRACT.md)`);
     if (target) {
       // the map needs this page's paragraphs, which stage 2 has just numbered
       const result = there ? matchParagraphs(paragraphs, there) : { map: {}, counts: null };
@@ -478,6 +537,8 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     writeFileSync(join(dir, 'page.json'), JSON.stringify({
       contract: CONTRACT, paragraphRule: edition.rule, id: page.file, url: page.url, title: page.title, subtitle: page.subtitle,
       version: edition.version, everytrickinthebook: TOOLKIT_VERSION,
+      credits: page === edition.home ? { editor: PUBLICATION.editors } : page.credits || {},
+      citation: { text: self.cite, reference: withoutAccessed(self.texts.house) },
       markdown: `${url}index.md`,
       headings: list(data.headings).map(({ level, text, id }) => ({ level, text, id })),
       paragraphs: paragraphs.map(({ id, n, text_hash }) => ({ id, n, text_hash })),
@@ -545,6 +606,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
   const versionsList = [latest, ...editions.slice(1).reverse()].map((e) => ({ ...e.version, url: e === edition ? './' : prefix + e.dir || './' }));
   writeFileSync(join(out, 'publication.json'), JSON.stringify({
     contract: CONTRACT, paragraphRule: edition.rule, title: home.title, subtitle: home.subtitle, ...PUBLICATION, url: siteUrl + edition.dir, markdown: 'publication.md',
+    citation: { text: edition.self.book.cite, reference: withoutAccessed(edition.self.book.texts.house) },
     version: edition.version, everytrickinthebook: TOOLKIT_VERSION, versions: versionsList,
     readingOrder: edition.order.map((file) => ({ id: file, url: edition.byFile.get(file).url, title: edition.byFile.get(file).title })),
   }, null, 2) + '\n');
@@ -597,6 +659,17 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
       ...metaArgs({ page: 'search.md', repo: REPO, manifest, lang: PUBLICATION.language, title: 'Search', ...toolkitMeta, ...frameMeta(edition, s),
         root: '../', shared: s, 'asset-version': ASSET_VERSION, 'site-title': home.title, noindex: 'true', 'search-page': 'true' }), ...filterArgs(['links'])],
       body, `${edition.name}: search/`));
+  }
+}
+
+// The latest text's pages cite a passage in the newest release where its paragraphs have the same text there
+// (assets/cite.js): each gets the release's reference and the map of those paragraphs, now that both are numbered.
+if (newestRelease) {
+  for (const page of latest.pages.filter((p) => p.citeRelease)) {
+    const { entry, url, file } = page.citeRelease;
+    const { same } = matchParagraphs(latest.paragraphs.get(page.file) || [], newestRelease.paragraphs.get(page.file) || []);
+    const release = { id: newestRelease.version.id, label: newestRelease.version.label, page: citeEntry(entry, url), same };
+    writeFileSync(file, readFileSync(file, 'utf8').replace('"@@RELEASE@@"', JSON.stringify(release).replace(/</g, '\\u003c').replace(/`/g, '\\u0060')));
   }
 }
 
@@ -735,6 +808,13 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
     };
   };
   const views = media.items.map(itemView);
+  // How each item is cited, against the book (media-pages.mjs, itemCite; assets/cite.js): the newest release where the
+  // item is in it, otherwise the latest text.
+  for (const it of views) {
+    const book = it.label && newestRelease && it.apps.some((a) => a.edition === newestRelease) ? newestRelease : latest;
+    it.cite = { book: citeEntry(book.self.book, siteUrl + book.dir),
+      item: { number: it.label || null, title: it.heading, credit: it.credit || '', citeAs: it.citeAs || '', short: it.short ? siteUrl + it.short : null, url: siteUrl + it.url } };
+  }
   // When each item was first published and last changed, from the Git history (history.mjs): two passes over it for
   // all the items. Without the whole history the item pages leave both out, and the build says so.
   {
@@ -769,7 +849,7 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
     // pages' text is indexed (documentText).
     const searched = !!it.doc?.text;
     if (it.doc) body += `\n${rawBlock(documentText(it, { root: '../../' }))}`;
-    body += `\n${rawBlock(itemFacts(it, { root: '../../', siteUrl }))}`;
+    body += `\n${rawBlock(itemFacts(it, { root: '../../', siteUrl }) + '\n' + citeScript({ version: latest.version, site: siteUrl, styles: citeStyles, book: it.cite.book, item: it.cite.item }))}`;
     const html = await pandocAsync([...pageFrame('../../', { ...meta, pagetitle: `${it.label ? `Item ${it.label}` : 'New item'}: ${it.heading}`, 'item-page': 'true',
       'section-title': it.label ? `Item ${it.label}` : 'New item', 'section-url': `../../media-index/#${it.anchor}`, 'in-media-index': 'true', noindex: NOINDEX ? 'true' : '',
       'search-title': searched ? 'true' : '' }),

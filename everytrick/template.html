@@ -13,6 +13,10 @@ $if(on-page)$
   <link rel="alternate" type="text/markdown" href="index.md">
   <link rel="alternate" type="application/json" href="page.json">
 $endif$
+$if(scholar)$
+  $scholar$
+$endif$
+  <script src="$shared$assets/copy.js?v=$asset-version$" defer></script>
   <script src="$shared$assets/zoom.js?v=$asset-version$" defer></script>
   <script src="$shared$assets/player.js?v=$asset-version$" defer></script>
   <script src="$shared$assets/paragraphs.js?v=$asset-version$" defer></script>
@@ -20,6 +24,7 @@ $endif$
   <script src="$shared$assets/settings.js?v=$asset-version$" defer></script>
   <script src="$shared$assets/menu.js?v=$asset-version$" defer></script>
   <script src="$shared$assets/place.js?v=$asset-version$" defer></script>
+  <script src="$shared$assets/cite.js?v=$asset-version$" defer></script>
 $if(has-citations)$
   <script src="$shared$assets/citations.js?v=$asset-version$" defer></script>
 $endif$
@@ -125,12 +130,18 @@ $endif$
 $if(subtitle)$
           <p class="page-subtitle">$subtitle$</p>
 $endif$
+$if(cite-data)$
+          <p class="page-cite"><button class="cite-button" type="button" hidden>Cite</button></p>
+$endif$
         </div>
       </div>
     </div>
   </header>
   <main id="main"$if(searchable)$ data-pagefind-body$endif$>
 $body$
+$if(cite-section)$
+$cite-section$
+$endif$
   </main>
   <div class="copy-status" role="status" aria-live="polite" aria-atomic="true"></div>
   <footer class="site-footer">
@@ -152,5 +163,8 @@ $endif$
       </div>
     </div>
   </footer>
+$if(cite-data)$
+  $cite-data$
+$endif$
 </body>
 </html>
