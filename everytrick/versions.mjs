@@ -3,7 +3,7 @@
 // release" in DEVELOPMENT.md.
 //
 //   readRegistry()                 the registry's versions, checked, oldest first
-//   checkout(version, dir)         the version's README.md, essays/ and references/ from its tag, in dir; files the
+//   checkout(version, dir)         the version's README.md, essays/, about/ and references/ from its tag, in dir; files the
 //                                  build needs besides (media no longer in the working tree) are taken on request
 //   matchParagraphs(older, newer)  for each paragraph of a page in an older version, the same passage in a newer one
 //   longDate('2026-11-20')         '20 November 2026'
@@ -16,8 +16,8 @@ export const REGISTRY = join(REPO_ROOT, 'versions.json');
 const STATUS = ['review', 'release'], ANNOTATIONS = ['none', 'hypothesis'];
 // Contracts whose paragraph rule the build knows (CONTRACT.md, "Paragraph numbers"): a frozen version is numbered by its own.
 // Contract 0.5 changed the page data only; its paragraph rule is 0.4's. Contract 0.6's adds long descriptions to the
-// blocks that are not numbered. Contract 0.7 changed the page data only; its paragraph rule is 0.6's.
-const RULES = ['0.3', '0.4', '0.5', '0.6', '0.7'];
+// blocks that are not numbered. Contracts 0.7 and 0.8 changed the page data only; their paragraph rule is 0.6's.
+const RULES = ['0.3', '0.4', '0.5', '0.6', '0.7', '0.8'];
 
 function git(args, { binary = false, input } = {}) {
   const result = spawnSync('git', ['-C', REPO_ROOT, ...args], { encoding: binary ? 'buffer' : 'utf8', maxBuffer: 1 << 30, input });
@@ -62,7 +62,7 @@ export function checkout(version, dir) {
   const listing = git(['ls-tree', '-r', '-z', '--name-only', commit]);
   if (!listing.ok) throw new Error(`cannot list the files of ${version.tag}: ${listing.err}`);
   const files = new Set(listing.out.split('\0').filter(Boolean));
-  const wanted = ['README.md', 'essays', 'references'].filter((p) => files.has(p) || [...files].some((f) => f.startsWith(`${p}/`)));
+  const wanted = ['README.md', 'essays', 'about', 'references'].filter((p) => files.has(p) || [...files].some((f) => f.startsWith(`${p}/`)));
   if (!files.has('README.md') || !wanted.includes('essays')) throw new Error(`${version.tag} has no README.md or essays/: is it a tag of this book?`);
   mkdirSync(dir, { recursive: true });
   const archive = git(['archive', '--format=tar', commit, '--', ...wanted], { binary: true });
