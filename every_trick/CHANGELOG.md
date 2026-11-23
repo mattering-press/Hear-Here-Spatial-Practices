@@ -25,16 +25,16 @@ Media Index.
   before the caption.
 - Each item has its own page, at an address made of its kind and a short name: `/see/boulder-font/`,
   `/listen/podcast-catherine-hahn/`, `/watch/family-talk/`, `/read/house-of-hope/`. It shows the item, its number, its
-  caption, its credit, every place it appears (with a link to it there), the version it entered the book with, where
-  it is stored and where it is served from, and its files to download. These pages are shared by every version of the
-  book, so a frozen version's numbers lead to the same pages.
+  caption, its credit, its rights and source, every place it appears (with a link to it there), the version it entered
+  the book with, where it is stored and where it is served from, and its files to download. These pages are shared by
+  every version of the book, so a frozen version's numbers lead to the same pages.
 - Every numbered item also has a short address to type from paper: `/37/` leads to item 37. When an item is renamed,
   its old address keeps leading to it.
 - The Media Index, `/media-index/`, lists every item by number, with a small picture, its title, its address, where it
-  appears, the version it entered with, and where it is stored and served from. It can be filtered by kind and by
-  where items are served from; without JavaScript it is a plain list. Every footer links to it, beside "All versions".
-  `media.json` at the root of the site holds the same list as data, and every page's `page.json` lists the items on that
-  page.
+  appears, the version it entered with, where it is stored and served from, and its credit and rights when it has
+  them. It can be filtered by kind and by where items are served from; without JavaScript it is a plain list. Every
+  footer links to it, beside "All versions". `media.json` at the root of the site holds the same list as data, and
+  every page's `page.json` lists the items on that page.
 - Search finds the items of the Media Index by their title or caption and by their address. The Media Index is then
   among the pages found, and each item found on it is shown as "item 37" (or "new item"), where a page of the book
   shows "para. 12", with a link straight to its entry. The rest of an entry (where it appears, its version, where it is
@@ -43,15 +43,28 @@ Media Index.
   short addresses and the editing view are not searched: the Media Index holds their words.
 - An item's credit is kept in the register, written exactly as it should show ("Photo: …"), and appears after its
   caption wherever the item is shown, and on its page.
+- The register can say what the rights of an item are, as the address of a standard statement: one of
+  rightsstatements.org's, such as In Copyright, or a Creative Commons licence, such as CC BY 4.0. The item's page shows
+  the statement's name, linked to it, followed by a short note where the register has one. Rights are filled in only
+  where they are clear: so far In Copyright for item 1, from the Historic England Archive, for House of Hope and for
+  the videos on YouTube, Vimeo and the BBC.
+- The register can also say how to cite an item's own source, its maker, title, date and holder, in the house style,
+  such as "Clarke Fitzgerald, ‘The Plumb Line and the City’ (1971), Coventry Cathedral". The item's page shows it as
+  "Source".
+- Credit, rights and source appear only when they are filled in: no public page says that one is missing, not
+  evaluated or unknown. `media.json` carries all three for every item.
 - Videos and embedded documents whose pages give them no caption now show their real title, from the register (for
   the films and zines on archive.org, their title there), instead of "Embedded content from archive.org".
 - Without JavaScript, clicking a picture opens its item page; on the item page, its largest image.
 - Previews, never the public site, have an editing view of the Media Index, `/media-index/edit/`: fields for each
-  item's name and credit, the caption and alt text of each place it appears, and a comment, with checks beside each item
-  (no alt text, alt text that repeats the caption, no credit, used on no page). Edits stay in the browser; "Hand over
+  item's name and credit, its rights (chosen from the common statements and licences, or another one's address typed
+  in) and their note, how to cite its source, the caption and alt text of each place it appears, and a comment, with
+  checks beside each item (no alt text, alt text that repeats the caption, no credit, no rights, no source to cite,
+  used on no page). These checks are the only place that says what is missing. Edits stay in the browser; "Hand over
   changes" gives a sheet listing only what changed, to copy or download and apply on a branch.
 - The build stops, saying what to do, when a registered item's file has gone or its address has changed, when two
-  items share a name, or when an item of a frozen version has no number. `npm run number-media -- <version>` numbers a
+  items share a name, when an item of a frozen version has no number, or when an item's rights are not the address of
+  a rightsstatements.org statement or a Creative Commons licence. `npm run number-media -- <version>` numbers a
   version's new items when it is frozen.
 - The page data is contract 0.5 (`CONTRACT.md`); its paragraph rule is unchanged, so no paragraph has a new number.
 

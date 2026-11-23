@@ -3,10 +3,13 @@
 //  * Filters: chips by kind (see, listen, watch, read) and by where items are served from (our own site, GitHub,
 //    archive.org …), made from the list itself, with how many items each has. One choice in each row; "All" clears
 //    both. A line says how many items are shown.
-//  * The editing view: fields for each item's name and credit, the caption (and for a picture the alt text) of each
-//    place it appears in the latest text, and a comment. The checks beside each item follow the fields as they change:
-//    no alt text, alt text that repeats the caption, no credit, used on no page, and a name that is not allowed or is
-//    already taken. Edits are kept in this browser (localStorage, when it can), so a reload keeps them; the page works
+//  * The editing view: fields for each item's name, credit, rights (a choice of the common statements and licences,
+//    which writes their address, or any other address typed in) with its note, and how to cite its source; the caption
+//    (and for a picture the alt text) of each place it appears in the latest text; and a comment. The checks beside each
+//    item follow the fields as they change: no alt text, alt text that repeats the caption, no credit, no rights (or an
+//    address that is not a statement or licence), no source to cite, used on no page, and a name that is not allowed or
+//    is already taken. Public pages never show a missing field, so these checks are the only place that says what is
+//    missing. Edits are kept in this browser (localStorage, when it can), so a reload keeps them; the page works
 //    without it. "Hand over changes" opens a sheet that lists only what changed, item by item, with Copy and Download
 //    (.md); "Clear all edits" puts every field back. Nothing is ever sent or saved anywhere else.
 (function () {
@@ -83,6 +86,20 @@
   var NAME = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
   var names = {};   // every name and former name of the book -> the source of its item
   try { names = JSON.parse(edit.querySelector('.media-names').textContent); } catch (e) { /* no check of names */ }
+  // the statements and licences the build knows (RIGHTS in every_trick/register.mjs): an address is labelled as
+  // register.mjs's rightsLabel does it, "In Copyright", "CC BY 4.0"
+  var RIGHTS = { patterns: {}, statements: {}, notKnown: {} }, pattern = {};
+  try { RIGHTS = JSON.parse(edit.querySelector('.media-rights').textContent); } catch (e) { /* no check of rights */ }
+  Object.keys(RIGHTS.patterns).forEach(function (k) { pattern[k] = new RegExp(RIGHTS.patterns[k], 'i'); });
+  var code = function (address) { var m = pattern.statement && pattern.statement.exec(address); return m ? m[1].toLowerCase() : ''; };
+  var rightsLabel = function (address) {
+    var a = address.trim(), m;
+    if (pattern.statement && pattern.statement.test(a)) return RIGHTS.statements[code(a)] || '';
+    if (pattern.licence && (m = pattern.licence.exec(a))) return 'CC ' + m[1].toUpperCase() + ' ' + m[2] + (m[3] ? ' ' + m[3].toUpperCase() : '');
+    if (pattern.publicDomain && (m = pattern.publicDomain.exec(a))) return m[1].toLowerCase() === 'zero' ? 'CC0 1.0' : 'Public Domain Mark 1.0';
+    return '';
+  };
+  var notKnown = function (address) { return RIGHTS.notKnown[code(address.trim())] || ''; };
   var stored = {};  // source -> { "caption@essays/x.md|1": "…", name: "…", … }: the fields that differ from the page
   try { stored = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { stored = {}; }
   var save = function () {
@@ -97,6 +114,17 @@
   var plain = function (s) { return s.toLowerCase().replace(/[^a-z0-9À-￿]+/g, ' ').trim(); };
 
   var mark = function (f) { f.closest('.media-field').classList.toggle('is-changed', !same(f.value, f.dataset.original)); };
+
+  // The rights choice follows the address: the statement or licence it is, "another" for any other address, or "not
+  // given yet" when it is empty. Choosing one writes its address (the change listener below).
+  var syncChoice = function (entry) {
+    var select = entry.querySelector('[data-rights-choice]'), input = entry.querySelector('[data-field="rights"]');
+    if (!select || !input) return;
+    var a = input.value.trim();
+    var listed = a && Array.prototype.some.call(select.options, function (o) { return o.value === a && o.value !== 'other'; });
+    select.value = !a ? '' : listed ? a : 'other';
+    select.closest('.media-field').classList.toggle('is-changed', !same(input.value, input.dataset.original));
+  };
 
   // the checks beside an item, from its fields as they are now
   var check = function (entry) {
@@ -114,6 +142,11 @@
       if (repeats) out.push('Alt text repeats the caption');
     }
     if (!value(entry, 'credit')) out.push('No credit');
+    var rights = value(entry, 'rights');
+    if (!rights) out.push('No rights');
+    else if (notKnown(rights)) out.push('Rights: leave them empty until they are known');
+    else if (!rightsLabel(rights)) out.push('Rights: not a rightsstatements.org or Creative Commons address');
+    if (!value(entry, 'cite_as')) out.push('No source to cite');
     if (entry.dataset.used !== 'true') out.push('Used on no page');
     var ul = entry.querySelector('.media-checks');
     ul.textContent = '';
@@ -146,7 +179,10 @@
   };
 
   var quote = function (s) { return s ? '“' + s + '”' : '(empty)'; };
-  var FIELDS = { name: 'name', credit: 'credit', caption: 'caption', alt: 'alt text' };
+  // a value as the sheet gives it: quoted, and a rights address with its label, “http://…/InC/1.0/” (In Copyright)
+  var inSheet = function (field, s) { var label = field === 'rights' && s ? rightsLabel(s) : ''; return quote(s) + (label ? ' (' + label + ')' : ''); };
+  // each field as the sheet names it, with its column in media/register.csv where the name alone does not say it
+  var FIELDS = { name: 'name', credit: 'credit', rights: 'rights', rights_note: 'rights note (rights_note)', cite_as: 'source to cite (cite_as)', caption: 'caption', alt: 'alt text' };
   var sheetText = function () {
     var list = changes();
     var when = new Date().toISOString().slice(0, 10);
@@ -158,7 +194,7 @@
       c.lines.forEach(function (l) {
         var where = l.page ? ' on ' + l.page + (l.place && l.place !== '1' ? ' (place ' + l.place + ' on the page)' : '') + ' (' + l.file + ')' : '';
         var note = l.field === 'name' ? ' (the old address, /' + e.dataset.kind + '/' + l.was + '/, keeps forwarding: add it to former_names)' : '';
-        out.push('- ' + FIELDS[l.field] + where + ': ' + quote(l.was) + ' → ' + quote(l.now) + note);
+        out.push('- ' + FIELDS[l.field] + where + ': ' + inSheet(l.field, l.was) + ' → ' + inSheet(l.field, l.now) + note);
       });
       if (c.comment) out.push('- comment: ' + c.comment.replace(/\s*\n\s*/g, ' '));
     });
@@ -169,6 +205,7 @@
   entries.forEach(function (entry) {
     var saved = stored[entry.dataset.source] || {};
     fields(entry).forEach(function (f) { if (Object.prototype.hasOwnProperty.call(saved, keyOf(f))) f.value = saved[keyOf(f)]; mark(f); });
+    syncChoice(entry);
   });
   entries.forEach(check);
   counted();
@@ -181,8 +218,18 @@
     if (!Object.keys(mine).length) delete stored[source];
     save();
     mark(f);
+    if (f.dataset.field === 'rights') syncChoice(entry);
     if (f.dataset.field === 'name') entries.forEach(check); else check(entry);
     counted();
+  });
+  // choosing a statement or licence writes its address; "another" leaves the address to be typed
+  list.addEventListener('change', function (event) {
+    var select = event.target.closest && event.target.closest('[data-rights-choice]');
+    if (!select) return;
+    var input = select.closest('.media-entry').querySelector('[data-field="rights"]');
+    if (select.value === 'other') { input.focus(); input.select(); return; }
+    input.value = select.value;
+    input.dispatchEvent(new Event('input', { bubbles: true }));
   });
 
   // hand over: the change sheet, with Copy and Download
@@ -222,7 +269,7 @@
       if (!window.confirm('Clear all your edits in this view? Every field goes back to what the pages say.')) return;
       stored = {};
       save();
-      entries.forEach(function (entry) { fields(entry).forEach(function (f) { f.value = f.dataset.original; mark(f); }); });
+      entries.forEach(function (entry) { fields(entry).forEach(function (f) { f.value = f.dataset.original; mark(f); }); syncChoice(entry); });
       entries.forEach(check);
       counted();
       if (sheet.open) text.textContent = sheetText();

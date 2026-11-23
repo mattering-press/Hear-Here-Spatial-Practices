@@ -50,7 +50,7 @@ for (const file of book.order) {
     let line = bySource.get(found.source);
     if (line?.number != null) { already.add(line); continue; }
     if (!line) {
-      line = { number: null, kind: found.kind, source: found.source, since: '', credit: '', title: '', formerNames: [], formerSources: [],
+      line = { number: null, kind: found.kind, source: found.source, since: '', credit: '', rights: '', rightsNote: '', citeAs: '', title: '', formerNames: [], formerSources: [],
         name: draftName([found.caption, found.title, found.alt, sourceWords(found.source)], taken, skip) };
       lines.push(line);
       bySource.set(found.source, line);
