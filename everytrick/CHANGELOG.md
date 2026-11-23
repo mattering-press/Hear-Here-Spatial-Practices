@@ -12,6 +12,37 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of everytrick’ in `DEVELOPMENT.md`.
 
+## 1.16.0
+
+23 November 2026. The book gets a back matter, with one entry in the menu, and a lighter footer. The page data is now
+contract 0.8.
+
+- The back matter is what follows the book’s text: Contributors, Acknowledgements, References, the Media Index and
+  About this book. It has a contents page of its own, `back-matter/`, with one line for each, in every version of the
+  book, and each of its pages says “Back matter” above its title.
+- The menu’s two last entries, “media index” and “references”, become one, “about”, so the menu has five entries again
+  and stays on one line down to a narrower window (888 pixels at the usual text size, where it needed 1008). On a wide
+  screen “about” opens a short list of the back matter’s sections, with the mouse or the keyboard: the arrow keys move
+  through it, Escape closes it. In the menu of a narrower window the sections are an indented group under “about”.
+  Without JavaScript, “about” leads to the back matter’s contents.
+- About this book, at `about/`, starts with Mattering Press’ statement, followed by the book’s licence and a note that
+  its media items may carry other rights, which the Media Index gives; the colophon, which names the toolkit and its
+  version, the typeface, the programs that make the site and their licences, and where the site is hosted; and the
+  versions and data: the version being read, a link to all versions, and links to the book’s open data. The colophon
+  can start with a few sentences of the publisher’s own, from `back-matter/colophon.md`.
+- The publisher’s statement, the contributors and the acknowledgements are reading text: their paragraphs are numbered
+  and search finds them. What the build writes on About this book, and the contents page, are neither.
+- The Contributors page has moved to `back-matter/contributors/`; its old address leads there. The Acknowledgements
+  page is new, with Mattering Press’ opening, “Making this book”, for the author to finish.
+- The footer is lighter: the book’s title and licence, its version, and one link, “About this book”, instead of the
+  links to all versions, the Media Index and the References page, which are now in the back matter.
+- A new page may give its title in a front matter at its start (`title: Acknowledgements` between two lines of three
+  hyphens) instead of a header line.
+- In the book’s data the back matter closes the reading order in `publication.json` and the whole book in Markdown;
+  each page is marked as part of the back matter or of the body (`part`, also in `page.json`), and `publication.json`
+  lists the back matter’s sections (`backmatter`). That is contract 0.8; its paragraph rule is that of 0.7, so no
+  paragraph’s number changes.
+
 ## 1.15.0
 
 23 November 2026. A new name: everytrickinthebook, and everytrick for short.

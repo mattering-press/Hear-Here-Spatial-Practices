@@ -68,8 +68,22 @@ const IMAGE_RE = /!\[([^\]]*)\]\(((?:[^()\s]|\([^()\s]*\))+)(?:\s+"[^"]*")?\)/g;
 const inWorkingTree = (path) => existsSync(join(REPO_ROOT, path));
 
 export function convert(source, file, { exists = inWorkingTree } = {}) {
-  const lines = source.split(/\r?\n/);
   const page = { title: null, subtitle: null, header: {}, menu: [], footer: [], cards: [], images: [], files: [] };
+  // A page written in Pandoc's conventions may give its title (and subtitle) in a YAML front matter instead of a
+  // .ve-header line: '---', 'title: Acknowledgements', '---' at its very start. The block is taken off the text, and
+  // its blank lines kept, so that line numbers in warnings stay the file's.
+  const front = /^---\r?\n((?:.*\r?\n)*?)---\r?\n/.exec(source);
+  if (front) {
+    const value = (key) => {
+      const m = new RegExp(`^${key}:[ \\t]*(.*)$`, 'm').exec(front[1]);
+      const v = m?.[1].trim() ?? '';
+      return (/^(["']).*\1$/.test(v) ? v.slice(1, -1) : v) || null;
+    };
+    page.title = value('title');
+    page.subtitle = value('subtitle');
+    source = '\n'.repeat(front[0].split('\n').length - 1) + source.slice(front[0].length);
+  }
+  const lines = source.split(/\r?\n/);
   const handled = [], warnings = [], unhandled = [];
   const out = [];
   let fence = false, cardLevel = 0;
@@ -261,7 +275,7 @@ export function convert(source, file, { exists = inWorkingTree } = {}) {
     out.push(line);
   }
 
-  if (!page.title) fail(1, '', 'page has no .ve-header title');
+  if (!page.title) fail(1, '', 'page has no title: no .ve-header line and no title: in a front matter');
   const markdown = out.join('\n');
   // What stays as raw HTML in the Markdown view: third-party script embeds that cannot be a link.
   const exceptions = [];
@@ -270,26 +284,33 @@ export function convert(source, file, { exists = inWorkingTree } = {}) {
 }
 
 // The pages of one edition of the book, converted, and their reading order (readingOrder in CONTRACT.md): the home page
-// (README.md) and every essay; test.md is a scratch page and stays out. root is the folder that holds them (the
-// repository, or a frozen version's text from its tag).
-//   readBook(root, { exists }) -> { pages, home, byFile, order }
+// (README.md), every essay and the pages of the back matter; test.md is a scratch page and stays out. root is the
+// folder that holds them (the repository, or a frozen version's text from its tag).
+//   readBook(root, { exists, backmatter, borrowed }) -> { pages, home, byFile, order, backmatter }
+// backmatter: the repository paths of the back matter's pages, in their order (a page the edition does not have is left
+// out); borrowed: { path: folder } for a back matter page that this edition takes from another folder because it has
+// none of its own (the publisher's statement, for a version frozen before it existed).
 // order: the home page, then the pages of its menu in order, each followed by the pages its cards lead to (depth
-// first), then any page not reached that way, alphabetically.
-export function readBook(root, { exists = inWorkingTree } = {}) {
-  const files = ['README.md', ...readdirSync(join(root, 'essays')).filter((f) => f.endsWith('.md')).sort().map((f) => `essays/${f}`)];
-  const pages = files.map((file) => ({ file, ...convert(readFileSync(join(root, file), 'utf8'), file, { exists }) }));
+// first), then any page not reached that way, alphabetically, and last the back matter, which closes every reading
+// order: a card or the menu that leads to a back matter page does not move it.
+export function readBook(root, { exists = inWorkingTree, backmatter = [], borrowed = {} } = {}) {
+  const folderOf = (file) => (existsSync(join(root, file)) ? root : borrowed[file]);
+  const late = backmatter.filter((file) => folderOf(file));
+  const files = ['README.md', ...readdirSync(join(root, 'essays')).filter((f) => f.endsWith('.md')).sort().map((f) => `essays/${f}`).filter((f) => !late.includes(f)), ...late];
+  const pages = files.map((file) => ({ file, ...convert(readFileSync(join(folderOf(file) ?? root, file), 'utf8'), file, { exists }) }));
   const home = pages[0];
   const byFile = new Map(pages.map((page) => [page.file, page]));
   const order = [];
-  const visit = (file) => {
-    if (order.includes(file) || !byFile.has(file)) return;
+  const visit = (file, last = false) => {
+    if (order.includes(file) || !byFile.has(file) || (late.includes(file) && !last)) return;
     order.push(file);
-    byFile.get(file).cards.forEach(visit);
+    byFile.get(file).cards.forEach((target) => visit(target));
   };
   order.push(home.file);
   for (const item of home.menu) visit(repoPath(/\]\(([^)\s]+)\)/.exec(item)?.[1] ?? '', home.file).replace(/^\.$/, 'README.md'));
-  files.forEach(visit);
-  return { pages, home, byFile, order };
+  files.forEach((file) => visit(file));
+  late.forEach((file) => visit(file, true));
+  return { pages, home, byFile, order, backmatter: late };
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url) && process.argv[2]) {

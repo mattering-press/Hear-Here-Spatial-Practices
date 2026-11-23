@@ -1,4 +1,4 @@
-# Page data, contract 0.7
+# Page data, contract 0.8
 
 The build writes JSON beside the HTML so that other frontends (the collage index, a Tapestry export) can
 read the book without parsing HTML: `publication.json` at the root of each edition, a `page.json` beside every
@@ -35,7 +35,10 @@ The paragraph rule of 0.5 is 0.4's, unchanged. 0.6 (every_trick_in_the_book 1.14
 `first_published` and `last_changed` for each item. No frozen version was numbered by contract 0.5's rule. 0.7
 renames the toolkit's version `everytrickinthebook` in page.json, publication.json, media.json, document.json,
 formatted.json and the Markdown view's front matter, with the toolkit's new name (everytrickinthebook 1.15.0); it
-changes nothing else, and its paragraph rule is 0.6's, unchanged.
+changes nothing else, and its paragraph rule is 0.6's, unchanged. 0.8 (everytrickinthebook 1.16.0) adds the back
+matter (see "Back matter"): `part` in page.json and in each entry of publication.json's `readingOrder`, which the back
+matter's pages close, and `backmatter` in publication.json; a page may give its title in a YAML front matter; its
+paragraph rule is 0.6's, unchanged.
 
 ## Editions
 
@@ -58,7 +61,7 @@ depends only on the page's content, as its Markdown view (`index.md`) has it, ne
 stylesheet. Every version is rebuilt with the current toolkit, so a frozen version is numbered by the rule of the
 contract it was frozen under (`contract` in its entry in `versions.json`), and a rule never changes within a contract
 version: changing it would renumber the paragraphs of frozen versions and break every citation of them. The rule
-below is contract 0.6's, which 0.7 kept unchanged: contract 0.4's, which 0.5 kept unchanged, with long descriptions added to the blocks that are
+below is contract 0.6's, which 0.7 and 0.8 kept unchanged: contract 0.4's, which 0.5 kept unchanged, with long descriptions added to the blocks that are
 not numbered (no page of 0.4 or 0.5 had one). Contract 0.3, which numbers version 0.1, differs only for lists (see the
 list item below).
 
@@ -150,12 +153,26 @@ its mark in the text, at the end of the paragraph before it, is `<a class="margi
   register in its caption line and has its own item page (`/see/<name>/`, `/listen/<name>/`, `/watch/<name>/`).
 - Plain links in the margin are not numbered.
 
+## Back matter
+
+The back matter (EPUB's `backmatter`, JATS's `<back>`; British usage calls it end matter) follows the book's text in
+every edition and closes every reading order: Contributors and Acknowledgements (pages of the book's source in
+`back-matter/`, at `back-matter/contributors/` and `back-matter/acknowledgements/`), the References page, the Media
+Index and "About this book" (`about/`). Its contents page, `back-matter/`, lists them, one line each. Contributors,
+Acknowledgements and the publisher's statement that opens "About this book" (`back-matter/about.md`) are reading text:
+they have page.json, a Markdown view and paragraph numbers, are in the edition's search index and in `publication.md`.
+What the build writes after the statement, the book's licence, the colophon and the versions and data, is not reading
+text: it is not numbered, not indexed and not in the Markdown view; nor is the contents page. A version frozen before
+a back matter page existed has none, except "About this book", whose statement it takes from the latest text. A page
+that moved into the back matter keeps its old file and address in the versions that had it there (version 0.1 has
+`essays/contributors.md`); in the latest text its old address forwards to the new one.
+
 ## publication.json
 
 | field | value |
 |---|---|
-| `contract` | `"0.7"`, the version of this format |
-| `paragraphRule` | the contract whose paragraph rule numbered this edition: `"0.7"` for the latest text, the `contract` of its entry in `versions.json` for a frozen version (`"0.3"` for version 0.1) |
+| `contract` | `"0.8"`, the version of this format |
+| `paragraphRule` | the contract whose paragraph rule numbered this edition: `"0.8"` for the latest text, the `contract` of its entry in `versions.json` for a frozen version (`"0.3"` for version 0.1) |
 | `title`, `subtitle` | from the header of the home page (`README.md`) |
 | `creators` | list of names |
 | `publisher` | name |
@@ -165,7 +182,8 @@ its mark in the text, at the end of the paragraph before it, is `<a class="margi
 | `version` | this edition: `{ id, label, date, status }`. `status` is `latest` for the working text (`id` `"latest"`, `label` `"Latest text, unreleased"`, `date` the day of its last commit), or `review` or `release` for a frozen version, with the `id`, `label` and `date` (`YYYY-MM-DD`) of its entry in `versions.json` |
 | `everytrickinthebook` | the version of everytrickinthebook, the toolkit that built the site (`version` in `everytrick/package.json`; `everytrick/CHANGELOG.md` lists what changed in each), e.g. `"1.0.0"`. It is numbered separately from the book's version, `version` |
 | `versions` | every edition, the latest text first, then the frozen versions, newest first: `{ id, label, date, status, url }`, `url` relative to this edition's root (`"./"` for itself) |
-| `readingOrder` | every page once, as `{ id, url, title }`: the home page; then each page in the home page's menu, followed by the pages its cards lead to (depth first); then any other page, alphabetically |
+| `readingOrder` | every page once, as `{ id, url, title, part }`: the home page; then each page in the home page's menu, followed by the pages its cards lead to (depth first); then any other page, alphabetically; and last the pages of the back matter, in its order. `part` is `"backmatter"` for those, `"body"` for the others |
+| `backmatter` | the back matter (see "Back matter"): `{ title, url, sections }`, `url` its contents page (`"back-matter/"`), `sections` each section in order as `{ id, title, url }`: a back matter page by its `id` in `readingOrder`, `"references"` for the References page, `"media-index"` for the Media Index (shared, so `"../media-index/"` in a frozen version), and "About this book" by its source, `"back-matter/about.md"` |
 
 ## page.json
 
@@ -173,8 +191,9 @@ its mark in the text, at the end of the paragraph before it, is `<a class="margi
 |---|---|
 | `contract`, `paragraphRule` | as in publication.json |
 | `id` | the page's Markdown file, e.g. `"essays/walk.md"`; `"README.md"` for the home page |
-| `url` | e.g. `"essays/walk/"`; `"./"` for the home page |
-| `title`, `subtitle` | from the page's header; `subtitle` is `null` when there is none |
+| `url` | e.g. `"essays/walk/"`; `"./"` for the home page; `"about/"` for "About this book", whose source is `back-matter/about.md` |
+| `title`, `subtitle` | from the page's header (its `.ve-header` line, or `title` and `subtitle` in a YAML front matter at the start of its Markdown); `subtitle` is `null` when there is none |
+| `part` | `"backmatter"` for a page of the back matter, `"body"` for the others |
 | `version`, `everytrickinthebook` | as in publication.json |
 | `markdown` | the page's Markdown view, e.g. `"essays/walk/index.md"` |
 | `headings` | `{ level, text, id }` in page order; `level` is the HTML level (2 to 6), `id` the fragment for `url#id` |

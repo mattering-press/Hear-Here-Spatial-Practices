@@ -6,7 +6,7 @@
 // Root-absolute URLs ("/essays/…") are errors too, because the site must also work under a sub-path.
 // Frozen versions (v<id>/, each with its own publication.json) are checked too, with the media they share.
 // Every edition must also have its search page and search index (search/, pagefind/), with at least one page in it, and
-// its References page with the downloads of the bibliography (BibTeX, RIS, CSL-JSON) and the texts of its Copy menus
+// its back matter contents page (back-matter/), its References page with the downloads of the bibliography (BibTeX, RIS, CSL-JSON) and the texts of its Copy menus
 // (formatted.json), each with every work of the bibliography.
 //   npm run check     (after npm run build)
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
@@ -81,7 +81,7 @@ for (const file of all) {
 }
 for (const root of new Set(all.filter((f) => f.endsWith('/publication.json')).map(dirname))) {
   const where = relative(SITE, root) || 'the site root';
-  for (const path of ['search/index.html', 'pagefind/pagefind.js', 'pagefind/pagefind-entry.json']) if (!existsSync(join(root, path))) problems.push(`${where}: no ${path}`);
+  for (const path of ['search/index.html', 'pagefind/pagefind.js', 'pagefind/pagefind-entry.json', 'back-matter/index.html']) if (!existsSync(join(root, path))) problems.push(`${where}: no ${path}`);
   const entry = join(root, 'pagefind/pagefind-entry.json');
   if (existsSync(entry) && !Object.values(JSON.parse(readFileSync(entry, 'utf8')).languages || {}).some((l) => l.page_count > 0)) problems.push(`${where}: the search index has no pages`);
   const refs = ['index.html', 'formatted.json', 'bibliography.json', 'bibliography.bib', 'bibliography.ris'].map((f) => join(root, 'references', f));
