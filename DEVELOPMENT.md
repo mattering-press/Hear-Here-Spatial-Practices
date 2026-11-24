@@ -195,7 +195,7 @@ What is in `everytrick/`:
 - `citations.mjs`: prepares the bibliography for `filters/citations.lua`, writes the build's report on citations, the
   HTML of the References page, its downloads and the texts of its Copy menus (see "References and citations")
 - `ris.mjs`: turns a CSL-JSON entry into RIS, which Pandoc cannot write, for the References page
-- `cite.mjs`: the book's own references, every page and the book in the house style and the other styles, for the pages' Cite panel and How to cite section, the media items, page.json and the tags for Google Scholar (see "Plan: copying citations")
+- `cite.mjs`: the book's own references, every page and the book in the house style and the other styles, for the pages' Copy citation and How to cite section, the media items, page.json and the tags for Google Scholar (see "Plan: copying citations")
 - `csl/`: `mattering-press.csl`, the house citation style, and its test (`csl/test/`); and four styles of the official
   CSL repository, unchanged, for the References page's Copy menus: `apa.csl`, `chicago-author-date.csl`,
   `modern-language-association.csl` and `harvard-cite-them-right.csl` (source, commit and licence in
@@ -551,7 +551,7 @@ Copying and downloading (the publisher, 2026-11-23): beside each work on the Ref
 reference in the citation style the reader has chosen in the settings ("Aa"): Mattering Press' house style (the
 preset), APA (7th edition), Chicago (author-date), MLA (9th edition) or Harvard (Cite Them Right), as formatted or
 plain text, also chosen there (see "Plan: copying citations"), and the status line at the foot of the window says
-what was copied ("Copied: APA"). BibTeX and RIS are in the downloads, and in each page's Cite panel for the page itself. The house style is the reference as the page shows it, with the book's
+what was copied ("Copied: APA"). BibTeX and RIS are in the downloads, and in each page's How to cite section for the page itself. The house style is the reference as the page shows it, with the book's
 year letters. The other four are made at build time by citeproc with the official CSL repository's styles in
 `everytrick/csl/` (`formatReferences` in `citations.mjs`), each in the locale its guide is written for (Harvard in
 British English, the others in American), with their year letters and their dashes for a repeated author switched
@@ -1001,7 +1001,7 @@ The data are in `everytrick/CONTRACT.md` ("Front matter and credits", "Citing th
   the item's short address for a media item (`/37/`).
 - **The reader's citation settings** (the publisher, 2026-11-23): the settings ("Aa", beside text size and colours)
   have a citation style, Mattering Press (the preset), APA, Chicago, MLA or Harvard, and "Copy citations as",
-  Formatted (the preset) or Plain text. Every copy on the site follows them: Copy quote, Cite, the media items, the
+  Formatted (the preset) or Plain text. Every copy on the site follows them: Copy quote, Copy citation, the media items, the
   citation popups and the References page's Copy buttons; How to cite this page and an item's "To cite" show the
   chosen style. Formatted puts formatted text (italics, links) on the clipboard beside the plain text, for a word
   processor; Plain text puts the plain text alone, for an app that would turn formatting into Markdown. The choice is
@@ -1020,17 +1020,27 @@ The data are in `everytrick/CONTRACT.md` ("Front matter and credits", "Citing th
   Each style writes its own in-text citation ("(Nassar, 2026, para. 55)" in APA) and quotation marks (double ones in
   the American styles). A selection over several paragraphs gives "paras 55–56". The quote is the words selected,
   whole words, without paragraph numbers, ▸ or margin notes. "Copy citation", which copied the same without the words,
-  was dropped (the publisher, 2026-11-23): the ¶ links to a paragraph, Copy quote cites words, Cite cites the page.
+  was dropped (the publisher, 2026-11-23): the ¶ links to a paragraph, Copy quote cites words, Copy citation in the page's note cites the page (the publisher, 2026-11-24).
 - **The link to the exact words.** In formatted text the in-text citation, "(Nassar 2026: para. 55)", is a link to the
   quoted words, the paragraph with a text fragment (`…/v0.1/essays/aya_nassar/#p55:~:text=Cairo%20is%20a%20very%20dusty%20city`),
   so the browser highlights them; browsers without text fragments land on the paragraph.
-- **"Cite" under the page title** cites the page as a whole, the chapter, not a paragraph (the publisher, 2026-11-23):
-  a panel that starts with a line in small type, "Press Copy to cite this entire page. You can also select words in
-  the text and press Copy quote to cite a particular quote." (in place of a heading; the publisher, 2026-11-23), then
-  the reference in the reader's style, its in-text citation ("In the text: (Nassar 2026)"), one Copy
-  button, the style's name with a link to the settings, and "For a reference manager: BibTeX · RIS", which copy the
-  page's entry. On the latest text it cites the newest release that has the page, and says so. Without JavaScript the
-  reference stands in a "How to cite this page" section at the end of the page, which also serves print and archives.
+- **The page's note, at the top of its margin** (the publisher, 2026-11-24, replacing a Cite button and its panel in
+  the page's opening, which put citing ahead of the content; the book also speaks to readers in design, art and the
+  wider public). A few lines in small type, written as a colophon rather than as data, with no labels: who made the
+  page ("Aya Nassar, in conversation with Nirmal Puwar"; names in their natural order), the day it was held or
+  recorded ("Recorded 5 April 2025"), its producer and transcript editor, and "Last changed 24 November 2026" (the
+  last commit that changed the page's file; on a frozen version "Version 0.1, released on 20 November 2026"), then
+  "Copy citation · How to cite". On wide screens it heads the right-hand margin, level with the text's first line,
+  and margin notes start below it; on narrow screens it stands above the text, closed by a thin rule. A DOI joins
+  it as a plain link once Thoth registers one, and nothing shows until then.
+- **Copy citation** copies the page's reference, the chapter, in the reader's style, in one click, as the ¶ does,
+  and the status line says what was copied. On the latest text it cites the newest release that has the page, and
+  the status line says so. Without JavaScript the button is hidden and How to cite remains.
+- **How to cite this page**, at the end of the page, gives the in-text citation and the reference in the reader's
+  style, which style that is with a way to change it, and "For a reference manager: BibTeX · RIS", which copy the
+  page's entry. It also serves print and archives.
+- **The podcasts' own lists** of "Recording date" and "Interviewees" were taken out of their pages (the publisher,
+  2026-11-24): the page's note says the same from the page's credits. The duration stays.
 - **From the latest text.** A citation always names a version. A quote copied on the latest text is cited in the
   newest release wherever its paragraphs are unchanged there (the build matches paragraphs by their words, as for the
   version notice), with that release's paragraph numbers and address. A passage that is new or changed since is cited

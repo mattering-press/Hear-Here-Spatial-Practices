@@ -3,6 +3,7 @@
 //    labelled aside. On wide screens this script sets each note in the right-hand margin, level with its paragraph;
 //    when the margin is crowded, later notes are pushed down, so the text column never gets gaps. A note that would
 //    sit beside a wide or full picture (figure.wide, figure.full), which reaches into the margin, moves below it.
+//  * On wide screens the page's note (build.mjs, pageNote) heads the margin, and the notes start below it.
 //  * The mark in the text and the same number on the note highlight together on hover and focus.
 //  * In the margin a note shows in full (the preset). With --margin-note-lines set in site.css, a long note shows
 //    that many lines, then "more".
@@ -54,6 +55,9 @@
     main.style.minHeight = '';
     var bottom = -Infinity;
     var mainTop = main.getBoundingClientRect().top;
+    // the page's note (build.mjs, pageNote) heads the margin: the notes start below it
+    var lead = on && main.querySelector(':scope > .page-note');
+    if (lead) bottom = lead.getBoundingClientRect().bottom - mainTop;
     var limit = on ? noteLines() : 0;
     // the wide and full pictures of the text, from top to bottom, in the same coordinates as the notes
     var pictures = !on ? [] : Array.prototype.filter.call(main.querySelectorAll('figure.wide > .figure-picture, figure.full > .figure-picture'), function (el) {

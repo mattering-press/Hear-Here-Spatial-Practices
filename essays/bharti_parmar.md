@@ -24,8 +24,6 @@ recorded: 2025-03-25
     - Published by [![Mattering Press](https://www.matteringpress.org/wp-content/themes/matteringpress/img/mattering-press.png)](https://www.matteringpress.org/)
     - [![CC BY](https://licensebuttons.net/l/by/4.0/88x31.png)](https://creativecommons.org/licenses/by/4.0/)
 
-- **Recording date:** 25 March 2025
-- **Interviewee:** Bharti Parmar
 - **Podcast duration:** 25min 59sec
 
 # Introduction

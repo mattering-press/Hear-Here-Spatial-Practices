@@ -24,8 +24,6 @@ recorded: 2025-03-31
     - Published by [![Mattering Press](https://www.matteringpress.org/wp-content/themes/matteringpress/img/mattering-press.png)](https://www.matteringpress.org/)
     - [![CC BY](https://licensebuttons.net/l/by/4.0/88x31.png)](https://creativecommons.org/licenses/by/4.0/)
 
-- **Recording date:** 31 March 2025
-- **Interviewees:** Nitano Muller
 - **Podcast duration:** 45min 00sec
 
 # Introduction

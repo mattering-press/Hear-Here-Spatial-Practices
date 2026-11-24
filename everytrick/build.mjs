@@ -212,6 +212,32 @@ ${list.map((c) => `<div><dt>${esc(c.role)}</dt><dd>${esc(c.who)}</dd></div>`).jo
 </dl>
 </section>` : '');
 
+// The page's note, at the top of its margin ("Plan: copying citations" in DEVELOPMENT.md; the publisher, 2026-11-24):
+// who made the page, the day it was held or recorded, its other makers, when its text last changed, and Copy citation
+// and How to cite. Written as a colophon, not as data: names in their natural order, dates in words, no labels. On
+// narrow screens it stands above the text. A frozen version gives its version and the day it was frozen or released.
+const personName = (p) => p.literal || [p.given, p.family].filter(Boolean).join(' ');
+const nameList = (people) => {
+  const names = (people || []).map(personName).map(esc);
+  return names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names.at(-1)}` : names[0] || '';
+};
+// the day a page's file last changed in the history (YYYY-MM-DD); without the history, the day of the latest commit
+const pageChanged = (file) => spawnSync('git', ['-C', REPO_ROOT, 'log', '-1', '--format=%cs', '--', file], { encoding: 'utf8' }).stdout?.trim() || lastChange;
+const pageNote = (edition, page, home) => {
+  const c = home ? { author: PUBLICATION.authors } : page.credits || {};
+  const lines = [];
+  const who = nameList(c.author) + (c.interviewer?.length ? `${c.author?.length ? ', in conversation with ' : 'In conversation with '}${nameList(c.interviewer)}` : '');
+  if (who) lines.push(`<p class="page-note__who">${who}</p>`);
+  if (page.date) lines.push(`<p>${page.date.kind === 'held' ? 'Held on' : 'Recorded'} ${longDate(page.date.date)}</p>`);
+  const made = [c.producer?.length && `Produced by ${nameList(c.producer)}`, c['transcript-editor']?.length && `transcript edited by ${nameList(c['transcript-editor'])}`].filter(Boolean);
+  if (made.length) lines.push(`<p>${made.join(' · ').replace(/^t/, 'T')}</p>`);
+  const v = edition.version;
+  lines.push(v.status === 'latest' ? `<p>Last changed ${longDate(pageChanged(page.file))}</p>`
+    : `<p>Version ${esc(v.id)}, ${v.status === 'review' ? 'frozen' : 'released'} on ${longDate(v.date)}</p>`);
+  lines.push(`<p class="page-note__cite"><button class="page-note__copy" type="button" hidden>Copy citation</button><span class="page-note__dot" hidden> · </span><a href="#how-to-cite">How to cite</a></p>`);
+  return `<aside class="page-note" aria-label="About this page" data-pagefind-ignore>\n${lines.join('\n')}\n</aside>`;
+};
+
 // 3. Images, zoom tiles, and the repository files that pages embed (data-repo-* in essays/walk.md), made once for
 //    all editions. A file is taken from the working tree; only one that is no longer there comes from the tag.
 rmSync(SITE, { recursive: true, force: true });
@@ -647,6 +673,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
       if (band) extra.page_band = `<img src="${esc(join2(r, band.url))}" width="${band.width}" height="${band.height}" alt="" fetchpriority="high">`;
       if (!from) {
         extra.cite_data = citeScript(citeData);
+        extra.page_note = pageNote(edition, page, page === edition.home);
         if (page.creditList?.length) extra.page_credits = creditListHtml(page.creditList);
         extra.cite_section = howToCite({ entry: self, home: page === edition.home, release: inRelease, releaseUrl: inRelease && join2(r, join2(prefix, inRelease.dir) + url) });
         extra.scholar = scholarMeta({ entry: self, book: bookOf(edition), url: pageUrl, licence: FRAME.licence?.url, isBook: page === edition.home });

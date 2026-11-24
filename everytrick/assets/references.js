@@ -1,8 +1,8 @@
 // The References page's Copy buttons (references/ in each edition; referencesHtml and formatReferences in
 // citations.mjs). Beside each work a Copy button copies its reference in the reader's citation style, as formatted or
 // plain text, both chosen in the settings ("Aa"; settings.js), and says so in the status line ("Copied: APA"). The
-// clipboard and the status line are copy.js's. BibTeX and RIS: the downloads at the top of the page, or the Cite panel
-// of a page (cite.js).
+// clipboard and the status line are copy.js's. BibTeX and RIS: the downloads at the top of the page, or a page's How to
+// cite (cite.js).
 //  * The page's styles are in the list's data-copy-styles. The texts, made at build time with citeproc, are in the file
 //    its data-copy names (formatted.json, beside the page), loaded when the reader first comes to a Copy button.
 //  * Without JavaScript there are no Copy buttons; the downloads at the top of the page remain. The buttons are made

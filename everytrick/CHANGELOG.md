@@ -12,6 +12,24 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of everytrick’ in `DEVELOPMENT.md`.
 
+## 1.20.0
+
+24 November 2026. Citing steps back: the Cite button leaves the page's opening, and a quiet note at the top of the
+margin says who made the page and when, with Copy citation and How to cite (the publisher, 2026-11-24).
+
+- **The page's note.** A few lines in small type, written as a colophon rather than as data: who made the page, in
+  their natural order ("Aya Nassar, in conversation with Nirmal Puwar"), the day it was held or recorded, the
+  producer and transcript editor, and when the page last changed ("Last changed 24 November 2026", from the last
+  commit that changed its file; on a frozen version "Version 0.1, released on 20 November 2026"). Then "Copy
+  citation · How to cite". On wide screens it heads the right-hand margin, level with the text, and margin notes
+  start below it; on narrow screens it stands above the text.
+- **Copy citation copies in one click**, in the reader's style, like the ¶; the status line says what was copied.
+  The Cite panel is gone.
+- **How to cite** at the end of the page now says which style it is shown in, with a way to change it, and has the
+  BibTeX and RIS entries that were in the panel.
+- The podcasts' "Recording date" and "Interviewees" lines are taken out of the latest text, since the page's note
+  gives them. No numbered paragraph changes.
+
 ## 1.19.0
 
 24 November 2026. Citations as Nirmal Puwar confirmed them: the book is hers as its author, events and podcasts carry
