@@ -728,7 +728,41 @@ to listen.
   Nassar's cue file once it has been checked by ear against the protocol; 3. cue files for every podcast page, with
   the build's warnings; 4. captions with the readability check; 5. if editing `.vtt` files by hand proves awkward, a
   timing mode on the preview (`?timing`) to set a paragraph's start while listening. Where the audio is hosted is
-  unchanged and still to be decided.
+  unchanged and still to be decided (see "Plan: podcast hosting and distribution").
+
+## Plan: podcast hosting and distribution
+
+Under discussion: proposed to the publisher on 2026-11-24, not yet agreed. Nothing here is built.
+
+- **Why it is needed.** The pages play the MP3s from GitHub's raw links (`everytrick/build.mjs`). That serves the
+  site, but not a podcast: podcast apps download whole episodes repeatedly, which GitHub's raw links are not meant
+  to serve, GitHub refuses files over 100 MB (Catherine Hahn's episode is 98 MB), and there is no RSS feed for the
+  apps to find.
+- **Mattering Audio.** The podcasts are distributed as Mattering Audio, Mattering Press's audio imprint. Hear Here
+  is its first show; later shows sit beside it. Feeds name "Mattering Audio" as author and publisher and
+  "© Mattering Press" as copyright, and may link every show to the imprint with the Podcasting 2.0 publisher tag.
+  Each show has its own square cover art (1400–3000 px), with a shared Mattering Audio mark.
+- **Accounts belong to the press**, not to a person: a Mattering Press Cloudflare account (with matteringpress.org's
+  DNS in it) and Apple Podcasts Connect, Spotify for Creators and YouTube Studio accounts, all on one address the
+  press owns, with more than one member. The press has no Cloudflare account yet. The previews may stay on the
+  current account or move later by changing two GitHub secrets.
+- **Storage: Cloudflare R2**, which charges nothing for downloads and is free up to 10 GB (the podcasts are about
+  716 MB). Audio at `audio.matteringpress.org/<show>/…`, a custom domain, so that the host can change without the
+  addresses changing. The pages' players use these addresses; the masters stay in the repository as the record.
+- **Feeds made by the build.** everytrick writes one RSS feed per show, at a permanent address such as
+  `audio.matteringpress.org/hear-here/feed.xml`, from what the build already knows (titles, authors, lengths, pages,
+  cue files), with Podcasting 2.0 tags: transcripts (from the captions files), the episode page, people, licence
+  and the show's GUID.
+- **Directories**, each submitted once with the same feed: Apple Podcasts (which also supplies most other apps),
+  Spotify, YouTube Music, Amazon Music, and Podcast Index (Fountain, Podverse, AntennaPod and other open apps).
+- **Optional.** Listening figures without tracking through OP3 (a prefix on the audio addresses); a Mattering Audio
+  page listing its shows; masters deposited with Zenodo or the Internet Archive when a version is frozen.
+- **Alternatives considered.** Funkwhale, open source and run by communities, on a community server under the
+  press's own address (volunteer-run, so ask the server's admins first); Castopod's hosted plan (open source, a few
+  euros a month); free commercial hosts (Spotify for Creators, Podbean, RSS.com, Acast), which keep control of the
+  feed or add limits or ads.
+- **Still to decide:** whether to go ahead with R2 or a community host; the press's contact address for the feeds;
+  the Mattering Audio mark and the Hear Here cover art; whether Mattering Audio gets its own page, and where.
 
 ## Plan: margin notes
 
