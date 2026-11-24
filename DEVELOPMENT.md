@@ -1040,7 +1040,9 @@ The data are in `everytrick/CONTRACT.md` ("Front matter and credits", "Citing th
   style, which style that is with a way to change it, and "For a reference manager: BibTeX · RIS", which copy the
   page's entry. It also serves print and archives.
 - **The podcasts' own lists** of "Recording date" and "Interviewees" were taken out of their pages (the publisher,
-  2026-11-24): the page's note says the same from the page's credits. The duration stays.
+  2026-11-24): the page's note says the same from the page's credits. Their "Podcast duration" lines followed (the
+  publisher, 2026-11-24): the length is `duration:` in the front matter, and the note shows it after the day it was
+  recorded ("Recorded 22 March 2025 · 37 min 57 sec").
 - **From the latest text.** A citation always names a version. A quote copied on the latest text is cited in the
   newest release wherever its paragraphs are unchanged there (the build matches paragraphs by their words, as for the
   version notice), with that release's paragraph numbers and address. A passage that is new or changed since is cited

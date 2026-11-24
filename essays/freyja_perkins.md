@@ -10,6 +10,7 @@ producer:
 transcript-editor:
   - Phung, Phavine
 recorded: 2025-03-31
+duration: 36:30
 ---
 .ve-style ./custom.css
 .ve-script ./custom.js
@@ -24,8 +25,6 @@ recorded: 2025-03-31
 .ve-footer
     - Published by [![Mattering Press](https://www.matteringpress.org/wp-content/themes/matteringpress/img/mattering-press.png)](https://www.matteringpress.org/)
     - [![CC BY](https://licensebuttons.net/l/by/4.0/88x31.png)](https://creativecommons.org/licenses/by/4.0/)
-
-- **Podcast duration:** 36min 30sec
 
 # Introduction
 

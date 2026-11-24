@@ -229,7 +229,11 @@ const pageNote = (edition, page, home) => {
   const lines = [];
   const who = nameList(c.author) + (c.interviewer?.length ? `${c.author?.length ? ', in conversation with ' : 'In conversation with '}${nameList(c.interviewer)}` : '');
   if (who) lines.push(`<p class="page-note__who">${who}</p>`);
-  if (page.date) lines.push(`<p>${page.date.kind === 'held' ? 'Held on' : 'Recorded'} ${longDate(page.date.date)}</p>`);
+  // a recording's length, from duration: in the front matter (38:28 + 1:51): "38 min 28 sec, with an addendum of 1 min 51 sec"
+  const length = (t) => { const [m, sec] = t.split(':').map(Number); return [m && `${m} min`, sec && `${sec} sec`].filter(Boolean).join(' ') || '0 sec'; };
+  const long = page.duration && length(page.duration[0]) + (page.duration[1] ? `, with an addendum of ${length(page.duration[1])}` : '');
+  const when = page.date && `${page.date.kind === 'held' ? 'Held on' : 'Recorded'} ${longDate(page.date.date)}`;
+  if (when || long) lines.push(`<p>${[when, long].filter(Boolean).join(' · ')}</p>`);
   const made = [c.producer?.length && `Produced by ${nameList(c.producer)}`, c['transcript-editor']?.length && `transcript edited by ${nameList(c['transcript-editor'])}`].filter(Boolean);
   if (made.length) lines.push(`<p>${made.join(' · ').replace(/^t/, 'T')}</p>`);
   const v = edition.version;

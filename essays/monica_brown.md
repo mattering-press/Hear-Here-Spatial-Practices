@@ -9,6 +9,7 @@ producer:
 transcript-editor:
   - Phung, Phavine
 recorded: 2025-03-22
+duration: 37:57
 ---
 .ve-style ./custom.css
 .ve-script ./custom.js
@@ -24,8 +25,6 @@ recorded: 2025-03-22
     - Published by [![Mattering Press](https://www.matteringpress.org/wp-content/themes/matteringpress/img/mattering-press.png)](https://www.matteringpress.org/)
     - [![CC BY](https://licensebuttons.net/l/by/4.0/88x31.png)](https://creativecommons.org/licenses/by/4.0/)
 
-- **Podcast duration:** 37min 57sec
-
 # Introduction
 
 .ve-media gh:mattering-press/Hear-Here-Spatial-Practices/media/podcasts/jlp01_08_061829.jpg right caption="Workers posed on steps at the cathedral building site" alt="Black-and-white photograph of fourteen workers posed in three rows on steps at the cathedral building site, with scaffolding behind them. A Black worker in a cap stands at the left."
@@ -37,7 +36,6 @@ The writer Monica Brown, whose father worked on building Coventry Cathedral, sta
 We consider a handful of images taken by the building contractors Laing, showing black workers on the cathedral construction site. Whilst opening the half empty pages of an embossed book in the cathedral archives, with the names of some of the workers who helped build the cathedral, the task of filling in the gaps of the empty weighted pages, gilded with gold leaf, appears blatantly before us as an open-ended process, bearing the weight of the past in the present. Monica closes the podcast with a call for an installation to recognise black and brown people, whose presence is absent and nowhere to be seen. A video featuring Monica Brown in the cathedral accompanies this discussion.
 
 <iframe src="https://archive.org/embed/HearHereMonicaBrown2" width="560" height="384" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen class="ve-component right"></iframe>
-
 
 # Biography
 
