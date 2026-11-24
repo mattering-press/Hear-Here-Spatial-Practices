@@ -1,5 +1,5 @@
 // Citing the book itself ("Plan: copying citations" in DEVELOPMENT.md): the reference of every page of an edition, of
-// the whole book and of its media items, for the pages' Cite panel and How to cite section, the Copy quote button
+// the whole book and of its media items, for the pages' Copy citation and How to cite section, the Copy quote button
 // (assets/cite.js), the item pages, page.json and the metadata for Google Scholar.
 //
 //   selfReferences(options)   every page, the book and the media items of an edition, formatted once in every citation

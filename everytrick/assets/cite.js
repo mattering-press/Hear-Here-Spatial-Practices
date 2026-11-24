@@ -8,10 +8,8 @@
 //    selection, where the phone's own menu and Hypothesis's Annotate button appear. It copies ‘the words’ (Nassar 2026:
 //    para. 55). Nassar, A., …, <…/essays/aya_nassar/#p55> [accessed …]. In formatted text the in-text citation is a
 //    link to the words themselves (#p55:~:text=…), which browsers highlight.
-//  * Cite, under the page's title, cites the page as a whole (the chapter): a line saying so, and that selected words
-//    are cited with Copy quote; its reference in the reader's style, its in-text citation, a Copy button, the style
-//    with a link to the settings, and BibTeX and RIS for a reference manager.
-//    On the latest text it cites the newest release that has the page.
+//  * Copy citation, in the page's note at the top of its margin (build.mjs, pageNote), copies the page's reference
+//    (the chapter's) in one click. On the latest text it cites the newest release that has the page.
 //  * On the latest text a quote whose paragraphs are unchanged in the newest release is cited there, with that
 //    release's numbers and address; any other is cited as the latest text, unreleased, and the status line says that
 //    its number may still change.
@@ -19,7 +17,8 @@
 //    Item 37, ‘…’, in N. Puwar, Hear Here: Spatial Practices, … <…/37/>. The zoom viewer's Cite button uses it; an
 //    item's page shows it under "To cite", with a Copy button.
 //  * Citation popups get a Copy button, with the texts of the edition's References page (references/formatted.json).
-//  * How to cite this page, and an item's "To cite", show the reader's style.
+//  * How to cite this page, and an item's "To cite", show the reader's style. How to cite also says which style it is,
+//    with a way to change it, and has BibTeX and RIS for a reference manager.
 //  * The date accessed is the day the reader copies: the build writes 31 December 9999 in its place (cite.mjs, ACCESSED),
 //    in each style's form; the How to cite section's date (.cite-today) is filled in here.
 (function () {
@@ -199,9 +198,8 @@
     });
   }
 
-  // ---- Cite: the page as a whole ---------------------------------------------------------------------------------------
-  var citeButton = document.querySelector('.cite-button');
-  var panel = null;
+  // ---- Copy citation, in the page's note: the page as a whole ------------------------------------------------------
+  // One click copies, as the ¶ does; the style, BibTeX and RIS are in How to cite, at the page's end.
   // the chapter: on the latest text, the newest release's page where there is one
   var chapter = release ? release.page : data.page;
   function element(tag, cls, text) {
@@ -217,96 +215,15 @@
     if (name) b.append(element('span', 'visually-hidden', (label ? ' ' : '') + name));
     return b;
   }
-  function fillPanel() {
-    var s = style();
-    panel.querySelector('.cite-panel__reference').innerHTML = reference(chapter, s).html;
-    panel.querySelector('.cite-panel__intext-value').textContent = (chapter.styles[s.id] || chapter.styles.house).cite;
-    panel.querySelector('.cite-panel__style-name').textContent = styleName(s);
-  }
-  function makePanel() {
-    panel = element('div', 'cite-panel');
-    panel.id = 'cite-panel';
-    panel.setAttribute('popover', 'manual');
-    panel.setAttribute('role', 'dialog');
-    panel.setAttribute('aria-labelledby', 'cite-panel-title');
-    var head = element('div', 'cite-panel__head');
-    // no heading: a line in small type says what the panel does (the publisher, 2026-11-23)
-    var title = element('p', 'cite-panel__title', 'Press Copy to cite ' + (data.home ? 'the entire book' : 'this entire page') +
-      '. You can also select words in the text and press Copy quote to cite a particular quote.');
-    title.id = 'cite-panel-title';
-    title.tabIndex = -1;
-    var closer = textButton('', 'Close', 'cite-panel__close');
-    closer.insertAdjacentHTML('afterbegin', '<svg aria-hidden="true" viewBox="0 0 16 16" width="14" height="14"><path d="m3.5 3.5 9 9m0-9-9 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>');
-    closer.addEventListener('click', function () { closePanel(true); });
-    head.append(title, closer);
-    var version = element('p', 'cite-panel__version', release ? 'From ' + lc(release.label) + ', the newest release.'
-      : data.version.status === 'latest' ? 'From the latest text, unreleased.' : 'From ' + lc(data.version.label) + '.');
-    var ref = element('p', 'cite-panel__reference');
-    var intext = element('p', 'cite-panel__intext', 'In the text: ');
-    intext.appendChild(element('span', 'cite-panel__intext-value'));
-    var actions = element('p', 'cite-panel__actions');
-    var copyButton = textButton('Copy', 'the reference', 'copy-button is-strong');
-    copyButton.addEventListener('click', function () {
+  var noteCopy = document.querySelector('.page-note__copy');
+  if (noteCopy && chapter) {
+    noteCopy.hidden = false;
+    var dot = document.querySelector('.page-note__dot');
+    if (dot) dot.hidden = false;
+    noteCopy.addEventListener('click', function () {
       var s = style();
-      copy.write(reference(chapter, s)).then(done('Reference', s), failed);
+      copy.write(reference(chapter, s)).then(done('Citation', s), failed);
     });
-    var styleLine = element('span', 'cite-panel__style');
-    styleLine.append(element('span', 'cite-panel__style-name'), ' · ');
-    var change = textButton('change', 'the citation style', 'cite-panel__change');
-    change.addEventListener('click', function () {
-      var settings = document.getElementById('settings');
-      closePanel(false);
-      if (settings && settings.showPopover) {
-        settings.showPopover();
-        var first = settings.querySelector('.settings__citations button');
-        if (first) first.focus();
-      }
-    });
-    styleLine.appendChild(change);
-    actions.append(copyButton, styleLine);
-    panel.append(head, version, ref, intext, actions);
-    if (chapter.bibtex || chapter.ris) {
-      var managers = element('p', 'cite-panel__managers', 'For a reference manager: ');
-      [['BibTeX', 'bibtex'], ['RIS', 'ris']].filter(function (f) { return chapter[f[1]]; }).forEach(function (f, i) {
-        var b = textButton(f[0], '', 'cite-panel__entry');
-        b.addEventListener('click', function () { copy.write(today(chapter[f[1]])).then(function () { copy.say('Copied: ' + f[0]); }, failed); });
-        if (i) managers.append(' · ');
-        managers.appendChild(b);
-      });
-      panel.appendChild(managers);
-    }
-    document.body.appendChild(panel);
-    panel.addEventListener('keydown', function (event) { if (event.key === 'Escape') { event.preventDefault(); closePanel(true); } });
-    document.addEventListener('pointerdown', function (event) {
-      if (panel.matches(':popover-open') && !panel.contains(event.target) && !citeButton.contains(event.target)) closePanel(false);
-    });
-    window.addEventListener('resize', placePanel);
-  }
-  function placePanel() {
-    if (!panel || !panel.matches(':popover-open')) return;
-    var box = citeButton.getBoundingClientRect(), width = document.documentElement.clientWidth;
-    panel.style.top = Math.max(8, Math.min(box.bottom + 6, window.innerHeight - panel.offsetHeight - 8)) + 'px';
-    panel.style.left = Math.max(8, Math.min(box.left, width - 8 - panel.offsetWidth)) + 'px';
-  }
-  function openPanel() {
-    if (!panel) makePanel();
-    fillPanel();
-    panel.showPopover();
-    citeButton.setAttribute('aria-expanded', 'true');
-    placePanel();
-    panel.querySelector('.cite-panel__title').focus();
-  }
-  function closePanel(refocus) {
-    if (!panel || !panel.matches(':popover-open')) return;
-    panel.hidePopover();
-    citeButton.setAttribute('aria-expanded', 'false');
-    if (refocus) citeButton.focus();
-  }
-  if (citeButton && HTMLElement.prototype.showPopover) {
-    citeButton.hidden = false;
-    citeButton.setAttribute('aria-expanded', 'false');
-    citeButton.setAttribute('aria-controls', 'cite-panel');
-    citeButton.addEventListener('click', function () { if (panel && panel.matches(':popover-open')) closePanel(true); else openPanel(); });
   }
 
   // ---- How to cite this page, in the reader's style ----------------------------------------------------------------
@@ -319,7 +236,39 @@
     });
     var ref = section.querySelector('.how-to-cite__reference');
     if (ref) ref.innerHTML = reference(data.page, s).html;
+    var name = section.querySelector('.how-to-cite__style-name');
+    if (name) name.textContent = styleName(s);
   }
+  // under How to cite: the style it is shown in, with a way to change it, and BibTeX and RIS for a reference manager
+  function addTools() {
+    var section = document.querySelector('.how-to-cite');
+    if (!section || !chapter) return;
+    var tools = element('p', 'how-to-cite__tools', 'Shown in ');
+    tools.append(element('span', 'how-to-cite__style-name'), ' (');
+    var change = textButton('change', 'the citation style', '');
+    change.addEventListener('click', function () {
+      var settings = document.getElementById('settings');
+      if (settings && settings.showPopover) {
+        settings.showPopover();
+        var first = settings.querySelector('.settings__citations button');
+        if (first) first.focus();
+      }
+    });
+    tools.append(change, ').');
+    var formats = [['BibTeX', 'bibtex'], ['RIS', 'ris']].filter(function (f) { return chapter[f[1]]; });
+    if (formats.length) {
+      tools.append(' For a reference manager: ');
+      formats.forEach(function (f, i) {
+        var b = textButton(f[0], '', '');
+        b.addEventListener('click', function () { copy.write(today(chapter[f[1]])).then(function () { copy.say('Copied: ' + f[0]); }, failed); });
+        if (i) tools.append(' · ');
+        tools.appendChild(b);
+      });
+      tools.append('.');
+    }
+    section.appendChild(tools);
+  }
+  addTools();
 
   // ---- Media items -----------------------------------------------------------------------------------------------------
   // an item's citation: its reference, and the item's own source where the register gives it; { text, html, cite }
@@ -389,7 +338,7 @@
   }
 
   // the reader's style, now and whenever it changes
-  function showStyle() { showHowToCite(); showItem(); if (panel && panel.matches(':popover-open')) fillPanel(); }
+  function showStyle() { showHowToCite(); showItem(); }
   showStyle();
   window.addEventListener('everytrick:citation', showStyle);
 })();

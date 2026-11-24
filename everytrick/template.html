@@ -141,14 +141,14 @@ $endif$
 $if(subtitle)$
           <p class="page-subtitle">$subtitle$</p>
 $endif$
-$if(cite-data)$
-          <p class="page-cite"><button class="cite-button" type="button" hidden>Cite</button></p>
-$endif$
         </div>
       </div>
     </div>
   </header>
   <main id="main"$if(searchable)$ data-pagefind-body$endif$>
+$if(page-note)$
+$page-note$
+$endif$
 $body$
 $if(page-credits)$
 $page-credits$
