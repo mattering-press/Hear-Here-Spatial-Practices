@@ -1,8 +1,12 @@
 ---
-# Who made this page, for its citations. A draft, to be confirmed with Nirmal Puwar (23 November 2026).
+# Who made this page, for its citations; confirmed by Nirmal Puwar on 24 November 2026
 author:
-  - Puwar, Nirmal
   - Burley, Stuart
+  - Puwar, Nirmal
+held: 2024-03-02
+credits:
+  - In collaboration with: Greg Muldoon (Food Union), Christine Eade (POD outside(R) Zine Fest) and the Coventry Cathedral Events Team
+  - Readers at the communal read around the rock: Ashjan Ajan, Muna Dajani and Mahsa Alami Fariman
 ---
 .ve-style ./custom.css
 .ve-script ./custom.js
@@ -18,7 +22,7 @@ author:
     - Published by [![Mattering Press](https://www.matteringpress.org/wp-content/themes/matteringpress/img/mattering-press.png)](https://www.matteringpress.org/)
     - [![CC BY](https://licensebuttons.net/l/by/4.0/88x31.png)](https://creativecommons.org/licenses/by/4.0/)
 
-A talk by Professor Stuart Burley that took place as part of Outsider(s) Zine Festival on Saturday 2 March 2024.
+A talk by Professor Stuart Burley that took place as part of the POD outside(R) Zine Fest on Saturday 2 March 2024.
 
 <center><iframe src="https://archive.org/embed/HearHereRockingIt" width="560" height="384" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe></center>
 

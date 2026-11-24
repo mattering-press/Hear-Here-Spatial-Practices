@@ -1,8 +1,14 @@
 ---
-# Who made this page, for its citations. A draft, to be confirmed with Nirmal Puwar (23 November 2026).
+# Who made this page, for its citations; confirmed by Nirmal Puwar on 24 November 2026
 author:
-  - Puwar, Nirmal
   - Galetto, Manuela
+  - Puwar, Nirmal
+held: 2023-06-14
+credits:
+  - Occasion: the opening of the Un/Building the Future Conference (14–16 June 2023), University of Warwick
+  - Speakers at the Live and Dye Food Garden: Greg Muldoon and the Food Union Growers
+  - Photography: Ahmadreza Hakiminejad and Mahsa Alami Fariman
+  - Art installation in Coventry Cathedral: Bani Abidi, Memorial to Lost Words, part of Divided Selves Part Two, curated by Hammad Nasar MBE with Rosie Addenbrooke and Alice Swatton from the Herbert Art Gallery
 ---
 .ve-style ./custom.css
 .ve-script ./custom.js

@@ -19,14 +19,20 @@
 // other credits and they are put in after its title here. The other styles get them as CSL names (interviewer,
 // producer, and contributor for a transcript's editor) and write them in their own way.
 //
+// The book has an author, Nirmal Puwar (her answer of 24 November 2026), so a page is cited as a chapter in an authored
+// book: "…, in N. Puwar, Hear Here: Spatial Practices, …" (CSL's container-author). The day a page's event was held or
+// its podcast recorded follows its title in the house style ("held on 2 March 2024", "recorded 5 April 2025"), before
+// its other credits; the year of the citation stays the year the version was published.
+//
 // A media item is cited against the book (the publisher, 2026-11-23): in the house style "Item 37, ‘The baptismal font
-// in Coventry Cathedral’, in N. Puwar, ed., Hear Here: Spatial Practices, …", which citeproc writes for a chapter whose
+// in Coventry Cathedral’, in N. Puwar, Hear Here: Spatial Practices, …", which citeproc writes for a chapter whose
 // author is "Item 37", and in the text as the book with the item's number, (Puwar 2026: item 37).
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { COPY_STYLES, CSL, formatReferences } from './citations.mjs';
+import { longDate } from './versions.mjs';
 
 const TOOLKIT_DIR = dirname(fileURLToPath(import.meta.url));
 export const ACCESSED = [9999, 12, 31];   // in place of the day the reader copies a citation (assets/cite.js)
@@ -49,6 +55,8 @@ const listed = (names, form) => {
 };
 // The words before each role's names, in the house style, and the order they follow the title in.
 const ROLE_WORDS = { interviewer: 'interviewed by', producer: 'prod. by', 'transcript-editor': 'transcript ed. by' };
+// The day after a page's title, in the house style: { kind: 'held' | 'recorded', date: 'YYYY-MM-DD' }
+export const dateText = (date) => (date ? `${date.kind === 'held' ? 'held on' : 'recorded'} ${longDate(date.date)}` : '');
 export const creditsText = (credits) => Object.entries(ROLE_WORDS).filter(([role]) => credits?.[role]?.length)
   .map(([role, words]) => `${words} ${listed(credits[role], shortName)}`).join(', ');
 
@@ -63,8 +71,9 @@ function standalone(work, name, file) {
 
 // options:
 //   pandoc, work (a scratch folder of its own)
-//   book: { id, title, editors: [names], publisher, year, url, language }
-//   pages: [{ key, id, title, credits, url }]  every page to cite: key, its file; id, its key in BibTeX and RIS
+//   book: { id, title, authors: [names], publisher, year, url, language }
+//   pages: [{ key, id, title, credits, date, url }]  every page to cite: key, its file; id, its key in BibTeX and RIS;
+//                                              date, the day it was held or recorded (dateText)
 //   items: [{ key, number, title, credit, url }]  media items, cited against the book: number is its label ('37'), or
 //                                              null for one not numbered yet; title its caption; credit its credit,
 //                                              which follows the title in the house style and ends the other styles'
@@ -81,8 +90,8 @@ export function selfReferences({ pandoc, work, book, pages, items = [], version 
   const issued = { 'date-parts': [[Number(book.year)]] };
   const accessed = { 'date-parts': [ACCESSED] };
   const common = { publisher: book.publisher, issued, accessed, language: book.language, ...(version ? { version: version.id } : {}) };
-  const inBook = { 'container-title': book.title, editor: book.editors, ...common };
-  const bookItem = { id: book.id, type: 'book', title: book.title, editor: book.editors, URL: book.url, ...common };
+  const inBook = { 'container-title': book.title, 'container-author': book.authors, ...common };
+  const bookItem = { id: book.id, type: 'book', title: book.title, author: book.authors, URL: book.url, ...common };
   const pageItems = pages.map((p) => {
     const c = p.credits || {};
     return {
@@ -123,7 +132,7 @@ export function selfReferences({ pandoc, work, book, pages, items = [], version 
       if (house) {
         h = h.replace(/(versions? )?LATEST-TEXT/g, 'latest text, unreleased');
         const page = pages.find((p) => p.id === item.id);
-        const credits = page && creditsText(page.credits);
+        const credits = page && [dateText(page.date), creditsText(page.credits)].filter(Boolean).join(', ');
         if (credits) {
           // after the title in quotation marks: ‘Hear Here Podcast: Aya Nassar’, interviewed by N. Puwar, in …
           const open = h.indexOf('‘'), close = open < 0 ? null : /’(<\/span>)?, /.exec(h.slice(open));
@@ -158,13 +167,12 @@ export function selfReferences({ pandoc, work, book, pages, items = [], version 
 export function scholarMeta({ entry, book, url, licence, isBook }) {
   const item = entry.csl;
   const tags = [['citation_title', item.title]];
-  for (const n of (isBook ? [] : item.author || [])) tags.push(['citation_author', n.literal || `${n.family}, ${n.given}`]);
-  for (const n of (isBook ? book.editors : [])) tags.push(['citation_editor', n.literal || `${n.family}, ${n.given}`]);
+  for (const n of item.author || []) tags.push(['citation_author', n.literal || `${n.family}, ${n.given}`]);
   tags.push(['citation_publication_date', String(book.year)]);
   if (!isBook) tags.push(['citation_inbook_title', book.title], ['citation_book_title', book.title]);
   tags.push(['citation_publisher', book.publisher], ['citation_language', book.language], ['citation_fulltext_html_url', url]);
   const person = (n) => (n.literal ? { '@type': 'Organization', name: n.literal } : { '@type': 'Person', name: fullName(n), familyName: n.family, givenName: n.given });
-  const bookLd = { '@type': 'Book', name: book.title, editor: book.editors.map(person), publisher: { '@type': 'Organization', name: book.publisher }, url: book.url };
+  const bookLd = { '@type': 'Book', name: book.title, author: book.authors.map(person), publisher: { '@type': 'Organization', name: book.publisher }, url: book.url };
   const ld = {
     '@context': 'https://schema.org', ...(isBook ? bookLd : { '@type': 'Chapter', name: item.title, isPartOf: bookLd }),
     ...(!isBook && item.author ? { author: item.author.map(person) } : {}),

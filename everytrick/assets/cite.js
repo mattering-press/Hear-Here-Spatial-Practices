@@ -16,7 +16,7 @@
 //    release's numbers and address; any other is cited as the latest text, unreleased, and the status line says that
 //    its number may still change.
 //  * Media items: everytrick.citeItem(address of its page) copies the citation of a media item, against the book:
-//    Item 37, ‘…’, in N. Puwar, ed., Hear Here: Spatial Practices, … <…/37/>. The zoom viewer's Cite button uses it; an
+//    Item 37, ‘…’, in N. Puwar, Hear Here: Spatial Practices, … <…/37/>. The zoom viewer's Cite button uses it; an
 //    item's page shows it under "To cite", with a Copy button.
 //  * Citation popups get a Copy button, with the texts of the edition's References page (references/formatted.json).
 //  * How to cite this page, and an item's "To cite", show the reader's style.

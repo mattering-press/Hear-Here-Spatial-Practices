@@ -12,6 +12,32 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of everytrick’ in `DEVELOPMENT.md`.
 
+## 1.19.0
+
+24 November 2026. Citations as Nirmal Puwar confirmed them: the book is hers as its author, events and podcasts carry
+their dates, and event pages list everyone who made them.
+
+- **The book is cited as written by Nirmal Puwar**, not edited: Puwar, N., *Hear Here: Spatial Practices*, version 0.1
+  (Mattering Press, 2026). A page is "…, in N. Puwar, *Hear Here: Spatial Practices*, …", and so is a media item. Every
+  footer reads "by Nirmal Puwar", where it read "convened by Nirmal Puwar".
+- **The day an event was held or a podcast recorded** follows the page's title in the house style: ‘Rocking It:
+  Insider/Outsider Archives’, held on 2 March 2024, …; ‘Hear Here Podcast: Aya Nassar’, recorded 5 April 2025, …. The
+  year of the citation stays the year the version was published. A page gives the day as `held:` or `recorded:` in its
+  front matter.
+- **A Credits section** at the end of a page lists everyone else who made it, by role: collaborators, readers,
+  musicians, sketchers, film, photography, organisers, assistance. It comes from `credits:` in the page's front matter
+  (`  - Film: Jon Randle, Mindriot Productions`). Search finds it; citations name only the authors.
+- **The credits are Nirmal Puwar's** (24 November 2026), no longer a draft. Authors are in alphabetical order:
+  (Burley and Puwar 2026), (Galetto and Puwar 2026), (Horspool and Perkins 2026); Acorn, with four, is (Chambers et
+  al. 2026). The Acorn films are credited to Jon Randle, Mindriot Productions, and the walk booklet names its copy
+  editor, Mouli Banerjee. Rocking It took place at the POD outside(R) Zine Fest.
+- **The contract is shown beside the versions** (the publisher, 2026-11-24): every footer's credit line ends with the
+  contract of the book's data, "built with everytrickinthebook 1.19.0 by SJMcH · contract 0.10", linked to
+  `CONTRACT.md`; and the colophon's Versions and kit starts with all three: the text's version, the kit's and the
+  data's contract (for a frozen version, also the contract whose rule numbers its paragraphs).
+- The page data is contract 0.10: publication.json has `authors` in place of `editors`, and page.json gains `date` and
+  `credit_list`. The paragraph rule is unchanged, so no paragraph has a new number.
+
 ## 1.18.0
 
 23 November 2026. everytrick has a home of its own: everytrick.org.

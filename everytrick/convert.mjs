@@ -2,7 +2,7 @@
 // images to resize, files to copy, warnings, and anything it could not handle. No dependencies.
 //
 //   convert(source, file, { exists }) -> { markdown, title, subtitle, header, menu, footer, cards, images, files,
-//                              credits, handled, warnings, unhandled, exceptions }
+//                              credits, date, creditList, handled, warnings, unhandled, exceptions }
 //   exists(path) says whether a repository file is there (default: in the working tree; for a frozen version, in its tag)
 //   node convert.mjs essays/walk.md      prints the converted Markdown (paths are relative to the repository)
 //
@@ -21,16 +21,21 @@
 // .ve-header and .ve-footer become page data (title, menu, footer); .ve-style and .ve-script are dropped.
 //
 // A page may start with a front matter: its title and subtitle, for a page written in Pandoc's conventions (in place of
-// a .ve-header line), and its credits, who made it, for its citations ("Plan: copying citations" in DEVELOPMENT.md;
-// "Credits" in CONTRACT.md). It is read here and left out of the Markdown, its lines left empty, so that line numbers
-// in warnings stay the file's:
+// a .ve-header line); its credits, who made it, for its citations; the day it was held or recorded; and a list of
+// everyone else who made it ("Plan: copying citations" in DEVELOPMENT.md; "Front matter and credits" in CONTRACT.md).
+// It is read here and left out of the Markdown, its lines left empty, so that line numbers in warnings stay the file's:
 //   ---
 //   title: Acknowledgements
 //   author:
-//     - Nassar, Aya
+//     - Burley, Stuart
+//     - Puwar, Nirmal
 //   interviewer: Puwar, Nirmal
+//   held: 2024-03-02                (or recorded: 2025-04-05)
+//   credits:
+//     - Film: Jon Randle, Mindriot Productions
 //   ---
-// Each name is written "Family, Given"; a name without a comma (a group) is kept as it is written.
+// Each name is written "Family, Given"; a name without a comma (a group) is kept as it is written. A line of the
+// credits list is "Role: who", kept as it is written.
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { dirname, join, posix } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -85,27 +90,42 @@ export const CREDIT_ROLES = ['author', 'interviewer', 'producer', 'transcript-ed
 // The front matter at the top of a page (lines[0] is ---), as { title, subtitle, credits, end }: end is the index of
 // its closing line. A name "Family, Given" -> { family, given }; a name without a comma -> { literal }.
 const FRONT_TEXTS = ['title', 'subtitle'];
+const FRONT_DATES = ['held', 'recorded'];
 function readCredits(lines, file, fail) {
   const end = lines.findIndex((l, i) => i > 0 && /^(---|\.\.\.)\s*$/.test(l));
   if (end < 0) { fail(1, lines[0], 'the front matter at the top of the page has no closing ---'); return { credits: null, end: -1 }; }
-  const credits = {}, texts = {};
-  let key = null;
+  const credits = {}, texts = {}, list = [];
+  let key = null, date = null;
+  const unquote = (text) => text.trim().replace(/^(["'])(.*)\1$/, '$2');
   const name = (text) => {
-    const value = text.trim().replace(/^(["'])(.*)\1$/, '$2');
+    const value = unquote(text);
     const comma = value.indexOf(',');
     return comma < 0 ? { literal: value } : { family: value.slice(0, comma).trim(), given: value.slice(comma + 1).trim() };
   };
+  const keys = [...FRONT_TEXTS, ...FRONT_DATES, ...CREDIT_ROLES, 'credits'];
   for (let i = 1; i < end; i++) {
     const line = lines[i];
     if (!line.trim() || /^\s*#/.test(line)) continue;
     const entry = /^([\w-]+):\s*(.*)$/.exec(line), item = /^\s+-\s+(.+)$/.exec(line);
     if (entry && FRONT_TEXTS.includes(entry[1])) {
-      texts[entry[1]] = entry[2].trim().replace(/^(["'])(.*)\1$/, '$2') || null;
+      texts[entry[1]] = unquote(entry[2]) || null;
       key = null;
+    } else if (entry && FRONT_DATES.includes(entry[1])) {
+      const iso = unquote(entry[2]);
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) fail(i + 1, line, `${entry[1]}: is a date written YYYY-MM-DD, such as 2024-03-02`);
+      else date = { kind: entry[1], date: iso };
+      key = null;
+    } else if (entry && entry[1] === 'credits') {
+      key = 'credits';
+      if (entry[2].trim()) fail(i + 1, line, 'credits: is a list, one "  - Role: who" a line');
     } else if (entry) {
       key = entry[1];
-      if (!CREDIT_ROLES.includes(key)) { fail(i + 1, line, `a front matter can give ${[...FRONT_TEXTS, ...CREDIT_ROLES].join(', ')}, not "${key}"`); key = null; continue; }
+      if (!CREDIT_ROLES.includes(key)) { fail(i + 1, line, `a front matter can give ${keys.join(', ')}, not "${key}"`); key = null; continue; }
       credits[key] = entry[2].trim() ? [name(entry[2])] : [];
+    } else if (item && key === 'credits') {
+      const text = unquote(item[1]), colon = text.indexOf(':');
+      if (colon < 1) fail(i + 1, line, 'a line of credits: is "  - Role: who", such as "  - Film: Jon Randle"');
+      else list.push({ role: text.slice(0, colon).trim(), who: text.slice(colon + 1).trim() });
     } else if (item && key) {
       credits[key].push(name(item[1]));
     } else {
@@ -113,12 +133,12 @@ function readCredits(lines, file, fail) {
     }
   }
   for (const [role, names] of Object.entries(credits)) if (!names.length) delete credits[role];
-  return { title: texts.title || null, subtitle: texts.subtitle || null, credits: Object.keys(credits).length ? credits : null, end };
+  return { title: texts.title || null, subtitle: texts.subtitle || null, credits: Object.keys(credits).length ? credits : null, date, creditList: list, end };
 }
 
 export function convert(source, file, { exists = inWorkingTree } = {}) {
   const lines = source.split(/\r?\n/);
-  const page = { title: null, subtitle: null, header: {}, menu: [], footer: [], cards: [], images: [], files: [], credits: null };
+  const page = { title: null, subtitle: null, header: {}, menu: [], footer: [], cards: [], images: [], files: [], credits: null, date: null, creditList: [] };
   const handled = [], warnings = [], unhandled = [];
   const out = [];
   let fence = false, cardLevel = 0;
@@ -127,8 +147,8 @@ export function convert(source, file, { exists = inWorkingTree } = {}) {
   const fail = (line, text, why) => unhandled.push({ file, line, text: text.trim(), why });
   // the front matter is read and its lines left empty, so that every other line keeps its number
   if (/^---\s*$/.test(lines[0] || '')) {
-    const { title, subtitle, credits, end } = readCredits(lines, file, fail);
-    Object.assign(page, { title, subtitle, credits });
+    const { title, subtitle, credits, date, creditList, end } = readCredits(lines, file, fail);
+    Object.assign(page, { title, subtitle, credits, date: date || null, creditList: creditList || [] });
     for (let i = 0; i <= end; i++) lines[i] = '';
   }
   const needFile = (line, path, what) => { if (!exists(path)) fail(line, path, `${what} not found in the repository`); };

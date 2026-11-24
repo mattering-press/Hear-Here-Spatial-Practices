@@ -49,13 +49,13 @@ import { checkout, longDate, matchParagraphs, readRegistry } from './versions.mj
 const NOINDEX = false;  // true hides every page from search engines (it was true while Juncture served the public site)
 // A build for a preview adds the Media Index's editing view, /media-index/edit/; the public site never has it.
 const PREVIEW = process.argv.includes('--preview') || /^(1|true|yes)$/i.test(process.env.EVERYTRICK_PREVIEW || '');
-// editors: how the book's citations name the people who made the book as a whole, "Family, Given" ("ed. by N. Puwar";
+// authors: the book's authors, as its citations name them, "Family, Given" ("Puwar, N., Hear Here: Spatial Practices";
 // see "Plan: copying citations" in DEVELOPMENT.md). A page names its own in its credits (convert.mjs).
-const PUBLICATION = { creators: ['Nirmal Puwar'], editors: [{ family: 'Puwar', given: 'Nirmal' }], publisher: 'Mattering Press', language: 'en' };
-const CONTRACT = '0.9';  // version of the page.json / publication.json / media.json format, and of the paragraph rule for new text
+const PUBLICATION = { creators: ['Nirmal Puwar'], authors: [{ family: 'Puwar', given: 'Nirmal' }], publisher: 'Mattering Press', language: 'en' };
+const CONTRACT = '0.10';  // version of the page.json / publication.json / media.json format, and of the paragraph rule for new text
 // A frozen version keeps the paragraph rule of the contract it was frozen under ("contract" in versions.json). The
 // paragraph rule of contract 0.5 is the rule of 0.4, unchanged; 0.6's adds long descriptions to the blocks not numbered,
-// and 0.7, 0.8 and 0.9 keep 0.6's.
+// and 0.7, 0.8, 0.9 and 0.10 keep 0.6's.
 // everytrickinthebook, the toolkit in this folder. Every footer names it with its version (everytrick/package.json),
 // and links the name to its home and the version to the list of what changed in each version.
 const TOOLKIT_HOME = 'https://everytrick.org/';
@@ -73,7 +73,7 @@ const LATEST_LABEL = 'Latest text, unreleased';
 // the header's menu adds after the home page's own, for the back matter, written as those are (here in lower case);
 // empty, the menu has no such entry.
 const FRAME = {
-  credit: 'convened by Nirmal Puwar',
+  credit: 'by Nirmal Puwar',
   publisherUrl: 'https://www.matteringpress.org/',
   logo: 'media/publisher/mattering-press-logo.svg',
   icon: 'media/publisher/mattering-press-icon.svg',
@@ -195,9 +195,22 @@ for (const edition of editions) {
   for (const file of order) for (const target of edition.byFile.get(file).cards) if (!edition.section.has(target)) edition.section.set(target, file);
 }
 
-// A page's credits (convert.mjs) say who made it, for its citations. A frozen version's text cannot change, so a page
-// of a version frozen before its credits were written takes them from the same page in the latest text.
-for (const edition of editions.slice(1)) for (const page of edition.pages) if (!page.credits) page.credits = latest.byFile.get(page.file)?.credits || null;
+// A page's credits (convert.mjs) say who made it, for its citations, with the day it was held or recorded and the list
+// of everyone else who made it. A frozen version's text cannot change, so a page of a version frozen before these were
+// written takes them from the same page in the latest text.
+for (const edition of editions.slice(1)) for (const page of edition.pages) {
+  const now = latest.byFile.get(page.file);
+  if (!page.credits) page.credits = now?.credits || null;
+  if (!page.date) page.date = now?.date || null;
+  if (!page.creditList?.length) page.creditList = now?.creditList || [];
+}
+// The credits list at the end of a page (CONTRACT.md, "Front matter and credits"): searched, not cited, not numbered.
+const creditListHtml = (list) => (list?.length ? `<section class="page-credits" aria-labelledby="page-credits">
+<h2 id="page-credits">Credits</h2>
+<dl>
+${list.map((c) => `<div><dt>${esc(c.role)}</dt><dd>${esc(c.who)}</dd></div>`).join('\n')}
+</dl>
+</section>` : '');
 
 // 3. Images, zoom tiles, and the repository files that pages embed (data-repo-* in essays/walk.md), made once for
 //    all editions. A file is taken from the working tree; only one that is no longer there comes from the tag.
@@ -303,7 +316,8 @@ const backmatterMenu = (edition, s, r, current = '') => {
 // The section line above the title of a back matter page, which leads to the overview.
 const backmatterSection = (r) => ({ 'section-title': BACKMATTER.title, 'section-url': `${r}about/` });
 // The toolkit's line in every footer (template.html), below the book's version line.
-const toolkitMeta = { 'toolkit-version': TOOLKIT_VERSION, 'toolkit-home': TOOLKIT_HOME, 'toolkit-changes': TOOLKIT_CHANGES };
+// with the contract of the page data, beside the toolkit's version in every footer (the publisher, 2026-11-24)
+const toolkitMeta = { 'toolkit-version': TOOLKIT_VERSION, 'toolkit-home': TOOLKIT_HOME, 'toolkit-changes': TOOLKIT_CHANGES, 'data-contract': CONTRACT, 'data-contract-url': TOOLKIT_CONTRACT };
 const lcFirst = (s) => s.charAt(0).toLowerCase() + s.slice(1);
 const hypothesis = (edition) => {
   const config = { openSidebar: false };
@@ -489,6 +503,11 @@ const colophonHtml = (edition, root, shared) => {
     `Its media items – pictures, recordings, videos and documents – may carry other rights, which the ${a(`${media}#media`, 'Media Index')} gives item by item.</p>\n` : '';
   return `<div class="colophon__built" data-pagefind-ignore>
 ${licence}<h2 id="versions-and-kit">Versions and kit</h2>
+<ul class="colophon__versions">
+<li><span class="colophon__versions-what">Text</span> ${v.status === 'latest' ? 'Latest text, unreleased' : esc(v.label)}, ${when}</li>
+<li><span class="colophon__versions-what">Kit</span> ${toolkit}</li>
+<li><span class="colophon__versions-what">Data</span> ${a(TOOLKIT_CONTRACT, `contract ${CONTRACT}`)}${edition.rule !== CONTRACT ? `, its paragraphs numbered by the rule of contract ${esc(edition.rule)}` : ''}</li>
+</ul>
 <p>You are reading ${v.status === 'latest' ? 'the latest text of the book, unreleased' : esc(lcFirst(v.label))}, ${when}. Every version of the book that has been frozen for review or released stays online at its own address, with its paragraph numbers: ${a(`${shared}versions/`, 'all versions')}.</p>
 <p>The book is open data too, for other tools and for archiving, in the format of ${a(TOOLKIT_CONTRACT, `contract ${CONTRACT}`)} of everytrickinthebook:</p>
 <ul class="colophon__data">
@@ -516,17 +535,17 @@ const forwardPage = ({ dir, target, title, canonical }) => {
 //      the book and its media items, in every citation style a reader can choose in the settings, for each page's Cite
 //      panel, Copy quote button and How to cite section (assets/cite.js), the item pages and the zoom viewer, page.json
 //      and the tags for Google Scholar. A page is cited as a chapter of the book, by its credits (convert.mjs), one
-//      without them under the book's editors; a media item against the book, with its number.
+//      without them by its title; a media item against the book, with its number.
 const citeKey = (file) => file.replace(/^essays\//, '').replace(/\.md$/, '').replace(/[^\w-]+/g, '-');
 const itemPath = (it) => `${it.kind}/${it.name}/`;
 const itemTitle = (it) => it.title || it.appearances.map((a) => a.found?.caption || a.found?.title).find(Boolean) || it.name;
 const bookOf = (edition) => ({ id: edition.home.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''), title: edition.home.title,
-  editors: PUBLICATION.editors, publisher: PUBLICATION.publisher, year: edition.version.date.slice(0, 4), url: siteUrl + edition.dir, language: PUBLICATION.language });
+  authors: PUBLICATION.authors, publisher: PUBLICATION.publisher, year: edition.version.date.slice(0, 4), url: siteUrl + edition.dir, language: PUBLICATION.language });
 for (const edition of editions) {
   try {
     edition.self = selfReferences({ pandoc: PANDOC, work: join(edition.scratch, 'self'), book: bookOf(edition),
       version: edition === latest ? null : { id: edition.version.id, label: edition.version.label },
-      pages: edition.pages.filter((p) => p !== edition.home).map((p) => ({ key: p.file, id: citeKey(p.file), title: p.title, credits: p.credits, url: siteUrl + edition.dir + urlOf(p.file) })),
+      pages: edition.pages.filter((p) => p !== edition.home).map((p) => ({ key: p.file, id: citeKey(p.file), title: p.title, credits: p.credits, date: p.date, url: siteUrl + edition.dir + urlOf(p.file) })),
       items: media.items.filter((it) => it.appearances.some((a) => a.edition.edition === edition))
         .map((it) => ({ key: itemPath(it), number: it.label || null, title: itemTitle(it), credit: it.credit || '', url: siteUrl + (it.label ? `${it.label}/` : itemPath(it)) })) });
   } catch (e) { fail(`${edition.name}: ${e.message}`); }
@@ -628,6 +647,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
       if (band) extra.page_band = `<img src="${esc(join2(r, band.url))}" width="${band.width}" height="${band.height}" alt="" fetchpriority="high">`;
       if (!from) {
         extra.cite_data = citeScript(citeData);
+        if (page.creditList?.length) extra.page_credits = creditListHtml(page.creditList);
         extra.cite_section = howToCite({ entry: self, home: page === edition.home, release: inRelease, releaseUrl: inRelease && join2(r, join2(prefix, inRelease.dir) + url) });
         extra.scholar = scholarMeta({ entry: self, book: bookOf(edition), url: pageUrl, licence: FRAME.licence?.url, isBook: page === edition.home });
       }
@@ -653,7 +673,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     const paragraphs = list(data.paragraphs);
     // How to cite this page keeps the in-text line that fits the page
     html = html.replace(new RegExp(`<p class="how-to-cite__intext" data-for="${paragraphs.length ? 'page' : 'paragraphs'}">.*?</p>\\n?`), '');
-    if (edition === latest && !page.credits && page !== edition.home && !inBackmatter && paragraphs.length) warnings.push(`${page.file}: no credits, so its citations name the book's editors as its authors (see "Credits" in everytrick/CONTRACT.md)`);
+    if (edition === latest && !page.credits && page !== edition.home && !inBackmatter && paragraphs.length) warnings.push(`${page.file}: no credits, so its citations name no author (see "Front matter and credits" in everytrick/CONTRACT.md)`);
     if (target) {
       // the map needs this page's paragraphs, which stage 2 has just numbered
       const result = there ? matchParagraphs(paragraphs, there) : { map: {}, counts: null };
@@ -684,7 +704,8 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     writeFileSync(join(dir, 'page.json'), JSON.stringify({
       contract: CONTRACT, paragraphRule: edition.rule, id: page.file, url: page.url, title: page.title, subtitle: page.subtitle,
       part: inBackmatter ? 'backmatter' : 'body', version: edition.version, everytrickinthebook: TOOLKIT_VERSION,
-      credits: page === edition.home ? { editor: PUBLICATION.editors } : page.credits || {},
+      credits: page === edition.home ? { author: PUBLICATION.authors } : page.credits || {},
+      date: page.date || null, credit_list: page.creditList || [],
       citation: { text: bare(self.styles.house.cite), reference: withoutAccessed(self.styles.house.text) },
       markdown: `${url}index.md`,
       headings: list(data.headings).map(({ level, text, id }) => ({ level, text, id })),

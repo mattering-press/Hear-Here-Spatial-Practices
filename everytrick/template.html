@@ -150,6 +150,9 @@ $endif$
   </header>
   <main id="main"$if(searchable)$ data-pagefind-body$endif$>
 $body$
+$if(page-credits)$
+$page-credits$
+$endif$
 $if(cite-section)$
 $cite-section$
 $endif$
@@ -170,7 +173,7 @@ $endif$
       <div class="site-footer__text">
         <p class="site-footer__credit"><cite>$book-title$</cite>$if(credit)$, $credit$$endif$. Published by <a href="$publisher-url$">$publisher$</a>$if(licence)$ under <a href="$licence-url$" rel="license">$licence$</a>$endif$.</p>
         $version-line$
-        <p class="built-with">built with <a class="toolkit-name" href="$toolkit-home$" aria-label="every trick in the book">everytrickinthebook</a> <a href="$toolkit-changes$" aria-label="$toolkit-version$, what’s new">$toolkit-version$</a> by SJMcH</p>
+        <p class="built-with">built with <a class="toolkit-name" href="$toolkit-home$" aria-label="every trick in the book">everytrickinthebook</a> <a href="$toolkit-changes$" aria-label="$toolkit-version$, what’s new">$toolkit-version$</a> by SJMcH$if(data-contract)$<span class="built-with__contract"> · <a href="$data-contract-url$" aria-label="contract $data-contract$ of the book’s data">contract $data-contract$</a></span>$endif$</p>
       </div>
     </div>
   </footer>

@@ -133,7 +133,7 @@ export function itemFacts(it, { root, siteUrl }) {
 }
 
 // How to cite an item, against the book ("Plan: copying citations" in DEVELOPMENT.md): one block, its reference in the
-// house style, "Item 37, ‘The baptismal font in Coventry Cathedral’, in N. Puwar, ed., Hear Here: Spatial Practices, …
+// house style, "Item 37, ‘The baptismal font in Coventry Cathedral’, in N. Puwar, Hear Here: Spatial Practices, …
 // <https://hearhere.matteringpress.org/37/> [accessed …]", ending with how to cite its own source where the register
 // says, and below it the in-text citation, (Puwar 2026: item 37). assets/cite.js shows both in the reader's citation
 // style, adds the Copy button and fills in the date accessed, which the build leaves as 31 December 9999 (cite.mjs).
