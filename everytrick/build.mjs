@@ -316,7 +316,8 @@ const backmatterMenu = (edition, s, r, current = '') => {
 // The section line above the title of a back matter page, which leads to the overview.
 const backmatterSection = (r) => ({ 'section-title': BACKMATTER.title, 'section-url': `${r}about/` });
 // The toolkit's line in every footer (template.html), below the book's version line.
-const toolkitMeta = { 'toolkit-version': TOOLKIT_VERSION, 'toolkit-home': TOOLKIT_HOME, 'toolkit-changes': TOOLKIT_CHANGES };
+// with the contract of the page data, beside the toolkit's version in every footer (the publisher, 2026-11-24)
+const toolkitMeta = { 'toolkit-version': TOOLKIT_VERSION, 'toolkit-home': TOOLKIT_HOME, 'toolkit-changes': TOOLKIT_CHANGES, 'data-contract': CONTRACT, 'data-contract-url': TOOLKIT_CONTRACT };
 const lcFirst = (s) => s.charAt(0).toLowerCase() + s.slice(1);
 const hypothesis = (edition) => {
   const config = { openSidebar: false };
@@ -502,6 +503,11 @@ const colophonHtml = (edition, root, shared) => {
     `Its media items – pictures, recordings, videos and documents – may carry other rights, which the ${a(`${media}#media`, 'Media Index')} gives item by item.</p>\n` : '';
   return `<div class="colophon__built" data-pagefind-ignore>
 ${licence}<h2 id="versions-and-kit">Versions and kit</h2>
+<ul class="colophon__versions">
+<li><span class="colophon__versions-what">Text</span> ${v.status === 'latest' ? 'Latest text, unreleased' : esc(v.label)}, ${when}</li>
+<li><span class="colophon__versions-what">Kit</span> ${toolkit}</li>
+<li><span class="colophon__versions-what">Data</span> ${a(TOOLKIT_CONTRACT, `contract ${CONTRACT}`)}${edition.rule !== CONTRACT ? `, its paragraphs numbered by the rule of contract ${esc(edition.rule)}` : ''}</li>
+</ul>
 <p>You are reading ${v.status === 'latest' ? 'the latest text of the book, unreleased' : esc(lcFirst(v.label))}, ${when}. Every version of the book that has been frozen for review or released stays online at its own address, with its paragraph numbers: ${a(`${shared}versions/`, 'all versions')}.</p>
 <p>The book is open data too, for other tools and for archiving, in the format of ${a(TOOLKIT_CONTRACT, `contract ${CONTRACT}`)} of everytrickinthebook:</p>
 <ul class="colophon__data">

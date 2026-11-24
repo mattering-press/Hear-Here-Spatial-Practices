@@ -31,6 +31,10 @@ their dates, and event pages list everyone who made them.
   (Burley and Puwar 2026), (Galetto and Puwar 2026), (Horspool and Perkins 2026); Acorn, with four, is (Chambers et
   al. 2026). The Acorn films are credited to Jon Randle, Mindriot Productions, and the walk booklet names its copy
   editor, Mouli Banerjee. Rocking It took place at the POD outside(R) Zine Fest.
+- **The contract is shown beside the versions** (the publisher, 2026-11-24): every footer's credit line ends with the
+  contract of the book's data, "built with everytrickinthebook 1.19.0 by SJMcH · contract 0.10", linked to
+  `CONTRACT.md`; and the colophon's Versions and kit starts with all three: the text's version, the kit's and the
+  data's contract (for a frozen version, also the contract whose rule numbers its paragraphs).
 - The page data is contract 0.10: publication.json has `authors` in place of `editors`, and page.json gains `date` and
   `credit_list`. The paragraph rule is unchanged, so no paragraph has a new number.
 

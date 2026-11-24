@@ -806,3 +806,7 @@ main .page-credits h2 { font-size: 1.1rem; }
 .page-credits dd { margin: 0; }
 @media (max-width: 30rem) { .page-credits dl > div { grid-template-columns: minmax(0, 1fr); } }
 .page-credits + .how-to-cite { margin-top: 2rem; }
+.colophon__versions { margin: 0 0 1rem; padding: 0; list-style: none; }
+.colophon__versions li { padding: 0.3rem 0; border-top: 1px solid var(--colour-rule); }
+.colophon__versions li:last-child { border-bottom: 1px solid var(--colour-rule); }
+.colophon__versions-what { display: inline-block; min-width: 4rem; color: var(--colour-muted); }

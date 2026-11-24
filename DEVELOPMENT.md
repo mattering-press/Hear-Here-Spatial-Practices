@@ -396,7 +396,8 @@ or rewritten beyond recognition leads to the nearest paragraph before it that wa
 Every page's footer shows the book's version and its date, with a link to the edition's "About this book" (`about/`),
 whose "Versions and data" names the version and links to `/versions/`, which lists every version.
 The line below it names the version of everytrickinthebook that built the page (see "Versions of the book and
-of everytrick"). The same stamp, `version` for the book and `everytrickinthebook` for the toolkit, is in `publication.json`, every
+of everytrick"), and the contract of the book's data ("contract 0.10", linked to `everytrick/CONTRACT.md`; the
+publisher, 2026-11-24). The colophon's Versions and kit lists all three, text, kit and data. The same stamp, `version` for the book and `everytrickinthebook` for the toolkit, is in `publication.json`, every
 `page.json` and the front matter of the Markdown view.
 
 Each entry in `versions.json` has:
