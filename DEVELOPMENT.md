@@ -952,8 +952,8 @@ Agreed with the publisher on 2026-11-23. It gathers what earlier plans
 promised: a "Cite this" panel and "copy quote with citation" (notes of 19 November), exact quotes as text fragments
 ("Plan: stable links, versions and print companions"), citing a media item like a paragraph ("Plan: media register,
 item pages and the Media Index") and the house style's `(Nassar 2026: para. 12)`. Built in everytrickinthebook 1.17.0
-(23 November 2026); the credits on the pages are a draft until Nirmal Puwar confirms them. The data are in
-`everytrick/CONTRACT.md` ("Credits", "Citing the book").
+(23 November 2026); Nirmal Puwar's answers on the credits (24 November 2026) are built in everytrickinthebook 1.19.0.
+The data are in `everytrick/CONTRACT.md` ("Front matter and credits", "Citing the book").
 
 - **The ¶ stays as it is.** One click copies the link to the paragraph, with the version in it on a frozen version
   (see "Paragraph numbers"). Every new way of copying works like it: one click copies, and the status line says what
@@ -963,7 +963,7 @@ item pages and the Media Index") and the house style's `(Nassar 2026: para. 12)`
   Everyone who made a page is named in its citation (the publisher, 2026-11-23): the podcasts' producer in `producer:`
   and their transcription editor in `transcript-editor:`. Names are written "Family, Given". `convert.mjs` reads the
   block and leaves it out of the page's text. The names go into `page.json` (contract 0.9; the paragraph rule does not
-  change) and later to Thoth. The book's own data (editors, publisher, year, licence) stay in `build.mjs`. The build
+  change) and later to Thoth. The book's own data (its author, publisher, year, licence) stay in `build.mjs`. The build
   warns about a page that has numbered paragraphs but no author. A page of a frozen version takes the credits of the
   same page in the latest text when its own text has none.
 - **The guest first.** The house style's CSL follows MHRA 7.11, which lists a published interview under its
@@ -973,8 +973,27 @@ item pages and the Media Index") and the house style's `(Nassar 2026: para. 12)`
   transcript ed. by P. Phung"), so the house CSL is unchanged. The other styles get them as CSL's `interviewer`,
   `producer` and `contributor` and write them in their own way (APA leaves the producer and the transcript's editor
   out).
-  An event page is credited to Nirmal Puwar together with the event's collaborators (the publisher, 2026-11-23); the
-  names for each page are being confirmed with Nirmal Puwar before they are entered.
+- **Nirmal Puwar's answers** (24 November 2026, with the publisher's decisions of the same day):
+  - She is the book's **author**, not its editor: the book is cited "Puwar, N., *Hear Here: Spatial Practices*, …", a
+    page "…, in N. Puwar, *Hear Here: Spatial Practices*, …" (CSL's `container-author`), and the footer's credit reads
+    "by Nirmal Puwar" (it read "convened by"). `PUBLICATION.authors` in `everytrick/build.mjs` holds her name.
+  - The podcasts' credits stand as drafted. The authors of a page are written in **alphabetical order** of family name
+    ("(Burley and Puwar 2026)", "(Horspool and Perkins 2026)"); with four authors the house style writes "(Chambers et
+    al. 2026)".
+  - The **year** of a citation stays the year the version was published (2026). The day an event was held or a podcast
+    recorded follows the page's title in the house style's reference: "‘Rocking It: Insider/Outsider Archives’, held on
+    2 March 2024, in N. Puwar, …", "‘Hear Here Podcast: Aya Nassar’, recorded 5 April 2025, interviewed by N. Puwar,
+    …". It is `held:` or `recorded:` in the page's front matter (YYYY-MM-DD).
+  - **A credits list.** Everyone else who made an event (collaborators, readers, musicians, sketchers, organisers,
+    speakers, assistance, the context of an installation) is named in a "Credits" list at the end of its page, by role,
+    from `credits:` in its front matter (`  - Organising: …`). It is in the page's data and in search, not in
+    citations. Who made a film or a photograph is the media item's credit, in the register (the Acorn films: "Film: Jon
+    Randle, Mindriot Productions"; the walk booklet: "Copy editor: Mouli Banerjee"); the walk's and Acorn's
+    photographers, whose pictures are not told apart yet, are in the page's list.
+  - Absence/Presence: Ruth Lubrano Lavadera is credited as co-curator, not as an author. The festival of Rocking It is
+    the POD outside(R) Zine Fest. Goldsmiths is "Goldsmiths, University of London". To come: the "Global Ecologies
+    Panel Discussions" (which page is to be confirmed) and Nirmal Puwar's further films, each a media item with its
+    credit.
 - **Every copy is one block** (the publisher, 2026-11-23, after trying the first version): the quote, its in-text
   citation and the reference in one paragraph, with the address inside the reference, between `< >`, where MHRA puts
   it: no link on a line of its own, no gap. The address is the passage's for a quote (`#p55`), the page's for Cite and
@@ -992,8 +1011,8 @@ item pages and the Media Index") and the house style's `(Nassar 2026: para. 12)`
   there, for teaching for example (the publisher, 2026-11-23). It leaves the right edge free for Hypothesis's sidebar
   and sits above the docked player. In the house style it copies:
 
-  > ‘Cairo is a very dusty city’ (Nassar 2026: para. 55). Nassar, A., ‘Hear Here Podcast: Aya Nassar’, interviewed by
-  > N. Puwar, prod. by D. Whitley, transcript ed. by P. Phung, in N. Puwar, ed., *Hear Here: Spatial Practices*,
+  > ‘Cairo is a very dusty city’ (Nassar 2026: para. 55). Nassar, A., ‘Hear Here Podcast: Aya Nassar’, recorded 5
+  > April 2025, interviewed by N. Puwar, prod. by D. Whitley, transcript ed. by P. Phung, in N. Puwar, *Hear Here: Spatial Practices*,
   > version 0.1 (Mattering Press, 2026) <https://hearhere.matteringpress.org/v0.1/essays/aya_nassar/#p55> [accessed 23
   > November 2026].
 
@@ -1018,7 +1037,7 @@ item pages and the Media Index") and the house style's `(Nassar 2026: para. 12)`
   2026-11-23). The ¶ link is unchanged.
 - **Media items** are cited against the book, since their numbers belong to the book (the publisher, 2026-11-23), in
   one block that says "Item 37 … in" the book (the publisher, 2026-11-23): "Item 37, ‘The baptismal font in Coventry
-  Cathedral’, in N. Puwar, ed., *Hear Here: Spatial Practices*, version 0.1 (Mattering Press, 2026)
+  Cathedral’, in N. Puwar, *Hear Here: Spatial Practices*, version 0.1 (Mattering Press, 2026)
   <https://hearhere.matteringpress.org/37/> [accessed …]." The item's credit follows its title, and when the
   register's `cite_as` is filled in, "Source: …" ends the block. Each item page shows it under "To cite", with its
   in-text citation, "(Puwar 2026: item 37)", below it and a Copy button; "Cite" in the zoom viewer's top bar copies

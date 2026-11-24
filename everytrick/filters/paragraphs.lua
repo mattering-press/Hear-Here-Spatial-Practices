@@ -14,7 +14,7 @@
 -- numbers never change (versions.json, "contract"). Rules: 0.3 numbers each item of a list; 0.4 numbers a whole list
 -- as one paragraph, <div id="p12" class="para para-list"><a class="para-link" …></a><ul>…</ul></div>; 0.5 has the rule of
 -- 0.4, unchanged; 0.6 adds long descriptions (::: {.description}) to the blocks that are never
--- numbered; 0.7, 0.8 and 0.9 (the current contract) have the rule of 0.6, unchanged. figures.lua, which runs first, takes each description into its picture's figure, so none is left here; the
+-- numbered; 0.7, 0.8, 0.9 and 0.10 (the current contract) have the rule of 0.6, unchanged. figures.lua, which runs first, takes each description into its picture's figure, so none is left here; the
 -- rule says so all the same, because it is a rule of the Markdown, not of the filters.
 package.path = pandoc.path.directory(PANDOC_SCRIPT_FILE) .. '/?.lua;' .. package.path
 local lib = require 'lib'
@@ -84,9 +84,9 @@ function Pandoc(doc)
   lib.init(doc.meta)
   local setting = doc.meta['paragraph-numbers']   -- -M paragraph-numbers=false arrives as a boolean
   if setting == false or (setting and pandoc.utils.stringify(setting) == 'false') then return nil end
-  local rule = doc.meta['paragraph-rule'] and pandoc.utils.stringify(doc.meta['paragraph-rule']) or '0.9'
-  if rule ~= '0.3' and rule ~= '0.4' and rule ~= '0.5' and rule ~= '0.6' and rule ~= '0.7' and rule ~= '0.8' and rule ~= '0.9' then error('paragraphs.lua: unknown paragraph rule ' .. rule .. ' (known: 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)') end
-  SKIP.description = (rule == '0.6' or rule == '0.7' or rule == '0.8' or rule == '0.9') or nil
+  local rule = doc.meta['paragraph-rule'] and pandoc.utils.stringify(doc.meta['paragraph-rule']) or '0.10'
+  if rule ~= '0.3' and rule ~= '0.4' and rule ~= '0.5' and rule ~= '0.6' and rule ~= '0.7' and rule ~= '0.8' and rule ~= '0.9' and rule ~= '0.10' then error('paragraphs.lua: unknown paragraph rule ' .. rule .. ' (known: 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.10)') end
+  SKIP.description = (rule == '0.6' or rule == '0.7' or rule == '0.8' or rule == '0.9' or rule == '0.10') or nil
   local whole_lists = rule ~= '0.3'
   local paragraphs = {}
   local references_level = nil   -- inside a "References" section: the level of its heading

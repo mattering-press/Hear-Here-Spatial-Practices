@@ -797,3 +797,12 @@ main .how-to-cite h2 { margin-top: 0; font-size: 1.1rem; color: var(--colour-tex
 .citation-popover .copy-button { min-height: 1.75rem; margin-right: 0.5rem; vertical-align: middle; }
 @media print { .page-cite, .cite-bar, .cite-panel, .copy-button, .item-cite__copy, .reference__copy { display: none !important; } }
 .settings__wrap { flex-wrap: wrap; max-width: 17rem; }
+/* the credits list at the end of a page: everyone else who made it, by role (CONTRACT.md, "Front matter and credits") */
+.page-credits { clear: both; margin-top: 3rem; font-size: 0.9375rem; }
+main .page-credits h2 { font-size: 1.1rem; }
+.page-credits dl { margin: 0; }
+.page-credits dl > div { display: grid; grid-template-columns: minmax(7rem, 11rem) minmax(0, 1fr); gap: 0.15rem 1rem; padding: 0.35rem 0; border-top: 1px solid var(--colour-rule); }
+.page-credits dt { color: var(--colour-muted); }
+.page-credits dd { margin: 0; }
+@media (max-width: 30rem) { .page-credits dl > div { grid-template-columns: minmax(0, 1fr); } }
+.page-credits + .how-to-cite { margin-top: 2rem; }
