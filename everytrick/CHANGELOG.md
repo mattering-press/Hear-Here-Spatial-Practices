@@ -12,6 +12,15 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of everytrick’ in `DEVELOPMENT.md`.
 
+## 1.21.0
+
+24 November 2026. A podcast's length moves into the page's note (the publisher, 2026-11-24).
+
+- **`duration:` in a page's front matter** gives a recording's length (`duration: 37:57`, or `38:28 + 1:51` with an
+  addendum). The page's note shows it after the day it was recorded: "Recorded 22 March 2025 · 37 min 57 sec".
+- The podcasts' "Podcast duration" lines are taken out of the latest text. No numbered paragraph changes, and the page
+  data are unchanged (contract 0.10).
+
 ## 1.20.0
 
 24 November 2026. Citing steps back: the Cite button leaves the page's opening, and a quiet note at the top of the

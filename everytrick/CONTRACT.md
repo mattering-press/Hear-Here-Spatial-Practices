@@ -271,6 +271,10 @@ credits:
 - `held:` (an event) or `recorded:` (a podcast) is a day, `YYYY-MM-DD`. The house style writes it after the page's
   title, before the other credits ("held on 2 March 2024", "recorded 5 April 2025"); the year of the citation stays
   the year the version was published.
+- `duration:` is a recording's length, minutes and seconds (`duration: 38:28`), with an addendum's after a `+`
+  (`duration: 38:28 + 1:51`). The page's note at the top of its margin shows it after the day it was recorded
+  ("Recorded 5 April 2025 · 38 min 28 sec, with an addendum of 1 min 51 sec"); it is not in citations or in the page
+  data, and a frozen version does not take it from the latest text.
 - `credits:` lists everyone else who made the page, one `  - Role: who` a line, the role and the names written as they
   should show. They are shown, in that order, in a Credits section at the end of the page, which search finds; they
   are not in citations. Who made a film or a photograph is the media item's credit, in the register.

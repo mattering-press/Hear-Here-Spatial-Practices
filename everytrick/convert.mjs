@@ -31,6 +31,7 @@
 //     - Puwar, Nirmal
 //   interviewer: Puwar, Nirmal
 //   held: 2024-03-02                (or recorded: 2025-04-05)
+//   duration: 38:28                 (a recording's length; 38:28 + 1:51 with an addendum)
 //   credits:
 //     - Film: Jon Randle, Mindriot Productions
 //   ---
@@ -95,14 +96,14 @@ function readCredits(lines, file, fail) {
   const end = lines.findIndex((l, i) => i > 0 && /^(---|\.\.\.)\s*$/.test(l));
   if (end < 0) { fail(1, lines[0], 'the front matter at the top of the page has no closing ---'); return { credits: null, end: -1 }; }
   const credits = {}, texts = {}, list = [];
-  let key = null, date = null;
+  let key = null, date = null, duration = null;
   const unquote = (text) => text.trim().replace(/^(["'])(.*)\1$/, '$2');
   const name = (text) => {
     const value = unquote(text);
     const comma = value.indexOf(',');
     return comma < 0 ? { literal: value } : { family: value.slice(0, comma).trim(), given: value.slice(comma + 1).trim() };
   };
-  const keys = [...FRONT_TEXTS, ...FRONT_DATES, ...CREDIT_ROLES, 'credits'];
+  const keys = [...FRONT_TEXTS, ...FRONT_DATES, 'duration', ...CREDIT_ROLES, 'credits'];
   for (let i = 1; i < end; i++) {
     const line = lines[i];
     if (!line.trim() || /^\s*#/.test(line)) continue;
@@ -114,6 +115,12 @@ function readCredits(lines, file, fail) {
       const iso = unquote(entry[2]);
       if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) fail(i + 1, line, `${entry[1]}: is a date written YYYY-MM-DD, such as 2024-03-02`);
       else date = { kind: entry[1], date: iso };
+      key = null;
+    } else if (entry && entry[1] === 'duration') {
+      // a recording's length, minutes:seconds, with an addendum's after a +: 38:28, or 38:28 + 1:51
+      const value = unquote(entry[2]);
+      if (!/^\d+:[0-5]\d(\s*\+\s*\d+:[0-5]\d)?$/.test(value)) fail(i + 1, line, 'duration: is minutes:seconds, such as 38:28, or 38:28 + 1:51 with an addendum');
+      else duration = value.split('+').map((t) => t.trim());
       key = null;
     } else if (entry && entry[1] === 'credits') {
       key = 'credits';
@@ -133,12 +140,12 @@ function readCredits(lines, file, fail) {
     }
   }
   for (const [role, names] of Object.entries(credits)) if (!names.length) delete credits[role];
-  return { title: texts.title || null, subtitle: texts.subtitle || null, credits: Object.keys(credits).length ? credits : null, date, creditList: list, end };
+  return { title: texts.title || null, subtitle: texts.subtitle || null, credits: Object.keys(credits).length ? credits : null, date, duration, creditList: list, end };
 }
 
 export function convert(source, file, { exists = inWorkingTree } = {}) {
   const lines = source.split(/\r?\n/);
-  const page = { title: null, subtitle: null, header: {}, menu: [], footer: [], cards: [], images: [], files: [], credits: null, date: null, creditList: [] };
+  const page = { title: null, subtitle: null, header: {}, menu: [], footer: [], cards: [], images: [], files: [], credits: null, date: null, duration: null, creditList: [] };
   const handled = [], warnings = [], unhandled = [];
   const out = [];
   let fence = false, cardLevel = 0;
@@ -147,8 +154,8 @@ export function convert(source, file, { exists = inWorkingTree } = {}) {
   const fail = (line, text, why) => unhandled.push({ file, line, text: text.trim(), why });
   // the front matter is read and its lines left empty, so that every other line keeps its number
   if (/^---\s*$/.test(lines[0] || '')) {
-    const { title, subtitle, credits, date, creditList, end } = readCredits(lines, file, fail);
-    Object.assign(page, { title, subtitle, credits, date: date || null, creditList: creditList || [] });
+    const { title, subtitle, credits, date, duration, creditList, end } = readCredits(lines, file, fail);
+    Object.assign(page, { title, subtitle, credits, date: date || null, duration: duration || null, creditList: creditList || [] });
     for (let i = 0; i <= end; i++) lines[i] = '';
   }
   const needFile = (line, path, what) => { if (!exists(path)) fail(line, path, `${what} not found in the repository`); };
