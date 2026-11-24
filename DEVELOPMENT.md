@@ -1036,9 +1036,22 @@ The data are in `everytrick/CONTRACT.md` ("Front matter and credits", "Citing th
 - **Copy citation** copies the page's reference, the chapter, in the reader's style, in one click, as the ¶ does,
   and the status line says so briefly ("Citation copied, in APA"; the publisher, 2026-11-24). On the latest text it
   cites the newest release that has the page. The home page's note leaves out the author, whom its opening names. Without JavaScript the button is hidden and How to cite remains.
-- **How to cite this page**, at the end of the page, gives the in-text citation and the reference in the reader's
-  style, which style that is with a way to change it, and "For a reference manager: BibTeX · RIS", which copy the
-  page's entry. It also serves print and archives.
+  The note's "How to cite" leads to How to cite this book.
+- **How to cite this book** (the publisher, 2026-11-24, replacing How to cite this page at the end of every page and
+  its link at the top): a fourth part of About this book, `about/how-to-cite/`, from `about/how-to-cite.md`, which the
+  publisher writes. It explains the settings (citation style; Copy citations as Formatted or Plain text, and why one
+  would choose either), and how to cite the book, a section, a quote, a media item and a reference, how to link to a
+  paragraph, and how citations follow the versions. The build fills in its two empty divs: `::: cite-book`, the book's
+  reference in the reader's style with Copy citation (on the latest text, the newest release), and
+  `::: cite-downloads`, a button that opens the settings at the citation style and "For a reference manager: this
+  book and all its sections, as BibTeX · RIS", two files in the page's folder (`hear-here-spatial-practices.bib`,
+  `.ris`), each section as its Copy citation cites it, without a date accessed. BibTeX and RIS are not offered
+  anywhere else, and not as a setting: Copy citation always copies a citation (the publisher, 2026-11-24). A version
+  frozen before the page existed takes it from the latest text, as with the Colophon.
+- **How to cite this page** stays at the end of every page in print only, for print and archives: the in-text
+  citation and the reference in the reader's style.
+- **Every Copy button of a citation reads "Copy citation"** (the publisher, 2026-11-24): on item pages, in the
+  citation popups and beside each work on the References page. Copy quote and the zoom viewer's Cite keep theirs.
 - **The podcasts' own lists** of "Recording date" and "Interviewees" were taken out of their pages (the publisher,
   2026-11-24): the page's note says the same from the page's credits. Their "Podcast duration" lines followed (the
   publisher, 2026-11-24): the length is `duration:` in the front matter, and the note shows it after the day it was

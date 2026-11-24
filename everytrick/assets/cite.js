@@ -17,8 +17,10 @@
 //    Item 37, ‘…’, in N. Puwar, Hear Here: Spatial Practices, … <…/37/>. The zoom viewer's Cite button uses it; an
 //    item's page shows it under "To cite", with a Copy button.
 //  * Citation popups get a Copy button, with the texts of the edition's References page (references/formatted.json).
-//  * How to cite this page, and an item's "To cite", show the reader's style. How to cite also says which style it is,
-//    with a way to change it, and has BibTeX and RIS for a reference manager.
+//  * How to cite this page (in print only), How to cite this book's reference of the book (with its Copy citation) and
+//    an item's "To cite" show the reader's style. How to cite this book has a button that opens the settings at the
+//    citation style; its BibTeX and RIS are files the build writes.
+//  * Every Copy button of a citation reads "Copy citation" (the publisher, 2026-11-24).
 //  * The date accessed is the day the reader copies: the build writes 31 December 9999 in its place (cite.mjs, ACCESSED),
 //    in each style's form; the How to cite section's date (.cite-today) is filled in here.
 (function () {
@@ -199,7 +201,7 @@
   }
 
   // ---- Copy citation, in the page's note: the page as a whole ------------------------------------------------------
-  // One click copies, as the ¶ does; the style, BibTeX and RIS are in How to cite, at the page's end.
+  // One click copies, as the ¶ does; the style is in the settings, BibTeX and RIS on How to cite this book.
   // the chapter: on the latest text, the newest release's page where there is one
   var chapter = release ? release.page : data.page;
   function element(tag, cls, text) {
@@ -239,36 +241,32 @@
     var name = section.querySelector('.how-to-cite__style-name');
     if (name) name.textContent = styleName(s);
   }
-  // under How to cite: the style it is shown in, with a way to change it, and BibTeX and RIS for a reference manager
-  function addTools() {
-    var section = document.querySelector('.how-to-cite');
-    if (!section || !chapter) return;
-    var tools = element('p', 'how-to-cite__tools', 'Shown in ');
-    tools.append(element('span', 'how-to-cite__style-name'), ' (');
-    var change = textButton('change', 'the citation style', '');
-    change.addEventListener('click', function () {
-      var settings = document.getElementById('settings');
-      if (settings && settings.showPopover) {
-        settings.showPopover();
-        var first = settings.querySelector('.settings__citations button');
-        if (first) first.focus();
-      }
-    });
-    tools.append(change, ').');
-    var formats = [['BibTeX', 'bibtex'], ['RIS', 'ris']].filter(function (f) { return chapter[f[1]]; });
-    if (formats.length) {
-      tools.append(' For a reference manager: ');
-      formats.forEach(function (f, i) {
-        var b = textButton(f[0], '', '');
-        b.addEventListener('click', function () { copy.write(today(chapter[f[1]])).then(function () { copy.say('Copied: ' + f[0]); }, failed); });
-        if (i) tools.append(' · ');
-        tools.appendChild(b);
-      });
-      tools.append('.');
-    }
-    section.appendChild(tools);
+  // How to cite this book (about/how-to-cite/): the book's reference in the reader's style, its Copy citation, and a
+  // button that opens the settings at the citation style
+  var cited = data.cited;
+  var book = document.querySelector('.cite-book');
+  function showBook() {
+    var ref = book && book.querySelector('.cite-book__reference');
+    if (ref && cited) ref.innerHTML = reference(cited, style()).html;
   }
-  addTools();
+  var bookCopy = book && book.querySelector('.cite-book__copy button');
+  if (bookCopy && cited) {
+    bookCopy.hidden = false;
+    bookCopy.addEventListener('click', function () {
+      var s = style();
+      copy.write(reference(cited, s)).then(done('Citation of the book', s), failed);
+    });
+  }
+  var styleLine = document.querySelector('.cite-downloads__style');
+  var settings = document.getElementById('settings');
+  if (styleLine && settings && settings.showPopover) {
+    styleLine.hidden = false;
+    styleLine.querySelector('button').addEventListener('click', function () {
+      settings.showPopover();
+      var first = settings.querySelector('.settings__citations button');
+      if (first) first.focus();
+    });
+  }
 
   // ---- Media items -----------------------------------------------------------------------------------------------------
   // an item's citation: its reference, and the item's own source where the register gives it; { text, html, cite }
@@ -292,7 +290,7 @@
       return message;
     }, function (e) { failed(); throw e; });
   };
-  // an item's page: its "To cite", in the reader's style, with a Copy button
+  // an item's page: its "To cite", in the reader's style, with a Copy citation button
   var itemCite = document.querySelector('.item-cite');
   function showItem() {
     if (!itemCite || !data.item) return;
@@ -302,7 +300,7 @@
     if (example) example.textContent = p.cite;
   }
   if (itemCite && data.item) {
-    var b = textButton('Copy', 'the citation', 'copy-button is-strong');
+    var b = textButton('Copy citation', '', 'copy-button is-strong');
     b.addEventListener('click', function () { everytrick.citeItem(location.href); });
     var line = element('p', 'item-cite__copy');
     line.appendChild(b);
@@ -325,7 +323,7 @@
     };
     [].forEach.call(document.querySelectorAll('.citation-popover[id^="ref-popover-"]'), function (popover) {
       var key = popover.id.slice('ref-popover-'.length);
-      var button = textButton('Copy', 'the reference');
+      var button = textButton('Copy citation', '');
       button.addEventListener('pointerover', load);
       button.addEventListener('click', function () {
         var s = style(), p = partsFor(key, s);
@@ -338,7 +336,7 @@
   }
 
   // the reader's style, now and whenever it changes
-  function showStyle() { showHowToCite(); showItem(); }
+  function showStyle() { showHowToCite(); showBook(); showItem(); }
   showStyle();
   window.addEventListener('everytrick:citation', showStyle);
 })();

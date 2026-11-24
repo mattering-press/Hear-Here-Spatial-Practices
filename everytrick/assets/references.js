@@ -37,17 +37,17 @@
     return { text: work[s.id], html: work.html && work.html[s.id] };
   }
 
-  // a Copy button for every work: "Copy Stengers 2005a" for screen readers
+  // a Copy citation button for every work: "Copy citation of Stengers 2005a" for screen readers
   list.querySelectorAll('li.reference[id]').forEach(function (work) {
     var meta = work.getAttribute('data-pagefind-meta') || '';
     var button = document.createElement('button');
     button.type = 'button';
     button.className = 'reference__copy';
     button.dataset.key = work.id;
-    button.append('Copy');
+    button.append('Copy citation');
     var name = document.createElement('span');
     name.className = 'visually-hidden';
-    name.textContent = ' ' + (meta.slice(meta.indexOf(':') + 1) || work.id);
+    name.textContent = ' of ' + (meta.slice(meta.indexOf(':') + 1) || work.id);
     button.append(name);
     work.appendChild(button);
     work.classList.add('has-copy');

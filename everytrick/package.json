@@ -1,6 +1,6 @@
 {
   "name": "everytrickinthebook",
-  "version": "1.21.0",
+  "version": "1.22.0",
   "private": true,
   "type": "module",
   "description": "everytrickinthebook by SJMcH, a Mattering toolkit: every trick in the book for making books. Builds the book in this repository into ../_site with Pandoc and Lua filters.",

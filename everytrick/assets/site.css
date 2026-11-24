@@ -776,8 +776,14 @@ main h2.search-result__title::before { content: none; }
 .has-cite-bar .copy-status { bottom: calc(4rem + env(safe-area-inset-bottom)); }
 .has-docked-player .copy-status { bottom: calc(var(--docked-player-height, 5rem) + 1rem); }
 .has-docked-player.has-cite-bar .copy-status { bottom: calc(var(--docked-player-height, 5rem) + 4rem); }
-/* How to cite this page, at its end */
-.how-to-cite { clear: both; margin-top: 3rem; padding-top: 0.25rem; color: var(--colour-muted); font-size: 0.9375rem; }
+/* How to cite this page, at its end, in print only (on screen: How to cite this book, about/how-to-cite/) */
+.how-to-cite { display: none; clear: both; margin-top: 3rem; padding-top: 0.25rem; color: var(--colour-muted); font-size: 0.9375rem; }
+@media print { .how-to-cite { display: block; } }
+/* How to cite this book: the book's reference, set off like a quotation, with Copy citation below it */
+.cite-book { margin: 0 0 var(--gap); padding: 0.75rem 1rem; border-left: 3px solid var(--colour-rule); background: var(--colour-surface); }
+.cite-book p { margin: 0; }
+.cite-book__copy { margin-top: 0.6rem !important; }
+.cite-downloads__style { margin-bottom: 0.6rem; }
 main .how-to-cite h2 { margin-top: 0; font-size: 1.1rem; color: var(--colour-text); }
 .how-to-cite p { margin: 0 0 0.6rem; }
 .how-to-cite__example, .how-to-cite__reference { color: var(--colour-text); }
@@ -790,7 +796,7 @@ main .how-to-cite h2 { margin-top: 0; font-size: 1.1rem; color: var(--colour-tex
 .item-cite__copy { margin-top: 0.6rem !important; }
 /* the Copy button of a citation popup */
 .citation-popover .copy-button { min-height: 1.75rem; margin-right: 0.5rem; vertical-align: middle; }
-@media print { .page-note__cite, .how-to-cite__tools, .cite-bar, .copy-button, .item-cite__copy, .reference__copy { display: none !important; } }
+@media print { .page-note__cite, .cite-book__copy, .cite-downloads__style, .cite-bar, .copy-button, .item-cite__copy, .reference__copy { display: none !important; } }
 .settings__wrap { flex-wrap: wrap; max-width: 17rem; }
 /* the credits list at the end of a page: everyone else who made it, by role (CONTRACT.md, "Front matter and credits") */
 .page-credits { clear: both; margin-top: 3rem; font-size: 0.9375rem; }

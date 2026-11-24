@@ -168,9 +168,11 @@ its mark in the text, at the end of the paragraph before it, is `<a class="margi
 
 The back matter (EPUB's `backmatter`, JATS's `<back>`; British usage calls it end matter), which readers know as
 "About this book", follows the book's text in every edition and closes every reading order. Its overview, `about/`,
-leads to its three parts: Contributors & acknowledgements (`about/contributors/`, from `about/contributors.md`, with the
+leads to its four parts: Contributors & acknowledgements (`about/contributors/`, from `about/contributors.md`, with the
 author's thanks from `about/acknowledgements.md` added under the heading "Acknowledgements" when that file holds any),
-the Colophon (`about/colophon/`, from `about/colophon.md`) and References and media (`about/references-and-media/`, see
+the Colophon (`about/colophon/`, from `about/colophon.md`), How to cite this book (`about/how-to-cite/`, from
+`about/how-to-cite.md`, with the book's reference and the downloads for a reference manager filled in by the build in
+its empty divs `::: cite-book` and `::: cite-downloads`) and References and media (`about/references-and-media/`, see
 "Citations in the HTML" and "Media items"). Contributors & acknowledgements and the Colophon's own text (Making this
 book and the publisher's statement) are reading text: they have page.json, a Markdown view and paragraph numbers, and
 are in the edition's search index and in `publication.md`. What the build writes after the Colophon's text, the book's

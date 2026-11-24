@@ -85,7 +85,9 @@ const FRAME = {
 // about/ in every edition, with intro and a line for each of its parts: its pages (pages, each with its line; their
 // files are in about/ beside the overview's address) and References and media (about/references-and-media/), which the
 // build makes. colophon: the page after whose text the build writes the licence and the versions and kit, with the
-// publisher's own sentences from colophonNote, if it holds any. acknowledgements: the author's thanks, added under
+// publisher's own sentences from colophonNote, if it holds any. howToCite: the page on citing the book, where the build
+// fills in its two empty divs, ::: cite-book (the book's reference and Copy citation) and ::: cite-downloads (the book
+// and its sections for a reference manager). acknowledgements: the author's thanks, added under
 // their heading to the page `into`, if the file holds any. moved: the former files of pages that moved into the back
 // matter, whose old addresses forward to the new ones; forwards: other former addresses in each edition, with where
 // they lead now (references/ and back-matter/ in each edition; media-index/ is forwarded once, at the site's root).
@@ -95,11 +97,13 @@ const BACKMATTER = {
   pages: [
     { file: 'about/contributors.md', line: 'The people who made the book, and the author’s thanks.' },
     { file: 'about/colophon.md', line: 'How the book was made and published: Mattering Press, the licence, the book’s versions and open data, and the tools that build it.' },
+    { file: 'about/how-to-cite.md', line: 'How to cite the book, a section, a quote, a media item or a reference, and how citations follow the book’s versions.' },
   ],
   referencesAndMedia: { title: 'References and media', url: 'about/references-and-media/',
     line: 'Every work in the book’s bibliography, with the passages that cite it, and every picture, recording, video and document in the book.' },
   colophon: 'about/colophon.md',
   colophonNote: 'about/colophon-note.md',
+  howToCite: 'about/how-to-cite.md',
   acknowledgements: { file: 'about/acknowledgements.md', into: 'about/contributors.md', heading: 'Acknowledgements' },
   moved: { 'essays/contributors.md': 'about/contributors.md' },
   forwards: { 'references/': 'about/references-and-media/', 'back-matter/': 'about/', 'back-matter/contributors/': 'about/contributors/',
@@ -163,13 +167,13 @@ const urlOf = (file) => (file === 'README.md' ? '' : file.replace(/\.md$/, '/').
 const optionalText = (file) => (existsSync(file) ? readFileSync(file, 'utf8').replace(/<!--[\s\S]*?-->/g, '').trim() : '');
 for (const edition of editions) {
   // The back matter's pages that this edition has: each under its own name or under the name it had before it moved
-  // (version 0.1 has essays/contributors.md), and the colophon from the working tree where a version frozen before it
-  // existed has none: Making this book and the publisher's statement are the publisher's, not the book's text. The
+  // (version 0.1 has essays/contributors.md), and the colophon and How to cite this book from the working tree where a
+  // version frozen before them has none: they are the publisher's, not the book's text. The
   // author's acknowledgements, if the edition has any, close the page they belong to.
   const has = edition.has;
   const former = (file) => Object.keys(BACKMATTER.moved).find((old) => BACKMATTER.moved[old] === file && has(old));
   const backmatter = BACKMATTER.pages.map(({ file }) => (has(file) ? file : former(file) || file));
-  const borrowed = !has(BACKMATTER.colophon) && existsSync(join(REPO_ROOT, BACKMATTER.colophon)) ? { [BACKMATTER.colophon]: REPO_ROOT } : {};
+  const borrowed = Object.fromEntries([BACKMATTER.colophon, BACKMATTER.howToCite].filter((file) => !has(file) && existsSync(join(REPO_ROOT, file))).map((file) => [file, REPO_ROOT]));
   const thanks = BACKMATTER.acknowledgements;
   const extend = (file, source, folder) => {
     const text = file === thanks.into ? optionalText(join(folder, thanks.file)) : '';
@@ -214,7 +218,7 @@ ${list.map((c) => `<div><dt>${esc(c.role)}</dt><dd>${esc(c.who)}</dd></div>`).jo
 
 // The page's note, at the top of its margin ("Plan: copying citations" in DEVELOPMENT.md; the publisher, 2026-11-24):
 // who made the page, the day it was held or recorded, its other makers, when its text last changed, and Copy citation
-// and How to cite. Written as a colophon, not as data: names in their natural order, dates in words, no labels. On
+// and a link to How to cite this book (about/how-to-cite/). Written as a colophon, not as data: names in their natural order, dates in words, no labels. On
 // narrow screens it stands above the text. A frozen version gives its version and the day it was frozen or released.
 const personName = (p) => p.literal || [p.given, p.family].filter(Boolean).join(' ');
 const nameList = (people) => {
@@ -223,7 +227,7 @@ const nameList = (people) => {
 };
 // the day a page's file last changed in the history (YYYY-MM-DD); without the history, the day of the latest commit
 const pageChanged = (file) => spawnSync('git', ['-C', REPO_ROOT, 'log', '-1', '--format=%cs', '--', file], { encoding: 'utf8' }).stdout?.trim() || lastChange;
-const pageNote = (edition, page, home) => {
+const pageNote = (edition, page, home, root) => {
   // the home page's opening already names the book's author, so its note starts with the date
   const c = home ? {} : page.credits || {};
   const lines = [];
@@ -239,7 +243,7 @@ const pageNote = (edition, page, home) => {
   const v = edition.version;
   lines.push(v.status === 'latest' ? `<p>Last changed ${longDate(pageChanged(page.file))}</p>`
     : `<p>Version ${esc(v.id)}, ${v.status === 'review' ? 'frozen' : 'released'} on ${longDate(v.date)}</p>`);
-  lines.push(`<p class="page-note__cite"><button class="page-note__copy" type="button" hidden>Copy citation</button><span class="page-note__dot" hidden> · </span><a href="#how-to-cite">How to cite</a></p>`);
+  lines.push(`<p class="page-note__cite"><button class="page-note__copy" type="button" hidden>Copy citation</button><span class="page-note__dot" hidden> · </span><a href="${esc(root + urlOf(BACKMATTER.howToCite))}">How to cite</a></p>`);
   return `<aside class="page-note" aria-label="About this page" data-pagefind-ignore>\n${lines.join('\n')}\n</aside>`;
 };
 
@@ -603,15 +607,29 @@ const citeScript = (value) => `<script type="application/json" class="cite-data"
 const accessedHtml = (html) => html.replace('31 December 9999', '<span class="cite-today">the day you read it</span>');
 // the house style's reference as page.json and publication.json give it: without the date accessed
 const withoutAccessed = (text) => text.replace(/ \[accessed 31 December 9999\]/, '');
-// How to cite this page: at the end of every page, also without JavaScript, in print and in archives. The build keeps
-// one of its two in-text lines once it knows whether the page has numbered paragraphs.
-// assets/cite.js shows them in the reader's citation style.
-const howToCite = ({ entry, home, release, releaseUrl }) => `<section class="how-to-cite" aria-labelledby="how-to-cite" data-pagefind-ignore>
+// How to cite this page: at the end of every page, in print only (the publisher, 2026-11-24: on screen, How to cite
+// this book in About this book explains citing, and the page's note has Copy citation). The build keeps one of its two
+// in-text lines once it knows whether the page has numbered paragraphs. assets/cite.js shows them in the reader's
+// citation style.
+const howToCite = ({ entry, home }) => `<section class="how-to-cite" aria-labelledby="how-to-cite" data-pagefind-ignore>
 <h2 id="how-to-cite">${home ? 'How to cite the book' : 'How to cite this page'}</h2>
 <p class="how-to-cite__intext" data-for="paragraphs">In the text, with the number of the paragraph, which is in the margin beside it: <span class="how-to-cite__example">${esc(entry.styles.house.one).replace(ONE, '<var>n</var>')}</span></p>
 <p class="how-to-cite__intext" data-for="page">In the text: <span class="how-to-cite__example">${esc(entry.styles.house.cite)}</span></p>
 <p class="how-to-cite__reference">${accessedHtml(entry.styles.house.html)}</p>
-${release ? `<p class="how-to-cite__release">A passage that is unchanged since ${esc(lcFirst(release.version.label))}, is best cited there, where its number stays: <a href="${esc(releaseUrl)}">this page in ${esc(lcFirst(release.version.label))}</a>. Copy quote, which appears when you select words, does this by itself.</p>\n` : ''}</section>`;
+</section>`;
+// How to cite this book (BACKMATTER.howToCite): what the build puts in its two empty divs. The book is cited as Copy
+// citation cites it: on the latest text, in the newest release (cited). The downloads hold the book and every section,
+// in reading order, as their Copy citation cites them, without the date accessed, which is the reader's to add.
+const DOWNLOAD_NAME = 'hear-here-spatial-practices';
+const citeBookHtml = (cited) => `<div class="cite-book" data-pagefind-ignore>
+<p class="cite-book__reference">${accessedHtml(cited.styles.house.html)}</p>
+<p class="cite-book__copy"><button class="copy-button is-strong" type="button" hidden>Copy citation</button></p>
+</div>`;
+const citeDownloadsHtml = (r) => `<div class="cite-downloads" data-pagefind-ignore>
+<p class="cite-downloads__style" hidden><button class="copy-button" type="button">Change the citation style</button></p>
+<p>For a reference manager: this book and all its sections, as <a href="${DOWNLOAD_NAME}.bib" download>BibTeX</a> · <a href="${DOWNLOAD_NAME}.ris" download>RIS</a>. The works it cites are on the <a href="${esc(r + BACKMATTER.referencesAndMedia.url)}#references">References</a> page.</p>
+</div>`;
+const withoutAccessedEntry = (entry) => entry.split('\n').filter((line) => !/9999/.test(line)).join('\n').replace(/,\n\}$/, '\n}');
 
 // 4c. Stage 2 of every page: HTML from its Markdown view (index.html), its Markdown view's page, and page.json.
 const report = { paragraphs: [], matching: [], citations: [], references: [] };
@@ -666,6 +684,8 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     const citeData = {
       version: edition.version, home: page === edition.home, site: siteUrl, styles: citeStyles, page: citeEntry(self), book: citeEntry(edition.self.book),
       items: pageItems, formatted: `${root}references/${COPY_DATA}`, release: inRelease ? '@@RELEASE@@' : null,
+      // How to cite this book: the book as its Copy citation cites it (on the latest text, in the newest release)
+      ...(page.file === BACKMATTER.howToCite ? { cited: citeEntry((edition === latest && newestRelease ? newestRelease : edition).self.book) } : {}),
     };
     // the frame of this page as seen from `from`, the page's own folder ('') or its Markdown view ('markdown/')
     const frame = (from) => {
@@ -678,9 +698,9 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
       if (band) extra.page_band = `<img src="${esc(join2(r, band.url))}" width="${band.width}" height="${band.height}" alt="" fetchpriority="high">`;
       if (!from) {
         extra.cite_data = citeScript(citeData);
-        extra.page_note = pageNote(edition, page, page === edition.home);
+        extra.page_note = pageNote(edition, page, page === edition.home, r);
         if (page.creditList?.length) extra.page_credits = creditListHtml(page.creditList);
-        extra.cite_section = howToCite({ entry: self, home: page === edition.home, release: inRelease, releaseUrl: inRelease && join2(r, join2(prefix, inRelease.dir) + url) });
+        extra.cite_section = howToCite({ entry: self, home: page === edition.home });
         extra.scholar = scholarMeta({ entry: self, book: bookOf(edition), url: pageUrl, licence: FRAME.licence?.url, isBook: page === edition.home });
       }
       const yaml = join(scratch, page.file.replace(/\W/g, '_') + (from ? '.markdown' : '') + '.yaml');
@@ -705,6 +725,22 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     const paragraphs = list(data.paragraphs);
     // How to cite this page keeps the in-text line that fits the page
     html = html.replace(new RegExp(`<p class="how-to-cite__intext" data-for="${paragraphs.length ? 'page' : 'paragraphs'}">.*?</p>\\n?`), '');
+    // How to cite this book: the book's reference with Copy citation, and the downloads for a reference manager
+    if (page.file === BACKMATTER.howToCite) {
+      const citing = edition === latest && newestRelease ? newestRelease : edition;
+      const fill = (cls, block) => {
+        const empty = new RegExp(`<div class="${cls}">\\s*</div>`);
+        if (!empty.test(html)) fail(`${page.file}: no empty ::: ${cls} div for the build to fill`);
+        html = html.replace(empty, () => block);
+      };
+      fill('cite-book', citeBookHtml(citing.self.book));
+      fill('cite-downloads', citeDownloadsHtml(root));
+      const entries = [citing.self.book, ...edition.order.filter((file) => file !== edition.home.file)
+        .map((file) => (citing.self.pages.get(file) || edition.self.pages.get(file))).filter(Boolean)];
+      for (const [ext, field] of [['bib', 'bibtex'], ['ris', 'ris']]) {
+        writeFileSync(join(dir, `${DOWNLOAD_NAME}.${ext}`), entries.map((e) => e[field] && withoutAccessedEntry(e[field])).filter(Boolean).join('\n\n') + '\n');
+      }
+    }
     if (edition === latest && !page.credits && page !== edition.home && !inBackmatter && paragraphs.length) warnings.push(`${page.file}: no credits, so its citations name no author (see "Front matter and credits" in everytrick/CONTRACT.md)`);
     if (target) {
       // the map needs this page's paragraphs, which stage 2 has just numbered
