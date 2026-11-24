@@ -1,10 +1,18 @@
 ---
-# Who made this page, for its citations. A draft, to be confirmed with Nirmal Puwar (23 November 2026).
+# Who made this page, for its citations; confirmed by Nirmal Puwar on 24 November 2026
 author:
-  - Puwar, Nirmal
   - Chambers, Pete
-  - Wood, Paul
   - Gray, Ros
+  - Puwar, Nirmal
+  - Wood, Paul
+held: 2024-09-14
+credits:
+  - Musician: Duke Keats
+  - Sketcher: Paul Chokran
+  - Film: Jon Randle, Mindriot Productions
+  - Photography: Ahmadreza Hakiminejad
+  - Organising: Food Union/POD Harvest Festival; Yoko Ono’s Studio; Centre for Art and Ecology, Goldsmiths, University of London; Coventry Cathedral Events Team
+  - Additional assistance: Phavine Phung and Mahsa Alami Fariman
 ---
 .ve-style ./custom.css
 .ve-script ./custom.js

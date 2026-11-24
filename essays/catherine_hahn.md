@@ -1,5 +1,5 @@
 ---
-# Who made this page, for its citations. A draft, to be confirmed with Nirmal Puwar (23 November 2026).
+# Who made this page, for its citations; confirmed by Nirmal Puwar on 24 November 2026
 author:
   - Hahn, Catherine
 interviewer:
@@ -8,6 +8,7 @@ producer:
   - Whitley, Duncan
 transcript-editor:
   - Phung, Phavine
+recorded: 2025-05-06
 ---
 .ve-style ./custom.css
 .ve-script ./custom.js
