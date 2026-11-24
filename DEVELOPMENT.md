@@ -1034,8 +1034,8 @@ The data are in `everytrick/CONTRACT.md` ("Front matter and credits", "Citing th
   and margin notes start below it; on narrow screens it stands above the text, closed by a thin rule. A DOI joins
   it as a plain link once Thoth registers one, and nothing shows until then.
 - **Copy citation** copies the page's reference, the chapter, in the reader's style, in one click, as the ¶ does,
-  and the status line says what was copied. On the latest text it cites the newest release that has the page, and
-  the status line says so. Without JavaScript the button is hidden and How to cite remains.
+  and the status line says so briefly ("Citation copied, in APA"; the publisher, 2026-11-24). On the latest text it
+  cites the newest release that has the page. The home page's note leaves out the author, whom its opening names. Without JavaScript the button is hidden and How to cite remains.
 - **How to cite this page**, at the end of the page, gives the in-text citation and the reference in the reader's
   style, which style that is with a way to change it, and "For a reference manager: BibTeX · RIS", which copy the
   page's entry. It also serves print and archives.

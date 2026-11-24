@@ -23,8 +23,9 @@ margin says who made the page and when, with Copy citation and How to cite (the 
   commit that changed its file; on a frozen version "Version 0.1, released on 20 November 2026"). Then "Copy
   citation · How to cite". On wide screens it heads the right-hand margin, level with the text, and margin notes
   start below it; on narrow screens it stands above the text.
-- **Copy citation copies in one click**, in the reader's style, like the ¶; the status line says what was copied.
-  The Cite panel is gone.
+- **Copy citation copies in one click**, in the reader's style, like the ¶; the status line says so briefly
+  ("Citation copied, in APA"). The Cite panel is gone. The home page's note leaves out the author, whom its opening
+  already names.
 - **How to cite** at the end of the page now says which style it is shown in, with a way to change it, and has the
   BibTeX and RIS entries that were in the panel.
 - The podcasts' "Recording date" and "Interviewees" lines are taken out of the latest text, since the page's note

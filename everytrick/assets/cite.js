@@ -222,8 +222,7 @@
     if (dot) dot.hidden = false;
     noteCopy.addEventListener('click', function () {
       var s = style();
-      copy.write(reference(chapter, s)).then(done('Citation of ' + (data.home ? 'the book' : 'this page'), s,
-        release ? ', from ' + lc(release.label) + ', the newest release' : ''), failed);
+      copy.write(reference(chapter, s)).then(done('Citation', s), failed);
     });
   }
 

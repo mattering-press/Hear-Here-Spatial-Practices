@@ -224,7 +224,8 @@ const nameList = (people) => {
 // the day a page's file last changed in the history (YYYY-MM-DD); without the history, the day of the latest commit
 const pageChanged = (file) => spawnSync('git', ['-C', REPO_ROOT, 'log', '-1', '--format=%cs', '--', file], { encoding: 'utf8' }).stdout?.trim() || lastChange;
 const pageNote = (edition, page, home) => {
-  const c = home ? { author: PUBLICATION.authors } : page.credits || {};
+  // the home page's opening already names the book's author, so its note starts with the date
+  const c = home ? {} : page.credits || {};
   const lines = [];
   const who = nameList(c.author) + (c.interviewer?.length ? `${c.author?.length ? ', in conversation with ' : 'In conversation with '}${nameList(c.interviewer)}` : '');
   if (who) lines.push(`<p class="page-note__who">${who}</p>`);
