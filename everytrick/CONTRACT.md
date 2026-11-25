@@ -48,7 +48,9 @@ citation data, its How to cite section and the tags for Google Scholar (see "Cit
 (`authors` in publication.json, in place of `editors`; a page is a chapter in an authored book), and adds to the front
 matter the day a page's event was held or its podcast recorded and a list of everyone else who made it (see "Front
 matter and credits"): `date` and `credit_list` in page.json, and a Credits section in the HTML; its paragraph rule is
-0.6's, unchanged.
+0.6's, unchanged. 0.11 (everytrickinthebook 1.24.0) makes the back matter two pages, About this book (`about/`, from
+`about.md`, with no paragraph numbers) and Bibliography and items (see "Back matter"): `backmatter.sections` in
+publication.json lists those two; its paragraph rule is 0.6's, unchanged.
 
 ## Editions
 
@@ -166,23 +168,29 @@ its mark in the text, at the end of the paragraph before it, is `<a class="margi
 
 ## Back matter
 
-The back matter (EPUB's `backmatter`, JATS's `<back>`; British usage calls it end matter), which readers know as
-"About this book", follows the book's text in every edition and closes every reading order. Its overview, `about/`,
-leads to its four parts: Contributors & acknowledgements (`about/contributors/`, from `about/contributors.md`, with the
-author's thanks from `about/acknowledgements.md` added under the heading "Acknowledgements" when that file holds any),
-the Colophon (`about/colophon/`, from `about/colophon.md`), How to cite this book (`about/how-to-cite/`, from
-`about/how-to-cite.md`, with the book's reference and the downloads for a reference manager filled in by the build in
-its empty divs `::: cite-book` and `::: cite-downloads`) and Bibliography and items (`about/bibliography-and-items/`, see
-"Citations in the HTML" and "Media items"). Contributors & acknowledgements and the Colophon's own text (Making this
-book and the publisher's statement) are reading text: they have page.json, a Markdown view and paragraph numbers, and
-are in the edition's search index and in `publication.md`. What the build writes after the Colophon's text, the book's
-licence and the versions and kit (`<div class="colophon__built" data-pagefind-ignore>`), is not reading text: it is not
-numbered, not indexed and not in the Markdown view; nor is the overview. A version frozen before the Colophon existed
-takes it from the latest text. A page that moved into the back matter keeps its old file and address in the versions
-that had it there (version 0.1 has `essays/contributors.md`); in the latest text its old address forwards to the new
-one. The addresses used before contract 0.8, `references/` (in each edition) and `media-index/`, forward to References
-and media, keeping the fragment (`references/#hall2001` to `about/bibliography-and-items/#hall2001`, `media-index/` to
-`#items`); the bibliography's downloads stay in `references/`.
+The back matter (EPUB's `backmatter`, JATS's `<back>`; British usage calls it end matter) follows the book's text in
+every edition and closes every reading order. Since contract 0.11 it is two pages (the publisher, 2026-11-25):
+
+- **About this book** (`about/`, from `about.md`): one page with sections, Contributors, Acknowledgements (the
+  author's thanks from `about/acknowledgements.md`, when that file holds any), How to cite, Making this book, Mattering
+  Press, Licence and versions, and Everytrick & Co, with a list of its sections at its top. The build fills in its
+  empty divs: `::: acknowledgements`, `::: cite-book` and `::: cite-downloads` (the book's reference, and the book and
+  its sections for a reference manager, `hear-here-spatial-practices.bib` and `.ris` beside the page),
+  `::: licence-and-versions` and `::: everytrick-and-co`. It is the publisher's page, not the book's text: it has no
+  paragraph numbers (`paragraphs` is empty in its page.json), and it has page.json, a Markdown view and a place in the
+  search index and in `publication.md`. What the build writes into it (`<div class="colophon__built"
+  data-pagefind-ignore>`) is not indexed and not in the Markdown view. A version frozen before the page existed takes
+  it from the working copy.
+- **Bibliography and items** (`about/bibliography-and-items/`, see "Citations in the HTML" and "Media items").
+
+Until contract 0.10 the back matter was an overview at `about/` with Contributors & acknowledgements, the Colophon and
+How to cite this book as pages of their own (`about/contributors/`, `about/colophon/`, `about/how-to-cite/`); those
+addresses are not forwarded. A page whose text is now on the About page keeps its old file and address in the versions
+that had it (version 0.1 has `essays/contributors.md`, with its paragraph numbers); in the working copy its old
+address forwards to `about/`. The addresses used before contract 0.8, `references/` (in each edition) and
+`media-index/`, forward to Bibliography and items, keeping the fragment (`references/#hall2001` to
+`about/bibliography-and-items/#hall2001`, `media-index/` to `#items`); the bibliography's downloads stay in
+`references/`.
 
 ## publication.json
 
@@ -202,7 +210,7 @@ and media, keeping the fragment (`references/#hall2001` to `about/bibliography-a
 | `everytrickinthebook` | the version of everytrickinthebook, the toolkit that built the site (`version` in `everytrick/package.json`; `everytrick/CHANGELOG.md` lists what changed in each), e.g. `"1.0.0"`. It is numbered separately from the book's version, `version` |
 | `versions` | every edition, the latest text first, then the frozen versions, newest first: `{ id, label, date, status, url }`, `url` relative to this edition's root (`"./"` for itself) |
 | `readingOrder` | every page once, as `{ id, url, title, part }`: the home page; then each page in the home page's menu, followed by the pages its cards lead to (depth first); then any other page, alphabetically; and last the pages of the back matter, in its order. `part` is `"backmatter"` for those, `"body"` for the others |
-| `backmatter` | the back matter (see "Back matter"): `{ title, url, sections }`: `title` is `"About this book"`, `url` its overview (`"about/"`), `sections` its parts in order as `{ id, title, url }`: a back matter page by its `id` in `readingOrder` (`"about/contributors.md"`, `"about/colophon.md"`), and `"bibliography-and-items"` for Bibliography and items |
+| `backmatter` | the back matter (see "Back matter"): `{ title, url, sections }`: `title` is `"About this book"`, `url` the About page (`"about/"`), `sections` its two pages in order as `{ id, title, url }`: `"about"` (About this book) and `"bibliography-and-items"` (Bibliography and items) |
 
 ## page.json
 

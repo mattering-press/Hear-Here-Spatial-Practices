@@ -241,7 +241,7 @@
     var name = section.querySelector('.how-to-cite__style-name');
     if (name) name.textContent = styleName(s);
   }
-  // How to cite this book (about/how-to-cite/): the book's reference in the reader's style, its Copy citation, and a
+  // How to cite, on the About page (about/#how-to-cite): the book's reference in the reader's style, its Copy citation, and a
   // button that opens the settings at the citation style
   var cited = data.cited;
   var book = document.querySelector('.cite-book');

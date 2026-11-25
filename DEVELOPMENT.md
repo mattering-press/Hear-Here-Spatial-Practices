@@ -1050,6 +1050,13 @@ The data are in `everytrick/CONTRACT.md` ("Front matter and credits", "Citing th
   frozen before the page existed takes it from the latest text, as with the Colophon.
 - **How to cite this page** stays at the end of every page in print only, for print and archives: the in-text
   citation and the reference in the reader's style.
+- **About this book is one page** (the publisher, 2026-11-25): the overview and the pages Contributors &
+  acknowledgements, Colophon and How to cite this book became sections of one page, `about/` from `about.md`:
+  Contributors, Acknowledgements, How to cite, Making this book, Mattering Press, Licence and versions, and
+  Everytrick & Co (the toolkit, the open data, the programs and fonts, the hosting), with a list of them at its top.
+  It has no paragraph numbers. Bibliography and items stays a page of its own. The menu ends with two plain links,
+  "about" and "bibliography", instead of an "about" entry that opened a list. The old addresses are not forwarded:
+  the book is young and nobody had used them (the publisher). everytrickinthebook 1.24.0, contract 0.11.
 - **The latest text is the working copy** (the publisher, 2026-11-25): readers found "latest text" confusing. The
   unreleased text is labelled "Working copy, unreleased" wherever readers see it (the footer, the version line, the
   Colophon, the version notice's "Read the working copy", search, citations and the status line after copying), and
