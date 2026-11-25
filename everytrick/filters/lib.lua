@@ -249,7 +249,7 @@ function M.fix_link(url)
     local page = path == '' and 'README.md' or path
     return M.root .. M.page_url(page) .. rest, page
   end
-  -- a page the build makes, written as its address with a slash at the end (/about/references-and-media/, or ./references-and-media/ from
+  -- a page the build makes, written as its address with a slash at the end (/about/bibliography-and-items/, or ./bibliography-and-items/ from
   -- about/how-to-cite.md): kept as an address in the site
   if url:match('^[^#?]*/[#?]') or url:match('^[^#?]*/$') then return M.root .. M.pct(path) .. '/' .. rest, nil end
   return M.file_url(path) .. rest, nil

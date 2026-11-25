@@ -286,7 +286,7 @@ export const RIGHTS = {
 const githubFile = (path) => `https://github.com/${REPO}/blob/main/${path.split('/').map(encodeURIComponent).join('/')}`;
 const host = (url) => /^https?:\/\/(?:www\.)?([^/:?#]+)/.exec(url)?.[1] ?? url;
 
-// Where the item lives: { id, label, detail, url, copy }; id is one word, for the Media Index's filters. copy: for a zine
+// Where the item lives: { id, label, detail, url, copy }; id is one word, for the Items' filters. copy: for a zine
 // whose pages are copied from archive.org into this repository (documents.mjs), the folder and the day they were fetched.
 export function storedAt(it, copy = null) {
   const s = it.source;
@@ -299,7 +299,7 @@ export function storedAt(it, copy = null) {
   return { id: 'other', label: host(s), detail: '', url: s };
 }
 
-// Where readers' browsers get it from: { id, label, chip } (chip: the short label of the Media Index's filter).
+// Where readers' browsers get it from: { id, label, chip } (chip: the short label of the Items' filter).
 // Pictures, video files and documents of this repository are copied into the site; its recordings are played from
 // GitHub, as raw files (filters/embeds.lua). A zine whose pages are copied from archive.org (copy) is shown from them.
 export function servedFrom(it, copy = null) {

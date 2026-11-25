@@ -35,7 +35,7 @@ An item is cited as part of the book, with its own short address, for example (P
 
 # Cite a reference
 
-All references are listed in the [Bibliography](/about/references-and-media/#references), in the About this book section. Under each work are the passages that cite it.
+All references are listed in the [Bibliography](/about/bibliography-and-items/#bibliography), in the About this book section. Under each work are the passages that cite it.
 
 - **In the text**, click a citation such as (Hall 2001) to see the full reference. Its **Copy citation** button copies it.
 - **In the Bibliography**, the **Copy citation** button beside each work copies its reference.

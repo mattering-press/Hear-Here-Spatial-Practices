@@ -537,7 +537,7 @@ a.citation:target { border-radius: 2px; background: var(--colour-highlight); box
 .para:has(a.citation:target) { animation: para-highlight 3s ease-out; }
 @media (prefers-reduced-motion: reduce) { .para:has(a.citation:target) { animation: none; } }
 
-/* the References (the first part of about/references-and-media/ in each edition): every work of the bibliography once, in the house style, with
+/* the References (the first part of about/bibliography-and-items/ in each edition): every work of the bibliography once, in the house style, with
    the passages that cite it and the pages whose reference lists include it (referencesHtml in citations.mjs) */
 .references__intro { margin-top: 0; color: var(--colour-muted); font-size: 0.9375rem; }
 .reference-list { margin: var(--space) 0 0; padding: 0; border-top: 1px solid var(--colour-rule); list-style: none; }
@@ -565,7 +565,7 @@ a.citation:target { border-radius: 2px; background: var(--colour-highlight); box
 .item-facts li + li { margin-top: 0.2rem; }
 .item-facts__where { color: var(--colour-muted); }
 
-/* the Media Index (the second part of about/references-and-media/) and its editing view: every item by number, with its pill, a thumbnail, its title
+/* the Items (the second part of about/bibliography-and-items/) and its editing view: every item by number, with its pill, a thumbnail, its title
    and address and where it is; chips filter the list (assets/media-index.js) */
 .media-index__intro { margin-top: 0; color: var(--colour-muted); font-size: 0.9375rem; }
 .media-index__preview { padding: 0.6rem 0.9rem; border-left: 3px solid var(--colour-accent); background: var(--colour-surface); font-size: 0.9375rem; }
@@ -631,7 +631,7 @@ main .media-sheet h2::before { content: none; }
 .about-parts p { margin: 0.2rem 0 0; color: var(--colour-muted); font-size: 0.9375rem; }
 /* the colophon: what the build writes after Making this book and the publisher's statement */
 .colophon__data li + li { margin-top: 0.35rem; }
-/* References and media (about/references-and-media/): a switch to its two parts, References and Media */
+/* Bibliography and items (about/bibliography-and-items/): a switch to its two parts, References and Media */
 .part-switch { display: inline-flex; margin: 0 0 0.5rem; padding: 2px; border: 1px solid var(--colour-rule); border-radius: 999px; background: var(--colour-surface); font-size: 0.875rem; font-weight: var(--weight-strong); }
 .part-switch a { padding: 0.3rem 0.95rem; border-radius: 999px; color: var(--colour-text); text-decoration: none; }
 .part-switch a:hover { background: var(--colour-highlight); color: var(--colour-accent); }
@@ -692,7 +692,7 @@ a.toolkit-name, a .toolkit-name, .toolkit-name a, .built-with a { text-underline
   .gallery__row { display: block; }
   .gallery__row > figure + figure { margin-top: var(--gap); }
   .site-footer__logo img { height: 2.5rem; }
-  /* the Media Index: the thumbnail with the number below it, beside the title and the facts */
+  /* the Items: the thumbnail with the number below it, beside the title and the facts */
   .media-entry { grid-template-columns: 4rem minmax(0, 1fr); grid-template-rows: auto 1fr; column-gap: 0.75rem; }
   .media-handover [data-action="clear"] { display: none; }   /* on a phone, Clear is in the change sheet */
   .media-entry > .item-number { grid-column: 1; grid-row: 2; }

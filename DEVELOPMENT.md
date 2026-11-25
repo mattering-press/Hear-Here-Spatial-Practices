@@ -239,7 +239,7 @@ What readers see: every caption starts with the item's number, a small pill that
 (`/see/boulder-font/`); a recording has a small caption line below its player with its number and title. The zoom
 viewer shows the number before the caption. Each item's page shows the item, its caption, its credit, its rights and
 how to cite its source, every place it appears, the version it entered with, when it was first published and when its
-file last changed, where it is stored and served from, and its files. `/37/` forwards to item 37's page. The Media Index, the second part of References and media (`/about/references-and-media/#media`, shared by every edition and shown on each edition's page; `/media-index/` forwards there), lists every
+file last changed, where it is stored and served from, and its files. `/37/` forwards to item 37's page. The Media Index, the second part of References and media (`/about/bibliography-and-items/#media`, shared by every edition and shown on each edition's page; `/media-index/` forwards there), lists every
 item, with its credit and rights, and filters by kind and by where items are served from; `media.json` holds the same
 list as data. Credit, rights and source are shown only when they are filled in: no public page says that one is
 missing, not evaluated or unknown (the publisher, 2026-11-23). Only the editing view's checks say what is missing.
@@ -534,13 +534,13 @@ During the parallel run the essays keep their typed citations and reference list
   cites; and, for each version, how many citations lead to their page's own list and how many to the References page.
   Correct the essay, or add the work to the bibliography, and build again.
 
-The References, the first part of References and media (`/about/references-and-media/`; `/references/` forwards there,
+The References, the first part of References and media (`/about/bibliography-and-items/`; `/references/` forwards there,
 keeping the fragment), list every work in the bibliography once, formatted in the house style and in
 the order of its reference lists (by author, then year), each with an anchor made from its key
-(`/about/references-and-media/#hall2001`).
+(`/about/bibliography-and-items/#hall2001`).
 Under each work: every passage that cites it, as page title and paragraph ("Introduction, para. 12"), linked to the
 citation itself (`/essays/introduction/#cite-hall2001-1`), and every page whose typed list includes it, linked to the
-entry there. Each frozen version has its own (`/v0.1/about/references-and-media/`), because which passages cite a work, and their
+entry there. Each frozen version has its own (`/v0.1/about/bibliography-and-items/`), because which passages cite a work, and their
 numbers, differ between versions. The menu's "about" leads to References and media of the version being read. All the references are
 formatted in one citeproc run over the whole bibliography, so the year letters (Stengers 2005a and 2005b) are the
 book's, on the References page and in the popups alike; the typed lists show what their authors typed (Podcasts types
@@ -591,10 +591,10 @@ each of its three parts; the build writes it from `BACKMATTER` at the top of `ev
 - `colophon-note.md`: the publisher's own sentences for "Versions and kit", optional. Write them below the comment in
   the file; while it holds only the comment, they show nothing.
 
-References and media, `/about/references-and-media/`, is made by the build from the bibliography and the media
+References and media, `/about/bibliography-and-items/`, is made by the build from the bibliography and the media
 register (see "References and citations" and "The media register"). The addresses used before 1.16.0 forward to the
 new ones, keeping the fragment where there is one: `/references/` (whose downloads stay where they are),
-`/media-index/` (to `#media`; its editing view stays at `/media-index/edit/`), and the preview's `/back-matter/…`.
+`/media-index/` (to `#items`; its editing view stays at `/media-index/edit/`), and the preview's `/back-matter/…`.
 
 To add a page to About this book, put it in `about/` and add it, with its line for the overview, to `BACKMATTER.pages`
 in `everytrick/build.mjs`, which sets the order. To change the menu's word, change `FRAME.menu.backmatter` there, and
@@ -866,13 +866,13 @@ waits for the print edition; how editors use it is in "The media register" above
   pages, in the Media Index and in captions only when they are filled in, and nothing public says "not evaluated",
   "none", "unknown" or "missing". Only the editing view marks what is missing, in its checks beside each item.
 - **The Media Index** (`/media-index/`; since everytrickinthebook 1.16.0 the second part of References and media,
-  `/about/references-and-media/#media`, see "Plan: back matter") is a page of the book that lists every item by number, with a thumbnail, its
+  `/about/bibliography-and-items/#media`, see "Plan: back matter") is a page of the book that lists every item by number, with a thumbnail, its
   title, kind and address, where it appears (links to the item in its page), the version it entered with, where it
   is stored and where it is served from, and its credit and rights when it has them. It can be filtered by kind and by
   where items are served from; without JavaScript it is a plain list. It is the "List" view of "Plan: stable links",
   and the menu's "about" leads to it (see "Plan: back matter").
 - **Search** finds the items of the Media Index (the publisher, 2026-11-23): each entry's title and address are in
-  the latest text's search index, and a result leads to the entry (`/about/references-and-media/#item-37`), labelled "item 37" where
+  the latest text's search index, and a result leads to the entry (`/about/bibliography-and-items/#item-37`), labelled "item 37" where
   a page shows "para. 12" (see "Plan: search"). Its other facts (where it appears, its version, where it is stored
   and served from) are left out, and so are the item pages, whose words the Media Index holds (except the text of a
   document's pages, see "Plan: documents and zines"), the short and former addresses and the editing view. The Media
@@ -916,7 +916,7 @@ downloading the bibliography (the publisher, 2026-11-23), except the Zotero libr
 is in "References and citations" above.
 
 - **One page for the whole book**, `/references/` (since everytrickinthebook 1.16.0 the first part of References and
-  media, `/about/references-and-media/`, see "Plan: back matter"), lists every work in the bibliography once, formatted
+  media, `/about/bibliography-and-items/`, see "Plan: back matter"), lists every work in the bibliography once, formatted
   in the house style, each with an anchor made from its key (`#hall2001`). Under each work: every passage that cites it
   (page and paragraph) and every page whose reference list includes it. The menu's "about" leads to it.
 - **Citations** link to the work in their page's own reference list when the page lists it, and otherwise to its entry
@@ -926,7 +926,7 @@ is in "References and citations" above.
 - **Search** finds the works of the References page (the publisher, 2026-11-23): each edition's index has its own
   References page, and a work found there is listed by itself, labelled as the text cites it ("Stengers 2005a",
   from citeproc in the house style; its key if citeproc gives none), with a link to its entry
-  (`/about/references-and-media/#stengers2005a`; see "Plan: search"). The lists of the passages and pages under each work are left
+  (`/about/bibliography-and-items/#stengers2005a`; see "Plan: search"). The lists of the passages and pages under each work are left
   out, so that searching a page's title does not list every work it cites.
 - **Copy a reference** (the publisher, 2026-11-23): beside each work a Copy button copies it in the citation style the
   reader has chosen in the settings, Mattering Press' house style (as the page shows it), APA (7th edition), Chicago
@@ -1050,10 +1050,13 @@ The data are in `everytrick/CONTRACT.md` ("Front matter and credits", "Citing th
   frozen before the page existed takes it from the latest text, as with the Colophon.
 - **How to cite this page** stays at the end of every page in print only, for print and archives: the in-text
   citation and the reference in the reader's style.
-- **The References are the Bibliography** (the publisher, 2026-11-25), everywhere a reader sees the name: the part
-  of About this book is "Bibliography and media", its first part and its switch "Bibliography". The address,
-  `about/references-and-media/#references`, stays, so that links to it keep working. A chapter's own "References"
-  list keeps its heading.
+- **The References are the Bibliography, the Media Index the Items** (the publisher, 2026-11-25), everywhere a
+  reader sees the names: the part of About this book is "Bibliography and items" (it was "References and media"), at
+  `about/bibliography-and-items/`, with the switch "Bibliography | Items" (`#bibliography`, `#items`). An
+  index is the alphabetical list of terms at the back of a book; this is the numbered list of every picture,
+  recording, video and document, with its credit and rights, as a list of figures is. The former address,
+  `about/bibliography-and-items/`, forwards to the new one (as `references/` and `media-index/` do). A chapter's own
+  "References" list keeps its heading. Older entries of this file keep the names they were agreed under.
 - **Every Copy button of a citation reads "Copy citation"** (the publisher, 2026-11-24): on item pages, in the
   citation popups and beside each work on the References page. Copy quote and the zoom viewer's Cite keep theirs.
 - **The podcasts' own lists** of "Recording date" and "Interviewees" were taken out of their pages (the publisher,
@@ -1168,13 +1171,13 @@ see "About this book".
   CSL citation styles with their licences (as `everytrick/NOTICE.md` lists them); and where the site is hosted (GitHub
   Pages). Making this book and the statement are the publisher's, not the book's text: a version frozen before they
   existed (version 0.1) shows the latest text's.
-- **References and media**, `/about/references-and-media/` (and `/v0.1/about/references-and-media/`): the References
+- **References and media**, `/about/bibliography-and-items/` (and `/v0.1/about/bibliography-and-items/`): the References
   page and the Media Index on one page, the References first, with a small "References | Media" switch at the top that
-  leads to either part (`#references`, `#media`). Each entry keeps its anchor (`#hall2001`, `#item-37`), the Copy
+  leads to either part (`#references`, `#items`). Each entry keeps its anchor (`#hall2001`, `#item-37`), the Copy
   menus, the downloads (still in `references/`), the filters, the labels in search results and the indexing they had:
   the References in each edition's index, the Media Index in the latest text's only (a frozen version shows it but
   leaves it out of its index). Citations, the "Cited in" links, the item pages and the captions' pills lead to the new
-  page directly. `/references/` (in each edition) and `/media-index/` (to `#media`) forward to it, keeping the fragment
+  page directly. `/references/` (in each edition) and `/media-index/` (to `#items`) forward to it, keeping the fragment
   (a script with `location.replace`; a meta refresh without JavaScript); the editing view stays at
   `/media-index/edit/`.
 - **Former addresses.** Besides those above, the preview's `/back-matter/` forwards to `/about/`,
@@ -1191,7 +1194,7 @@ see "About this book".
   `readingOrder` in `publication.json` and the whole book in Markdown, `publication.md`, each marked
   `part: "backmatter"`, the others `part: "body"`, also in its `page.json`; `publication.json` gains `backmatter`, the
   overview and its parts. Citations whose page does not list their work, and `references` in `page.json`, lead to
-  `about/references-and-media/#<key>`. That is contract 0.8, whose paragraph rule is 0.7's, unchanged; no paragraph
+  `about/bibliography-and-items/#<key>`. That is contract 0.8, whose paragraph rule is 0.7's, unchanged; no paragraph
   of an existing page changed its number.
 
 ## Plan, not yet confirmed: several routes through a book

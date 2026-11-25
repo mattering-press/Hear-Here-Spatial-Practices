@@ -11,7 +11,7 @@
 //   report(...)                 the build's summary: per page counts, unmatched citations, uncited entries
 //   formatReferences(options)   every work in the styles of the References page's Copy menus, as plain text, and as
 //                               BibTeX and RIS; and the whole bibliography as BibTeX, RIS and CSL-JSON, for its downloads
-//   referencesHtml(works, …)    the References of an edition (about/references-and-media/): every work once, with the passages
+//   referencesHtml(works, …)    the References of an edition (about/bibliography-and-items/): every work once, with the passages
 //                               that cite it and the pages whose reference lists include it
 import { spawnSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -246,9 +246,9 @@ export function report(pages, index, warnings) {
   return out;
 }
 
-// The References of an edition (the first part of about/references-and-media/ at its root): every work of the
+// The References of an edition (the first part of about/bibliography-and-items/ at its root): every work of the
 // bibliography once, in the order of the house style's reference list, as <li id="<key>" class="reference">, so that
-// about/references-and-media/#hall2001 finds it. files: the way from the page to its downloads (references/). Under
+// about/bibliography-and-items/#hall2001 finds it. files: the way from the page to its downloads (references/). Under
 // the formatted reference: the passages that cite it ("Introduction, para. 12", each a link to the citation,
 // #cite-hall2001-1) and the pages whose typed reference lists include it (a link to #ref-hall2001 there).
 // Search finds each work by its formatted reference and lists it as a place of its own on the page: data-pagefind-meta

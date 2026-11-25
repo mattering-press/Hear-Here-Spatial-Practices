@@ -190,7 +190,7 @@ local counter = {}
 -- work of the bibliography (relative to the edition's root, for page.json, when `from_root` is set).
 local function target(e, from_root)
   if listed[e.key] then return from_root and (lib.page_url(lib.page) .. '#ref-' .. e.key) or ('#ref-' .. e.key) end
-  return (from_root and '' or lib.root) .. 'about/references-and-media/#' .. e.key
+  return (from_root and '' or lib.root) .. 'about/bibliography-and-items/#' .. e.key
 end
 
 local function link_maker(e, text)
