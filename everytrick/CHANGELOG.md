@@ -12,6 +12,15 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of everytrick’ in `DEVELOPMENT.md`.
 
+## 1.25.0
+
+25 November 2026. The About page names the book's contributors (the publisher, 2026-11-25).
+
+- **`::: contributors`** in `about.md` is filled in by the build from the pages' credits: "With contributions by",
+  everyone a page names as an author other than the book's own, by family name, and "Podcasts", who produced them
+  and edited their transcripts. The list follows the pages. The author, the events' other credits and the book's
+  editing, design and development are written in `about.md` by hand.
+
 ## 1.24.0
 
 25 November 2026. About this book is one page, and the menu has two plain entries (the publisher, 2026-11-25).

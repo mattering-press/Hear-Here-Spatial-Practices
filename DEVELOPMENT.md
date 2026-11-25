@@ -1060,6 +1060,12 @@ The data are in `everytrick/CONTRACT.md` ("Front matter and credits", "Citing th
 - **The versions on the About page** (the publisher, 2026-11-25): Licence and versions lists the working copy and the
   frozen versions, newest first, each linked, the one being read marked; with more than six, the newest five, "…",
   the first, and a link to all versions (`versions/`). The section on the toolkit is called everytrickinthebook.
+- **Contributors, on the About page** (the publisher, 2026-11-25): the author; "With contributions by" and "Podcasts",
+  which the build fills in from the pages' credits (`::: contributors`), so that they follow the pages; the events'
+  films, photography, music and sketches, by hand; and "Editing, design and development", in the publisher's words:
+  "Julien McHardy art directed, designed and edited the book for Mattering Press, and developed its concept in
+  conversation with Nirmal Puwar. Julien also developed the engine behind the digital version, everytrickinthebook.
+  Simon Bowie developed the first online edition." Names only, no biographies.
 - **Contents in the margin for the pages you consult** (the publisher, 2026-11-25): About this book and Bibliography
   and items are consulted rather than read, so each has a contents list where other pages have their note: in the
   right-hand margin on wide screens, staying in view as the page scrolls, with the section being read marked; above

@@ -4,12 +4,35 @@ title: About this book
 
 <!-- About this book: one page with sections, at about/ (the publisher, 2026-11-25). The build adds a list of the
      sections at the top, puts the author's thanks (about/acknowledgements.md) under "Acknowledgements", and fills in
-     the empty divs: ::: cite-book and ::: cite-downloads (How to cite), ::: licence-and-versions and
+     the empty divs: ::: contributors (everyone the pages' credits name as an author, and who made the podcasts),
+     ::: cite-book and ::: cite-downloads (How to cite), ::: licence-and-versions and
      ::: everytrickinthebook. This page has no paragraph numbers. -->
 
 # Contributors
 
-work in progress
+## Author
+
+Nirmal Puwar
+
+::: contributors
+:::
+
+## Events, films and pictures
+
+- Film: Jon Randle, Mindriot Productions
+- Photography: Ahmadreza Hakiminejad and Mahsa Alami Fariman
+- Music: Duke Keats
+- Sketches: Paul Chokran
+- Absence/Presence curated with Ruth Lubrano Lavadera
+- Copy editing of the walk booklet: Mouli Banerjee
+
+Everyone else who took part in an event is credited on that event's page.
+
+## Editing, design and development
+
+Julien McHardy art directed, designed and edited the book for Mattering Press, and developed its concept in conversation with Nirmal Puwar. Julien also developed the engine behind the digital version, everytrickinthebook.
+
+Simon Bowie developed the first online edition.
 
 ::: acknowledgements
 :::
