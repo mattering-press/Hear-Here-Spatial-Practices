@@ -12,6 +12,16 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of everytrick’ in `DEVELOPMENT.md`.
 
+## 1.23.0
+
+25 November 2026. The latest text is called the working copy (the publisher, 2026-11-25).
+
+- **Working copy, unreleased** replaces "Latest text, unreleased" wherever readers see it: the footer, the version
+  line, the Colophon, the version notice ("Read the working copy"), search, citations of new or changed passages and
+  the status line after copying. `label` in publication.json and page.json changes with it; `id` and `status` stay
+  `latest`.
+- How to cite this book explains the working copy, and that published versions give stable links.
+
 ## 1.22.0
 
 24 November 2026. Citing is explained in one place, How to cite this book, in About this book (the publisher,

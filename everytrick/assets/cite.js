@@ -119,7 +119,7 @@
   }
   function note(place) {
     if (place.release) return ', from ' + lc(place.release.label) + ', where the passage is unchanged';
-    if (place.unreleased) return '. The passage is cited as the latest text, unreleased: its paragraph number may still change';
+    if (place.unreleased) return '. The passage is cited as the working copy, unreleased: its paragraph number may still change';
     return '';
   }
 
