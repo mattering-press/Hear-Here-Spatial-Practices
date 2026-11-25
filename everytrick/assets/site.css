@@ -548,12 +548,17 @@ a.citation:target { border-radius: 2px; background: var(--colour-highlight); box
 .reference__where > div { display: contents; }
 .reference__where dt { color: var(--colour-muted); }
 .reference__where dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
-/* the Copy button beside each work, in a column of its own, and the menu it opens (assets/references.js) */
+/* the copy icon beside each work, in a column of its own (assets/references.js): quiet at rest, clear when the
+   reader points at the work or reaches the icon by keyboard; on touch screens always light but visible */
 .reference.has-copy { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 0.75rem; }
 .reference.has-copy > * { grid-column: 1; }
 .reference.has-copy > .reference__copy { grid-column: 2; grid-row: 1 / span 2; align-self: start; }
-.reference__copy { display: inline-flex; align-items: center; gap: 0.3em; min-height: 2rem; padding: 0 0.75rem; border: 1px solid var(--colour-rule); border-radius: 999px; background: var(--colour-surface); color: var(--colour-text); font: inherit; font-size: 0.8125rem; font-weight: var(--weight-strong); line-height: 1.2; white-space: nowrap; cursor: pointer; }
-@media (hover: hover) { .reference__copy:hover { border-color: var(--colour-accent); color: var(--colour-accent); } }
+.reference__copy { display: inline-flex; align-items: center; justify-content: center; width: 2.25rem; height: 2.25rem; margin-top: -0.35rem; padding: 0; border: 0; border-radius: var(--radius); background: none; color: var(--colour-muted); cursor: pointer; opacity: 0.4; transition: opacity 0.15s; }
+.reference__copy svg { width: 1.05rem; height: 1.05rem; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.reference:hover .reference__copy, .reference__copy:focus-visible, .reference__copy.is-done { opacity: 1; }
+.reference__copy.is-done { color: var(--colour-accent); }
+@media (hover: hover) { .reference__copy:hover { color: var(--colour-accent); background: var(--colour-highlight); } }
+@media (hover: none) { .reference__copy { width: 2.75rem; height: 2.75rem; opacity: 0.7; } }
 @media print { .reference__copy { display: none; } }
 
 /* an item's page (/see/<name>/, /listen/, /watch/, /read/): the item, then what there is to know about it */

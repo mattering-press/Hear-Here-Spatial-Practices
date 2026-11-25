@@ -37,17 +37,23 @@
     return { text: work[s.id], html: work.html && work.html[s.id] };
   }
 
-  // a Copy citation button for every work: "Copy citation of Stengers 2005a" for screen readers
+  // a quiet copy icon for every work (the publisher, 2026-11-25: one labelled button a line was clutter; the list's
+  // opening explains the icon once). Its name is "Copy citation of Stengers 2005a" for screen readers, its tooltip
+  // "Copy citation"; after a copy it shows a tick for a moment.
+  var SVG = '<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">';
+  var ICON = SVG + '<rect x="5.25" y="5.25" width="8" height="8.5" rx="1.25"/><path d="M10.75 5.25V3.5c0-.7-.55-1.25-1.25-1.25H3.75c-.7 0-1.25.55-1.25 1.25v6.25c0 .7.55 1.25 1.25 1.25h1.5"/></svg>';
+  var TICK = SVG + '<path d="M3 8.5 6.5 12 13 4.5"/></svg>';
   list.querySelectorAll('li.reference[id]').forEach(function (work) {
     var meta = work.getAttribute('data-pagefind-meta') || '';
     var button = document.createElement('button');
     button.type = 'button';
     button.className = 'reference__copy';
     button.dataset.key = work.id;
-    button.append('Copy citation');
+    button.title = 'Copy citation';
+    button.innerHTML = ICON;
     var name = document.createElement('span');
     name.className = 'visually-hidden';
-    name.textContent = ' of ' + (meta.slice(meta.indexOf(':') + 1) || work.id);
+    name.textContent = 'Copy citation of ' + (meta.slice(meta.indexOf(':') + 1) || work.id);
     button.append(name);
     work.appendChild(button);
     work.classList.add('has-copy');
@@ -62,7 +68,12 @@
       if (!later) throw new Error('no ' + s.id + ' for ' + key);
       return later;
     }));
-    job.then(function () { copy.say('Copied: ' + s.short); }, function () { copy.say('The reference could not be copied. Please try again.'); });
+    job.then(function () {
+      copy.say('Copied: ' + s.short);
+      button.firstChild.outerHTML = TICK;
+      button.classList.add('is-done');
+      setTimeout(function () { button.firstChild.outerHTML = ICON; button.classList.remove('is-done'); }, 1500);
+    }, function () { copy.say('The reference could not be copied. Please try again.'); });
   });
   // the texts start loading as soon as the reader comes to a Copy button
   list.addEventListener('pointerover', function (event) { if (event.target.closest('.reference__copy')) load(); });

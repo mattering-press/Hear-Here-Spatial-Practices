@@ -67,7 +67,7 @@ const HOSTING = { name: 'GitHub Pages', url: 'https://pages.github.com/' };
 // Where the site is published. publication.md uses absolute URLs built from this; the pages use relative ones.
 // It becomes 'https://hearhere.matteringpress.org/' when the site moves to its own domain.
 const siteUrl = 'https://hearhere.matteringpress.org/';
-const LATEST_LABEL = 'Latest text, unreleased';
+const LATEST_LABEL = 'Working copy, unreleased';
 // What frames every page (template.html): in every footer the publisher's logo (the long one, the icon alone on
 // phones), a credit line and the licence. Paths are files in the repository. menu.backmatter: the word of the one entry
 // the header's menu adds after the home page's own, for the back matter, written as those are (here in lower case);
@@ -365,7 +365,7 @@ const versionMeta = (edition) => ({ 'version-id': edition.version.id, 'version-l
 // points its readers to. A page's build fills in data-paragraphs, the map of its paragraphs to that page's.
 const versionNotice = (edition, href) => {
   const v = edition.version, when = `${v.status === 'review' ? 'frozen' : 'released'} on ${longDate(v.date)}`;
-  const link = edition.target === latest ? 'Read the latest text' : `Read the newest release, ${lcFirst(edition.target.version.label)}`;
+  const link = edition.target === latest ? 'Read the working copy' : `Read the newest release, ${lcFirst(edition.target.version.label)}`;
   const newest = edition === newestRelease ? ', the newest release' : '';
   return `<aside class="version-notice" aria-label="About this version"><p>You are reading ${esc(lcFirst(v.label))}, ${when}${newest}. ` +
     `<a class="version-notice__link" href="${esc(href)}" data-paragraphs="{}">${esc(link)}</a>.</p></aside>`;
@@ -539,11 +539,11 @@ const colophonHtml = (edition, root, shared) => {
   return `<div class="colophon__built" data-pagefind-ignore>
 ${licence}<h2 id="versions-and-kit">Versions and kit</h2>
 <ul class="colophon__versions">
-<li><span class="colophon__versions-what">Text</span> ${v.status === 'latest' ? 'Latest text, unreleased' : esc(v.label)}, ${when}</li>
+<li><span class="colophon__versions-what">Text</span> ${v.status === 'latest' ? 'Working copy, unreleased' : esc(v.label)}, ${when}</li>
 <li><span class="colophon__versions-what">Kit</span> ${toolkit}</li>
 <li><span class="colophon__versions-what">Data</span> ${a(TOOLKIT_CONTRACT, `contract ${CONTRACT}`)}${edition.rule !== CONTRACT ? `, its paragraphs numbered by the rule of contract ${esc(edition.rule)}` : ''}</li>
 </ul>
-<p>You are reading ${v.status === 'latest' ? 'the latest text of the book, unreleased' : esc(lcFirst(v.label))}, ${when}. Every version of the book that has been frozen for review or released stays online at its own address, with its paragraph numbers: ${a(`${shared}versions/`, 'all versions')}.</p>
+<p>You are reading ${v.status === 'latest' ? 'the working copy of the book, unreleased' : esc(lcFirst(v.label))}, ${when}. Every version of the book that has been frozen for review or released stays online at its own address, with its paragraph numbers: ${a(`${shared}versions/`, 'all versions')}.</p>
 <p>The book is open data too, for other tools and for archiving, in the format of ${a(TOOLKIT_CONTRACT, `contract ${CONTRACT}`)} of everytrickinthebook:</p>
 <ul class="colophon__data">
 <li>${a(`${root}publication.json`, '<code>publication.json</code>')}: the book’s title, its versions, its reading order and the parts of About this book</li>
@@ -889,7 +889,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     const extra = { version_line: versionLine(edition, s, '../'), ...backmatterMenu(edition, s, '../') };
     if (edition !== latest) {
       extra.version_notice = `<aside class="version-notice" aria-label="About this version"><p>You are searching ${esc(lcFirst(v.label))}, ` +
-        `${v.status === 'review' ? 'frozen' : 'released'} on ${longDate(v.date)}. <a class="search-elsewhere" href="${esc(join2(s, 'search/'))}">Search the latest text</a>.</p></aside>`;
+        `${v.status === 'review' ? 'frozen' : 'released'} on ${longDate(v.date)}. <a class="search-elsewhere" href="${esc(join2(s, 'search/'))}">Search the working copy</a>.</p></aside>`;
     }
     writeYaml(yaml, edition.menu, extra);
     const body = '```{=html}\n<div class="search" data-pagefind="../pagefind/">\n' +

@@ -1050,6 +1050,12 @@ The data are in `everytrick/CONTRACT.md` ("Front matter and credits", "Citing th
   frozen before the page existed takes it from the latest text, as with the Colophon.
 - **How to cite this page** stays at the end of every page in print only, for print and archives: the in-text
   citation and the reference in the reader's style.
+- **The latest text is the working copy** (the publisher, 2026-11-25): readers found "latest text" confusing. The
+  unreleased text is labelled "Working copy, unreleased" wherever readers see it (the footer, the version line, the
+  Colophon, the version notice's "Read the working copy", search, citations and the status line after copying), and
+  How to cite this book explains it: changes between published versions are shown in a temporary working copy,
+  whose paragraph numbers may still change; for stable links, cite a published version. The edition's `id` and
+  `status` stay `latest`.
 - **The References are the Bibliography, the Media Index the Items** (the publisher, 2026-11-25), everywhere a
   reader sees the names: the part of About this book is "Bibliography and items" (it was "References and media"), at
   `about/bibliography-and-items/`, with the switch "Bibliography | Items" (`#bibliography`, `#items`). An
@@ -1076,7 +1082,9 @@ The data are in `everytrick/CONTRACT.md` ("Front matter and credits", "Citing th
   in-text citation, "(Puwar 2026: item 37)", below it and a Copy button; "Cite" in the zoom viewer's top bar copies
   it. The number pill in a caption stays a link to the item page. Later, perhaps: a recording cited at a moment
   (`#t=12:40`).
-- **Works in the bibliography.** The References page's Copy button beside each work copies it in the reader's style, in
+- **Works in the bibliography.** The Bibliography's copy icon beside each work (a quiet icon, not a labelled button,
+  since 2026-11-25: the publisher found a "Copy citation" button on every line cluttered; it is faint until pointed
+  at or focused, always visible on touch screens, and the list's opening explains it once) copies it in the reader's style, in
   one click; its Copy menu, which offered every style and the BibTeX and RIS entries, is gone (the publisher,
   2026-11-23). BibTeX and RIS: the downloads of the whole bibliography at the top of the page. Each citation popup in
   the text has the same Copy button, reading the same texts (`references/formatted.json`).

@@ -38,7 +38,7 @@ An item is cited as part of the book, with its own short address, for example (P
 All references are listed in the [Bibliography](/about/bibliography-and-items/#bibliography), in the About this book section. Under each work are the passages that cite it.
 
 - **In the text**, click a citation such as (Hall 2001) to see the full reference. Its **Copy citation** button copies it.
-- **In the Bibliography**, the **Copy citation** button beside each work copies its reference.
+- **In the Bibliography**, the copy icon ⧉ beside each work copies its reference.
 - **For a reference manager**, the top of the Bibliography has links to download the whole bibliography as **BibTeX**, **RIS** or **CSL-JSON**.
 
 Like every other copy on the site, references follow the citation style and the formatted or plain-text setting you choose in Aa.
@@ -49,7 +49,9 @@ Every paragraph has a number in the left margin. Point at the number and a ¶ ap
 
 # Citations and versions
 
-The book is published in versions. Each version stays online at its own address, for example hearhere.matteringpress.org/v0.1/, and its paragraph numbers and links never change. A citation always links to a particular version. If the paragraph has changed, the citation link will link to the original version. If the paragraph is unchanged in a newer version, the citation link will point to the newest version.
+The book is published in versions. Each version stays online at its own address, for example hearhere.matteringpress.org/v0.1/. Paragraph numbers and links of a published version do not change, so that citation links do not break.
+
+Changes made between published versions are shown in a temporary working copy. When you cite a passage from the working copy that is new, or has changed since the last published version, the citation links to the working copy and says "unreleased". Its paragraph number may still change until the next version is published. If you want stable links, cite only published versions.
 
 All versions are listed under [Versions and kit](./colophon.md#versions-and-kit) in the Colophon.
 

@@ -198,7 +198,7 @@ and media, keeping the fragment (`references/#hall2001` to `about/bibliography-a
 | `language` | language code, `"en"` |
 | `url` | where this edition is published: the `siteUrl` setting in `build.mjs`, followed by `v<id>/` for a frozen version; the Markdown view `publication.md` uses it for its absolute URLs |
 | `markdown` | `"publication.md"` |
-| `version` | this edition: `{ id, label, date, status }`. `status` is `latest` for the working text (`id` `"latest"`, `label` `"Latest text, unreleased"`, `date` the day of its last commit), or `review` or `release` for a frozen version, with the `id`, `label` and `date` (`YYYY-MM-DD`) of its entry in `versions.json` |
+| `version` | this edition: `{ id, label, date, status }`. `status` is `latest` for the working text (`id` `"latest"`, `label` `"Working copy, unreleased"` (`"Latest text, unreleased"` until everytrickinthebook 1.23.0), `date` the day of its last commit), or `review` or `release` for a frozen version, with the `id`, `label` and `date` (`YYYY-MM-DD`) of its entry in `versions.json` |
 | `everytrickinthebook` | the version of everytrickinthebook, the toolkit that built the site (`version` in `everytrick/package.json`; `everytrick/CHANGELOG.md` lists what changed in each), e.g. `"1.0.0"`. It is numbered separately from the book's version, `version` |
 | `versions` | every edition, the latest text first, then the frozen versions, newest first: `{ id, label, date, status, url }`, `url` relative to this edition's root (`"./"` for itself) |
 | `readingOrder` | every page once, as `{ id, url, title, part }`: the home page; then each page in the home page's menu, followed by the pages its cards lead to (depth first); then any other page, alphabetically; and last the pages of the back matter, in its order. `part` is `"backmatter"` for those, `"body"` for the others |
@@ -291,7 +291,7 @@ Every page is cited as a chapter of the book, with its credits, and the home pag
 reader can choose in the settings (`house`, `apa`, `chicago`, `mla`, `harvard`). The house style's in-text citation adds
 a passage's paragraph, `(Nassar 2026: para. 12)` or `(Nassar 2026: paras 12–14)`; a media item is cited against the
 book, `Item 37, ‘…’, in N. Puwar, Hear Here: Spatial Practices, …`, and in the text `(Puwar 2026: item 37)`. The
-reference names the version (`version 0.1`, or `latest text, unreleased`) and ends with the date accessed.
+reference names the version (`version 0.1`, or `working copy, unreleased`) and ends with the date accessed.
 
 - **In the HTML** every page has, before `</body>`, `<script type="application/json" class="cite-data">`, which
   `assets/cite.js` reads: `{ version, home, site, styles, page, book, items, formatted, release }`. `styles` lists the

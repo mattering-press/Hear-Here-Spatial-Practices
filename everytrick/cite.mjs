@@ -130,7 +130,7 @@ export function selfReferences({ pandoc, work, book, pages, items = [], version 
       let h = html.get(item.id);
       if (!h) { warnings.push(`the book's own references (${style.short}): citeproc wrote nothing for ${item.id}`); h = esc(item.title); }
       if (house) {
-        h = h.replace(/(versions? )?LATEST-TEXT/g, 'latest text, unreleased');
+        h = h.replace(/(versions? )?LATEST-TEXT/g, 'working copy, unreleased');
         const page = pages.find((p) => p.id === item.id);
         const credits = page && [dateText(page.date), creditsText(page.credits)].filter(Boolean).join(', ');
         if (credits) {

@@ -279,7 +279,7 @@ export function referencesHtml(works, { root, files = '' }) {
   const download = (file, name) => `<a href="${escHtml(files + file)}" download>${name}</a>`;
   const styles = COPY_STYLES.map(({ id, label, short, entry }) => ({ id, label, short, ...(entry ? { entry } : {}) }));
   return `<div class="references" data-copy="${escHtml(files + COPY_DATA)}" data-copy-styles="${escHtml(JSON.stringify(styles))}">
-<p class="references__intro">All ${works.length} works in the book’s bibliography, in ${escHtml(HOUSE_STYLE)}. Under each work are the passages that cite it, which lead to the citation in the text, and the pages whose reference lists include it. Copy any reference in the citation style of your settings with the Copy citation button beside it, or download them all as ${download(DOWNLOADS.bibtex, 'BibTeX')}, ${download(DOWNLOADS.ris, 'RIS')} or ${download(DOWNLOADS.csljson, 'CSL-JSON')}.</p>
+<p class="references__intro">All ${works.length} works in the book’s bibliography, in ${escHtml(HOUSE_STYLE)}. Under each work are the passages that cite it, which lead to the citation in the text, and the pages whose reference lists include it. To copy a reference in the citation style of your settings, use the copy icon ⧉ beside it, or download them all as ${download(DOWNLOADS.bibtex, 'BibTeX')}, ${download(DOWNLOADS.ris, 'RIS')} or ${download(DOWNLOADS.csljson, 'CSL-JSON')}.</p>
 <ul class="reference-list">
 ${works.map(entry).join('\n')}
 </ul>
