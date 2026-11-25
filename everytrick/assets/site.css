@@ -625,13 +625,15 @@ main .media-sheet h2::before { content: none; }
 .page-toc__letters > * { display: inline-block; min-width: 1.05rem; text-align: center; }
 .page-toc__letters a { font-weight: var(--weight-strong); }
 .page-toc__letters span { color: var(--colour-rule); }
-.page-toc__filters { margin: 0.35rem 0 0.35rem; font-size: 0.8125rem; }
+.page-toc__filters { margin: 0.3rem 0 0.35rem; font-size: 0.8125rem; }
 .page-toc__filters[hidden] { display: none; }
-.page-toc__filter-group { margin: 0 0 0.4rem; }
-.page-toc__filter-by { display: block; color: var(--colour-muted); }
-.page-toc__filter { display: block; padding: 0.05rem 0; border: 0; background: none; color: var(--colour-muted); font: inherit; text-align: left; cursor: pointer; }
+/* the Items' filters set like the letters above them: a line each, the words flowing and wrapping, in the letters'
+   weight; the chosen one underlined */
+.page-toc__filter-group { display: flex; flex-wrap: wrap; gap: 0 0.55rem; margin: 0 0 0.3rem; }
+.page-toc__filter-by { flex-basis: 100%; color: var(--colour-muted); font-size: 0.75rem; }
+.page-toc__filter { padding: 0; border: 0; background: none; color: var(--colour-muted); font: inherit; font-weight: var(--weight-strong); white-space: nowrap; cursor: pointer; }
 .page-toc__filter:hover, .page-toc__filter:focus-visible { color: var(--colour-accent); text-decoration: underline; }
-.page-toc__filter[aria-pressed="true"] { color: var(--colour-text); font-weight: var(--weight-strong); }
+.page-toc__filter[aria-pressed="true"] { color: var(--colour-text); text-decoration: underline; text-underline-offset: 0.2em; }
 .page-toc__after { margin: 0.75rem 0 0; color: var(--colour-muted); font-size: 0.8125rem; }
 .page-toc--parts { display: none; }
 @media (min-width: 76rem) {

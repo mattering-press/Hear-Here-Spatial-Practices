@@ -31,7 +31,8 @@ reader sees. How to add a version: ‘Versions of the book and of everytrick’ 
   page's note and ends with its date; on Bibliography and items it has the Bibliography's initials, A to Z, each
   leading to the first work under it, and on narrow screens the Bibliography | Items switch stands in for it.
   Under Items it has the Items' filters, by kind and by where items are served from, as quiet text buttons that
-  share their choice with the filters above the list; on wide screens those keep only their count.
+  share their choice with the filters above the list, set in lines like the letters; like a letter, a choice leads
+  to the list. On wide screens the filters above the list keep only their count.
 - **The menu** ends with two plain links, "about" and "bibliography" (Bibliography and items), in place of the
   "about" entry that opened a list; `FRAME.menu` names them.
 - **The page's note** links "How to cite" to `about/#how-to-cite`.

@@ -64,7 +64,7 @@
     bar.appendChild(row('Served from', groups.served.map(function (g) { return chip('served', g.id, g.label + ' ' + g.count); })));
     bar.appendChild(shown);
     // the same filters in the page's contents in the margin (build.mjs, pageToc), as quiet text buttons under Items, on
-    // wide screens only (site.css); a choice there also brings the top of the list into view
+    // wide screens only (site.css); like the Bibliography's letters, a choice there leads to the list, at its top
     var margin = document.querySelector('.page-toc__filters');
     if (margin) {
       var quiet = function (group, id, text) {
@@ -72,7 +72,7 @@
         b.className = 'page-toc__filter';
         b.addEventListener('click', function () {
           var items = document.getElementById('items');
-          if (items && items.getBoundingClientRect().top < 0) items.scrollIntoView();
+          if (items) items.scrollIntoView();
         });
         return b;
       };
