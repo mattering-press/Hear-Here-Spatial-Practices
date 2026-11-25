@@ -49,9 +49,9 @@ Every paragraph has a number in the left margin. Point at the number and a ¶ ap
 
 # Citations and versions
 
-The book is published in versions. Each version that has been released stays online at its own address, for example hearhere.matteringpress.org/v0.1/, and its paragraph numbers never change. A citation always names a version, so it keeps leading to the text you read.
+The book is published in versions. Each version stays online at its own address, for example hearhere.matteringpress.org/v0.1/, and its paragraph numbers and links never change. A citation always links to a particular version. If the paragraph has changed, the citation link will link to the original version. If the paragraph is unchanged in a newer version, the citation link will point to the newest version.
 
-The book is also changed between versions. If you copy a quote from the latest text and its paragraphs are unchanged in the newest version, the citation points to that version and uses its paragraph numbers. If the passage is new or has changed since, the citation names the "latest text, unreleased" and tells you that the paragraph number may still change. All versions are listed under [Versions and kit](./colophon.md#versions-and-kit) in the Colophon.
+All versions are listed under [Versions and kit](./colophon.md#versions-and-kit) in the Colophon.
 
 # Citation style and reference managers
 
