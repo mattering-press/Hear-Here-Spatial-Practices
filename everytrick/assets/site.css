@@ -817,3 +817,4 @@ main .page-credits h2 { font-size: 1.1rem; }
 .colophon__versions li { padding: 0.3rem 0; border-top: 1px solid var(--colour-rule); }
 .colophon__versions li:last-child { border-bottom: 1px solid var(--colour-rule); }
 .colophon__versions-what { display: inline-block; min-width: 4rem; color: var(--colour-muted); }
+.colophon__versions-here, .colophon__versions-gap { color: var(--colour-muted); }

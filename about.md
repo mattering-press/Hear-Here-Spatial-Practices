@@ -5,7 +5,7 @@ title: About this book
 <!-- About this book: one page with sections, at about/ (the publisher, 2026-11-25). The build adds a list of the
      sections at the top, puts the author's thanks (about/acknowledgements.md) under "Acknowledgements", and fills in
      the empty divs: ::: cite-book and ::: cite-downloads (How to cite), ::: licence-and-versions and
-     ::: everytrick-and-co. This page has no paragraph numbers. -->
+     ::: everytrickinthebook. This page has no paragraph numbers. -->
 
 # Contributors
 
@@ -67,7 +67,7 @@ The book is published in versions. Each version stays online at its own address,
 
 Changes made between published versions are shown in a temporary working copy. When you cite a passage from the working copy that is new, or has changed since the last published version, the citation links to the working copy and says "unreleased". Its paragraph number may still change until the next version is published. If you want stable links, cite only published versions.
 
-All versions are listed under [Versions and kit](#licence-and-versions) in the Colophon.
+The versions are listed under [Licence and versions](#licence-and-versions) below.
 
 ## Citation style and reference managers
 
@@ -93,7 +93,7 @@ We are indebted to the ScholarLed community of Open Access, scholar-led publishe
 ::: licence-and-versions
 :::
 
-# Everytrick & Co
+# everytrickinthebook
 
-::: everytrick-and-co
+::: everytrickinthebook
 :::

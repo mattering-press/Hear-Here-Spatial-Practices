@@ -85,7 +85,7 @@ const FRAME = {
 // and items (bibliography: about/bibliography-and-items/), which the build makes. The About page is the publisher's
 // and has no paragraph numbers; a version frozen before it existed takes it from the working copy. The build fills in
 // its empty divs: ::: acknowledgements (the author's thanks, from acknowledgements, under that heading, if the file
-// holds any), ::: cite-book and ::: cite-downloads (How to cite), ::: licence-and-versions and ::: everytrick-and-co.
+// holds any), ::: cite-book and ::: cite-downloads (How to cite), ::: licence-and-versions and ::: everytrickinthebook.
 // moved: the former files of pages whose text is now on the About page: a version that has one keeps it at its own
 // address (version 0.1 has essays/contributors.md), and in the working copy its old address forwards to about/.
 // forwards: other former addresses in each edition, with where they lead now (media-index/ is forwarded once, at the
@@ -515,7 +515,7 @@ for (const edition of editions) {
   writeFileSync(edition.manifest, JSON.stringify(edition.manifestData));
 }
 
-// What the build writes into the About page's ::: licence-and-versions and ::: everytrick-and-co: the book's licence
+// What the build writes into the About page's ::: licence-and-versions and ::: everytrickinthebook: the book's licence
 // and versions, and the toolkit, the book's open data, the programs and fonts and where the site is hosted. None of it
 // is reading text: it is left out of the search index (data-pagefind-ignore). root: from the page to its edition's
 // root; shared: to the site's.
@@ -529,12 +529,20 @@ const aboutParts = (edition, root, shared) => {
   const media = `${root}${BACKMATTER.bibliography.url}`;
   const licence = FRAME.licence ? `<p class="colophon__licence">This book is published under ${a(FRAME.licence.url, esc(FRAME.licence.name), ' rel="license"')}. ` +
     `Its media items – pictures, recordings, videos and documents – may carry other rights, which the ${a(`${media}#items`, 'Items')} gives item by item.</p>\n` : '';
+  // the versions (the publisher, 2026-11-25): the working copy and the frozen versions, newest first; with more than six,
+  // the newest five and the first, and a link to all of them
+  const dated = (e) => (e.version.status === 'latest' ? `last changed on ${longDate(e.version.date)}` : `${e.version.status === 'review' ? 'frozen for peer review' : 'released'} on ${longDate(e.version.date)}`);
+  const shown = byNewest.length > 6 ? [...byNewest.slice(0, 5), '…', byNewest.at(-1)] : byNewest;
   const licenceAndVersions = `<div class="colophon__built" data-pagefind-ignore>
-${licence}<p>You are reading ${v.status === 'latest' ? 'the working copy of the book, unreleased' : esc(lcFirst(v.label))}, ${when}. Every version of the book that has been frozen for review or released stays online at its own address, with its paragraph numbers: ${a(`${shared}versions/`, 'all versions')}.</p>
+${licence}<p>Every version of the book that has been frozen for review or released stays online at its own address, with its paragraph numbers.</p>
+<ul class="colophon__versions">
+${shown.map((e) => (e === '…' ? '<li class="colophon__versions-gap" aria-hidden="true">…</li>'
+    : `<li>${e === edition ? '' : `<a href="${esc(join2(shared, e.dir) || './')}">`}${esc(e.version.label)}${e === edition ? '' : '</a>'}, ${dated(e)}${e === edition ? ' <span class="colophon__versions-here">(you are reading it)</span>' : ''}</li>`)).join('\n')}
+</ul>
+${byNewest.length > 6 ? `<p>${a(`${shared}versions/`, 'All versions')}</p>\n` : ''}
 </div>`;
   const kit = `<div class="colophon__built" data-pagefind-ignore>
 <ul class="colophon__versions">
-<li><span class="colophon__versions-what">Text</span> ${v.status === 'latest' ? 'Working copy, unreleased' : esc(v.label)}, ${when}</li>
 <li><span class="colophon__versions-what">Kit</span> ${toolkit}</li>
 <li><span class="colophon__versions-what">Data</span> ${a(TOOLKIT_CONTRACT, `contract ${CONTRACT}`)}${edition.rule !== CONTRACT ? `, its paragraphs numbered by the rule of contract ${esc(edition.rule)}` : ''}</li>
 </ul>
@@ -720,7 +728,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
     // How to cite this page keeps the in-text line that fits the page
     html = html.replace(new RegExp(`<p class="how-to-cite__intext" data-for="${paragraphs.length ? 'page' : 'paragraphs'}">.*?</p>\\n?`), '');
     // The About page: the list of its sections at the top; in How to cite the book's reference with Copy citation, and
-    // the downloads for a reference manager; the licence and versions, and Everytrick & Co
+    // the downloads for a reference manager; the licence and versions, and everytrickinthebook
     if (page.file === BACKMATTER.about) {
       const citing = edition === latest && newestRelease ? newestRelease : edition;
       const fill = (cls, block) => {
@@ -732,7 +740,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
       fill('cite-downloads', citeDownloadsHtml(root));
       const parts = aboutParts(edition, root, shared);
       fill('licence-and-versions', parts.licenceAndVersions);
-      fill('everytrick-and-co', parts.kit);
+      fill('everytrickinthebook', parts.kit);
       // its contents, in the margin where other pages have their note, with the note's date under it
       const sections = [...html.matchAll(/<h2 id="([^"]+)">(.*?)<\/h2>/g)].map(([, id, text]) => ({ id, text }));
       html = html.replace(/(<main id="main"[^>]*>\n)/, (m) => m + pageToc({ entries: sections, after: noteDate(edition, page) }));
