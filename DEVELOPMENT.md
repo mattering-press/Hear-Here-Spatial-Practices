@@ -1057,6 +1057,12 @@ The data are in `everytrick/CONTRACT.md` ("Front matter and credits", "Citing th
   It has no paragraph numbers. Bibliography and items stays a page of its own. The menu ends with two plain links,
   "about" and "bibliography", instead of an "about" entry that opened a list. The old addresses are not forwarded:
   the book is young and nobody had used them (the publisher). everytrickinthebook 1.24.0, contract 0.11.
+- **Contents in the margin for the pages you consult** (the publisher, 2026-11-25): About this book and Bibliography
+  and items are consulted rather than read, so each has a contents list where other pages have their note: in the
+  right-hand margin on wide screens, staying in view as the page scrolls, with the section being read marked; above
+  the text on narrow screens. The About page's list ends with its date. Bibliography and items lists Bibliography,
+  with its initials A to Z (a letter without a work is shown dimmed), and Items; on narrow screens its switch stands
+  in for the list. Pages that are read, the chapters, podcasts and events, keep their note and get no contents list.
 - **The latest text is the working copy** (the publisher, 2026-11-25): readers found "latest text" confusing. The
   unreleased text is labelled "Working copy, unreleased" wherever readers see it (the footer, the version line, the
   Colophon, the version notice's "Read the working copy", search, citations and the status line after copying), and

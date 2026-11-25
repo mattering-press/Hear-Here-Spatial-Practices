@@ -611,13 +611,30 @@ main .media-sheet h2::before { content: none; }
 .media-sheet__text { max-height: 55vh; margin: 0; padding: 0.9rem 1rem; overflow: auto; border: 1px solid var(--colour-rule); border-radius: var(--radius); background: var(--colour-surface); font: 0.8125rem / 1.55 var(--font-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
 .media-sheet__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-top: 0.75rem; }
 .media-sheet__status { color: var(--colour-muted); font-size: 0.875rem; }
-/* About this book (about/, one page with sections): the list of its sections at its top (build.mjs) */
-.about-contents { margin: 0 0 calc(var(--space) * 1.5); }
-.about-contents ul { margin: 0; padding: 0 0 0 1rem; border-left: 1px solid var(--colour-rule); list-style: none; }
-.about-contents li { padding: 0.15rem 0; }
-.about-contents a { color: var(--colour-text); text-decoration: none; }
-.about-contents a:hover { color: var(--colour-accent); text-decoration: underline; }
-@media print { .about-contents { display: none; } }
+/* The contents of About this book and of Bibliography and items (build.mjs, pageToc; assets/toc.js): on narrow screens
+   above the text, closed by a thin rule, like a page's note; on wide screens it heads the right-hand margin and stays in
+   view as the page scrolls, with the section being read marked. Bibliography and items keeps its switch on narrow
+   screens instead (page-toc--parts), and shows the list only in the margin. */
+.page-toc { margin: 0 0 2rem; padding-bottom: 0.9rem; border-bottom: 1px solid var(--colour-rule); font-size: 0.875rem; line-height: 1.45; }
+.page-toc__list { margin: 0; padding: 0; list-style: none; }
+.page-toc__list > li { padding: 0.15rem 0; }
+.page-toc__list a { color: var(--colour-muted); text-decoration: none; }
+.page-toc__list a:hover, .page-toc__list a:focus-visible { color: var(--colour-accent); text-decoration: underline; }
+.page-toc__list a[aria-current] { color: var(--colour-text); font-weight: var(--weight-strong); }
+.page-toc__letters { display: flex; flex-wrap: wrap; gap: 0 0.1rem; margin: 0.3rem 0 0.35rem; font-size: 0.8125rem; font-variant-numeric: tabular-nums; }
+.page-toc__letters > * { display: inline-block; min-width: 1.05rem; text-align: center; }
+.page-toc__letters a { font-weight: var(--weight-strong); }
+.page-toc__letters span { color: var(--colour-rule); }
+.page-toc__after { margin: 0.75rem 0 0; color: var(--colour-muted); font-size: 0.8125rem; }
+.page-toc--parts { display: none; }
+@media (min-width: 76rem) {
+  main > .page-toc { position: absolute; top: 2.25rem; bottom: 3rem; left: calc(100% + 1.5rem); box-sizing: border-box; display: block; width: min(18rem, calc((100vw - var(--measure)) / 2 - 3rem)); margin: 0; padding: 0 0 0 1.5rem; border-bottom: 0; }
+  .page-toc__inner { position: sticky; top: 1.5rem; }
+  main > .page-toc + * { margin-top: 0; }
+  main > .page-toc--parts + .part-switch { display: none; }
+  main > .page-toc--parts + .part-switch + .part > h2 { margin-top: 0; }
+}
+@media print { .page-toc { display: none; } }
 /* the colophon: what the build writes after Making this book and the publisher's statement */
 .colophon__data li + li { margin-top: 0.35rem; }
 /* Bibliography and items (about/bibliography-and-items/): a switch to its two parts, Bibliography and Items */

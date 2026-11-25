@@ -217,6 +217,9 @@ const nameList = (people) => {
 };
 // the day a page's file last changed in the history (YYYY-MM-DD); without the history, the day of the latest commit
 const pageChanged = (file) => spawnSync('git', ['-C', REPO_ROOT, 'log', '-1', '--format=%cs', '--', file], { encoding: 'utf8' }).stdout?.trim() || lastChange;
+// "Last changed 24 November 2026", or on a frozen version "Version 0.1, released on 20 November 2026"
+const noteDate = (edition, page) => (edition.version.status === 'latest' ? `Last changed ${longDate(pageChanged(page.file))}`
+  : `Version ${esc(edition.version.id)}, ${edition.version.status === 'review' ? 'frozen' : 'released'} on ${longDate(edition.version.date)}`);
 const pageNote = (edition, page, home, root) => {
   // the home page's opening already names the book's author, so its note starts with the date
   const c = home ? {} : page.credits || {};
@@ -230,13 +233,27 @@ const pageNote = (edition, page, home, root) => {
   if (when || long) lines.push(`<p>${[when, long].filter(Boolean).join(' · ')}</p>`);
   const made = [c.producer?.length && `Produced by ${nameList(c.producer)}`, c['transcript-editor']?.length && `transcript edited by ${nameList(c['transcript-editor'])}`].filter(Boolean);
   if (made.length) lines.push(`<p>${made.join(' · ').replace(/^t/, 'T')}</p>`);
-  const v = edition.version;
-  lines.push(v.status === 'latest' ? `<p>Last changed ${longDate(pageChanged(page.file))}</p>`
-    : `<p>Version ${esc(v.id)}, ${v.status === 'review' ? 'frozen' : 'released'} on ${longDate(v.date)}</p>`);
-  // the About page is not a section of the book, and holds How to cite itself: its note has no citation line
-  if (page.file !== BACKMATTER.about) lines.push(`<p class="page-note__cite"><button class="page-note__copy" type="button" hidden>Copy citation</button><span class="page-note__dot" hidden> · </span><a href="${esc(root + urlOf(BACKMATTER.about))}#how-to-cite">How to cite</a></p>`);
+  lines.push(`<p>${noteDate(edition, page)}</p>`);
+  lines.push(`<p class="page-note__cite"><button class="page-note__copy" type="button" hidden>Copy citation</button><span class="page-note__dot" hidden> · </span><a href="${esc(root + urlOf(BACKMATTER.about))}#how-to-cite">How to cite</a></p>`);
   return `<aside class="page-note" aria-label="About this page" data-pagefind-ignore>\n${lines.join('\n')}\n</aside>`;
 };
+
+// The contents of a page you consult rather than read (the publisher, 2026-11-25): About this book and Bibliography and
+// items. On wide screens it heads the right-hand margin, where other pages have their note, and stays in view as the
+// page scrolls, with the section being read marked (assets/toc.js); on narrow screens it stands above the text. entries:
+// [{ id, text, letters }], letters: [{ letter, id }] for A to Z (the first work under each initial; a letter without
+// one is shown but not linked). after: a line in small type under the list (the About page's date). cls: a class
+// added to the nav (page-toc--parts, which narrow screens hide, since the page's own switch stands in for it).
+const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+const pageToc = ({ entries, after = '', cls = '' }) => `<nav class="page-toc${cls ? ` ${cls}` : ''}" aria-label="On this page" data-pagefind-ignore><div class="page-toc__inner">
+<ul class="page-toc__list">${entries.map((e) => `<li><a href="#${esc(e.id)}" data-toc="${esc(e.id)}">${e.text}</a>${e.letters ? `<p class="page-toc__letters" aria-label="${esc(e.text)} by initial">${LETTERS.map((l) => {
+    const to = e.letters.find((x) => x.letter === l);
+    return to ? `<a href="#${esc(to.id)}">${l}</a>` : `<span aria-hidden="true">${l}</span>`;
+  }).join('')}</p>` : ''}</li>`).join('')}</ul>
+${after ? `<p class="page-toc__after">${after}</p>\n` : ''}</div></nav>
+`;
+// the initial a work is filed under: the first letter of its label ("Back 2007", "‘British Military …’"), without accents
+const initialOf = (label) => (label.normalize('NFD').replace(/[^A-Za-z]/g, '')[0] || '').toUpperCase();
 
 // 3. Images, zoom tiles, and the repository files that pages embed (data-repo-* in essays/walk.md), made once for
 //    all editions. A file is taken from the working tree; only one that is no longer there comes from the tag.
@@ -676,7 +693,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
       if (band) extra.page_band = `<img src="${esc(join2(r, band.url))}" width="${band.width}" height="${band.height}" alt="" fetchpriority="high">`;
       if (!from) {
         extra.cite_data = citeScript(citeData);
-        extra.page_note = pageNote(edition, page, page === edition.home, r);
+        if (page.file !== BACKMATTER.about) extra.page_note = pageNote(edition, page, page === edition.home, r);
         if (page.creditList?.length) extra.page_credits = creditListHtml(page.creditList);
         if (page.file !== BACKMATTER.about) extra.cite_section = howToCite({ entry: self, home: page === edition.home });
         extra.scholar = scholarMeta({ entry: self, book: bookOf(edition), url: pageUrl, licence: FRAME.licence?.url, isBook: page === edition.home });
@@ -687,7 +704,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
         [from ? 'on-markdown' : 'on-page']: 'true', 'view-page': from ? '../' : './', 'view-markdown': from ? './' : 'markdown/',
         'section-page': section && section !== edition.home.file ? section : '', 'section-title': section && section !== edition.home.file ? edition.byFile.get(section).title : '',
         'section-url': section && section !== edition.home.file ? r + urlOf(section) : '', ...(inBackmatter && page.file !== BACKMATTER.about ? backmatterSection(r) : {}),
-        ...(page.file === BACKMATTER.about ? { 'paragraph-numbers': 'false' } : {}),
+        ...(page.file === BACKMATTER.about ? { 'paragraph-numbers': 'false', 'page-toc': 'true' } : {}),
         'site-title': page === edition.home ? '' : edition.home.title, noindex: NOINDEX || from ? 'true' : '', searchable: from ? '' : 'true' })];
     };
     let html = pandoc(['-f', 'markdown-implicit_figures', '-t', 'html5', '--wrap=none', '-s', '--template', join(TOOLKIT_DIR, 'template.html'),
@@ -716,11 +733,9 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
       const parts = aboutParts(edition, root, shared);
       fill('licence-and-versions', parts.licenceAndVersions);
       fill('everytrick-and-co', parts.kit);
-      const sections = [...html.matchAll(/<h2 id="([^"]+)">(.*?)<\/h2>/g)];
-      if (sections.length) {
-        const contents = `<nav class="about-contents" aria-label="On this page" data-pagefind-ignore><ul>${sections.map(([, id, text]) => `<li><a href="#${id}">${text}</a></li>`).join('')}</ul></nav>\n`;
-        html = html.replace(sections[0][0], () => contents + sections[0][0]);
-      }
+      // its contents, in the margin where other pages have their note, with the note's date under it
+      const sections = [...html.matchAll(/<h2 id="([^"]+)">(.*?)<\/h2>/g)].map(([, id, text]) => ({ id, text }));
+      html = html.replace(/(<main id="main"[^>]*>\n)/, (m) => m + pageToc({ entries: sections, after: noteDate(edition, page) }));
       const entries = [citing.self.book, ...edition.order.filter((file) => file !== edition.home.file && !edition.backmatter.includes(file))
         .map((file) => (citing.self.pages.get(file) || edition.self.pages.get(file))).filter(Boolean)];
       for (const [ext, field] of [['bib', 'bibtex'], ['ris', 'ris']]) {
@@ -1102,7 +1117,13 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
       const yaml = join(edition.scratch, 'bibliography-and-items.yaml');
       writeYaml(yaml, edition.menu, extra);
       const media = mediaIndexHtml(views, { root: s, script: `${s}assets/media-index.js?v=${ASSET_VERSION}`, preview: PREVIEW && edition === latest, edit: `${s}media-index/edit/` });
-      const body = `<nav class="part-switch" aria-label="Parts of this page" data-pagefind-ignore><a href="#bibliography">Bibliography</a><a href="#items">Items</a></nav>
+      const letters = [];
+      for (const [, id, label] of edition.referencesHtml.matchAll(/<li id="([^"]+)" class="reference" data-pagefind-meta="entry-[^:]*:([^"]*)"/g)) {
+        const letter = initialOf(label.replace(/&[a-z#0-9]+;/g, ''));
+        if (letter && !letters.some((x) => x.letter === letter)) letters.push({ letter, id });
+      }
+      const toc = pageToc({ cls: 'page-toc--parts', entries: [{ id: 'bibliography', text: 'Bibliography', letters }, { id: 'items', text: 'Items' }] });
+      const body = `${toc}<nav class="part-switch" aria-label="Parts of this page" data-pagefind-ignore><a href="#bibliography">Bibliography</a><a href="#items">Items</a></nav>
 <section class="part" aria-labelledby="bibliography">
 <h2 id="bibliography">Bibliography</h2>
 ${edition.referencesHtml}
@@ -1114,7 +1135,7 @@ ${media}
       const html = pandoc(['-f', 'markdown', '-t', 'html5', '--wrap=none', '-s', '--template', join(TOOLKIT_DIR, 'template.html'), '--metadata-file', yaml,
         ...metaArgs({ page: 'bibliography-and-items', repo: REPO, manifest: edition.manifest, lang: PUBLICATION.language, title: rm.title, ...toolkitMeta, ...frameMeta(edition, s),
           root: r, shared: s, 'asset-version': ASSET_VERSION, 'site-title': edition.home.title, noindex: NOINDEX ? 'true' : '', searchable: 'true',
-          'references-page': 'true' }), ...filterArgs(['links'])], rawBlock(body), `${edition.name}: ${rm.url}`);
+          'references-page': 'true', 'page-toc': 'true' }), ...filterArgs(['links'])], rawBlock(body), `${edition.name}: ${rm.url}`);
       mkdirSync(join(SITE, edition.dir, rm.url), { recursive: true });
       writeFileSync(join(SITE, edition.dir, rm.url, 'index.html'), html);
       edition.searchable.push({ url: `/${rm.url}`, content: html });

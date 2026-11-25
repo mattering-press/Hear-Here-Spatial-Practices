@@ -17,14 +17,19 @@ reader sees. How to add a version: ‘Versions of the book and of everytrick’ 
 25 November 2026. About this book is one page, and the menu has two plain entries (the publisher, 2026-11-25).
 
 - **About this book** (`about/`, from `about.md`) is one page with sections: Contributors, Acknowledgements, How to
-  cite, Making this book, Mattering Press, Licence and versions, and Everytrick & Co, with a list of them at its top.
+  cite, Making this book, Mattering Press, Licence and versions, and Everytrick & Co.
   It replaces the overview and the pages Contributors & acknowledgements, Colophon and How to cite this book, whose
   addresses are not forwarded. It has no paragraph numbers. The build fills in its empty divs (`::: acknowledgements`,
   `::: cite-book`, `::: cite-downloads`, `::: licence-and-versions`, `::: everytrick-and-co`); `about/colophon-note.md`
   is gone, since the publisher writes in `about.md` itself.
+- **A contents list for the pages you consult**, About this book and Bibliography and items: on wide screens it
+  heads the right-hand margin, where other pages have their note, stays in view as the page scrolls and marks the
+  section being read (`assets/toc.js`); on narrow screens it stands above the text. On the About page it replaces the
+  page's note and ends with its date; on Bibliography and items it has the Bibliography's initials, A to Z, each
+  leading to the first work under it, and on narrow screens the Bibliography | Items switch stands in for it.
 - **The menu** ends with two plain links, "about" and "bibliography" (Bibliography and items), in place of the
   "about" entry that opened a list; `FRAME.menu` names them.
-- **The page's note** links "How to cite" to `about/#how-to-cite`; the About page's own note has no citation line.
+- **The page's note** links "How to cite" to `about/#how-to-cite`.
 - **Contract 0.11**: `backmatter.sections` in publication.json lists the two pages; the paragraph rule is 0.6's,
   unchanged. Version 0.1 keeps its numbered `essays/contributors/`.
 

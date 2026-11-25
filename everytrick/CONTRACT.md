@@ -173,7 +173,7 @@ every edition and closes every reading order. Since contract 0.11 it is two page
 
 - **About this book** (`about/`, from `about.md`): one page with sections, Contributors, Acknowledgements (the
   author's thanks from `about/acknowledgements.md`, when that file holds any), How to cite, Making this book, Mattering
-  Press, Licence and versions, and Everytrick & Co, with a list of its sections at its top. The build fills in its
+  Press, Licence and versions, and Everytrick & Co, with a list of its sections (`<nav class="page-toc">`) in place of a page's note. The build fills in its
   empty divs: `::: acknowledgements`, `::: cite-book` and `::: cite-downloads` (the book's reference, and the book and
   its sections for a reference manager, `hear-here-spatial-practices.bib` and `.ris` beside the page),
   `::: licence-and-versions` and `::: everytrick-and-co`. It is the publisher's page, not the book's text: it has no
