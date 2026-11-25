@@ -1064,8 +1064,8 @@ The data are in `everytrick/CONTRACT.md` ("Front matter and credits", "Citing th
   which the build fills in from the pages' credits (`::: contributors`), so that they follow the pages; the events'
   films, photography, music and sketches, by hand; and "Editing, design and development", in the publisher's words:
   "Julien McHardy art directed, designed and edited the book for Mattering Press, and developed its concept in
-  conversation with Nirmal Puwar. Julien also founded everytrickinthebook, which powers the digital version. Simon
-  Bowie developed the first online edition." Names only, no biographies.
+  conversation with Nirmal Puwar. Julien also developed the engine behind the digital version, everytrickinthebook.
+  Simon Bowie developed the first online edition." Names only, no biographies.
 - **Contents in the margin for the pages you consult** (the publisher, 2026-11-25): About this book and Bibliography
   and items are consulted rather than read, so each has a contents list where other pages have their note: in the
   right-hand margin on wide screens, staying in view as the page scrolls, with the section being read marked; above

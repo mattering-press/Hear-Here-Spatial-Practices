@@ -30,7 +30,7 @@ Everyone else who took part in an event is credited on that event's page.
 
 ## Editing, design and development
 
-Julien McHardy art directed, designed and edited the book for Mattering Press, and developed its concept in conversation with Nirmal Puwar. Julien also founded everytrickinthebook, which powers the digital version.
+Julien McHardy art directed, designed and edited the book for Mattering Press, and developed its concept in conversation with Nirmal Puwar. Julien also developed the engine behind the digital version, everytrickinthebook.
 
 Simon Bowie developed the first online edition.
 
