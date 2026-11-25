@@ -12,6 +12,31 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of everytrick’ in `DEVELOPMENT.md`.
 
+## 1.22.0
+
+24 November 2026. Citing is explained in one place, How to cite this book, in About this book (the publisher,
+2026-11-24).
+
+- **How to cite this book** (`about/how-to-cite/`, from `about/how-to-cite.md`) is a new part of About this book. It
+  explains the citation settings, with how Formatted and Plain text differ, and how to cite the book, a section, a
+  quote, a media item and a reference, how to link to a paragraph, and how citations follow the versions. The build
+  fills in the book's reference, with Copy citation, and a button that opens the citation style
+  (`::: cite-book`, `::: cite-downloads`). A version frozen before the page existed takes it from the latest text.
+- **BibTeX and RIS** of the book and all its sections are two downloads on that page, and nowhere else.
+- **How to cite this page** is gone from the end of every page on screen; it stays in print. The page's note keeps
+  Copy citation, and its "How to cite" leads to the new page.
+- **Copy citation** is the label of every Copy button of a citation: on item pages, in the citation popups and on the
+  References page.
+- **Bibliography and Items**: the References are called the Bibliography, the Media Index the Items, and References
+  and media is Bibliography and items, wherever a reader sees the names (the publisher, 2026-11-25). The page's
+  address is now `about/bibliography-and-items/` (its parts `#bibliography` and `#items`). The former address,
+  `about/references-and-media/`, is not forwarded: it had been live for two days and nobody had used it. A chapter's
+  own "References" list keeps its heading.
+- **The Items' opening** says how items get their numbers (when a version is released; items added in between are
+  marked new) and how many there are of each, and points to `media.json` for the same list as data.
+- A link in a page's Markdown to a page the build makes, written as its address ending in `/`
+  (`/about/references-and-media/#references`), stays an address in the site.
+
 ## 1.21.0
 
 24 November 2026. A podcast's length moves into the page's note (the publisher, 2026-11-24).

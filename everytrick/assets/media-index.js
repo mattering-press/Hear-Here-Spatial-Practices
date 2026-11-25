@@ -1,4 +1,4 @@
-// The Media Index (/media-index/) and its editing view (/media-index/edit/, on previews only). The build writes the
+// The Items (/media-index/) and its editing view (/media-index/edit/, on previews only). The build writes the
 // list as plain HTML (everytrick/media-pages.mjs), which is what readers get without JavaScript.
 //  * Filters: chips by kind (see, listen, watch, read) and by where items are served from (our own site, GitHub,
 //    archive.org …), made from the list itself, with how many items each has. One choice in each row; "All" clears
@@ -197,7 +197,7 @@
   var sheetText = function () {
     var list = changes();
     var when = new Date().toISOString().slice(0, 10);
-    var out = ['# Media Index: changes to hand over', '', 'From ' + location.href.replace(/#.*$/, '') + ', ' + when + '. Only what changed is listed, item by item.'];
+    var out = ['# Items: changes to hand over', '', 'From ' + location.href.replace(/#.*$/, '') + ', ' + when + '. Only what changed is listed, item by item.'];
     if (!list.length) out.push('', 'No changes yet.');
     list.forEach(function (c) {
       var e = c.entry, label = e.dataset.label, name = e.querySelector('[data-field="name"]').dataset.original;

@@ -1,5 +1,5 @@
 // The HTML of the media items' own pages (the facts below the item, and below a document's viewer its text and its
-// download), the Media Index (on about/references-and-media/, after the References), its editing view (/media-index/edit/, built for previews only) and the small
+// download), the Items (on about/bibliography-and-items/, after the References), its editing view (/media-index/edit/, built for previews only) and the small
 // pages that forward a short address (/37/) or a former name to an item's page. build.mjs prepares the items (see
 // itemView there) and puts this HTML into the site's template; assets/media-index.js adds the filters, and the editing
 // view's fields, checks and change sheet.
@@ -65,7 +65,7 @@ const linked = (text) => String(text ?? '').split(/(https?:\/\/[^\s<>"'‘’“
 
 // The text of a document's pages is searched, in the latest text's index (build.mjs, step 7): only the pages' text, in
 // <div class="document-pages" data-pagefind-body>, each page a place of its own in the results, "page 3", leading to
-// #page-3 (its data-pagefind-meta, as the References page's works and the Media Index's items; assets/search.js). The
+// #page-3 (its data-pagefind-meta, as the References page's works and the Items' items; assets/search.js). The
 // headings "Page 3", the line said for a page without text, and everything else on the page are left out.
 export function documentText(it, { root }) {
   const doc = it.doc;
@@ -144,9 +144,9 @@ function itemCite(it) {
     `<p class="item-cite__intext">In the text: <span class="item-cite__example">${esc(c.intext.house)}</span></p></div>`;
 }
 
-// ---- The Media Index ------------------------------------------------------------------------------------------
+// ---- The Items ------------------------------------------------------------------------------------------
 
-// An entry of the list. On the Media Index (searched), search finds an entry by its title and its address, and lists
+// An entry of the list. On the Items (searched), search finds an entry by its title and its address, and lists
 // it as a place of its own on the page: data-pagefind-meta gives its label in the results, "item 37" (assets/search.js).
 // Its number pill (the label says it), its thumbnail's box and its facts (page titles, versions, places) are left out
 // of the index. Its credit and rights are among the facts only when they are filled in.
@@ -170,9 +170,10 @@ ${inner}</div>
 }
 
 export function mediaIndexHtml(items, { root, script, preview, edit = 'edit/' }) {
-  const numbered = items.filter((it) => it.label).length;
+  const numbered = items.filter((it) => it.label).length, fresh = items.length - numbered;
   return `<div class="media-index">
-<p class="media-index__intro">Every picture, recording, video and document in the book has a number of its own, the same on every page that shows it and in every version. Each has its own page, at the address below its title. ${numbered} items have their number; ${items.length - numbered ? `${items.length - numbered} new ${items.length - numbered === 1 ? 'one gets its number' : 'ones get theirs'} when the next version is frozen.` : 'new ones get theirs when the next version is frozen.'} The same list as data: <a href="${href(root, 'media.json')}">media.json</a>.</p>
+<p class="media-index__intro">Every picture, recording, video and document in the book is assigned a stable item number, and an item page, when a new version is released. Items that are added between releases are marked new, and will get an item number when the next version of the book is released. Currently this book has ${numbered} numbered ${numbered === 1 ? 'item' : 'items'}, and ${fresh} new ${fresh === 1 ? 'item' : 'items'}.</p>
+<p class="media-index__intro">The same item list is available below in human readable form and as data: <a href="${href(root, 'media.json')}">media.json</a>.</p>
 ${preview ? `<p class="media-index__preview" data-pagefind-ignore>This preview also has an <a href="${esc(edit)}">editing view</a> of the list, for checking names, credits, rights, sources, captions and alt text.</p>\n` : ''}<div class="media-filters" hidden></div>
 <ol class="media-list">
 ${items.map((it) => entry(it, root, '', { searched: true })).join('\n')}
@@ -230,7 +231,7 @@ export function mediaEditHtml(items, { root, script, names, rights }) {
     return entry(it, root, inner).replace('<li class="media-entry"', `<li class="media-entry media-entry--edit" data-source="${esc(it.source)}" data-label="${esc(it.label || '')}" data-used="${it.appearances.length ? 'true' : 'false'}"`);
   });
   return `<div class="media-index media-edit">
-<p class="media-index__intro">The Media Index with fields for the name, the credit, the rights, how to cite the item’s source, and the caption and alt text of each place an item appears in the latest text (for a picture also an optional long description, and who wrote it), and a comment. The checks beside each item update as you type. Credit, rights and source show on the public pages only when they are filled in, so only these checks say what is missing. Your edits stay in this browser, even when you reload the page, and nothing is saved anywhere else: when you are done, “Hand over changes” gives a sheet that lists only what you changed, for someone to apply on a branch. This view is on previews only, never on the public site.</p>
+<p class="media-index__intro">The Items with fields for the name, the credit, the rights, how to cite the item’s source, and the caption and alt text of each place an item appears in the latest text (for a picture also an optional long description, and who wrote it), and a comment. The checks beside each item update as you type. Credit, rights and source show on the public pages only when they are filled in, so only these checks say what is missing. Your edits stay in this browser, even when you reload the page, and nothing is saved anywhere else: when you are done, “Hand over changes” gives a sheet that lists only what you changed, for someone to apply on a branch. This view is on previews only, never on the public site.</p>
 <div class="media-filters" hidden></div>
 <ol class="media-list">
 ${list.join('\n')}
