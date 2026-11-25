@@ -21,6 +21,10 @@ reader sees. How to add a version: ‘Versions of the book and of everytrick’ 
   the status line after copying. `label` in publication.json and page.json changes with it; `id` and `status` stay
   `latest`.
 - How to cite this book explains the working copy, and that published versions give stable links.
+- **The Bibliography's copy buttons are a quiet icon**: one "Copy citation" button a work was clutter (the
+  publisher, 2026-11-25). Each work has a small copy icon, faint until the reader points at the work or reaches it by
+  keyboard, and light but always visible on touch screens; the list's opening explains it once. A click still copies
+  the reference in the reader's style, the status line says so, and the icon shows a tick for a moment.
 
 ## 1.22.0
 
