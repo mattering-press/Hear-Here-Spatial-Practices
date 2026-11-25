@@ -99,7 +99,7 @@ const BACKMATTER = {
     { file: 'about/colophon.md', line: 'How the book was made and published: Mattering Press, the licence, the book’s versions and open data, and the tools that build it.' },
     { file: 'about/how-to-cite.md', line: 'How to cite the book, a section, a quote, a media item or a reference, and how citations follow the book’s versions.' },
   ],
-  referencesAndMedia: { title: 'References and media', url: 'about/references-and-media/',
+  referencesAndMedia: { title: 'Bibliography and media', url: 'about/references-and-media/',
     line: 'Every work in the book’s bibliography, with the passages that cite it, and every picture, recording, video and document in the book.' },
   colophon: 'about/colophon.md',
   colophonNote: 'about/colophon-note.md',
@@ -552,7 +552,7 @@ ${licence}<h2 id="versions-and-kit">Versions and kit</h2>
 <li>${a(`${root}publication/`, 'the whole book in Markdown')}, in reading order (${a(`${root}publication.md`, '<code>publication.md</code>', ' download')})</li>
 <li>the bibliography, as ${a(`${root}references/${DOWNLOADS.bibtex}`, 'BibTeX', ' download')}, ${a(`${root}references/${DOWNLOADS.ris}`, 'RIS', ' download')} and ${a(`${root}references/${DOWNLOADS.csljson}`, 'CSL-JSON', ' download')}</li>
 </ul>
-${colophonNote ? `${colophonNote}\n` : ''}<p>This site is made with ${toolkit}, a Mattering toolkit by SJMcH (${a('https://www.mozilla.org/en-US/MPL/2.0/', 'Mozilla Public License 2.0')}), which builds it from the book’s Markdown with ${a('https://pandoc.org/', 'Pandoc')} ${esc(version[0].replace(/^pandoc\s+/, ''))} (${a('https://www.gnu.org/licenses/old-licenses/gpl-2.0.html', 'GNU GPL')}). Its text is set in ${a('https://fonts.google.com/specimen/Roboto', 'Roboto')} (${a('https://openfontlicense.org/', 'SIL Open Font License 1.1')}). Search is by ${a('https://pagefind.app/', 'Pagefind')} ${esc(packageVersion('pagefind'))} (${a('https://opensource.org/license/mit', 'MIT licence')}), and pictures and documents zoom in ${a('https://openseadragon.github.io/', 'OpenSeadragon')} ${esc(packageVersion('openseadragon'))} (${a('https://opensource.org/license/bsd-3-clause', 'BSD 3-Clause licence')}). References are formatted in the ${a('https://citationstyles.org/', 'Citation Style Language')}: Mattering Press’ house style, adapted from the MHRA styles, and the APA, Chicago, MLA and Harvard styles of the official CSL repository, which the ${a(`${media}#references`, 'References')} offer to copy, all under ${a('https://creativecommons.org/licenses/by-sa/3.0/', 'CC BY-SA 3.0')}.</p>
+${colophonNote ? `${colophonNote}\n` : ''}<p>This site is made with ${toolkit}, a Mattering toolkit by SJMcH (${a('https://www.mozilla.org/en-US/MPL/2.0/', 'Mozilla Public License 2.0')}), which builds it from the book’s Markdown with ${a('https://pandoc.org/', 'Pandoc')} ${esc(version[0].replace(/^pandoc\s+/, ''))} (${a('https://www.gnu.org/licenses/old-licenses/gpl-2.0.html', 'GNU GPL')}). Its text is set in ${a('https://fonts.google.com/specimen/Roboto', 'Roboto')} (${a('https://openfontlicense.org/', 'SIL Open Font License 1.1')}). Search is by ${a('https://pagefind.app/', 'Pagefind')} ${esc(packageVersion('pagefind'))} (${a('https://opensource.org/license/mit', 'MIT licence')}), and pictures and documents zoom in ${a('https://openseadragon.github.io/', 'OpenSeadragon')} ${esc(packageVersion('openseadragon'))} (${a('https://opensource.org/license/bsd-3-clause', 'BSD 3-Clause licence')}). References are formatted in the ${a('https://citationstyles.org/', 'Citation Style Language')}: Mattering Press’ house style, adapted from the MHRA styles, and the APA, Chicago, MLA and Harvard styles of the official CSL repository, which the ${a(`${media}#references`, 'Bibliography')} offers to copy, all under ${a('https://creativecommons.org/licenses/by-sa/3.0/', 'CC BY-SA 3.0')}.</p>
 <p>The site is hosted on ${a(HOSTING.url, esc(HOSTING.name))}, and built from ${a(`https://github.com/${REPO}`, 'the book’s repository on GitHub')}.</p>
 </div>`;
 };
@@ -627,7 +627,7 @@ const citeBookHtml = (cited) => `<div class="cite-book" data-pagefind-ignore>
 </div>`;
 const citeDownloadsHtml = (r) => `<div class="cite-downloads" data-pagefind-ignore>
 <p class="cite-downloads__style" hidden><button class="copy-button" type="button">Change the citation style</button></p>
-<p>For a reference manager: this book and all its sections, as <a href="${DOWNLOAD_NAME}.bib" download>BibTeX</a> · <a href="${DOWNLOAD_NAME}.ris" download>RIS</a>. The works it cites are on the <a href="${esc(r + BACKMATTER.referencesAndMedia.url)}#references">References</a> page.</p>
+<p>For a reference manager: this book and all its sections, as <a href="${DOWNLOAD_NAME}.bib" download>BibTeX</a> · <a href="${DOWNLOAD_NAME}.ris" download>RIS</a>. The works it cites are in the <a href="${esc(r + BACKMATTER.referencesAndMedia.url)}#references">Bibliography</a>.</p>
 </div>`;
 const withoutAccessedEntry = (entry) => entry.split('\n').filter((line) => !/9999/.test(line)).join('\n').replace(/,\n\}$/, '\n}');
 
@@ -1135,9 +1135,9 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
       const yaml = join(edition.scratch, 'references-and-media.yaml');
       writeYaml(yaml, edition.menu, extra);
       const media = mediaIndexHtml(views, { root: s, script: `${s}assets/media-index.js?v=${ASSET_VERSION}`, preview: PREVIEW && edition === latest, edit: `${s}media-index/edit/` });
-      const body = `<nav class="part-switch" aria-label="Parts of this page" data-pagefind-ignore><a href="#references">References</a><a href="#media">Media</a></nav>
+      const body = `<nav class="part-switch" aria-label="Parts of this page" data-pagefind-ignore><a href="#references">Bibliography</a><a href="#media">Media</a></nav>
 <section class="part" aria-labelledby="references">
-<h2 id="references">References</h2>
+<h2 id="references">Bibliography</h2>
 ${edition.referencesHtml}
 </section>
 <section class="part" aria-labelledby="media"${edition === latest ? '' : ' data-pagefind-ignore="all"'}>

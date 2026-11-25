@@ -1050,6 +1050,10 @@ The data are in `everytrick/CONTRACT.md` ("Front matter and credits", "Citing th
   frozen before the page existed takes it from the latest text, as with the Colophon.
 - **How to cite this page** stays at the end of every page in print only, for print and archives: the in-text
   citation and the reference in the reader's style.
+- **The References are the Bibliography** (the publisher, 2026-11-25), everywhere a reader sees the name: the part
+  of About this book is "Bibliography and media", its first part and its switch "Bibliography". The address,
+  `about/references-and-media/#references`, stays, so that links to it keep working. A chapter's own "References"
+  list keeps its heading.
 - **Every Copy button of a citation reads "Copy citation"** (the publisher, 2026-11-24): on item pages, in the
   citation popups and beside each work on the References page. Copy quote and the zoom viewer's Cite keep theirs.
 - **The podcasts' own lists** of "Recording date" and "Interviewees" were taken out of their pages (the publisher,

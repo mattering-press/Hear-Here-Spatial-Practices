@@ -27,6 +27,9 @@ reader sees. How to add a version: ‘Versions of the book and of everytrick’ 
   Copy citation, and its "How to cite" leads to the new page.
 - **Copy citation** is the label of every Copy button of a citation: on item pages, in the citation popups and on the
   References page.
+- **Bibliography**: the References are called the Bibliography wherever a reader sees the name, and References and
+  media is Bibliography and media (the publisher, 2026-11-25). Its address, `about/references-and-media/#references`,
+  is unchanged. A chapter's own "References" list keeps its heading.
 - A link in a page's Markdown to a page the build makes, written as its address ending in `/`
   (`/about/references-and-media/#references`), stays an address in the site.
 
