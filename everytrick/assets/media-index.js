@@ -63,6 +63,31 @@
     bar.appendChild(row('Kind', [chip('', '', 'All ' + entries.length)].concat(groups.kind.map(function (g) { return chip('kind', g.id, g.label + ' ' + g.count); }))));
     bar.appendChild(row('Served from', groups.served.map(function (g) { return chip('served', g.id, g.label + ' ' + g.count); })));
     bar.appendChild(shown);
+    // the same filters in the page's contents in the margin (build.mjs, pageToc), as quiet text buttons under Items, on
+    // wide screens only (site.css); a choice there also brings the top of the list into view
+    var margin = document.querySelector('.page-toc__filters');
+    if (margin) {
+      var quiet = function (group, id, text) {
+        var b = chip(group, id, text);
+        b.className = 'page-toc__filter';
+        b.addEventListener('click', function () {
+          var items = document.getElementById('items');
+          if (items && items.getBoundingClientRect().top < 0) items.scrollIntoView();
+        });
+        return b;
+      };
+      var line = function (text, buttons) {
+        var div = row(text, buttons);
+        div.className = 'page-toc__filter-group';
+        div.querySelector('span').className = 'page-toc__filter-by';
+        div.querySelector('span').id += '-margin';
+        div.setAttribute('aria-labelledby', div.querySelector('span').id);
+        return div;
+      };
+      margin.appendChild(line('Kind', [quiet('', '', 'All ' + entries.length)].concat(groups.kind.map(function (g) { return quiet('kind', g.id, g.label + ' ' + g.count); }))));
+      margin.appendChild(line('Served from', groups.served.map(function (g) { return quiet('served', g.id, g.label + ' ' + g.count); })));
+      margin.hidden = false;
+    }
     var apply = function () {
       var n = 0;
       entries.forEach(function (e) {

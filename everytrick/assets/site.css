@@ -625,6 +625,13 @@ main .media-sheet h2::before { content: none; }
 .page-toc__letters > * { display: inline-block; min-width: 1.05rem; text-align: center; }
 .page-toc__letters a { font-weight: var(--weight-strong); }
 .page-toc__letters span { color: var(--colour-rule); }
+.page-toc__filters { margin: 0.35rem 0 0.35rem; font-size: 0.8125rem; }
+.page-toc__filters[hidden] { display: none; }
+.page-toc__filter-group { margin: 0 0 0.4rem; }
+.page-toc__filter-by { display: block; color: var(--colour-muted); }
+.page-toc__filter { display: block; padding: 0.05rem 0; border: 0; background: none; color: var(--colour-muted); font: inherit; text-align: left; cursor: pointer; }
+.page-toc__filter:hover, .page-toc__filter:focus-visible { color: var(--colour-accent); text-decoration: underline; }
+.page-toc__filter[aria-pressed="true"] { color: var(--colour-text); font-weight: var(--weight-strong); }
 .page-toc__after { margin: 0.75rem 0 0; color: var(--colour-muted); font-size: 0.8125rem; }
 .page-toc--parts { display: none; }
 @media (min-width: 76rem) {
@@ -632,6 +639,8 @@ main .media-sheet h2::before { content: none; }
   .page-toc__inner { position: sticky; top: 1.5rem; }
   main > .page-toc + * { margin-top: 0; }
   main > .page-toc--parts + .part-switch { display: none; }
+  main > .page-toc--parts ~ .part .media-filters__group { display: none; }
+  main > .page-toc--parts ~ .part .media-filters { padding-bottom: 0.5rem; }
   main > .page-toc--parts + .part-switch + .part > h2 { margin-top: 0; }
 }
 @media print { .page-toc { display: none; } }

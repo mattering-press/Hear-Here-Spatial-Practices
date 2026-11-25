@@ -241,15 +241,15 @@ const pageNote = (edition, page, home, root) => {
 // The contents of a page you consult rather than read (the publisher, 2026-11-25): About this book and Bibliography and
 // items. On wide screens it heads the right-hand margin, where other pages have their note, and stays in view as the
 // page scrolls, with the section being read marked (assets/toc.js); on narrow screens it stands above the text. entries:
-// [{ id, text, letters }], letters: [{ letter, id }] for A to Z (the first work under each initial; a letter without
-// one is shown but not linked). after: a line in small type under the list (the About page's date). cls: a class
+// [{ id, text, letters, filters }], letters: [{ letter, id }] for A to Z (the first work under each initial; a letter
+// without one is shown but not linked); filters: a place for the Items' filters, which assets/media-index.js fills. after: a line in small type under the list (the About page's date). cls: a class
 // added to the nav (page-toc--parts, which narrow screens hide, since the page's own switch stands in for it).
 const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 const pageToc = ({ entries, after = '', cls = '' }) => `<nav class="page-toc${cls ? ` ${cls}` : ''}" aria-label="On this page" data-pagefind-ignore><div class="page-toc__inner">
 <ul class="page-toc__list">${entries.map((e) => `<li><a href="#${esc(e.id)}" data-toc="${esc(e.id)}">${e.text}</a>${e.letters ? `<p class="page-toc__letters" aria-label="${esc(e.text)} by initial">${LETTERS.map((l) => {
     const to = e.letters.find((x) => x.letter === l);
     return to ? `<a href="#${esc(to.id)}">${l}</a>` : `<span aria-hidden="true">${l}</span>`;
-  }).join('')}</p>` : ''}</li>`).join('')}</ul>
+  }).join('')}</p>` : ''}${e.filters ? '<div class="page-toc__filters" hidden></div>' : ''}</li>`).join('')}</ul>
 ${after ? `<p class="page-toc__after">${after}</p>\n` : ''}</div></nav>
 `;
 // the initial a work is filed under: the first letter of its label ("Back 2007", "‘British Military …’"), without accents
@@ -1130,7 +1130,7 @@ const mediaReport = { pages: 0, short: 0, forwards: 0 };
         const letter = initialOf(label.replace(/&[a-z#0-9]+;/g, ''));
         if (letter && !letters.some((x) => x.letter === letter)) letters.push({ letter, id });
       }
-      const toc = pageToc({ cls: 'page-toc--parts', entries: [{ id: 'bibliography', text: 'Bibliography', letters }, { id: 'items', text: 'Items' }] });
+      const toc = pageToc({ cls: 'page-toc--parts', entries: [{ id: 'bibliography', text: 'Bibliography', letters }, { id: 'items', text: 'Items', filters: true }] });
       const body = `${toc}<nav class="part-switch" aria-label="Parts of this page" data-pagefind-ignore><a href="#bibliography">Bibliography</a><a href="#items">Items</a></nav>
 <section class="part" aria-labelledby="bibliography">
 <h2 id="bibliography">Bibliography</h2>
