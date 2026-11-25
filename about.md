@@ -9,7 +9,7 @@ title: About this book
 
 # Contributors
 
-insert contributors here
+work in progress
 
 ::: acknowledgements
 :::
