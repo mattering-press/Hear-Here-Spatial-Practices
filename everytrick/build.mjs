@@ -85,7 +85,7 @@ const FRAME = {
 // and items (bibliography: about/bibliography-and-items/), which the build makes. The About page is the publisher's
 // and has no paragraph numbers; a version frozen before it existed takes it from the working copy. The build fills in
 // its empty divs: ::: acknowledgements (the author's thanks, from acknowledgements, under that heading, if the file
-// holds any), ::: cite-book and ::: cite-downloads (How to cite), ::: licence-and-versions and ::: everytrickinthebook.
+// holds any), ::: contributors (from the pages' credits), ::: cite-book and ::: cite-downloads (How to cite), ::: licence-and-versions and ::: everytrickinthebook.
 // moved: the former files of pages whose text is now on the About page: a version that has one keeps it at its own
 // address (version 0.1 has essays/contributors.md), and in the working copy its old address forwards to about/.
 // forwards: other former addresses in each edition, with where they lead now (media-index/ is forwarded once, at the
@@ -620,6 +620,21 @@ const howToCite = ({ entry, home }) => `<section class="how-to-cite" aria-labell
 <p class="how-to-cite__intext" data-for="page">In the text: <span class="how-to-cite__example">${esc(entry.styles.house.cite)}</span></p>
 <p class="how-to-cite__reference">${accessedHtml(entry.styles.house.html)}</p>
 </section>`;
+// The contributors, on the About page (the publisher, 2026-11-25): what the build puts in its ::: contributors div, from
+// the pages' credits (CONTRACT.md, "Front matter and credits"), so that the list follows them: everyone a page names
+// as an author, other than the book's own, by family name, and who produced the podcasts and edited their
+// transcripts. The author, the events' other credits and the book's editing, design and development are written in
+// about.md by hand.
+const contributorsHtml = (edition) => {
+  const key = (p) => p.literal || `${p.family}, ${p.given}`;
+  const people = (role) => [...new Map(edition.pages.flatMap((page) => page.credits?.[role] || []).map((p) => [key(p), p])).values()]
+    .sort((a, b) => key(a).localeCompare(key(b), 'en'));
+  const own = new Set(PUBLICATION.authors.map(key));
+  const authors = people('author').filter((p) => !own.has(key(p)));
+  const made = [people('producer').length && `Produced by ${nameList(people('producer'))}`, people('transcript-editor').length && `Transcripts edited by ${nameList(people('transcript-editor'))}`].filter(Boolean);
+  return `<div class="contributors">
+${authors.length ? `<h3 id="with-contributions-by">With contributions by</h3>\n<p>${nameList(authors)}</p>\n` : ''}${made.length ? `<h3 id="podcasts">Podcasts</h3>\n<p>${made.join(' · ')}</p>\n` : ''}</div>`;
+};
 // How to cite, on the About page: what the build puts in its two empty divs. The book is cited as Copy
 // citation cites it: on the latest text, in the newest release (cited). The downloads hold the book and every section,
 // in reading order, as their Copy citation cites them, without the date accessed, which is the reader's to add.
@@ -736,6 +751,7 @@ for (const edition of [latest, ...(newestRelease ? [newestRelease] : []), ...edi
         if (!empty.test(html)) fail(`${page.file}: no empty ::: ${cls} div for the build to fill`);
         html = html.replace(empty, () => block);
       };
+      fill('contributors', contributorsHtml(edition));
       fill('cite-book', citeBookHtml(citing.self.book));
       fill('cite-downloads', citeDownloadsHtml(root));
       const parts = aboutParts(edition, root, shared);
