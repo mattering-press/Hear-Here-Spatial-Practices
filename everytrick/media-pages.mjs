@@ -170,9 +170,10 @@ ${inner}</div>
 }
 
 export function mediaIndexHtml(items, { root, script, preview, edit = 'edit/' }) {
-  const numbered = items.filter((it) => it.label).length;
+  const numbered = items.filter((it) => it.label).length, fresh = items.length - numbered;
   return `<div class="media-index">
-<p class="media-index__intro">Every picture, recording, video and document in the book has a number of its own, the same on every page that shows it and in every version. Each has its own page, at the address below its title. ${numbered} items have their number; ${items.length - numbered ? `${items.length - numbered} new ${items.length - numbered === 1 ? 'one gets its number' : 'ones get theirs'} when the next version is frozen.` : 'new ones get theirs when the next version is frozen.'} The same list as data: <a href="${href(root, 'media.json')}">media.json</a>.</p>
+<p class="media-index__intro">Every picture, recording, video and document in the book is assigned a stable item number, and an item page, when a new version is released. Items that are added between releases are marked new, and will get an item number when the next version of the book is released. Currently this book has ${numbered} numbered ${numbered === 1 ? 'item' : 'items'}, and ${fresh} new ${fresh === 1 ? 'item' : 'items'}.</p>
+<p class="media-index__intro">The same item list is available below in human readable form and as data: <a href="${href(root, 'media.json')}">media.json</a>.</p>
 ${preview ? `<p class="media-index__preview" data-pagefind-ignore>This preview also has an <a href="${esc(edit)}">editing view</a> of the list, for checking names, credits, rights, sources, captions and alt text.</p>\n` : ''}<div class="media-filters" hidden></div>
 <ol class="media-list">
 ${items.map((it) => entry(it, root, '', { searched: true })).join('\n')}

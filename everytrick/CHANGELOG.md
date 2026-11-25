@@ -32,6 +32,8 @@ reader sees. How to add a version: ‘Versions of the book and of everytrick’ 
   address is now `about/bibliography-and-items/` (its parts `#bibliography` and `#items`). The former address,
   `about/references-and-media/`, is not forwarded: it had been live for two days and nobody had used it. A chapter's
   own "References" list keeps its heading.
+- **The Items' opening** says how items get their numbers (when a version is released; items added in between are
+  marked new) and how many there are of each, and points to `media.json` for the same list as data.
 - A link in a page's Markdown to a page the build makes, written as its address ending in `/`
   (`/about/references-and-media/#references`), stays an address in the site.
 
