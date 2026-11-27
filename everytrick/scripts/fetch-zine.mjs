@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 // Copies the page images of a zine on the Internet Archive into the repository, once, on your own computer. Not part of
 // the build ("Plan: documents and zines" in DEVELOPMENT.md).
 //

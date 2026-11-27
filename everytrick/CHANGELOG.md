@@ -12,6 +12,22 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of everytrick’ in `DEVELOPMENT.md`.
 
+## 1.26.0
+
+27 November 2026. A new licence, and an open door for other presses (the publisher, 2026-11-27).
+
+- **The toolkit's licence** is now the GNU Affero General Public License, version 3 or later, in place of the
+  Mozilla Public License 2.0. Anyone may use and change the toolkit; whoever shares it, publishes sites with a
+  changed toolkit or offers it as a service shares their version under the same licence. The colophon of About
+  this book names the new licence.
+- **A press's books, configuration and styling stay its own**, and **the credit stays**: every site made with the
+  toolkit keeps the line naming everytrickinthebook by SJMcH. Both are in `NOTICE.md`, "Additional terms for the
+  toolkit".
+- **Contributing** needs no agreement any more: contributors sign off their commits and keep their copyright
+  (`CONTRIBUTING.md`), and are named in `CONTRIBUTORS.md` and on everytrick.org.
+- Every file of the toolkit says at its top which licence it is under. `CITATION.cff` says how to cite the toolkit,
+  and `LICENSE.md` at the root of the book's repository says which licence covers which part.
+
 ## 1.25.0
 
 25 November 2026. The About page names the book's contributors (the publisher, 2026-11-25).

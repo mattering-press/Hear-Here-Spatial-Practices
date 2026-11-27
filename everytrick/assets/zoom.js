@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 // Pictures (filters/figures.lua writes them; the plan is in DEVELOPMENT.md, "Plan: image display and the zoom viewer").
 //
 // A zoomable picture, <figure data-tiles="…/info.json">, gets "⤢ Zoom" at the right end of its caption line, which

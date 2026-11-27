@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 -- Stage 2, images. In the page's Markdown a zoomable image is
 --   ![caption](images/x-1600.jpg){.zoom .right width="75%" alt="…"}
 -- where the class says where it sits: .left or .right, half the text column (width= sets another share); none, the

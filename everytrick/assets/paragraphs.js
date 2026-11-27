@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 // Paragraph links and the version notice.
 //  * Every numbered paragraph has a link, <a class="para-link" href="#p12" data-n="12">, that shows its number in
 //    the margin and a ¶ on hover and focus. Without JavaScript it is a plain link to #p12. With it, a click copies

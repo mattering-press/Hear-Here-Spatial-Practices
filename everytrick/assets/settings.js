@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 // The reader's settings: text size (four steps), colours (System, Light, Dark; System follows the reader's device),
 // and how citations are copied: their style (Mattering Press, the preset, APA, Chicago, MLA or Harvard) and whether as
 // formatted text (the preset) or plain text ("Plan: copying citations" in DEVELOPMENT.md; assets/cite.js). The "Aa"

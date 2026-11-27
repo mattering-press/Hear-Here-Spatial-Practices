@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 // The References page's Copy buttons (references/ in each edition; referencesHtml and formatReferences in
 // citations.mjs). Beside each work a Copy button copies its reference in the reader's citation style, as formatted or
 // plain text, both chosen in the settings ("Aa"; settings.js), and says so in the status line ("Copied: APA"). The

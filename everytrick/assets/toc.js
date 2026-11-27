@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 // The contents of a page you consult rather than read (build.mjs, pageToc): About this book and Bibliography and items.
 // Marks the section being read, the last one whose heading has passed the upper third of the window, with
 // aria-current="true" on its link. The list itself needs no script: its links lead to the sections, and on wide screens

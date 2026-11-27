@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 // Times the paragraphs of a podcast transcript against its recordings, once, on your own computer. Not part of the build.
 //
 //   cd everytrick && npm run build

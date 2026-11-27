@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 // The HTML of the media items' own pages (the facts below the item, and below a document's viewer its text and its
 // download), the Items (on about/bibliography-and-items/, after the References), its editing view (/media-index/edit/, built for previews only) and the small
 // pages that forward a short address (/37/) or a former name to an item's page. build.mjs prepares the items (see

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 // Checks the built site without a browser: every internal link and every local file that a page (including every
 // width in a picture's srcset), the stylesheet or a JSON file (page.json, publication.json, media.json, a document's
 // document.json) refers to must exist in _site/, and links to #fragments must find their id. The links of the media

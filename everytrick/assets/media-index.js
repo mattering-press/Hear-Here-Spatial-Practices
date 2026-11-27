@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 // The Items (/media-index/) and its editing view (/media-index/edit/, on previews only). The build writes the
 // list as plain HTML (everytrick/media-pages.mjs), which is what readers get without JavaScript.
 //  * Filters: chips by kind (see, listen, watch, read) and by where items are served from (our own site, GitHub,

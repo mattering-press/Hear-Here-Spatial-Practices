@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 // Serves _site/ for a local preview, with HTTP range requests so audio and video can seek.
 //   npm run serve                                               http://localhost:8080/
 //   npm run serve -- --base /Hear-Here-Spatial-Practices/       as on GitHub Pages

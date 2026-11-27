@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 -- The page's data for page.json (see CONTRACT.md): its headings and links, plus the figures, audio, video, media
 -- items, references and paragraphs that the other filters recorded (and the citations and typed references for the
 -- build's report and the References page: each citation with the numbered paragraph that holds it).

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 // For the switch to the static edition (not during the parallel run, while Juncture serves the Markdown): shows how
 // each page's plain-text citations would become Pandoc citations and how its typed reference list would give way to
 // one that citeproc generates from references/bibliography.json. It finds the citations exactly as the build does

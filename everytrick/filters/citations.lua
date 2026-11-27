@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 -- Stage 2, citations. During the parallel run the Markdown keeps its plain-text citations and typed reference lists
 -- (Juncture would show Pandoc's [@key] as it is). This filter links them to the book's bibliography,
 -- references/bibliography.json, which build.mjs hands over as -M citations=<index file> (see citations.mjs).

@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 -- Margin notes (the rules are in CONTRACT.md, "Margin notes and their numbers"; the plan in DEVELOPMENT.md).
 -- A note is written directly after the paragraph it belongs to:
 --   ::: {.margin}

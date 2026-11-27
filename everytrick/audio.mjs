@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 // The length of an MP3, read from the file itself, so that a podcast player can show it before anything is loaded
 // (filters/embeds.lua writes it into the page). No decoder is needed: the length comes from the Xing/Info or VBRI
 // header that encoders write into the first frame, or, for a file without one (constant bit rate), from its size

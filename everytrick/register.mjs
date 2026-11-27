@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 // The media register, media/register.csv: one line per media item ("Plan: media register, item pages and the Media
 // Index" and "The media register" in DEVELOPMENT.md). Each line holds the item's permanent number (given when a version is
 // frozen, by scripts/number-media.mjs), its kind (the word of its address: see, listen, watch or read), its name (the

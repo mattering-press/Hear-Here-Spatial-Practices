@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 // When each media item was first published and when its file last changed, from the repository's Git history, for the
 // item pages and media.json ("Plan: media register, item pages and the Media Index" in DEVELOPMENT.md; CONTRACT.md,
 // "media.json"). Two passes over the history, whatever the number of items:

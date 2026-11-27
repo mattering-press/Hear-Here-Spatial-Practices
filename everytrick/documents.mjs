@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 // Documents: the pages of the book's documents, as images for the zoom viewer and as text ("Plan: documents and zines"
 // in DEVELOPMENT.md). A document is a media item of kind read whose pages the build can show:
 //   a PDF in this repository     its pages are rendered here with poppler (pdftoppm), and its text is read from it

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 // Search, on the search page of each edition (/search/, /v0.1/search/). It asks that edition's Pagefind index
 // (pagefind/, made by the build) and lists every page the words are found on, best first, each with up to three of its
 // paragraphs: their number, a few words around the words found, and a link straight to the paragraph (#p12).

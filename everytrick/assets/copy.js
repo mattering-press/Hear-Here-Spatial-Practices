@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 // Copying, shared by the scripts that copy something for the reader (references.js, cite.js, zoom.js):
 // window.everytrick.copy. It loads before them.
 //  * settings(): the reader's citation settings (settings.js; "Plan: copying citations" in DEVELOPMENT.md):

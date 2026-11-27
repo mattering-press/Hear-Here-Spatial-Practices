@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 // The book's frozen versions: the registry (versions.json at the repository root), their content from Git tags,
 // and the matching of paragraphs between two versions. Used by build.mjs; see "Freezing a version for review or
 // release" in DEVELOPMENT.md.

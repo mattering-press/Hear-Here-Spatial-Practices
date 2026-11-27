@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 // The menu button (☰) in the bar, which stands in for the menu where the whole menu does not fit beside the title and
 // the tools (the width is in site.css). It is a <details>, so without JavaScript it opens and closes its panel all the
 // same. This script makes it behave like a menu button:
