@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 // The reader's place, for the search page's close button (×, assets/search.js). The search button is in the header,
 // so a reader scrolls up to the top to reach it; the place worth returning to is where they last stopped to read.
 // Every page therefore notes, in this tab only (sessionStorage), the last place below its header where the reader

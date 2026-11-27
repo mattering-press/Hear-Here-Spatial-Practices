@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 -- Stage 2, cards. In the page's Markdown a card list is a div holding a list of links, each with a picture
 -- and a title. The title is wrapped so that the stylesheet can set it apart:
 --   <div class="cards" data-pagefind-ignore="all"><ul><li><a href="…"><img …><span class="card-title">Introduction</span></a></li>…</ul></div>

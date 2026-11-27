@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 // Margin notes (filters/margins.lua; the plan is in DEVELOPMENT.md, "Plan: margin notes").
 //  * Without JavaScript, on phones and for screen readers a note stays in reading order after its paragraph, as a
 //    labelled aside. On wide screens this script sets each note in the right-hand margin, level with its paragraph;

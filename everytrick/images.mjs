@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 // Resized copies of the book's photographs, and static IIIF tiles for the zoomable ones (uses sharp).
 //   figure, inline  ->  images/<name>-1600.jpg, 1600 px on the long edge
 //   figure          ->  also the widths the page offers the browser through srcset: 800, 1200, 1600 and 2400 px

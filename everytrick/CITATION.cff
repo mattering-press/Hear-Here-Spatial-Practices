@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "If you write about everytrickinthebook, please cite it like this."
+title: "everytrickinthebook"
+abstract: "Every trick in the book for making books: turns a book written in Markdown into an open, static website that can be cited by paragraph."
+type: software
+authors:
+  - family-names: McHardy
+    given-names: Julien
+    affiliation: Studio Julien McHardy (SJMcH)
+version: 1.26.0
+date-released: 2026-11-27
+license: AGPL-3.0-or-later
+url: "https://everytrick.org/"
+repository-code: "https://github.com/everytrick/everytrickinthebook"

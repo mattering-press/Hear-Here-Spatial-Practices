@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 -- Stage 2, audio, video and other embeds. In the page's Markdown each is a div holding an ordinary link
 -- (a caption may follow it):
 --   ::: {.audio}     a link to an MP3: becomes an <audio> player with native controls

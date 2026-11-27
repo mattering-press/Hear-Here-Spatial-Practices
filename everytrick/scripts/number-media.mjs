@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 // Numbers the media items of a frozen version that have no number yet, a step of "Freezing a version for review or
 // release" in DEVELOPMENT.md. The version must be in versions.json, with its Git tag. Its items are numbered in its
 // reading order (readingOrder in its publication.json) and in page order, the first appearance of an item winning;

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 // Renders the examples in examples.json through Pandoc's citeproc with the house style and compares the result
 // with the expected text. Italics are compared as *…*, other markup is dropped. An example with a "known" note is
 // a difference that CSL cannot avoid: it is reported with the note but does not fail the test.

@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 -- The page's media items, in page order, for the media register (register.mjs; "Plan: media register, item pages and
 -- the Media Index" in DEVELOPMENT.md). An item is a picture (zoomable or animated, in a gallery or not), an audio
 -- player, a video or an embed (an archive.org film or zine, the BBC player, a PDF). Card thumbnails, the pictures behind

@@ -633,6 +633,47 @@ Previews are throwaway: they are not versions, never enter `versions.json`, and 
   included. A private preview hides the rendered site, not the source; embargoed material needs a separate private
   repository.
 
+## Licences and collaboration with other presses
+
+Agreed with the publisher on 2026-11-27, before inviting a first other press (Jeff Pooley, mediastudies.press) to
+use everytrickinthebook and contribute to it. The legal wording is in `everytrick/NOTICE.md`; this section records
+what was decided and why.
+
+- **The toolkit is under the GNU AGPL, version 3 or later** (everytrickinthebook 1.26.0), in place of the Mozilla
+  Public License 2.0. The aims: open source and copyleft; other small presses can use and adapt it freely; whoever
+  changes what it does shares the change, also when they host it as a service; a company cannot build a closed
+  product from it. A licence that forbids commercial use was considered and set aside: it is not open source, and
+  it would put presses that sell books in doubt.
+- **The Mozilla licence was public from 23 to 27 November 2026** and cannot be withdrawn from anyone who took a
+  copy then. No frozen version of the book carries it. The history is not rewritten.
+- **A press's books, configuration and styling stay its own** (an additional permission in `NOTICE.md`). What the
+  toolkit does is shared; how a press's books look is not.
+- **The credit stays**: every site made with the toolkit keeps the line naming everytrickinthebook by SJMcH,
+  linked to everytrick.org (an additional term under the AGPL's section 7(b)). The names everytrickinthebook,
+  everytrick and SJMcH remain the studio's.
+- **Copyright**: Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors; should the studio cease
+  to exist, Julien McHardy. Julien McHardy is named as the toolkit's founder and maintainer.
+- **Contributions carry a sign-off** (the Developer Certificate of Origin, `git commit -s`) and no contributor
+  agreement: contributors keep their copyright. This gives up selling closed licences of the toolkit, on purpose;
+  the studio can still earn from setup, design, support, commissioned features and its own designed styles.
+- **Contributors are named** in `everytrick/CONTRIBUTORS.md` and on everytrick.org, once there are any.
+- **The designed styles, `sjmch/styles`**, are the studio's own and licensed by arrangement, in place of "free for
+  non-commercial use": a university press is non-commercial and would otherwise get them free.
+- **The book's repository** says at its root (`LICENSE.md`) which licence covers which part.
+
+Not yet built, and needed before a second press can use the toolkit without changing its files. To be built with
+the first contributor's book, so that what becomes a setting follows from a real second book (the publisher,
+2026-11-27):
+
+- the toolkit in its own repository (`github.com/everytrick/everytrickinthebook`), with each book pinning a version;
+- a book's settings (now `FRAME`, `siteUrl` and others at the top of `everytrick/build.mjs`) in a file of the
+  book's repository, and the places in the toolkit that name Mattering Press or *Hear Here* taken out;
+- a press's look in a style sheet of its own, apart from the default style;
+- a list in the book's settings of the parts it switches on.
+
+Also to do when this is merged: the README of `github.com/everytrick/everytrickinthebook` and everytrick.org
+still name the Mozilla licence and ask people to get in touch before sending changes.
+
 ## Plan: stable links, versions and print companions
 
 Agreed with the publisher on 2026-11-19. The static twin does not implement all of this yet; it is the plan the build must follow.

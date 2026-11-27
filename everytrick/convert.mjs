@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 // Turns one Juncture page (Markdown with .ve-* tags) into Pandoc Markdown, and lists what the page needs:
 // images to resize, files to copy, warnings, and anything it could not handle. No dependencies.
 //

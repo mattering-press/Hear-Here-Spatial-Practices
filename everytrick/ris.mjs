@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 // CSL-JSON to RIS, the tagged format that reference managers (Zotero, EndNote, Mendeley) import, for the References
 // page's Copy menus and its download (citations.mjs, formatReferences). Pandoc reads RIS but cannot write it.
 //   toRis(item)  one CSL-JSON entry -> its RIS entry: lines of "TY  - JOUR", ending with "ER  - ", joined by \n

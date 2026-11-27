@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 -- Stage 2, the menu and footer, which build.mjs passes as metadata. Links between pages become relative links
 -- in the site's URL scheme, so the site works at the root of a domain and under a sub-path alike:
 --   ./acorn.md or /essays/acorn.md  ->  ../acorn/        /  or /README.md  ->  ../../  (from essays/walk.md)

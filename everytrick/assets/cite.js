@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 // Copying citations ("Plan: copying citations" in DEVELOPMENT.md). The build puts the page's citation data in
 // <script type="application/json" class="cite-data"> (cite.mjs, build.mjs): the page's reference in every citation
 // style a reader can choose, with each style's in-text citation, the book's, the media items' on the page, and on the

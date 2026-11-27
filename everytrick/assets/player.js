@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 // Podcast players. filters/embeds.lua writes each one as the browser's own player:
 //   <div class="player" data-for="audio-1" data-duration="2308.1"><audio id="audio-1" controls preload="none" …>
 // Without JavaScript that player is what the reader gets. With it, this script hides the browser's controls and adds

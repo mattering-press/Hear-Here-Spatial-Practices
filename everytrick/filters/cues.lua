@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 -- Stage 2, paragraph cues: when each transcript paragraph is heard in its recording. A recording may have a cue file
 -- beside it, media/audio/<recording>.paragraphs.vtt (made by scripts/align.mjs, corrected by hand), whose cues build.mjs
 -- hands over in its manifest. Each cue holds the words of its paragraph, not its number, because numbers change from

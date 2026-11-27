@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 // Citation popups. A citation in the text is a link (a.citation) to its entry in a reference list; the build puts
 // the reference, formatted in the house style, in a popover (div.citation-popover, named in the link's
 // data-popover and aria-describedby). This script shows it beside the link:

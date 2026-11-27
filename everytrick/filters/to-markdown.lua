@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: AGPL-3.0-or-later. Part of everytrickinthebook, https://everytrick.org/. Copyright © 2026 Studio Julien McHardy (SJMcH) and the everytrickinthebook contributors. See NOTICE.md.
 -- Stage 1 of every page: the converted Juncture Markdown (see convert.mjs) -> the clean Pandoc Markdown of the
 -- page's Markdown view. It reads the twin-* divs and writes the plain forms:
 --   ![caption](images/x-1600.jpg){.zoom .right width="75%" alt="…"}      a zoomable image (.left, .right, .wide or .full)
