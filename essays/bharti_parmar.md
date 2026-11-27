@@ -37,6 +37,10 @@ Bharti’s closing words on fellowship foreground how the collaborations across 
 
 A film with Bharti in the cathedral further supports the podcast discussion.
 
+.ve-media https://vimeo.com/1107177797 caption="Bharti Parmar, film 1"
+
+.ve-media https://vimeo.com/1107179508 caption="Bharti Parmar, film 2"
+
 <center><iframe src="https://archive.org/embed/HearHereBhartiParmar3" width="560" height="384" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen class="ve-component"></iframe></center>
 
 # Biography
