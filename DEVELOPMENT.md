@@ -1269,6 +1269,85 @@ see "About this book".
   `about/bibliography-and-items/#<key>`. That is contract 0.8, whose paragraph rule is 0.7's, unchanged; no paragraph
   of an existing page changed its number.
 
+## Plan: Nirmal Puwar's films and Global Ecologies
+
+Drafted on 2026-11-27 from Nirmal Puwar's answer of the same day, and agreed with the publisher the same day: one page
+per Global Ecologies event, and the Events page's cards in order of the events' dates. The Absence/Presence films are
+done (everytrickinthebook 1.26.1); the rest waits for the answers listed at the end of this plan.
+
+Nirmal Puwar sent eleven films, all on Vimeo, all public now (plain addresses, no `h=` code), all uploaded by Mindriot
+Productions. Six are in the book already, and five are not:
+
+| Film | Vimeo | Length | In the book |
+|---|---|---|---|
+| Absence Presence video | 1219328656 | 4:13 | item 67, Absence/Presence |
+| Absence Presence Panel Talk | 1120434948 | 1:11:54 | item 68, Absence/Presence |
+| Monica Brown video 2 | 1089090280 | 9:15 | item 3, Monica Brown (copy on archive.org) |
+| Bharti Parmar Video 3 | 1107181541 | 3:14 | item 8, Bharti Parmar (copy on archive.org) |
+| Jon and Yoko Acorn Presentation | 1056434244 | 28:53 | items 55–57, Acorn (three parts on archive.org) |
+| Bharti Parmar Video 1 | 1107177797 | 10:27 | not yet: Bharti Parmar |
+| Bharti Parmar Video 2 | 1107179508 | 12:57 | not yet: Bharti Parmar |
+| Monica Brown Video 1 | 1089087480 | 3:50 | not yet: Monica Brown |
+| Monica Brown Video 3 | 1089098321 | 0:53 | not yet: Monica Brown |
+| Duke Keats Performance | 1049645661 | 7:40 | not yet: Acorn |
+| The Seeds of Vandana Shiva Talk | 873315975 | 56:40 | not yet: Global Ecologies (new) |
+
+Nirmal Puwar confirmed these places ("You have guessed well") and that the Seeds of Vandana Shiva talk belongs to
+Global Ecologies: three events held in the cathedral, whose other two films she is looking for.
+
+- **The Absence/Presence films (done).** Both are public now. Their `video-embed` figures stay, with the plain player
+  address (`https://player.vimeo.com/video/<id>`, no `?h=` code), which the build recognises since everytrickinthebook
+  1.26.1. Their captions stay as they were, without the "Source: Vimeo" link to Vimeo's private review pages: the
+  item's page links to the film. In the register, `source` became `https://vimeo.com/<id>` and the old address with
+  its code went to `former_sources`, so version 0.1 still finds them.
+- **The new films on existing pages.** Each is a `.ve-media https://vimeo.com/<id>` line with a caption: Bharti
+  Parmar's Videos 1 and 2 next to her third film, under "A film with Bharti in the cathedral further supports the
+  podcast discussion." (that sentence will need Nirmal Puwar's wording for three films); Monica Brown's Videos 1 and 3
+  next to item 3; Duke Keats's performance on the Acorn page, after the films of the event. Each gets its number
+  when the next version is frozen and shows a "new" pill until then.
+- **The items already in from archive.org stay there.** Items 3, 8 and 55–57 keep their archive.org copies, which keep
+  the original files. Changing Acorn's three parts into the one Vimeo film would leave three numbered items on no page,
+  which the build refuses; it would need a withdrawal, which the register has no rule for yet.
+- **Global Ecologies: one page per event** (the publisher, 2026-11-27). Like Rocking It, Acorn and Walk, each event
+  gets its own page, because the front matter holds one `held:` date and one list of authors, and each event is cited
+  on its own. The Events page gets a short line introducing the series. **Its cards follow the events' dates** (the
+  publisher, 2026-11-27): the Seeds of Vandana Shiva (23 September 2023) first, then Rocking It (2 March 2024), Acorn
+  (14 September 2024) and Walk, each card renumbered from #01; the other two Global Ecologies events take their places
+  by date. The first page, `essays/seeds_of_vandana_shiva.md`:
+  - **Title:** "The Seeds of Vandana Shiva", subtitle "Story, Politics, Life and the Ravages of Biotech".
+  - **Front matter:** `held: 2023-09-23`; authors, alphabetical, family name first: the panel (Georges Félix, Emellyne
+    Forman, Marc Hammon, Greg Muldoon, Lopamudra Patnaik Saxena) and Nirmal Puwar, as for Acorn's speakers;
+    `credits:` "Chair: Nirmal Puwar", "Organising: Food Union and Critical Ecologies, Goldsmiths, University of London",
+    "Tea: Live and Dye Garden".
+  - **Text:** Nirmal Puwar's description of the event, in the past tense, with the panel's affiliations (Coventry
+    University, Food Union, University of Warwick, Goldsmiths, University of London) and the place (the Chapter House
+    Cinema at Coventry Cathedral). The quotation "Food is a weapon. When you control seed, you control life on earth."
+    opens it, attributed to Vandana Shiva. The visitors' directions are left out.
+  - **The film:** `.ve-media https://vimeo.com/873315975` with a caption, the panel discussion after the screening.
+    The documentary itself, *The Seeds of Vandana Shiva* (2022, 82 minutes), goes in the page's references, with its
+    makers as its own credits give them.
+  - **Card:** a still from the film, chosen by the publisher (a man in a turban speaking from the audience in the
+    Chapter House Cinema), as `media/generic/seeds-of-vandana-shiva.jpeg`, 1600 px wide like the other cards.
+
+  The other two Global Ecologies events follow the same way when their films and details arrive.
+- **Credits.** Every film is Mindriot Productions'. The Acorn films are credited "Film: Jon Randle, Mindriot
+  Productions" (confirmed by Nirmal Puwar on 2026-11-24); the same credit goes in `credit` for every film above, once
+  she confirms it.
+- **Order of work.** First the Absence/Presence films, which need no answer. Then the five new films on existing pages,
+  once their captions are in. Then the Seeds of Vandana Shiva page. Then the other two Global Ecologies events. Each is
+  its own branch and pull request.
+
+Open questions for Nirmal Puwar. Those about items go through the editing view (`/media-index/edit/` on the
+branch's preview), where she can fill in each film's caption and credit and leave a comment, and hand the changes
+back; the rest go by email:
+
+1. In the editing view: a caption for each of the five new films (what it shows, one line), and its credit ("Film:
+   Jon Randle, Mindriot Productions" proposed for all, the Absence/Presence films included). The new films are put on
+   their pages first with their Vimeo titles as drafts, so that the editing view lists them.
+2. By email: the wording for three films on Bharti Parmar's page; whether the Seeds of Vandana Shiva panel are the
+   page's authors, with their names as written here; the other two Global Ecologies events' films, dates, speakers,
+   descriptions and organisers.
+
 ## Plan, not yet confirmed: several routes through a book
 
 Discussed with the publisher on 2026-11-21. **Not confirmed and not built.** It waits until the materials that go into the new chapters are known; review it then, settle the open questions below, and only then mark it agreed.
