@@ -19,14 +19,18 @@ author:
 
 # {.cards}
 
-## #01: Rocking It: Insider/Outsider Archives {href=./rocking_it.md}
+## #01: Walk {href=./walk.md}
+
+![](/media/generic/walk.jpeg)
+
+## #02: The Seeds of Vandana Shiva {href=./seeds_of_vandana_shiva.md}
+
+![](/media/generic/seeds-of-vandana-shiva.jpeg)
+
+## #03: Rocking It: Insider/Outsider Archives {href=./rocking_it.md}
 
 ![](/media/generic/Rocking_It.jpeg)
 
-## #02: Acorn {href=./acorn.md}
+## #04: Acorn {href=./acorn.md}
 
 ![](/media/generic/wishtree.jpeg)
-
-## #03: Walk {href=./walk.md}
-
-![](/media/generic/walk.jpeg)
