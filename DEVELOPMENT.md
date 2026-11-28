@@ -26,6 +26,12 @@ main on GitHub  ->  GitHub Actions build  ->  https://hearhere.matteringpress.or
 `main` is always the published working text. Every change reaches it through a pull request from a feature
 branch. When the branch was previewed, the commit that was previewed is the commit that is merged.
 
+## Open editorial decisions
+
+Questions about the book's content that wait for the author or the publisher are kept in `EDITORIAL.md`, numbered
+(E1, E2 …) and grouped in bundles to send together. A change that raises a question adds it there; an answer moves
+it to "Settled", in the same branch as the change it leads to.
+
 ## Starting a piece of work
 
 Branch from the latest `main`:
