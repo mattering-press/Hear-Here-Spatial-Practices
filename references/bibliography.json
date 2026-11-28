@@ -24,6 +24,18 @@
     ] }
   },
   {
+    "id": "becket2022",
+    "type": "motion_picture",
+    "author": [{"family":"Becket","given":"Camilla Denton"},{"family":"Becket","given":"James"}],
+    "title": "The Seeds of Vandana Shiva",
+    "genre": "documentary film",
+    "publisher": "Becket Films",
+    "issued": {"date-parts":[[2022]]},
+    "custom": { "typed": [
+      {"page":"essays/seeds_of_vandana_shiva.md","text":"Camilla Denton Becket and James Becket (2022) The Seeds of Vandana Shiva, documentary film, Becket Films."}
+    ] }
+  },
+  {
     "id": "becker2007",
     "type": "book",
     "author": [{"family":"Becker","given":"Howard"}],

@@ -1314,23 +1314,28 @@ Global Ecologies: three events held in the cathedral, whose other two films she 
 - **Global Ecologies: one page per event** (the publisher, 2026-11-27). Like Rocking It, Acorn and Walk, each event
   gets its own page, because the front matter holds one `held:` date and one list of authors, and each event is cited
   on its own. The Events page gets a short line introducing the series. **Its cards follow the events' dates** (the
-  publisher, 2026-11-27): the Seeds of Vandana Shiva (23 September 2023) first, then Rocking It (2 March 2024), Acorn
-  (14 September 2024) and Walk, each card renumbered from #01; the other two Global Ecologies events take their places
-  by date. The first page, `essays/seeds_of_vandana_shiva.md`:
+  publisher, 2026-11-27): Walk (14 June 2023), the Seeds of Vandana Shiva (23 September 2023), Rocking It (2 March
+  2024) and Acorn (14 September 2024), renumbered #01 to #04; the reading order follows the cards. The other two Global
+  Ecologies events take their places by date. The introducing line waits for Nirmal Puwar's words. The first page, `essays/seeds_of_vandana_shiva.md`:
   - **Title:** "The Seeds of Vandana Shiva", subtitle "Story, Politics, Life and the Ravages of Biotech".
   - **Front matter:** `held: 2023-09-23`; authors, alphabetical, family name first: the panel (Georges Félix, Emellyne
     Forman, Marc Hammon, Greg Muldoon, Lopamudra Patnaik Saxena) and Nirmal Puwar, as for Acorn's speakers;
-    `credits:` "Chair: Nirmal Puwar", "Organising: Food Union and Critical Ecologies, Goldsmiths, University of London",
-    "Tea: Live and Dye Garden".
-  - **Text:** Nirmal Puwar's description of the event, in the past tense, with the panel's affiliations (Coventry
-    University, Food Union, University of Warwick, Goldsmiths, University of London) and the place (the Chapter House
-    Cinema at Coventry Cathedral). The quotation "Food is a weapon. When you control seed, you control life on earth."
-    opens it, attributed to Vandana Shiva. The visitors' directions are left out.
+    `credits:` "Chair: Nirmal Puwar (Goldsmiths, University of London)", "Panel: …" with each panellist's affiliation
+    (the publisher, 2026-11-28: the panel is in the credits, not the text), "Organising: Food Union; Critical
+    Ecologies, Goldsmiths, University of London", "Tea: Live and Dye Garden".
+  - **Text:** Nirmal Puwar's description of the event, in the past tense, with the place (the Chapter House Cinema at
+    Coventry Cathedral). The quotation "Food is a weapon. When you control seed, you control life on earth." follows
+    the first paragraph, its attribution in the same paragraph. The visitors' directions are left out.
   - **The film:** `.ve-media https://vimeo.com/873315975` with a caption, the panel discussion after the screening.
-    The documentary itself, *The Seeds of Vandana Shiva* (2022, 82 minutes), goes in the page's references, with its
-    makers as its own credits give them.
+    The documentary itself, *The Seeds of Vandana Shiva*, directed by Camilla Denton Becket and James Becket (Becket
+    Films), is in the page's references and the bibliography (`becket2022`), with the year of Nirmal Puwar's
+    description, 2022 (listings give a first showing in November 2021). The directors are its `author`s: the
+    citations filter needs an author for every entry.
   - **Card:** a still from the film, chosen by the publisher (a man in a turban speaking from the audience in the
     Chapter House Cinema), as `media/generic/seeds-of-vandana-shiva.jpeg`, 1600 px wide like the other cards.
+
+  Built on 2026-11-27 (branch `seeds-page`) with the authors as drafted, at the publisher's word: the front matter's
+  comment marks them TBC until Nirmal Puwar confirms them and their spelling. Readers see no mark.
 
   The other two Global Ecologies events follow the same way when their films and details arrive.
 - **Credits.** Every film is Mindriot Productions'. The Acorn films are credited "Film: Jon Randle, Mindriot
