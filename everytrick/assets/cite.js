@@ -56,7 +56,6 @@
     TODAY.forEach(function (pair) { out = out.split(pair[0]).join(pair[1]); });
     return out;
   }
-  [].forEach.call(document.querySelectorAll('.cite-today'), function (el) { el.textContent = TODAY[0][1]; });
   var esc = function (s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); };
   var lc = function (s) { return s.charAt(0).toLowerCase() + s.slice(1); };
 
@@ -242,32 +241,68 @@
     var name = section.querySelector('.how-to-cite__style-name');
     if (name) name.textContent = styleName(s);
   }
-  // How to cite, on the About page (about/#how-to-cite): the book's reference in the reader's style, its Copy citation, and a
-  // button that opens the settings at the citation style
-  var cited = data.cited;
-  var book = document.querySelector('.cite-book');
-  function showBook() {
-    var ref = book && book.querySelector('.cite-book__reference');
-    if (ref && cited) ref.innerHTML = reference(cited, style()).html;
-  }
-  var bookCopy = book && book.querySelector('.cite-book__copy button');
-  if (bookCopy && cited) {
-    bookCopy.hidden = false;
-    bookCopy.addEventListener('click', function () {
-      var s = style();
-      copy.write(reference(cited, s)).then(done('Citation of the book', s), failed);
-    });
-  }
-  var styleLine = document.querySelector('.cite-downloads__style');
+  // How to cite, on the About page (about/#how-to-cite) and wherever its section is shown in the peek window (peek.js):
+  // the book's reference in the reader's style, its Copy citation, and a button that opens the settings at the
+  // citation style. The About page's data has how the book is cited (cited); the peek window hands over that page's.
+  var books = [];
   var settings = document.getElementById('settings');
-  if (styleLine && settings && settings.showPopover) {
-    styleLine.hidden = false;
-    styleLine.querySelector('button').addEventListener('click', function () {
-      settings.showPopover();
-      var first = settings.querySelector('.settings__citations button');
-      if (first) first.focus();
+  // The settings, opened from a button. In a modal window everything outside it is out of reach, so the panel moves
+  // into the window for as long as it is open there, and stands under the button.
+  function openSettings(from) {
+    var modal = from.closest('dialog');
+    if (modal && settings.parentNode !== modal) {
+      var home = { parent: settings.parentNode, next: settings.nextSibling };
+      modal.appendChild(settings);
+      var back = function (event) {
+        if (event.newState !== 'closed') return;
+        settings.removeEventListener('toggle', back);
+        settings.style.left = '';
+        home.parent.insertBefore(settings, home.next);
+      };
+      settings.addEventListener('toggle', back);
+    }
+    settings.showPopover();
+    if (modal) {
+      var box = from.getBoundingClientRect(), w = document.documentElement.clientWidth, h = window.innerHeight;
+      settings.style.right = 'auto';
+      settings.style.left = Math.max(8, Math.min(box.left, w - settings.offsetWidth - 8)) + 'px';
+      settings.style.top = Math.max(8, Math.min(box.bottom + 8, h - settings.offsetHeight - 8)) + 'px';
+    }
+    var first = settings.querySelector('.settings__citations button');
+    if (first) first.focus();
+  }
+  function wireBook(root, cited) {
+    [].forEach.call(root.querySelectorAll('.cite-today'), function (el) { el.textContent = TODAY[0][1]; });
+    var box = root.querySelector('.cite-book');
+    if (box && cited) {
+      books.push({ box: box, cited: cited });
+      var button = box.querySelector('.cite-book__copy button');
+      if (button) {
+        button.hidden = false;
+        button.addEventListener('click', function () {
+          var s = style();
+          copy.write(reference(cited, s)).then(done('Citation of the book', s), failed);
+        });
+      }
+    }
+    var styleLine = root.querySelector('.cite-downloads__style');
+    if (styleLine && settings && settings.showPopover) {
+      styleLine.hidden = false;
+      styleLine.querySelector('button').addEventListener('click', function () { openSettings(this); });
+    }
+  }
+  function showBook() {
+    books = books.filter(function (b) { return b.box.isConnected; });
+    books.forEach(function (b) {
+      var ref = b.box.querySelector('.cite-book__reference');
+      if (ref) ref.innerHTML = reference(b.cited, style()).html;
     });
   }
+  wireBook(document, data.cited);
+  document.addEventListener('everytrick:peek', function (event) {
+    wireBook(event.detail.root, event.detail.data && event.detail.data.cited);
+    showBook();
+  });
 
   // ---- Media items -----------------------------------------------------------------------------------------------------
   // an item's citation: its reference, and the item's own source where the register gives it; { text, html, cite }

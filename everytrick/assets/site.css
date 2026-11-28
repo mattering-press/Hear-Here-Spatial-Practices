@@ -814,6 +814,35 @@ main .how-to-cite h2 { margin-top: 0; font-size: 1.1rem; color: var(--colour-tex
 .item-cite__copy { margin-top: 0.6rem !important; }
 /* the Copy button of a citation popup */
 .citation-popover .copy-button { min-height: 1.75rem; margin-right: 0.5rem; vertical-align: middle; }
+/* The peek window (assets/peek.js; "Plan: the peek window" in DEVELOPMENT.md): a section of another page, shown over
+   the page being read. The page shows around it, a little blurred; on a phone the window fills the screen. Its head,
+   with the × at the top right, stays in place while the section scrolls. */
+.peek { box-sizing: border-box; width: min(42rem, calc(100vw - 3rem)); max-width: none; max-height: calc(100vh - 3rem); margin: auto; padding: 0; border: 1px solid var(--colour-rule); border-radius: 8px; overflow: hidden; background: var(--colour-background); color: var(--colour-text); box-shadow: 0 16px 48px rgb(0 0 0 / 0.28); }
+@supports (height: 1dvh) { .peek { max-height: calc(100dvh - 3rem); } }
+.peek[open] { display: flex; flex-direction: column; animation: peek-in 0.14s ease-out; }
+.peek::backdrop { background: rgb(0 0 0 / 0.28); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); animation: peek-in 0.14s ease-out; }
+@keyframes peek-in { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .peek[open], .peek::backdrop { animation: none; } }
+.has-peek { overflow: hidden; }
+.peek__head { flex: none; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.6rem 0.75rem 0.6rem 1.5rem; border-bottom: 1px solid var(--colour-rule); }
+.peek__from { margin: 0; min-width: 0; font-size: 0.8125rem; line-height: 1.3; }
+.peek__from a { color: var(--colour-muted); text-decoration-color: color-mix(in srgb, currentColor 40%, transparent); text-underline-offset: 0.2em; }
+.peek__from a:is(:hover, :focus-visible) { color: var(--colour-text); text-decoration-color: currentColor; }
+.peek__close { flex: none; display: grid; place-items: center; width: 2.5rem; height: 2.5rem; padding: 0; border: 1px solid var(--colour-rule); border-radius: 999px; background: var(--colour-surface); color: var(--colour-text); cursor: pointer; }
+.peek__close:is(:hover, :focus-visible) { border-color: var(--colour-text); }
+.peek__body { flex: 1 1 auto; min-height: 0; padding: 1.5rem 1.5rem 2rem; overflow-y: auto; overscroll-behavior: contain; overflow-wrap: break-word; outline: 0; }
+.peek__body :is(h2, h3, h4, h5, h6) { font-weight: var(--weight-heading); }
+.peek__body h2 { margin: 0 0 1rem; font-size: 1.45rem; }
+.peek__body h3 { margin: 2rem 0 0.75rem; font-size: 1.2rem; }
+.peek__body > :first-child { margin-top: 0; }
+.peek__body > :last-child { margin-bottom: 0; }
+.peek__body [hidden] { display: none; }
+@media (max-width: 40rem) {
+  .peek { width: 100vw; height: 100%; max-height: none; border: 0; border-radius: 0; box-shadow: none; }
+  .peek__head { padding: 0.6rem var(--gap); padding-top: calc(0.6rem + env(safe-area-inset-top)); }
+  .peek__body { padding: 1.25rem var(--gap) calc(2rem + env(safe-area-inset-bottom)); }
+}
+@media print { .peek { display: none !important; } }
 @media print { .page-note__cite, .cite-book__copy, .cite-downloads__style, .cite-bar, .copy-button, .item-cite__copy, .reference__copy { display: none !important; } }
 .settings__wrap { flex-wrap: wrap; max-width: 17rem; }
 /* the credits list at the end of a page: everyone else who made it, by role (CONTRACT.md, "Front matter and credits") */

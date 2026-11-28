@@ -7,8 +7,8 @@ authors:
   - family-names: McHardy
     given-names: Julien
     affiliation: Studio Julien McHardy (SJMcH)
-version: 1.26.1
-date-released: 2026-11-27
+version: 1.27.0
+date-released: 2026-11-28
 license: AGPL-3.0-or-later
 url: "https://everytrick.org/"
 repository-code: "https://github.com/everytrick/everytrickinthebook"

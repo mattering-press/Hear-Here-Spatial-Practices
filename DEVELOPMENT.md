@@ -206,7 +206,7 @@ What is in `everytrick/`:
 - `scripts/number-media.mjs` (`npm run number-media -- <version>`): numbers the media items of a frozen version that have no number yet, in its reading order, and writes the register (see "Freezing a version for review or release")
 - `scripts/fetch-zine.mjs` (`npm run fetch-zine -- <identifier>`): copies a zine's page images from archive.org into `media/zines/<identifier>/`, once, on the editor's computer (see "Documents and zines")
 - `template.html`: the HTML around every page. It links the stylesheet and scripts with `?v=` and a hash of their contents, so that browsers fetch them again after every change instead of keeping an old copy
-- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `search.js` (the search page; see "Plan: search"), `place.js` (keeps the reader's place for the search page's ×), `zoom.js` (the pictures' Zoom buttons, the zoom viewer and the pause button of animations, and the documents' Open buttons and their viewer, in a dialog or on the document's own page; see "Plan: image display and the zoom viewer" and "Documents and zines"), `player.js` (the podcast player and its docked bar; see "Plan: podcast player and transcript"), `citations.js` (the citations' popups), `copy.js` (copying for the scripts below: the reader's citation settings, the clipboard and the status line), `cite.js` (Copy quote, Cite, How to cite in the reader's style, the media items' citations and the popups' Copy buttons; see "Plan: copying citations"), `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens), `media-index.js` (the Media Index's filters, and the editing view's fields, checks and change sheet), `menu.js` (the header's menu button, and the back matter's entry and its list), `references.js` (the References page's Copy buttons and their menu)
+- `assets/`: `site.css` (colours, fonts and spacing are set at its top), `search.js` (the search page; see "Plan: search"), `place.js` (keeps the reader's place for the search page's ×), `zoom.js` (the pictures' Zoom buttons, the zoom viewer and the pause button of animations, and the documents' Open buttons and their viewer, in a dialog or on the document's own page; see "Plan: image display and the zoom viewer" and "Documents and zines"), `player.js` (the podcast player and its docked bar; see "Plan: podcast player and transcript"), `citations.js` (the citations' popups), `copy.js` (copying for the scripts below: the reader's citation settings, the clipboard and the status line), `cite.js` (Copy quote, Cite, How to cite in the reader's style, the media items' citations and the popups' Copy buttons; see "Plan: copying citations"), `paragraphs.js` (copies a paragraph's link; points the version notice at the passage being read), `margins.js` (sets margin notes in the margin on wide screens), `media-index.js` (the Media Index's filters, and the editing view's fields, checks and change sheet), `menu.js` (the header's menu button, and the back matter's entry and its list), `references.js` (the References page's Copy buttons and their menu), `peek.js` (the peek window, which shows a section of another page over the page being read; see "Plan: the peek window")
 - `images.mjs`: resized images (each zoomable picture in several widths for `srcset`) and the tiles for zooming; an animated GIF becomes an animated WebP and a still; each page of a document gets tiles and two widths (400 and 800 px)
 - `audio.mjs`: reads the length of an MP3 from the file, for the podcast players
 - `check.mjs`, `serve.mjs`: the link check (including every page of every document; it also confirms that every
@@ -1077,7 +1077,8 @@ The data are in `everytrick/CONTRACT.md` ("Front matter and credits", "Citing th
 - **Copy citation** copies the page's reference, the chapter, in the reader's style, in one click, as the ¶ does,
   and the status line says so briefly ("Citation copied, in APA"; the publisher, 2026-11-24). On the latest text it
   cites the newest release that has the page. The home page's note leaves out the author, whom its opening names. Without JavaScript the button is hidden and How to cite remains.
-  The note's "How to cite" leads to How to cite this book.
+  The note's "How to cite" opens the How to cite section of About this book in the peek window, over the page
+  (everytrickinthebook 1.27.0; see "Plan: the peek window").
 - **How to cite this book** (the publisher, 2026-11-24, replacing How to cite this page at the end of every page and
   its link at the top): a fourth part of About this book, `about/how-to-cite/`, from `about/how-to-cite.md`, which the
   publisher writes. It explains the settings (citation style; Copy citations as Formatted or Plain text, and why one
@@ -1268,6 +1269,37 @@ see "About this book".
   overview and its parts. Citations whose page does not list their work, and `references` in `page.json`, lead to
   `about/bibliography-and-items/#<key>`. That is contract 0.8, whose paragraph rule is 0.7's, unchanged; no paragraph
   of an existing page changed its number.
+
+## Plan: the peek window
+
+Agreed with the publisher on 2026-11-28. A reader who clicked "How to cite" in a page's note landed in the middle of
+About this book, with no way back but the browser's. The peek window shows such a section over the page being read,
+so that a reader checks something without losing their place: the page stays where it was, and so do a podcast that
+is playing and the reader's settings.
+
+- **No text is written twice.** The window shows the section the link leads to, fetched from its own page and shown
+  as it is there (the publisher, 2026-11-28: "no content change, just show it on a modal instead of the full page").
+  It shows the section only, not the whole page: the heading the link names and everything under it, up to the next
+  heading of the same level; or, if the link names something other than a heading, that element alone.
+- **The window** floats over the page, which shows around it a little blurred; on a phone it fills the screen. A ×
+  at the top right closes it and stays in place while the section scrolls. Esc, a click beside the window and the
+  browser's Back close it too. The page behind does not scroll meanwhile.
+- **Its head** names the page the section is from ("About this book"), as a link to the section on that page, for a
+  reader who wants to stay there.
+- **The link stays a link.** A link is marked `data-peek`. Without JavaScript, with Cmd/Ctrl-click, in print, and
+  when the page cannot be fetched, it leads to the section on its own page as before. Whatever the window shows
+  therefore has its own address.
+- **What works inside it:** the section's links (they lead away, as on its page), the book's reference in the
+  reader's style with Copy citation, and "Change the citation style", which opens the settings in the window.
+  Pictures are shown plain, without the zoom viewer.
+- **When to use it:** only for reference material a reader consults in the middle of reading; never for an essay,
+  the Media Index or a document, which are places to go to.
+- **Built** in everytrickinthebook 1.27.0 (28 November 2026) for its first use, "How to cite" in the page's note
+  (`assets/peek.js`; the link in `build.mjs`, `pageNote`).
+- **Next, once the publisher has seen it** (proposed, not built): the names in a page's note, to Contributors; an
+  item's number, to the item's page (credit, rights, how to cite it); the citation popup's "Go to the reference
+  list", to that work in the Bibliography; the version notice, to Citations and versions. Search keeps its own page
+  and its ×.
 
 ## Plan: Nirmal Puwar's films and Global Ecologies
 
