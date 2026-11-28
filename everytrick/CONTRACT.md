@@ -366,6 +366,8 @@ In the HTML of a page, an item's figure, or its player's `<div class="player">`,
 <figcaption><a class="item-number" href="../../see/boulder-font/" aria-label="Item 37">37</a> The baptismal font in Coventry Cathedral</figcaption>
 ```
 
+On a page the pill also has `data-peek="facts"` (since everytrickinthebook 1.28.0), which opens the facts of the
+item's page, `<dl class="item-facts" id="facts">`, in a window over the page; its address stays the item's.
 An item not numbered yet has `<a class="item-number is-new" href="…" aria-label="New item, not yet numbered">new</a>`.
 The credit follows the caption, as `<span class="item-credit"> · Photo: …</span>`, when the item has one. The rights
 are shown on the item's page and in the Items, the source on the item's page, never in the caption line; an empty

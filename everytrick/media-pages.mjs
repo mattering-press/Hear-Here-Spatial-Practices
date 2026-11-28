@@ -130,7 +130,7 @@ export function itemFacts(it, { root, siteUrl }) {
   if (it.formerNames.length) row('Former addresses', it.formerNames.map((n) => `/${esc(it.kind)}/${esc(n)}/`).join(', ') + ', which lead here');
   if (it.formerSources.length) row('Earlier files', `${it.formerSources.map(esc).join(', ')}: replaced, and still shown in the versions that used them`);
   row('To cite', it.cite ? itemCite(it) : it.label ? `item ${it.label}, ${esc(siteUrl + it.short)}` : `${esc(siteUrl + it.url)} (until it has its number)`);
-  return `<dl class="item-facts">\n${rows.join('\n')}\n</dl>`;
+  return `<dl class="item-facts" id="facts">\n${rows.join('\n')}\n</dl>`;
 }
 
 // How to cite an item, against the book ("Plan: copying citations" in DEVELOPMENT.md): one block, its reference in the

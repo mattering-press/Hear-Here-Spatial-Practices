@@ -301,7 +301,9 @@
   wireBook(document, data.cited);
   document.addEventListener('everytrick:peek', function (event) {
     wireBook(event.detail.root, event.detail.data && event.detail.data.cited);
+    wireItem(event.detail.root, event.detail.data && event.detail.data.item);
     showBook();
+    showItem();
   });
 
   // ---- Media items -----------------------------------------------------------------------------------------------------
@@ -326,22 +328,32 @@
       return message;
     }, function (e) { failed(); throw e; });
   };
-  // an item's page: its "To cite", in the reader's style, with a Copy citation button
-  var itemCite = document.querySelector('.item-cite');
-  function showItem() {
-    if (!itemCite || !data.item) return;
-    var s = style(), p = itemParts(data.item, s);
-    itemCite.querySelector('.item-cite__reference').innerHTML = p.html;
-    var example = itemCite.querySelector('.item-cite__example');
-    if (example) example.textContent = p.cite;
-  }
-  if (itemCite && data.item) {
+  // an item's page, and an item's facts in the peek window (peek.js, which hands over the item page's data): its
+  // "To cite", in the reader's style, with a Copy citation button
+  var itemCites = [];
+  function wireItem(root, item) {
+    var box = root.querySelector('.item-cite');
+    if (!box || !item) return;
+    itemCites.push({ box: box, item: item });
     var b = textButton('Copy citation', '', 'copy-button is-strong');
-    b.addEventListener('click', function () { everytrick.citeItem(location.href); });
+    b.addEventListener('click', function () {
+      var s = style(), p = itemParts(item, s);
+      copy.write(p).then(function () { copy.say('Citation copied, in ' + styleName(s) + '. In the text: ' + p.cite); }, failed);
+    });
     var line = element('p', 'item-cite__copy');
     line.appendChild(b);
-    itemCite.appendChild(line);
+    box.appendChild(line);
   }
+  function showItem() {
+    itemCites = itemCites.filter(function (c) { return c.box.isConnected; });
+    itemCites.forEach(function (c) {
+      var s = style(), p = itemParts(c.item, s);
+      c.box.querySelector('.item-cite__reference').innerHTML = p.html;
+      var example = c.box.querySelector('.item-cite__example');
+      if (example) example.textContent = p.cite;
+    });
+  }
+  wireItem(document, data.item);
 
   // ---- Citation popups -------------------------------------------------------------------------------------------------
   if (data.formatted) {

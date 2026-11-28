@@ -1284,7 +1284,7 @@ is playing and the reader's settings.
 - **The window** floats over the page, which shows around it a little blurred; on a phone it fills the screen. A ×
   at the top right closes it and stays in place while the section scrolls. Esc, a click beside the window and the
   browser's Back close it too. The page behind does not scroll meanwhile.
-- **Its head** names the page the section is from ("About this book"), as a link to the section on that page, for a
+- **Its head** names the page the section is from ("About this book"), as a link to where the link leads, for a
   reader who wants to stay there.
 - **The link stays a link.** A link is marked `data-peek`. Without JavaScript, with Cmd/Ctrl-click, in print, and
   when the page cannot be fetched, it leads to the section on its own page as before. Whatever the window shows
@@ -1296,10 +1296,17 @@ is playing and the reader's settings.
   the Media Index or a document, which are places to go to.
 - **Built** in everytrickinthebook 1.27.0 (28 November 2026) for its first use, "How to cite" in the page's note
   (`assets/peek.js`; the link in `build.mjs`, `pageNote`).
-- **Next, once the publisher has seen it** (proposed, not built): the names in a page's note, to Contributors; an
-  item's number, to the item's page (credit, rights, how to cite it); the citation popup's "Go to the reference
-  list", to that work in the Bibliography; the version notice, to Citations and versions. Search keeps its own page
-  and its ×.
+- **An item's number** (everytrickinthebook 1.28.0, after the publisher saw the first use on 2026-11-28): the number
+  that starts a caption opens the facts of the item's page in the window: its number and addresses, where it
+  appears, its credit and rights where the register has them, its files, and "To cite" in the reader's style with
+  Copy citation. The picture or player is not shown again, since the reader is looking at it. The link's address
+  stays the item's page, and the window's head ("Item 27 · its title") leads there. The link carries
+  `data-peek="facts"`, which names what to show on the page it leads to (`<dl class="item-facts" id="facts">`). In
+  the Media Index a number still leads to the item's page, which is where a reader of the index is going.
+- **Considered and left** (2026-11-28): the names in a page's note, to Contributors (that section lists names
+  only, so there is nothing to check); the citation popup's "Go to the reference list" (the popup already shows the
+  reference, with Copy citation); the version notice, to Citations and versions (wait until the notice is seen in
+  use). Search keeps its own page and its ×.
 
 ## Plan: Nirmal Puwar's films and Global Ecologies
 

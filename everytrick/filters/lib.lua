@@ -201,7 +201,8 @@ end
 
 -- The number pill that starts an item's caption line, a link to its item page:
 --   <a class="item-number" href="../../see/boulder-font/" aria-label="Item 37">37</a>
--- (dashed, "new", for an item not yet numbered). On the item's own page it is not a link.
+-- (dashed, "new", for an item not yet numbered). On the item's own page it is not a link. data-peek="facts" opens
+-- the facts of the item's page (dl#facts, media-pages.mjs) in the peek window, over the page (assets/peek.js).
 function M.pill(item)
   local new = not item.label
   local class = 'item-number' .. (new and ' is-new' or '')
@@ -211,7 +212,7 @@ function M.pill(item)
     if new then return '<span class="' .. class .. '"><span aria-hidden="true">new</span><span class="visually-hidden">' .. label .. '</span></span>' end
     return '<span class="' .. class .. '"><span class="visually-hidden">Item </span>' .. text .. '</span>'
   end
-  return '<a class="' .. class .. '" href="' .. M.esc(M.join(M.root, item.url)) .. '" aria-label="' .. label .. '">' .. text .. '</a>'
+  return '<a class="' .. class .. '" href="' .. M.esc(M.join(M.root, item.url)) .. '" aria-label="' .. label .. '" data-peek="facts">' .. text .. '</a>'
 end
 
 -- The inside of an item's caption line: its number pill, the caption (HTML) and the item's credit from the register,
