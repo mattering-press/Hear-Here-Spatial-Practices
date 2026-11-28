@@ -28,13 +28,16 @@ For Nirmal Puwar. Drafted 27 November 2026 (email in the publisher's hands); not
 | E6 | A line introducing the Global Ecologies series on the Events page | `essays/events.md` | No line |
 | E7 | The documentary's year: Nirmal Puwar's description says 2022; listings give a first showing in November 2021 | Seeds of Vandana Shiva page and the bibliography (`becket2022`) | 2022 |
 
-E1 and E2 can be answered in the editing view (`/media-index/edit/` on a preview), with "Hand over changes"; the rest
-by email. See "Plan: Nirmal Puwar's films and Global Ecologies" in `DEVELOPMENT.md`.
+E1 and E2 can be answered in the editing view, which lists every item with fields for its caption and credit, and
+"Hand over changes" to send them back: <https://seeds-page.hearhere-preview.pages.dev/media-index/edit/> (the preview
+with the six new films). The rest by email. See "Plan: Nirmal Puwar's films and Global Ecologies" in `DEVELOPMENT.md`.
 
 ## Bundle B: pictures, captions, credits and rights
 
 For Nirmal Puwar, through the editing view. Status to check: an earlier round on captions and alt text was prepared
-on the branch `captions-alt-text`, whose preview is kept until the author has replied.
+on the branch `captions-alt-text` (23 November 2026), whose editing view is kept until the author has replied:
+<https://captions-alt-text.hearhere-preview.pages.dev/media-index/edit/>. It predates the new films; the one for
+Bundle A has them.
 
 | | Question | Where | Default until answered |
 |---|---|---|---|
