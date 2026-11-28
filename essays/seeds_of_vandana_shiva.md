@@ -11,7 +11,8 @@ author:
   - Puwar, Nirmal
 held: 2023-09-23
 credits:
-  - Chair: Nirmal Puwar
+  - Chair: Nirmal Puwar (Goldsmiths, University of London)
+  - Panel: Georges Félix (Coventry University), Greg Muldoon and Marc Hammon (Food Union), Emellyne Forman (University of Warwick) and Lopamudra Patnaik Saxena (Coventry University)
   - Organising: Food Union; Critical Ecologies, Goldsmiths, University of London
   - Tea: Live and Dye Garden
 ---
@@ -31,12 +32,13 @@ credits:
 
 A film screening and discussion that took place on Saturday 23 September 2023 in the Chapter House Cinema at Coventry Cathedral, one of the three Global Ecologies events. It was co-organised by the Food Union and Critical Ecologies at Goldsmiths, University of London, with tea from the Live and Dye Garden.
 
-> “Food is a weapon. When you control seed, you control life on earth.”
->
+> “Food is a weapon. When you control seed, you control life on earth.”\
 > — Vandana Shiva
 
 *The Seeds of Vandana Shiva* (2022), a feature-length 82-minute documentary, presents the life story of the eco-activist and agro-ecologist Dr Vandana Shiva, who for 40 years has challenged the groundwork of industrial agriculture and large corporations. The film looks at the epic struggles over who controls the world’s food systems. As a site of engagement with Shiva’s ecofeminist work, it opens up analysis of resistance, knowledge and the role of media in earthly survival.
 
-The screening was followed by a panel discussion chaired by Nirmal Puwar (Goldsmiths, University of London), with Georges Félix (Coventry University), Greg Muldoon and Marc Hammon (Food Union), Emellyne Forman (University of Warwick) and Lopamudra Patnaik Saxena (Coventry University).
-
 .ve-media https://vimeo.com/873315975 caption="The panel discussion after the screening"
+
+# References
+
+Camilla Denton Becket and James Becket (2022) *The Seeds of Vandana Shiva*, documentary film, Becket Films.
