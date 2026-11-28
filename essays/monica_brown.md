@@ -37,6 +37,10 @@ We consider a handful of images taken by the building contractors Laing, showing
 
 <iframe src="https://archive.org/embed/HearHereMonicaBrown2" width="560" height="384" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen class="ve-component right"></iframe>
 
+.ve-media https://vimeo.com/1089087480 caption="Monica Brown, film 1"
+
+.ve-media https://vimeo.com/1089098321 caption="Monica Brown, film 3"
+
 # Biography
 
 Monica D. Brown is a Project Manager at Warwickshire Record Office, Media Specialist, Journalist, Corporate Trainer and writer who was born in Birmingham, UK. The daughter of Windrush generation parents, Iciline and Gersham Brown, she grew up in Warwickshire, UK, Clarendon and Kingston, Jamaica. She is a graduate of: U.W.I., Mona, where she studied Mass Communication, French and Literature, Warwickshire College, University of Warwick and U.C.E./Birmingham City University, (M.A. Distinction).

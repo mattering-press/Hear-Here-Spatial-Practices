@@ -1304,7 +1304,10 @@ Global Ecologies: three events held in the cathedral, whose other two films she 
   Parmar's Videos 1 and 2 next to her third film, under "A film with Bharti in the cathedral further supports the
   podcast discussion." (that sentence will need Nirmal Puwar's wording for three films); Monica Brown's Videos 1 and 3
   next to item 3; Duke Keats's performance on the Acorn page, after the films of the event. Each gets its number
-  when the next version is frozen and shows a "new" pill until then.
+  when the next version is frozen and shows a "new" pill until then. They went on the pages on 2026-11-27 with
+  drafted captions ("Bharti Parmar, film 1", "Monica Brown, film 3", "Duke Keats, performance"), Bharti Parmar's
+  before her third film, Monica Brown's after hers, so that Nirmal Puwar can write their captions in the editing
+  view.
 - **The items already in from archive.org stay there.** Items 3, 8 and 55–57 keep their archive.org copies, which keep
   the original files. Changing Acorn's three parts into the one Vimeo film would leave three numbered items on no page,
   which the build refuses; it would need a withdrawal, which the register has no rule for yet.

@@ -41,3 +41,5 @@ This workshop will journey the routes and after-lives of specific acorns linked 
 <center><iframe src="https://archive.org/embed/HearHereAcorn2" width="640" height="480" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe></center>
 
 <center><iframe src="https://archive.org/embed/HearHereAcorn3" width="640" height="480" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe></center>
+
+.ve-media https://vimeo.com/1049645661 caption="Duke Keats, performance"
