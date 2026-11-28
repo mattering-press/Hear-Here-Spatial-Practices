@@ -215,8 +215,9 @@ export function convert(source, file, { exists = inWorkingTree } = {}) {
     }
     const caption = htmlToMd(figcaption);
     const iframe = block.match(/<iframe\s[^>]*>/)?.[0], video = block.match(/<video\s[^>]*>/)?.[0];
-    const vimeo = iframe && /^https:\/\/player\.vimeo\.com\/video\/(\d+)\?h=(\w+)$/.exec(htmlAttr(iframe, 'src') ?? '');
-    if (vimeo) return div('twin-video', { src: `https://vimeo.com/${vimeo[1]}/${vimeo[2]}`, title: htmlAttr(iframe, 'title') }, caption);
+    // A Vimeo player address, with the code of an unlisted film (?h=…) or without it for a public one.
+    const vimeo = iframe && /^https:\/\/player\.vimeo\.com\/video\/(\d+)(?:\?h=(\w+))?$/.exec(htmlAttr(iframe, 'src') ?? '');
+    if (vimeo) return div('twin-video', { src: `https://vimeo.com/${vimeo[1]}${vimeo[2] ? '/' + vimeo[2] : ''}`, title: htmlAttr(iframe, 'title') }, caption);
     if (video && htmlAttr(video, 'data-repo-src')) {
       const src = htmlAttr(video, 'data-repo-src'), poster = htmlAttr(video, 'data-repo-poster');
       useFile(src);

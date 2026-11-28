@@ -12,6 +12,14 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of everytrick’ in `DEVELOPMENT.md`.
 
+## 1.26.1
+
+27 November 2026. A public Vimeo film in a video figure.
+
+- A `<figure class="video-embed">` may now hold a public Vimeo film, whose player address has no `?h=` code
+  (`https://player.vimeo.com/video/<id>`). Its item's source is `https://vimeo.com/<id>`. Until now only an unlisted
+  film, with its code, was recognised.
+
 ## 1.26.0
 
 27 November 2026. A new licence, and an open door for other presses (the publisher, 2026-11-27).

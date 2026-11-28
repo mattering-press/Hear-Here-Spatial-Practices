@@ -62,15 +62,15 @@ Absence/Presence creates a contact zone for searching stories sitting on the edg
 
 <figure class="video-embed">
 
-  <iframe src="https://player.vimeo.com/video/1219328656?h=3eb0495169" title="Video from the Absence/Presence exhibition" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-  <figcaption>From the exhibition Absence/Presence. Source: <a href="https://vimeo.com/reviews/970e9cef-d916-46fd-9380-a065b05453a0/videos/1219328656">Vimeo</a>.</figcaption>
+  <iframe src="https://player.vimeo.com/video/1219328656" title="Video from the Absence/Presence exhibition" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+  <figcaption>From the exhibition Absence/Presence.</figcaption>
 
 </figure>
 
 <figure class="video-embed">
 
-  <iframe src="https://player.vimeo.com/video/1120434948?h=ce8eb282d6" title="Absence/Presence exhibition panel talk" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-  <figcaption>Panel talk connected to the exhibition Absence/Presence. Source: <a href="https://vimeo.com/reviews/a922274b-44b6-4818-8f89-18aead2953e9/videos/1120434948">Vimeo</a>.</figcaption>
+  <iframe src="https://player.vimeo.com/video/1120434948" title="Absence/Presence exhibition panel talk" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+  <figcaption>Panel talk connected to the exhibition Absence/Presence.</figcaption>
 
 </figure>
 
