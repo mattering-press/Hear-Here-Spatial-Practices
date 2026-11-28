@@ -12,6 +12,19 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of everytrick’ in `DEVELOPMENT.md`.
 
+## 1.28.0
+
+28 November 2026. An item's number opens its facts in the peek window (the publisher, 2026-11-28).
+
+- **The number that starts a caption** opens the facts of the item's page in the peek window, over the page: its
+  number and addresses, where it appears, its credit and rights, its files, and "To cite" in the reader's style
+  with Copy citation. The picture or player is not shown again. The window's head, "Item 27 · its title", leads to
+  the item's page, and so does the number without JavaScript or with Cmd/Ctrl-click. In the Media Index a number
+  leads to the item's page as before.
+- A link's `data-peek` may name what to show on the page it leads to (`data-peek="facts"`); the facts list of an
+  item's page has the id `facts`. Noted in `CONTRACT.md`, "Media items"; the contract's version stays, since no
+  data or number changes.
+
 ## 1.27.0
 
 28 November 2026. How to cite opens in a window over the page (the publisher, 2026-11-28).

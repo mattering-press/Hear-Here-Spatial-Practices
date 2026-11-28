@@ -3,11 +3,13 @@
 // of the book (about/#how-to-cite), shows that section in a window over the page being read, so that the reader
 // checks something without losing their place. Nothing is written twice: the window fetches the page the link leads
 // to and shows the section as it is there.
-//  * The section is the element the link's #id names. If that is a heading, it is the heading and everything after
+//  * The section is the element the link's #id names, or the one data-peek names (data-peek="facts": an item's number
+//    leads to the item's page, and the window shows that page's facts, dl#facts, not the picture again). If that is a heading, it is the heading and everything after
 //    it, up to the next heading of the same level or a higher one; otherwise the element alone.
 //  * The window is a <dialog>, opened as a modal: Esc, the × and a click beside the window close it, and so does the
 //    browser's Back (the window adds a step to the history, which matters most on a phone, where it fills the screen).
-//  * Its head names the page the section is from, as a link to the section on that page.
+//  * Its head names the page the section is from (with what the page is part of: "Item 27 · its title"), as a link
+//    to where the link leads.
 //  * The link stays a link: without JavaScript, with a modifier key or the middle button, when the page cannot be
 //    fetched or has no such section, and on the page the section is on, it leads where it says.
 //  * Addresses in the section are resolved against its own page. Ids are left out, so that none is on the page twice.
@@ -61,7 +63,6 @@
   function make() {
     dialog = document.createElement('dialog');
     dialog.className = 'peek';
-    dialog.setAttribute('aria-labelledby', 'peek-heading');
     dialog.innerHTML = '<div class="peek__head"><p class="peek__from"><a></a></p>'
       + '<button class="peek__close" type="button" aria-label="Close" title="Close"><svg aria-hidden="true" viewBox="0 0 16 16" width="16" height="16"><path d="m3.5 3.5 9 9m0-9-9 9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></div>'
       + '<div class="peek__body" tabindex="-1"></div>';
@@ -86,6 +87,7 @@
     if (dialog && dialog.open) { stepped = false; dialog.close(); }
   });
 
+  var textOf = function (el) { return el ? el.textContent.replace(/\s+/g, ' ').trim() : ''; };
   function show(url, doc, nodes) {
     if (!dialog) make();
     var page = pageOf(url);
@@ -104,13 +106,13 @@
       el.removeAttribute('aria-describedby');
       el.removeAttribute('data-popover');
     });
+    var name = [textOf(doc.querySelector('.page-section')), textOf(doc.querySelector('.page-title')) || doc.title].filter(Boolean).join(' · ');
     var first = body.firstElementChild;
-    if (first) first.id = 'peek-heading';
-    var title = doc.querySelector('.page-title');
-    var name = (title ? title.textContent : doc.title).trim();
+    var heading = first && /^H[1-6]$/.test(first.tagName) ? textOf(first) : '';
+    dialog.setAttribute('aria-label', heading || name);
     head.textContent = name;
     head.href = url.href;
-    head.setAttribute('aria-label', 'Open this section in ' + name);
+    head.setAttribute('aria-label', (heading ? 'Open this section in ' : 'Open ') + name);
 
     // the page behind keeps still, and keeps its width where the scrollbar takes room
     var bar = window.innerWidth - root.clientWidth;
@@ -128,7 +130,7 @@
   [].forEach.call(links, function (link) {
     var url;
     try { url = new URL(link.href, location.href); } catch (e) { return; }
-    var id = decodeURIComponent(url.hash.slice(1));
+    var id = link.getAttribute('data-peek') || decodeURIComponent(url.hash.slice(1));
     // a section of another page of this site; on its own page the link is an ordinary one
     if (!id || url.origin !== location.origin || pageOf(url) === pageOf(new URL(location.href))) return;
     var warm = function () { load(url).catch(function () {}); };
