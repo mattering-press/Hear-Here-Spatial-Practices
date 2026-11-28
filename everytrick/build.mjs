@@ -209,7 +209,8 @@ ${list.map((c) => `<div><dt>${esc(c.role)}</dt><dd>${esc(c.who)}</dd></div>`).jo
 
 // The page's note, at the top of its margin ("Plan: copying citations" in DEVELOPMENT.md; the publisher, 2026-11-24):
 // who made the page, the day it was held or recorded, its other makers, when its text last changed, and Copy citation
-// and a link to How to cite on the About page (about/#how-to-cite). Written as a colophon, not as data: names in their natural order, dates in words, no labels. On
+// and a link to How to cite on the About page (about/#how-to-cite), which opens that section in the peek window
+// (data-peek; assets/peek.js). Written as a colophon, not as data: names in their natural order, dates in words, no labels. On
 // narrow screens it stands above the text. A frozen version gives its version and the day it was frozen or released.
 const personName = (p) => p.literal || [p.given, p.family].filter(Boolean).join(' ');
 const nameList = (people) => {
@@ -235,7 +236,7 @@ const pageNote = (edition, page, home, root) => {
   const made = [c.producer?.length && `Produced by ${nameList(c.producer)}`, c['transcript-editor']?.length && `transcript edited by ${nameList(c['transcript-editor'])}`].filter(Boolean);
   if (made.length) lines.push(`<p>${made.join(' · ').replace(/^t/, 'T')}</p>`);
   lines.push(`<p>${noteDate(edition, page)}</p>`);
-  lines.push(`<p class="page-note__cite"><button class="page-note__copy" type="button" hidden>Copy citation</button><span class="page-note__dot" hidden> · </span><a href="${esc(root + urlOf(BACKMATTER.about))}#how-to-cite">How to cite</a></p>`);
+  lines.push(`<p class="page-note__cite"><button class="page-note__copy" type="button" hidden>Copy citation</button><span class="page-note__dot" hidden> · </span><a href="${esc(root + urlOf(BACKMATTER.about))}#how-to-cite" data-peek>How to cite</a></p>`);
   return `<aside class="page-note" aria-label="About this page" data-pagefind-ignore>\n${lines.join('\n')}\n</aside>`;
 };
 

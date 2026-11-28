@@ -12,6 +12,19 @@ takes on the current design.
 The middle number goes up when something readers see or use changes, the last one for fixes that change nothing a
 reader sees. How to add a version: ‘Versions of the book and of everytrick’ in `DEVELOPMENT.md`.
 
+## 1.27.0
+
+28 November 2026. How to cite opens in a window over the page (the publisher, 2026-11-28).
+
+- **The peek window.** "How to cite" in a page's note no longer takes the reader away from the page. It opens the
+  How to cite section of About this book in a window over the page, which shows around it a little blurred; on a
+  phone the window fills the screen. The × at the top right, Esc, a click beside the window and the browser's Back
+  close it, and the reader is where they were.
+- The window shows the section as it is on its own page; nothing is written twice. Its head, "About this book", is
+  a link to the section there. Copy citation and "Change the citation style" work inside it.
+- A link marked `data-peek` to a section of another page opens this way (`assets/peek.js`). Without JavaScript, or
+  with Cmd/Ctrl-click, it leads to the section on its page as before.
+
 ## 1.26.1
 
 27 November 2026. A public Vimeo film in a video figure.
